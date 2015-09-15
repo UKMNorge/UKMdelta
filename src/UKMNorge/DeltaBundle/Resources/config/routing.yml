@@ -1,0 +1,3 @@
+ukm_delta_homepage:
+    path:     /
+    defaults: { _controller: UKMDeltaBundle:Default:index }

@@ -1,3 +1,11 @@
+ukm_delta:
+    resource: "@UKMDeltaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ukm_design:
+    resource: "@UKMDesignBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
