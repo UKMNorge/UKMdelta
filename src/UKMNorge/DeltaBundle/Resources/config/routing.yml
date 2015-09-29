@@ -1,3 +1,7 @@
 ukm_delta_homepage:
     path:     /
     defaults: { _controller: UKMDeltaBundle:Default:index }
+
+ukm_delta_ukmid_homepage:
+    path:     /ukmid/
+    defaults: { _controller: UKMDeltaBundle:UKMID:index }

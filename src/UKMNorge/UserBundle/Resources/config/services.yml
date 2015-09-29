@@ -1,0 +1,19 @@
+services:
+    app.form.registration:
+        class: UKMNorge\UserBundle\Form\RegistrationType
+        tags:
+            - { name: form.type, alias: UKM_user_registration }
+    ukm_user.registration_listener:
+        class: UKMNorge\UserBundle\EventListener\RegistrationListener
+        arguments:
+            - @service_container
+        tags:
+            - { name: kernel.event_subscriber }
+    ukm_user:
+        class: UKMNorge\UserBundle\Services\UserService
+        arguments:
+            - @service_container
+            
+#    ukm_user.example:
+#        class: UKMNorge\UserBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,3 +1,11 @@
+ukmsms:
+    resource: "@UKMSMSBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ukm_user:
+    resource: "@UKMUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ukm_delta:
     resource: "@UKMDeltaBundle/Resources/config/routing.yml"
     prefix:   /
@@ -9,3 +17,7 @@ ukm_design:
 app:
     resource: @AppBundle/Controller/
     type:     annotation
+
+# app/config/routing.yml
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
