@@ -13,7 +13,19 @@ services:
         class: UKMNorge\UserBundle\Services\UserService
         arguments:
             - @service_container
-            
+
+    ukm_user.mailer:
+        class: UKMNorge\UserBundle\Mailer\Mailer
+        arguments:
+            - '@service_container'
+            - '@mailer'
+            - '@router'
+            - '@twig'
+            -
+                template:
+                    confirmation: '%fos_user.registration.confirmation.template%'
+                    resetting: '%fos_user.resetting.email.template%'
+
 #    ukm_user.example:
 #        class: UKMNorge\UserBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

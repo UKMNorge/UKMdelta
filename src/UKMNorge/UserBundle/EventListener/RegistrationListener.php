@@ -62,19 +62,7 @@ class RegistrationListener implements EventSubscriberInterface
 	 *
 	 **/
     public function onRegistrationSuccess($event)
-    {
-	    $form = $event->getForm();
-	    $user = $form->getData();
-	    
-   		$text = $this->container->getParameter('ukmdelta.sms.validation.text');
-
-		$UKMSMS = $this->container->get('ukmsms');
-        try {
-	        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#code', $user->getSmsValidationCode(), $text) );
-	    } catch( Exception $e ) {
-		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
-	    }
-	    
+    {	    
 		$url = $this->container->get('router')->generate('ukm_user_registration_check_sms');
 		$event->setResponse(new RedirectResponse($url));
 	}
