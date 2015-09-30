@@ -1,7 +1,7 @@
 <?php
 namespace UKMNorge\SMSBundle\Services;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use MariusMandal\FokusBundle\Entity\System;
 use Exception;
 use stdClass;
 
