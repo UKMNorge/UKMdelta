@@ -12,6 +12,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RegistrationListener implements EventSubscriberInterface
 {
+    private $message = 'Engangskode: #code';
+
     public function __construct($container)
     {
 		$this->container = $container;
@@ -61,7 +63,10 @@ class RegistrationListener implements EventSubscriberInterface
 	 **/
     public function onRegistrationSuccess($event)
     {
-	    # SEND SMS HER
+	    $form = $event->getForm();
+	    $user = $form->getData();
+		$UKMSMS = $this->container->get('ukmsms');
+        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#code', $user->getSmsValidationCode(), $this->message) );
 	    
 		$url = $this->container->get('router')->generate('ukm_user_registration_check_sms');
 		$event->setResponse(new RedirectResponse($url));

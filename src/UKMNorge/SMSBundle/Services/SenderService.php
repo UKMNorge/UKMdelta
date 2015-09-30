@@ -1,5 +1,5 @@
 <?php
-namespace MariusMandal\FokusBundle\Services;
+namespace UKMNorge\SMSBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use MariusMandal\FokusBundle\Entity\System;
 use Exception;
@@ -12,4 +12,7 @@ class SenderService {
 		$this->sender = $sender;
 	}
 
+	public function sendSMS( $to, $message ) {
+		throw new Exception('Attempted to send SMS (damn!)');
+	}
 }
