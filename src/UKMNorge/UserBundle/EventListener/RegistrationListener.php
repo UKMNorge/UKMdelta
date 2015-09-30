@@ -10,10 +10,10 @@ use FOS\UserBundle\FOSUserEvents;
 use UKMNorge\UserBundle\UKMUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Exception;
+
 class RegistrationListener implements EventSubscriberInterface
 {
-    private $message = 'Engangskode: #code';
-
     public function __construct($container)
     {
 		$this->container = $container;
@@ -65,8 +65,15 @@ class RegistrationListener implements EventSubscriberInterface
     {
 	    $form = $event->getForm();
 	    $user = $form->getData();
+	    
+   		$text = $this->container->getParameter('ukmdelta.sms.validation.text');
+
 		$UKMSMS = $this->container->get('ukmsms');
-        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#code', $user->getSmsValidationCode(), $this->message) );
+        try {
+	        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#code', $user->getSmsValidationCode(), $text) );
+	    } catch( Exception $e ) {
+		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
+	    }
 	    
 		$url = $this->container->get('router')->generate('ukm_user_registration_check_sms');
 		$event->setResponse(new RedirectResponse($url));
