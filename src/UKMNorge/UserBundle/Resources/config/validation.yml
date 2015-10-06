@@ -1,4 +1,16 @@
 UKMNorge\UserBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: email
+            errorPath: email
+            message: fos_user.email.already_used
+            groups: [ "UKM_user_registration", "AcmeProfile" ]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: phone
+            errorPath: phone
+            message: fos_user.phone.already_used
+            groups: [ "UKM_user_registration", "AcmeProfile" ]
+
     properties:
     # Your custom fields in your user entity, here is an example with FirstName
         first_name:

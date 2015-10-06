@@ -62,7 +62,7 @@ class User extends BaseUser
     
     /**
      *
-     * @ORM\Column(name="phone", type="integer", length=8, nullable=true)
+     * @ORM\Column(name="phone", type="integer", length=8, nullable=true, unique=true)
      *
      */
     protected $phone;

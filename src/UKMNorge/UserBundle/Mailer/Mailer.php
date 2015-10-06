@@ -67,13 +67,24 @@ class Mailer implements MailerInterface
      */
     public function sendResettingEmailMessage(UserInterface $user)
     {
-        $template = $this->parameters['resetting.template'];
+	    $text = $this->container->getParameter('ukmdelta.sms.password.reset_text');
+        $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), true);
+
+		$UKMSMS = $this->container->get('ukmsms');
+        try {
+	        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#link', $url, $text) );
+	    } catch( Exception $e ) {
+		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende sms for passord-nullstilling ('.$e->getMessage().')');
+	    }
+
+/*        $template = $this->parameters['resetting.template'];
         $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), true);
         $rendered = $this->templating->render($template, array(
             'user' => $user,
             'confirmationUrl' => $url
         ));
         $this->sendEmailMessage($rendered, $this->parameters['from_email']['resetting'], $user->getEmail());
+        */
     }
 
     /**
