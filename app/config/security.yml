@@ -8,6 +8,8 @@ security:
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     providers:
+        ukm_userbundle:
+            id: ukm_user.user_provider
         fos_userbundle:
             id: fos_user.user_provider.username
 
@@ -15,7 +17,7 @@ security:
         user:
             pattern: ^/
             form_login:
-                provider: fos_userbundle
+                provider: ukm_userbundle
                 csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
 
             logout:       true
