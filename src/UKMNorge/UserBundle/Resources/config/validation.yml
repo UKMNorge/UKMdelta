@@ -15,34 +15,35 @@ UKMNorge\UserBundle\Entity\User:
     # Your custom fields in your user entity, here is an example with FirstName
         first_name:
             - NotBlank:
-                message: UKMuser.first_name.blank
+                message: ukm_user.first_name.blank
                 groups: [ "UKM_user_registration" ]
             - Length:
                 min: 2
-                minMessage: UKMuser.first_name.short
+                minMessage: ukm_user.first_name.short
                 max: 255
-                maxMessage: UKMuser.first_name.long
+                maxMessage: ukm_user.first_name.long
                 groups: [ "UKM_user_registration" ]
         last_name:
             - NotBlank:
-                message: UKMuser.last_name.blank
+                message: ukm_user.last_name.blank
                 groups: [ "UKM_user_registration" ]
             - Length:
                 min: 1
-                minMessage: UKMuser.last_name.short
+                minMessage: ukm_user.last_name.short
                 max: 255
-                maxMessage: UKMuser.last_name.long
+                maxMessage: ukm_user.last_name.long
                 groups: [ "UKM_user_registration" ]
         phone:
             - NotBlank:
-                message: UKMuser.phone.blank
+                message: ukm_user.phone.blank
                 groups: [ "UKM_user_registration" ]
             - Length:
                 min: 8
-                minMessage: UKMuser.phone.short
                 max: 8
-                maxMessage: UKMuser.phone.long
-                groups: [ "UKM_user_registration" ]
+                minMessage: ukm_user.phone.too_short
+                maxMessage: ukm_user.phone.too_long
+                exactMessage: ukm_user.phone.exact
+                groups: [ "UKM_user_registration", "ResetPassword", "ChangePassword" ]
 
 
 

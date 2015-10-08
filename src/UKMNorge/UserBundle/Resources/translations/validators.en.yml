@@ -1,6 +1,9 @@
 ukm_user:
     phone:
         already_used: Mobilnummeret er allerede registrert
+        short: Mobilnummer består av 8 siffer
+        long: Mobilnummer består av 8 siffer
+        exact: Mobilnummeret må bestå av 8 siffer
 fos_user:
     username:
         already_used: Brukernavnet er allerede i bruk
