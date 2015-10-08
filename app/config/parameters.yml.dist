@@ -22,3 +22,9 @@ parameters:
     debug_toolbar:          true
     debug_redirects:        false
     use_assetic_controller: true
+
+    ukmsms.system_id: "UKMdelta"
+    ukmsms.price: 0.40
+    ukmsms.sender: "UKMNorge"
+    ukmdelta.sms.validation.text: "#code er din engangskode for å opprette UKM-bruker."
+    ukmdelta.sms.password.reset_text: "Trykk på lenken for å resette ditt passord. #link"

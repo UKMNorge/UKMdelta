@@ -26,6 +26,8 @@ framework:
 
 # Twig Configuration
 twig:
+    form_themes:
+        - 'UKMDesignBundle:Form:fields.html.twig'
     form:
         resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
