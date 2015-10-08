@@ -3,6 +3,7 @@
 namespace UKMNorge\UserBundle\EventListener;
 
 use FOS\UserBundle\Event\UserEvent;
+use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,7 @@ class RegistrationListener implements EventSubscriberInterface
         return array(FOSUserEvents::REGISTRATION_INITIALIZE => 'onRegistrationInitialize',
         			 FOSUserEvents::REGISTRATION_SUCCESS => 'onRegistrationSuccess',
 					 UKMUserEvents::REGISTRATION_ERROR => 'onRegistrationError',
+					 FOSUserEvents::RESETTING_RESET_SUCCESS => 'onResetComplete',
 					);
     }
 
@@ -84,5 +86,10 @@ class RegistrationListener implements EventSubscriberInterface
 		
 		$user->setPlainPassword( $password );
 		$user->setSmsValidationCode( $smscode );
+    }
+    
+    public function onResetComplete(FormEvent $event) {
+		$url = $this->container->get('router')->generate('ukm_delta_ukmid_homepage');
+		$event->setResponse( new RedirectResponse( $url ) );
     }
 }
