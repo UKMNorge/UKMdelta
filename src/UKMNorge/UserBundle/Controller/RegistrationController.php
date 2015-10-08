@@ -66,8 +66,11 @@ class RegistrationController extends BaseController
 	     * Add hook for registration error, and return modified response
 	     *
 	     **/
+		$phoneError = !empty( $form['phone']->getErrorsAsString() );
+
 		$response = $this->render('FOSUserBundle:Registration:register.html.twig', array(
             'form' => $form->createView(),
+            'phoneAlreadyRegistered' => $phoneError,
         ));
         $event = new GetResponseUserEvent($user, $request, $response);
         $event->setResponse( $response );

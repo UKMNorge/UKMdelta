@@ -15,9 +15,9 @@ class RegistrationType extends AbstractType
         $builder->remove('username')
         		->remove('plainPassword');
 
-        $builder->add('first_name', 'text', array('label' => 'Fornavn'))
-        		->add('last_name', 'text', array('label' => 'Etternavn'))
-        		->add('phone', 'number', array('label' => 'Mobil'));
+        $builder->add('first_name', 'text', array('label' => 'ukm_user.first_name'))
+        		->add('last_name', 'text', array('label' => 'ukm_user.last_name'))
+        		->add('phone', 'number', array('label' => 'ukm_user.phone'));
     }
 
     public function getParent()

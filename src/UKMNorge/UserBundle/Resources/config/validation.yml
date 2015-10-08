@@ -8,7 +8,7 @@ UKMNorge\UserBundle\Entity\User:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: phone
             errorPath: phone
-            message: fos_user.phone.already_used
+            message: ukm_user.phone.already_used
             groups: [ "UKM_user_registration", "AcmeProfile" ]
 
     properties:
@@ -54,13 +54,6 @@ UKMNorge\UserBundle\Entity\User:
 # As you can see, we are only applying the UniqueEntity constraint to 
 # the email field and not the username field.
 FOS\UserBundle\Model\User:
-    constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
-             fields: email
-             errorPath: email 
-             message: fos_user.email.already_used
-             groups: [ "UKM_user_registration", "AcmeProfile" ]
-
     properties:
         email:
             - NotBlank:

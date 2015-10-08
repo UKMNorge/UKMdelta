@@ -3,6 +3,15 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block content %}
+	{% if phoneAlreadyRegistered == true %}
+		<div class="alert alert-danger">
+			<h4>Mobilnummer allerede registrert</h4>
+			<p>
+				Mobilnummeret du har forsøkt å registrere tilhører allerede en bruker.
+				<a href=" {{ path('fos_user_resetting_request') }}">Du kan derfor prøve glemt passord-funksjonen.</a>
+			</p>
+		</div>
+	{% endif %}
 	<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
 	    {{ form_widget(form) }}
 	    <div>

@@ -1,0 +1,5 @@
+ukm_user.first_name: Come on
+ukm_user:
+    first_name: Fornavn
+    last_name: Etternavn
+    phone: Mobilnummer
