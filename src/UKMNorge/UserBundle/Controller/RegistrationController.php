@@ -82,10 +82,11 @@ class RegistrationController extends BaseController
 	     *
 	     **/
     }	
-	public function checkSMSAction() {
+	public function checkSMSAction(Request $request) {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
-        
-        $view_data = array( 'email' => $email );
+        $sent_before = $request->query->get('sent_before');
+
+        $view_data = array( 'email' => $email, 'sent_before' => $sent_before );
         return $this->render('UKMUserBundle:Registration:check-sms.html.twig', $view_data);
 	}
 	

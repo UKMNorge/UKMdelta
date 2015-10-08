@@ -48,7 +48,7 @@ class RegistrationListener implements EventSubscriberInterface
 	    $user = $userManager->findUserByEmail( $email );
 		if( get_class( $user ) == 'UKMNorge\UserBundle\Entity\User' && !$user->isEnabled() ) {
 			$this->container->get('session')->set('fos_user_send_confirmation_email/email', $email);
-			$url = $this->container->get('router')->generate('ukm_user_registration_check_sms');
+			$url = $this->container->get('router')->generate('ukm_user_registration_check_sms', array('sent_before'=>true));
 			
 			$event->setResponse( new RedirectResponse( $url ) );
 		}

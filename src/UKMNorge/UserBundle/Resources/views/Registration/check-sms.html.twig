@@ -6,6 +6,14 @@
 		
 		{% embed "UKMDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
 		
+		{% if sent_before %}
+		<div class="alert alert-info">
+			Vi sendte denne SMS'en for en stund siden. Sjekk meldingene dine, 
+			eventuelt 
+			<a href="{{ path('fos_user_resetting_request')}}">trykk her for å sende ny kode</a>
+		</div>
+		{% endif %}
+		
 		<p class="lead center">
 			Vi har sendt en SMS-kode til <span class="bold">din mobil</span>
 			<br />
