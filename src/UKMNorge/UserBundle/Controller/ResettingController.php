@@ -38,7 +38,7 @@ class ResettingController extends BaseController
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return $this->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig');
+            return $this->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig', array('sent' => $user->getPasswordRequestedAt() ));
         }
 
         if (null === $user->getConfirmationToken()) {
@@ -52,8 +52,23 @@ class ResettingController extends BaseController
         $this->get('fos_user.user_manager')->updateUser($user);
 
         return new RedirectResponse($this->generateUrl('fos_user_resetting_check_email',
-            array('email' => $this->getObfuscatedEmail($user))
+            array('email' => $user->getPhone())#$this->getObfuscatedEmail($user))
         ));
     }
-	
+	    /**
+     * Tell the user to check his email provider
+     */
+    public function checkEmailAction(Request $request)
+    {
+        $phone = $request->query->get('email');
+
+        if (empty($phone)) {
+            // the user does not come from the sendEmail action
+            return new RedirectResponse($this->generateUrl('fos_user_resetting_request'));
+        }
+
+        return $this->render('UKMUserBundle:Resetting:checkEmail.html.twig', array(
+            'phone' => $phone,
+        ));
+	}
 }

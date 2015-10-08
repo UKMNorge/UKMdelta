@@ -1,0 +1,37 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>Glemt passord</h1>
+		</div>
+		
+		<div class="col-xs-12">
+			<p>Hvis du har glemt passordet, kan vi sende deg en SMS så du kan lage nytt passord</p>
+		</div>
+		
+		<p class="hidden-xs">&nbsp;</p>
+	</div>
+	
+	
+	<div class="row">
+		<div class="col-xs-12">		
+			<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+		        {% if invalid_username is defined %}
+		        	<div class="alert alert-danger">
+		        		Klarte ikke å finne en bruker med det mobilnummeret!
+		        	</div>
+		        {% endif %}
+				
+				<div class="form-group">
+			        <label for="username">Mobilnummer</label>
+			        <input class="form-control" type="text" id="username" name="username" required="required" placeholder="Skriv inn ditt mobilnummer" />
+			    </div>
+			    
+			    <div>
+			        <input class="btn btn-success btn-block" type="submit" value="Nullstill passord" />
+			    </div>
+			</form>
+		</div>
+	</div>
+{% endblock content %}

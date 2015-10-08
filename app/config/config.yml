@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallback: en }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -26,6 +26,8 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 

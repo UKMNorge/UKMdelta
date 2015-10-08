@@ -1,0 +1,67 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<h2>Logg inn</h2>
+	</div>
+	
+	{% if error and error.messageKey == 'Invalid credentials.' %}
+		<div class="alert alert-danger">
+			<h4>Feil mobilnummer / passord</h4>
+			<p>
+				Vi fant ingen bruker med det mobilnummeret. Kan det være at du skrev inn feil passord? 
+				<br />
+				<a href="{{ path('fos_user_resetting_request') }}">Klikk her for å få nytt passord</a>
+			</p>
+			<p>&nbsp;</p>
+			<p>
+				Hvis du ikke har en bruker, 
+				<br />
+				<a href="{{ path('fos_user_registration_register') }}">kan du opprette en UKM-bruker</a>
+			</p>
+		</div>
+	{% elseif error %}
+		<div class="alert alert-danger">
+			<p>{{ error.messageKey|trans(error.messageData, 'FOSUserBundle') }}</p>
+		</div>
+	{% endif %}
+
+</div>
+
+<div class="row">
+	<div class="hidden-xs col-md-4">
+		<img src="http://placehold.it/300x300/Nice little icon" />
+	</div>
+	<div class="col-xs-12 col-md-8">
+		<form action="{{ path("fos_user_security_check") }}" method="post">
+		    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+		
+			<div class="form-group">
+			    <label for="username">Mobilnummer</label>
+			    <input class="form-control input-sm" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+			</div>	
+			
+			<div class="form-group">
+			    <label for="password">Passord</label>
+			    <input class="form-control input-sm" type="password" id="password" name="_password" required="required" />
+			</div>
+			
+			<div class="form-group">		
+			    <label for="remember_me">
+			    	<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+					Husk meg
+				</label>
+			</div>		
+		    <input class="btn btn-block btn-success" type="submit" id="_submit" name="_submit" value="Logg inn" />
+		</form>
+		
+		<p>&nbsp;</p>
+		<p>
+			<a href="{{ path('fos_user_resetting_request') }}">Glemt passord?</a>
+		</p>
+
+	</div>
+	
+</div>
+{% endblock %}
