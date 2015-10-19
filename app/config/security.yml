@@ -14,7 +14,7 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
-        user:
+        ukm_delta_wall:
             pattern: ^/
             form_login:
                 provider: ukm_userbundle
@@ -24,6 +24,7 @@ security:
             anonymous:    true
 
     access_control:
+        - { path: ^/ukmid, roles: ROLE_USER }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
