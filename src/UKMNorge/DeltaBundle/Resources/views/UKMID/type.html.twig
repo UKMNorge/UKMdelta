@@ -1,0 +1,34 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block content %}
+	<h1 class="center">Hva vil du melde på?</h1>
+	
+	<p>&nbsp;</p>
+	{# <p class="lead center">
+		Velg hvilken type innslag du vil delta med.
+	</p> #}
+	<div>
+		{% for type in typer %} 
+			{% if loop.first %}
+				<p class="lead center">Vise frem noe</p>
+			{% elseif loop.last %}
+				<p class="lead center">Jobbe med UKM</p> 
+			{% endif %}
+
+			<ul class="list list-unstyled list-group">
+			{% for enkelttype in type %}
+				<li>
+					<div class="row">
+						<div class="col-md-9 col-xs-9">
+							{{ enkelttype.name|raw }}
+						</div>
+						<div class="col-md-3 col-xs-3">
+							Ikon her
+						</div>
+					</div>
+				</li>
+			{% endfor %}
+			</ul> 
+		{% endfor %}
+	</div>
+{% endblock %}

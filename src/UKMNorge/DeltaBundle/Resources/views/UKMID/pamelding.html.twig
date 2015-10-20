@@ -1,0 +1,22 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block content %}
+	<h1 class="center">Start påmelding</h1>
+	
+	<p>&nbsp;</p>
+	
+	<p class="lead center">
+		Her kan du melde deg på med forskjellige innslag.
+	</p>
+
+	<div class="row">
+		{% for i in 1..12 %}
+			<div class="col-md-2 col-xs-4 ">  
+				<div style="min-height: 80px; max-height: 100px; background-color: grey; padding: 3px;"><!-- Image here --> <!-- Remove style when image is placed -->
+				</div>
+				<!-- Text under image here -->
+				<p class="text-center">Kategori {{ i }}</p>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

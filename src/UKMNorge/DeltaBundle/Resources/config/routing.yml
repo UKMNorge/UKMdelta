@@ -5,3 +5,21 @@ ukm_delta_homepage:
 ukm_delta_ukmid_homepage:
     path:     /ukmid/
     defaults: { _controller: UKMDeltaBundle:UKMID:index }
+
+ukm_delta_ukmid_pamelding:
+    path:     /ukmid/pamelding/
+    defaults: { _controller: UKMDeltaBundle:UKMID:geo }
+
+ukm_delta_ukmid_pamelding_hva:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/
+    defaults: { _controller: UKMDeltaBundle:UKMID:type }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_musikk:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/
+    defaults: { _controller: UKMDeltaBundle:UKMID:musikk }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})

@@ -1,0 +1,46 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/*' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+{% block content %}
+	<h1 class="center">Hvor skal du melde deg på?</h1>
+	
+	<p>&nbsp;</p>
+	
+	<p class="lead center">
+		Velg hvor du vil delta på UKM.
+	</p>
+	<!-- Søkefelt her -->
+	<input type="text" class="form-control input-sm" name="filtrer" id="filterMonstringer" placeholder="Skriv her for å filtrere listen..." />
+	<div id="lokalmonstringer">
+	
+		{% for fylke in monstringsliste %}
+			<h4 id="header_{{ fylke.id }}" class="text-center">{{ fylke.name }}</h4>
+			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group">
+				{% for monstring in fylke.monstringer %}
+					<li data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ') }} {{ fylke.name }}" >
+
+						{% if monstring.fellesmonstring %}
+							{{ monstring.name }}
+							<br />
+							{% for kommuner in monstring.kommuner %}
+
+							{% endfor %}
+						{% else %}
+							<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
+								{{ monstring.name }}
+							</a>
+
+						{% endif %}
+
+					</li>
+				{% endfor %}
+			</ul>
+		{% endfor %}
+	
+	</div>
+{% endblock %}

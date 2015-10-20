@@ -10,4 +10,27 @@
 		<br />
 		Her velger du hva du skal delta med på UKM.
 	</p>
+
+	<div class="text-center" style="background-color: #85cdcf; color: white;">
+  		<h1 class="page-header">Dine påmeldinger</h1>
+	</div>
+	<div>
+		<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
+		{% if innslag is defined %}
+			<ul>
+				{% for event in innslag %}
+					<li>{{ innslag.tittel }}</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>Du har ingen påmeldinger enda.
+			</p>
+		{% endif %}
+		
+		<div>
+			<form action="{{ path('ukm_delta_ukmid_pamelding') }}">
+				<input class="btn btn-success btn-block" type="submit" value="Start påmelding" />
+			</form>
+		</div>
+	</div>
 {% endblock %}
