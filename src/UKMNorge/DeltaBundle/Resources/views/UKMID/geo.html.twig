@@ -20,21 +20,45 @@
 	
 		{% for fylke in monstringsliste %}
 			<h4 id="header_{{ fylke.id }}" class="text-center">{{ fylke.name }}</h4>
-			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group">
+			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 				{% for monstring in fylke.monstringer %}
-					<li data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ') }} {{ fylke.name }}" >
-
+						<li class="list-group-item" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ') }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
-							{{ monstring.name }}
-							<br />
-							{% for kommuner in monstring.kommuner %}
-
-							{% endfor %}
+							<a data-toggle="collapse" data-target="#box{{ monstring.id }}">
+								{# Lag en div som kan utvides ved å trykkes på #}
+								<div class="row">
+									<div class="col-xs-9">
+										{{ monstring.name }}
+									</div>
+									<div class="col-xs-3">
+										<div>
+											{% for kommuner in monstring.kommuner %}
+												<small>{{ kommuner }}</small>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</a>
+							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 30px">
+								<div class="col-md-12">Hvilken kommune kommer du fra?</div>
+								{% for key,kommune in monstring.kommuner %}
+									<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
+										<div class="row">
+											{{ kommune }} 
+										</div>
+									</a>
+								{% endfor %}
+							</div>
 						{% else %}
 							<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
-								{{ monstring.name }}
+								<div class="row">
+									<div class="col-md-9 col-xs-9">
+										{{ monstring.name }}
+									</div>
+									<div class="col-md-3 col-xs-3">
+									</div>
+								</div>
 							</a>
-
 						{% endif %}
 
 					</li>

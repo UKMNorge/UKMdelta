@@ -33,6 +33,7 @@ class UKMIDController extends Controller
         $monstringer = new monstringer($season);
         $liste = $monstringer->alle_kommuner_med_lokalmonstringer();
 
+        //var_dump($liste);
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
         $view_data['monstringsliste'] = $liste;
 
