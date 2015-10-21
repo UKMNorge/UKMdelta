@@ -1,0 +1,66 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block content %}
+	<h1 class="center">Litt mer info</h1>
+	<p>&nbsp;</p>
+	<p class="lead center">
+		Ettersom du er kontaktperson, trenger vi litt mer info om deg.
+	</p>
+	<form class="" method="POST" action="{{ path('ukm_delta_ukmid_verifyInfo') }}">
+		<div class="form-group">
+			<div class="row">
+				<div class="col-xs-12">
+					<small>Adresse</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" name="address" class="form-control" placeholder="" value="{{ user.address is defined ? user.address : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<small>Postnummer</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" name="postNumber" class="form-control" placeholder="" value="{{ user.post_number is defined ? user.post_number : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<small>Poststed (Fylles inn automatisk)</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" name="postplace" class="form-control" placeholder="" value="{{ user.post_place is defined ? user.post_place : '' }}"> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<small>Alder</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<select name="age" class="form-control">
+						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>Velg riktig alder</option> 
+						{% for i in 10..25 %}
+							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} år</option> 
+						{% endfor %}
+							<option value="0">Over 25 år</option>
+					</select>
+				</div>
+			</div>
+			<br /> 
+			<div class="row">
+				<div class="col-xs-12">
+					<button type="submit" class="btn btn-default btn-block center">Neste</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}

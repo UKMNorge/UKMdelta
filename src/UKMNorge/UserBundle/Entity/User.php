@@ -82,6 +82,34 @@ class User extends BaseUser
     protected $sms_validation_code;
 
     /**
+     *
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     *
+     */
+    protected $address;
+
+    /**
+     *
+     * @ORM\Column(name="post_number", type="integer", length=4, nullable=true)
+     *
+     */
+    protected $post_number;
+
+    /**
+     *
+     * @ORM\Column(name="post_place", type="string", length=255, nullable=true)
+     *
+     */
+    protected $post_place;
+
+    /**
+     *
+     * @ORM\Column(name="birthdate", type="datetime", nullable=true)
+     *
+     */
+    protected $birthdate;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -289,5 +317,97 @@ class User extends BaseUser
     public function getSmsValidationCode()
     {
         return $this->sms_validation_code;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set post_number
+     *
+     * @param integer $postNumber
+     * @return User
+     */
+    public function setPostNumber($postNumber)
+    {
+        $this->post_number = $postNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get post_number
+     *
+     * @return integer 
+     */
+    public function getPostNumber()
+    {
+        return $this->post_number;
+    }
+
+    /**
+     * Set post_place
+     *
+     * @param string $postPlace
+     * @return User
+     */
+    public function setPostPlace($postPlace)
+    {
+        $this->post_place = $postPlace;
+
+        return $this;
+    }
+
+    /**
+     * Get post_place
+     *
+     * @return string 
+     */
+    public function getPostPlace()
+    {
+        return $this->post_place;
+    }
+
+    /**
+     * Set birthdate
+     *
+     * @param \DateTime $birthdate
+     * @return User
+     */
+    public function setBirthdate($birthdate)
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthdate
+     *
+     * @return \DateTime 
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
     }
 }

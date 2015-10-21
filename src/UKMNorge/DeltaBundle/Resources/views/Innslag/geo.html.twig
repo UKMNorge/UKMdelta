@@ -39,12 +39,14 @@
 									</div>
 								</div>
 							</a>
-							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 30px">
-								<div class="col-md-12">Hvilken kommune kommer du fra?</div>
+							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 10px">
+								<div class="col-xs-12">Hvilken kommune kommer du fra?</div>
 								{% for key,kommune in monstring.kommuner %}
 									<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
 										<div class="row">
-											{{ kommune }} 
+											<div class="col-xs-12">
+												{{ kommune }} 
+											</div>
 										</div>
 									</a>
 								{% endfor %}

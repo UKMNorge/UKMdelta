@@ -3,8 +3,8 @@
 namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use monstring;
-use monstringer;
+use Symfony\Component\HttpFoundation\Request;
+use DateTime;
 
 class UKMIDController extends Controller
 {
@@ -16,43 +16,63 @@ class UKMIDController extends Controller
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
 
-    public function pameldingAction()
+    public function checkInfoAction()
     {
-    	$view_data = array();
 
-    	$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-    	return $this->render('UKMDeltaBundle:UKMID:pamelding.html.twig', $view_data);
+        $view_data = array();
+        $user = $this->get('ukm_user')->getCurrentUser();
+        
+        // Har vi all data lagret om denne brukeren?
+        if ($user->getAddress() != null && $user->getPostNumber() != null && $user->getPostPlace() != null && $user->getBirthdate() != null) {
+            // Gå videre til geovalg
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
+        }
+
+        // Beregn alder fra fødselsår
+        if ($birthdate = $user->getBirthdate()) {
+            $now = new DateTime('now');
+            $age = $birthdate->diff($now)->y;
+            $view_data['age'] = $age;
+        }
+                
+        $view_data['user'] = $user;
+        //var_dump($view_data['user']);
+        // Rendre fyll-inn-visningen.
+        return $this->render('UKMDeltaBundle:UKMID:info.html.twig', $view_data );
     }
 
-    public function geoAction()
+    public function verifyInfoAction()
     {
-        require_once('UKM/monstringer.class.php');
 
-        $season = $this->container->get('ukm_delta.season')->getActive();
+        $dato = new DateTime('now');
+        $userManager = $this->container->get('fos_user.user_manager');
 
-        $monstringer = new monstringer($season);
-        $liste = $monstringer->alle_kommuner_med_lokalmonstringer();
+        $user = $this->get('ukm_user')->getCurrentUser();
 
-        //var_dump($liste);
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        $view_data['monstringsliste'] = $liste;
+        // Ta imot post-variabler
+        $request = Request::createFromGlobals();
 
-        //var_dump($liste[1]);
-        return $this->render('UKMDeltaBundle:UKMID:geo.html.twig', $view_data);
+        $address = $request->request->get('address');
+        $postNumber = $request->request->get('postNumber');
+        $postPlace = $request->request->get('postplace');
+        $age = $request->request->get('age');
+
+        //TODO: Sikkerhetssjekk input?
+
+        // Beregn birthdate basert på age?
+        $birthYear = (int)date('Y') - $age;
+
+        $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
+        $dato->setTimestamp($birthdate);
+        // Legg til verdier i user-bundle
+        $user->setAddress($address);
+        $user->setPostNumber($postNumber);
+        $user->setPostPlace($postPlace);
+        $user->setBirthdate($dato);
+
+        $userManager->updateUser($user);
+        // Alt lagret ok
+        return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
     }
 
-    public function typeAction($k_id, $pl_id)
-    {
-        require_once('UKM/monstring.class.php');
-        // Hent lister om hvilke typer som er tillatt på denne mønstringen.
-        $pl = new monstring($pl_id);
-        $typeListe = $pl->getAllBandTypesDetailedNew();
-        //var_dump($typeListe);
-        $view_data['typer'] = $typeListe;
-        $view_data['pl_id'] = $pl_id;
-
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-
-        return $this->render('UKMDeltaBundle:UKMID:type.html.twig', $view_data);
-    }
 }

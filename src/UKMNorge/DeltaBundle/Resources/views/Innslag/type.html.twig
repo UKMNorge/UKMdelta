@@ -20,7 +20,9 @@
 				<li>
 					<div class="row">
 						<div class="col-md-9 col-xs-9">
-							{{ enkelttype.name|raw }}
+							<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
+							{ 	k_id: k_id,  
+								pl_id: pl_id }) }}">{{ enkelttype.name|raw }}</a> 
 						</div>
 						<div class="col-md-3 col-xs-3">
 							Ikon her

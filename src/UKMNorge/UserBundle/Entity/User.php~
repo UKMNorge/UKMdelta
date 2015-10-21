@@ -62,7 +62,7 @@ class User extends BaseUser
     
     /**
      *
-     * @ORM\Column(name="phone", type="integer", length=8, nullable=true)
+     * @ORM\Column(name="phone", type="integer", length=8, nullable=true, unique=true)
      *
      */
     protected $phone;
@@ -80,6 +80,34 @@ class User extends BaseUser
      *
      */
     protected $sms_validation_code;
+
+    /**
+     *
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
+     *
+     */
+    protected $address;
+
+    /**
+     *
+     * @ORM\Column(name="post_number", type="integer", length=4, nullable=true)
+     *
+     */
+    protected $post_number;
+
+    /**
+     *
+     * @ORM\Column(name="post_place", type="string", length=255, nullable=true)
+     *
+     */
+    protected $post_place;
+
+    /**
+     *
+     * @ORM\Column(name="birthdate", type="datetime", nullable=true)
+     *
+     */
+    protected $birthdate;
 
     /**
      * Get id

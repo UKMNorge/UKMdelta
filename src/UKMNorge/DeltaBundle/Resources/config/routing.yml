@@ -6,20 +6,107 @@ ukm_delta_ukmid_homepage:
     path:     /ukmid/
     defaults: { _controller: UKMDeltaBundle:UKMID:index }
 
+ukm_delta_ukmid_checkinfo:
+    path:     /ukmid/info/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkInfo }
+    methods:  [GET]
+
+ukm_delta_ukmid_verifyInfo:
+    path:	/ukmid/info/
+    defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
+    methods:  [POST]
+    
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
-    defaults: { _controller: UKMDeltaBundle:UKMID:geo }
+    defaults: { _controller: UKMDeltaBundle:Innslag:geo }
 
 ukm_delta_ukmid_pamelding_hva:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/
-    defaults: { _controller: UKMDeltaBundle:UKMID:type }
+    defaults: { _controller: UKMDeltaBundle:Innslag:type }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
-ukm_delta_ukmid_pamelding_musikk:
+ukm_delta_ukmid_pamelding_musikk_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/
-    defaults: { _controller: UKMDeltaBundle:UKMID:musikk }
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_film_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/film/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_dans_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_teater_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_utstilling_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_litteratur_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_annet_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_matkultur_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4}) 
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/nettredaksjon/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_konferansier_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/konferansier/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_arrangor_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/arrangor/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_sceneteknikk_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/sceneteknikk/
+    defaults: { _controller: UKMDeltaBundle:Musikk:who }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
