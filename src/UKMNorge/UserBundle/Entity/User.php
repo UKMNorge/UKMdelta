@@ -110,6 +110,13 @@ class User extends BaseUser
     protected $birthdate;
 
     /**
+     * 
+     * @ORM\Column(name="pameld_user", type="integer", nullable=true)
+     *
+     */
+    protected $pameld_user;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -409,5 +416,28 @@ class User extends BaseUser
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+
+    /**
+     * Set pameld_user
+     *
+     * @param integer $pameldUser
+     * @return User
+     */
+    public function setPameldUser($pameldUser)
+    {
+        $this->pameld_user = $pameldUser;
+
+        return $this;
+    }
+
+    /**
+     * Get pameld_user
+     *
+     * @return integer 
+     */
+    public function getPameldUser()
+    {
+        return $this->pameld_user;
     }
 }

@@ -1,3 +1,7 @@
+ukmapi:
+    resource: "@UKMAPIBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ukmsms:
     resource: "@UKMSMSBundle/Resources/config/routing.yml"
     prefix:   /

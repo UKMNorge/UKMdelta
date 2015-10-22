@@ -18,4 +18,15 @@ class MusikkController extends Controller
 
 		return $this->forward('UKMDeltaBundle:Innslag:who', $info);
 	}
+
+	public function createAction($k_id, $pl_id, $hvem) {
+		$info = array(
+			'k_id' 		=> $k_id,
+			'pl_id' 	=> $pl_id, 
+			'type' 		=> 'musikk',
+			'hvem'		=> $hvem
+			);
+
+		return $this->forward('UKMDeltaBundle:Innslag:create', $info);
+	}
 }

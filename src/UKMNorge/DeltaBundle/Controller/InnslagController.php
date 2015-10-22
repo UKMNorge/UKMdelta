@@ -59,4 +59,9 @@ class InnslagController extends Controller
 
     	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
     }
+
+    public function createAction($k_id, $pl_id, $type, $hvem) 
+    {
+    	
+    }
 }

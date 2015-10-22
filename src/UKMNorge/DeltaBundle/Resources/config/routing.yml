@@ -1,3 +1,6 @@
+extra:
+    resource: 'routing_musikk.yml'
+
 ukm_delta_homepage:
     path:     /
     defaults: { _controller: UKMDeltaBundle:Default:index }
@@ -23,13 +26,6 @@ ukm_delta_ukmid_pamelding:
 ukm_delta_ukmid_pamelding_hva:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/
     defaults: { _controller: UKMDeltaBundle:Innslag:type }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
-
-ukm_delta_ukmid_pamelding_musikk_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/
-    defaults: { _controller: UKMDeltaBundle:Musikk:who }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})

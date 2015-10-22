@@ -1,0 +1,3 @@
+ukmapi_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: UKMAPIBundle:Default:index }
