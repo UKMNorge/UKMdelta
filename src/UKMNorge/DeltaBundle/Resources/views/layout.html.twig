@@ -1,0 +1,8 @@
+{% extends "UKMDesignBundle::layout.html.twig" %}
+
+{% block css %}
+	{{ parent() }}
+	{% stylesheets '@UKMDeltaBundle/Resources/public/less/*' filter='less' output='css/compiled-main.css' %}
+	    <link rel="stylesheet" href="{{ asset_url }}" />
+	{% endstylesheets %}
+{% endblock %}

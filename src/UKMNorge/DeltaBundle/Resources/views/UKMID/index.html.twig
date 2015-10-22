@@ -1,4 +1,4 @@
-{% extends "UKMDesignBundle::layout.html.twig" %}
+{% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}
 	<h1 class="center">Hei {{ user.getFirstName }}!</h1>
@@ -29,7 +29,7 @@
 		
 		<div>
 			<form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
-				<input class="btn btn-success btn-block" type="submit" value="Start påmelding" style=""/>
+				<button class="btn btn-block btn-delta" type="submit" value="Start påmelding" style=""/>Start påmelding</button>
 			</form>	
 		</div>
 	</div>

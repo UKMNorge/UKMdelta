@@ -1,16 +1,30 @@
-{% extends "UKMDesignBundle::layout.html.twig" %}
+{% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}
-	<div class="row">
-		<a href="" class="btn btn-primary btn-block">{{ knapp1 }}</a>
-	</div>
-	<div class="row">
-		<a href="" class="btn btn-primary btn-block">{{ knapp2 }}</a>
-	</div>
-	<div class="row">
-		<a href="" class="btn btn-primary btn-block">Jeg er kun kontaktperson</a>
-	</div>
 
+	<h1 class="center">Spiller du alene eller med andre?</h1>
 
+	<div class="row">
+		<a href="" class="btn btn-delta btn-primary btn-block">{{ knapp1 }}</a>
+	</div>
+		<p>&nbsp;</p>
+	<div class="row">
+		<a href="" class="btn btn-delta btn-primary btn-block">{{ knapp2 }}</a>
+	</div>
+		<p>&nbsp;</p>
+	<div class="row">
+		<a href="" class="btn btn-delta btn-primary btn-block">Jeg er kun kontaktperson</a>
+	</div>
+	<div class="row">
+		<div class="col-xs-1"></div>
+		<div class="col-xs-10">
+			<p class="delta-subtext">
+				<small>
+					Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+				</small>
+			</p>
+		</div>
+		<div class="col-xs-1"></div>
+	</div>
 
 {% endblock %}
