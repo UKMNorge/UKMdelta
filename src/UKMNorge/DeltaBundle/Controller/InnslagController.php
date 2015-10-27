@@ -76,7 +76,7 @@ class InnslagController extends Controller
             // Create user
             $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $pl_id);
             // Sett adresse og diverse.
-            $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace());
+            $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace(), $pl_id);
             // Oppdater personobjektet
             $person = $personService->hent($person->get('p_id'));
             $user->setPameldUser($person->get('p_id'));

@@ -49,9 +49,9 @@ class PersonService {
 		return $person;
 	}
 
-	public function adresse($person, $adresse, $postnummer, $poststed) {
+	public function adresse($person, $adresse, $postnummer, $poststed, $pl_id) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
-		
+
 		if (!get_class($person) == 'person') {
 			throw new Exception ('Kunne ikke oppdatere adresse - feil objekt mottatt. Ventet person, fikk ' . get_class($person));
 		}
