@@ -79,6 +79,10 @@ class PersonService {
 		// $person->relate($b_id);
 	}
 
+	public function fjernFraInnslag($personID, $b_id) {
+
+	}
+
 	public function alder($person) {
 
 		$birthdate = new DateTime();
@@ -129,7 +133,7 @@ class PersonService {
 		$person = new person($personID);
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 
-		if (get_class($alder) == "DateTime") {
+		if (is_object($alder) && get_class($alder) == "DateTime") {
 			$dob = $alder->getTimestamp();
 			$alder = date("Y") - $alder->format("Y");
 		}

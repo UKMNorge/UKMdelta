@@ -45,10 +45,10 @@
 				<div id="deltakerliste" class="collapse delta-list">
 					{% for person in personer %}
 						<div class="row">
-							<div class="col-xs-1 delta-age">
+							<div class="col-xs-1 delta-age overunder">
 								{% if person.age is defined %}
-									<span>{{ person.age }}</span>
-									<small>år</small>
+									<span class="over">{{ person.age }}</span>
+									<small class="under">år</small>
 								{% endif %}
 							</div>
 							<div class="col-xs-10 delta-person">

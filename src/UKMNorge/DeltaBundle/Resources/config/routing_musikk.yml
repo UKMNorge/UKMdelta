@@ -54,6 +54,15 @@ ukmid_delta_ukmid_pamelding_musikk_alene_personinfo:
               b_id: ([0-9]{1,11})
               p_id: ([0-9]{1,11})
 
+ukmid_delta_ukmid_pamelding_musikk_fjern_person: 
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/fjern/p{p_id}/
+    defaults: { _controller: UKMDeltaBundle:Innslag:removePerson }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+              p_id: ([0-9]{1,11})
+
 ukmid_delta_ukmid_pamelding_musikk_alene_lagre_personinfo: 
     path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/p{p_id}/lagre
     defaults: { _controller: UKMDeltaBundle:Musikk:savePerson }

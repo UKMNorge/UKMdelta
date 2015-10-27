@@ -71,6 +71,13 @@ class InnslagService {
 		$innslag->addPerson($personID);
 	}
 
+	public function fjernPerson($innslagsID, $personID) {
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$innslag = new innslag($innslagsID, false);
+
+		$innslag->removePerson($personID);
+	}
+
 	public function lagreInstrument($innslagsID, $personID, $pl_id, $instrument) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$innslag = new innslag($innslagsID, false);

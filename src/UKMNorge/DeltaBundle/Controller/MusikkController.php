@@ -132,6 +132,7 @@ class MusikkController extends Controller
 
 		return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
 	}
+	
 	public function overviewAction($k_id, $pl_id, $b_id) {
 		require_once('UKM/innslag.class.php');
 

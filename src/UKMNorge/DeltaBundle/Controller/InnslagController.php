@@ -62,6 +62,14 @@ class InnslagController extends Controller
     	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
     }
 
+    public function removePersonAction($k_id, $pl_id, $b_id, $p_id) {
+        $innslagService = $this->get('ukm_api.innslag');
+        
+        $innslagService->fjernPerson($b_id, $p_id);
+
+        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
+    }
+
     public function createAction($k_id, $pl_id, $type, $hvem) 
     {
     	require_once('UKM/innslag.class.php');
