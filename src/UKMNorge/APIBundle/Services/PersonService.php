@@ -129,15 +129,23 @@ class PersonService {
 		$person = new person($personID);
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 
-		if ($person->getAge() != $alder) {
+		if (get_class($alder) == "DateTime") {
+			$dob = $alder->getTimestamp();
+			$alder = date("Y") - $alder->format("Y");
+		}
+		else {
 			// Konverter fra alder i tall til år
 			$dob = new DateTime();
 			$birthyear = date("Y") - $alder;
-			//var_dump($birthyear);
 			$dob->setDate($birthyear, 1, 1); // Setter året til fødselsåret
-			//var_dump($dob);
 			$dob = $dob->getTimestamp();
 
+		}
+
+		if ($person->getAge() != $alder) {
+			//var_dump($birthyear);
+			//var_dump($dob);
+			
 			$person->set('p_dob', $dob);
 			$person->lagre('delta', $user->getId(), $pl_id);
 		}

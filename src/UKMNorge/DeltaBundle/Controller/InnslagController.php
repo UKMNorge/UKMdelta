@@ -75,11 +75,16 @@ class InnslagController extends Controller
         if ($user->getPameldUser() === null) {
             // Create user
             $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $pl_id);
+            $p_id = $person->get('p_id');
             // Sett adresse og diverse.
             $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace(), $pl_id);
+            // Sett alder basert på user-bundle-alder
+            $alder = $user->getBirthdate();
+            $personService->lagreAlder($p_id, $pl_id, $alder);
             // Oppdater personobjektet
-            $person = $personService->hent($person->get('p_id'));
-            $user->setPameldUser($person->get('p_id'));
+            $person = $personService->hent($p_id);
+
+            $user->setPameldUser($p_id);
             // Oppdater verdier i UserBundle
             $userManager->updateUser($user);
         }
