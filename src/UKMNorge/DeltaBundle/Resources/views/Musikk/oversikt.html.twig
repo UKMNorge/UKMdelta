@@ -1,0 +1,136 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}
+
+	<div class="form-group delta-form">
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Artistnavn / Gruppenavn</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="text" name="navn" class="form-control" placeholder="Jens Jensen" value="{{ innslag.b_name is defined ? innslag.b_name : '' }}"> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Beskrivelse av artist / gruppe</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="Eks. Jeg spiller og synger..."></textarea>
+			</div>
+		</div>
+		<br>
+		<div class="">
+			<a data-toggle="collapse" data-target="#deltakerliste" >
+				<div class="row">
+					<div class="col-xs-12 delta-input-header">
+						<span>Personer</span>{% if personer|length > 0 %}<small class="right">rediger</small>{% endif %}
+					</div>
+				</div>
+				<hr class="">
+				<div class="row" id="deltakerlistetekst">
+					<div class="col-xs-12 delta-list"> 
+						<span>
+							{% for person in personer %}
+								{{ loop.first ? '' : ', ' }}{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }} ({{ person.age is defined ? person.age~', ' : ''}}{{ (person.instrument is defined) and not ( person.instrument is empty) ? person.instrument : 'instrument' }}, {{ person.p_id }})
+							{% endfor %}
+						</span>
+					</div>
+				</div>
+				</a>
+				<div id="deltakerliste" class="collapse delta-list">
+					{% for person in personer %}
+						<div class="row">
+							<div class="col-xs-1 delta-age">
+								{% if person.age is defined %}
+									<span>{{ person.age }}</span>
+									<small>år</small>
+								{% endif %}
+							</div>
+							<div class="col-xs-10 delta-person">
+								<div class="row">
+									<div class="col-xs-12">
+										<span>{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }}</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<span>{{ (person.instrument is defined) and not ( person.instrument is empty) ? person.instrument : 'instrument' }}</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-1 delta-list delta-edit">
+								<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_alene_personinfo', { k_id: k_id, pl_id: pl_id, b_id: b_id, p_id: person.p_id } ) }} ">rediger</a>
+							</div>
+						</div>
+					{% endfor %}
+					<div class="row">
+						<div class="col-xs-12">
+							<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
+						</div>
+					</div>
+				</div>
+			
+			{% if personer|length < 1 %} 
+				<div class="row">
+					<div class="col-xs-12">
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+		<p>&nbsp;</p>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<span>Låter</span>{% if titler.tittel is defined %}<small class="right">rediger</small>{% endif %}
+			</div>
+		</div>
+		<hr class="delta-line">
+		<a href="">
+			<div class="row">
+				<div class="col-xs-12">
+					{% if titler.tittel is defined %}
+						{% for tittel in titler %}
+							<span>{{ tittel.tittel }}</span> 
+						{% endfor %}
+					{% else %}
+						<span class="delta-clean">Ingen låter er lagt til.</span>
+						<button type="button" class="btn btn-block btn-delta">Legg til låt</button>
+					{% endif %}
+				</div>
+			</div>
+		</a>
+		<p>&nbsp;</p>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<span>Tekniske behov</span>{% if td is defined %}<small class="right">rediger</small>{% endif %}
+			</div>
+		</div>
+		<hr class="">
+		<a href="">
+			<div class="row">
+				<div class="col-xs-12">
+					{% if td is defined %}
+						<span>{{ td }}</span> 
+					{% else %}
+						<span class="delta-clean">Ingen tekniske behov lagt til.</span>
+						<button type="button" class="btn btn-block btn-delta">Legg til tekniske behov</button>
+					{% endif %}
+				</div>
+			</div>
+		</a>
+		<p>&nbsp;</p>
+		<div class="row">
+			<a href="">
+				<div class="col-xs-12">
+					<button type="submit" class="btn btn-block btn-delta"> Lagre</button>
+				</div>
+			</a>
+		</div>
+	</div>
+
+{% endblock %}

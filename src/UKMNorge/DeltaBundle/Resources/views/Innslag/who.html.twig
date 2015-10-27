@@ -5,15 +5,15 @@
 	<h1 class="center">Spiller du alene eller med andre?</h1>
 
 	<div class="row">
-		<a href="" class="btn btn-delta btn-primary btn-block">{{ knapp1 }}</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-delta btn-primary btn-block">{{ knapp1 }}</a>
 	</div>
 		<p>&nbsp;</p>
 	<div class="row">
-		<a href="" class="btn btn-delta btn-primary btn-block">{{ knapp2 }}</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-delta btn-primary btn-block">{{ knapp2 }}</a>
 	</div>
 		<p>&nbsp;</p>
 	<div class="row">
-		<a href="" class="btn btn-delta btn-primary btn-block">Jeg er kun kontaktperson</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-delta btn-primary btn-block">Jeg er kun kontaktperson</a>
 	</div>
 	<div class="row">
 		<div class="col-xs-1"></div>

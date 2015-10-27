@@ -5,6 +5,8 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use monstring;
 use monstringer;
+use innslag;
+use Exception;
 
 class InnslagController extends Controller
 {
@@ -62,6 +64,38 @@ class InnslagController extends Controller
 
     public function createAction($k_id, $pl_id, $type, $hvem) 
     {
-    	
+    	require_once('UKM/innslag.class.php');
+
+    	$user = $this->get('ukm_user')->getCurrentUser();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $innslagService = $this->get('ukm_api.innslag');
+        $personService = $this->get('ukm_api.person');
+
+        // Hvis brukeren ikke er registrert i systemet fra før
+        if ($user->getPameldUser() === null) {
+            // Create user
+            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone());
+            // Sett adresse og diverse.
+            $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace());
+            // Oppdater personobjektet
+            $person = $personService->hent($person->get('p_id'));
+            $user->setPameldUser($person->get('p_id'));
+            // Oppdater verdier i UserBundle
+            $userManager->updateUser($user);
+        }
+        else {
+            // Hent brukerobjektet dersom det finnes
+            $person = $personService->hent($user->getPameldUser());
+        }
+
+        // Opprett et nytt innslag
+        $innslag = $innslagService->opprett($k_id, $pl_id, $type, $hvem, $person, $user->getId());        
+
+        //var_dump($hvem);
+
+    	// var_dump($user);
+    	// var_dump($person);
+    	//var_dump($innslag);
+    	return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $innslag->get('b_id')));
     }
 }

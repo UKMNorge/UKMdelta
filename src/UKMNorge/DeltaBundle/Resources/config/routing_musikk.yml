@@ -3,12 +3,63 @@ ukm_delta_ukmid_pamelding_musikk_hvem:
     defaults: { _controller: UKMDeltaBundle:Musikk:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukmid_delta_ukmid_pamelding_musikk_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/opprett/{hvem}
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/opprett/{hvem}/
     defaults: { _controller: UKMDeltaBundle:Musikk:create }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
               hvem: ([a-z]+)
+
+ukmid_delta_ukmid_pamelding_musikk_innslag:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/
+    defaults: { _controller: UKMDeltaBundle:Musikk:overview }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_ny_person:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-person/ 
+    defaults: { _controller: UKMDeltaBundle:Musikk:newPerson }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_lagre_ny_person:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-person/lagre/
+    defaults: { _controller: UKMDeltaBundle:Musikk:saveNewPerson }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_lagre_innslag:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/lagre
+    defaults: { _controller: UKMDeltaBundle:Musikk:saveOverview }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_alene_personinfo: 
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/p{p_id}/
+    defaults: { _controller: UKMDeltaBundle:Musikk:editPerson }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+              p_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_alene_lagre_personinfo: 
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/p{p_id}/lagre
+    defaults: { _controller: UKMDeltaBundle:Musikk:savePerson }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+              p_id: ([0-9]{1,11})
+    methods:  [POST]
