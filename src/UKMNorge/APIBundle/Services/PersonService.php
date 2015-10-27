@@ -57,7 +57,7 @@ class PersonService {
 		$person->set('p_adress', $adresse);
 		$person->set('p_postnumber', $postnummer);
 		$person->set('p_postplace', $poststed);
-		$person->lagre();
+		$person->lagre('delta', $user->getId(), $pl_id);
 	}
 
 	public function hent($id) {
