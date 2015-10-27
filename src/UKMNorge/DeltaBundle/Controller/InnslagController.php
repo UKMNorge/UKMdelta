@@ -74,7 +74,7 @@ class InnslagController extends Controller
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
             // Create user
-            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone());
+            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $pl_id);
             // Sett adresse og diverse.
             $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace());
             // Oppdater personobjektet

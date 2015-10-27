@@ -97,8 +97,6 @@ class MusikkController extends Controller
         var_dump($alder);
         var_dump($instrument);
 
-
-
         // Hent personobjekt om deltakeren finnes, opprett en ny en hvis ikke.
         $person = $personService->opprett($fornavn, $etternavn, $mobil, $pl_id);
         $p_id = $person->get('p_id');
