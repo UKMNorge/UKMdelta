@@ -17,6 +17,15 @@
 	margin-right: auto;
 }
 
+/*** Rød farge på fare-knapp */
+.btn-delta.btn-danger{
+	/** TODO: Importere disse fra bootstrap.css? */
+	color: #ffffff;
+  	background-color: #d9534f;
+  	border-color: #d43f3a;
+
+}
+
 .delta-form textarea {
 	border-radius: 2px;
 	border: 1.5px solid @primary-green;
