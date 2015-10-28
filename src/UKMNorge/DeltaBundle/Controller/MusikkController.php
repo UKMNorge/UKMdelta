@@ -158,7 +158,9 @@ class MusikkController extends Controller
 		$view_data['pl_id'] = $pl_id;
 		$view_data['b_id'] = $b_id;
 		$view_data['user'] = $user;
-		$view_data['name'] = $innslag->info['b_name'];
+		if ($innslag->info['b_name'] != 'Innslag uten navn') {
+			$view_data['name'] = $innslag->info['b_name'];	
+		}
 		$view_data['innslag'] = $innslag->info;
 		$view_data['personer'] = $personer;
 		$view_data['titler'] = $titler;
@@ -170,9 +172,16 @@ class MusikkController extends Controller
 		$request = Request::createFromGlobals();
 
         $innslagService = $this->get('ukm_api.innslag');
-        $personService = $this->get('ukm_api.person');
 
+        $artistnavn = $request->request->get('artistnavn');
+        $beskrivelse = $request->request->get('beskrivelse');
+        
+        $innslagService->lagreBeskrivelse($b_id, $beskrivelse);
+        $innslagService->lagreArtistnavn($b_id, $artistnavn);
 
+	    // Sjekk om alt er utfylt, og sett i så fall status til 8/9?
+	    #TODO: Redircet til "fullfør og send inn påmelding"-steget
+	    return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
 
 	}
 }

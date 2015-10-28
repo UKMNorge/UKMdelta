@@ -72,17 +72,6 @@ class PersonService {
 		return $person;
 	}
 
-	public function leggTilInnslag($personID, $b_id) {
-		// $person = $this->hent($personID);
-
-		// var_dump($person);
-		// $person->relate($b_id);
-	}
-
-	public function fjernFraInnslag($personID, $b_id) {
-
-	}
-
 	public function alder($person) {
 
 		$birthdate = new DateTime();

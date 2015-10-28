@@ -90,6 +90,26 @@ class InnslagService {
 
 	}
 
+	public function lagreBeskrivelse($innslagsID, $beskrivelse) {
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$innslag = new innslag($innslagsID, false);
+	
+		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
+	        $innslag->set('b_description', $beskrivelse);
+	    	$innslag->lagre();
+	    }
+	}	
+
+	public function lagreArtistnavn($innslagsID, $artistnavn) {
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$innslag = new innslag($innslagsID, false);
+	
+		if ( $innslag->get('b_name') != utf8_encode($artistnavn)) {
+	        $innslag->set('b_name', $artistnavn);
+	    	$innslag->lagre();
+	    }
+	}	
+
 }
 
 ?>

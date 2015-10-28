@@ -2,7 +2,9 @@
 
 {% block scripts %}
 	{{ parent() }}
-	{% javascripts '@UKMDeltaBundle/Resources/public/js/*' %}
+	{% javascripts 
+		'@UKMDeltaBundle/Resources/public/js/velgmonstring.js'
+		'@UKMDeltaBundle/Resources/public/js/fastlivefilter.jquery.js' %}
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
 {% endblock %}

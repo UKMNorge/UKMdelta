@@ -3,6 +3,7 @@
 namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use monstring;
 use monstringer;
 use innslag;
@@ -110,5 +111,37 @@ class InnslagController extends Controller
     	// var_dump($person);
     	//var_dump($innslag);
     	return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $innslag->get('b_id')));
+    }
+
+    public function newTitleAction($k_id, $pl_id, $b_id) {
+
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+
+        return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
+    }
+
+    public function saveNewTitleAction($k_id, $pl_id, $b_id) {
+
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $request = Request::createFromGlobals();
+
+        $tittel = $request->request->get('tittel');
+        $lengde = $request->request->get('lengde');
+        $sangtype = $request->request->get('sangtype');
+        $selvlaget = $request->request->get('selvlaget');
+        $tekstforfatter = $request->request->get('tekstforfatter');
+        $melodiforfatter = $request->request->get('melodiforfatter');
+
+        var_dump($tittel);
+        var_dump($lengde);
+        var_dump($sangtype);
+        var_dump($selvlaget);
+        var_dump($tekstforfatter);
+        var_dump($melodiforfatter);
+        
+        
+
+        die();
+        return $this->redirect('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
     }
 }
