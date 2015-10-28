@@ -1,6 +1,7 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}
+	<h1 class="center">Legg til person</h1>
 	<form class="delta-form " method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_musikk_lagre_ny_person', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">
 		<div class="form-group"> 
 			<div class="row">

@@ -16,13 +16,21 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-
 .center {
 	text-align: center;
 }
 
 .click {
 	cursor: pointer;
+}
+
+/*** Rød farge på fare-knapp */
+.btn-delta.btn-danger{
+	/** TODO: Importere disse fra bootstrap.css? */
+	color: #ffffff;
+  	background-color: #d9534f;
+  	border-color: #d43f3a;
+
 }
 
 .delta-form textarea {
