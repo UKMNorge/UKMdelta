@@ -12,3 +12,5 @@
 !bin/console
 !bin/symfony_requirements
 /composer.phar
+/web/js/*
+/web/css/*

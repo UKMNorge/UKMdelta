@@ -31,7 +31,7 @@ jQuery.fn.fastLiveFilter = function(list, options) {
 		var numShown = 0;
 		for (var i = 0; i < len; i++) {
 			li = lis[i];
-			if ((li.textContent || li.innerText || "").toLowerCase().indexOf(filter) >= 0) {
+			if (( jQuery(li).attr('data-filter') || li.textContent || li.innerText ||  "").toLowerCase().indexOf(filter) >= 0) {
 				if (li.style.display == "none") {
 					li.style.display = oldDisplay;
 				}
@@ -55,8 +55,22 @@ jQuery.fn.fastLiveFilter = function(list, options) {
 	});
 	return this; // maintain jQuery chainability
 }
+jQuery('.transformList .click').on('click', function() {
+	var transformList = jQuery(this).parents('.transformList');
+	// Detaljert liste er synlig, vis komprimert tekst-liste
+	if( transformList.find('.list-detailed').is(':visible') ) {
+		transformList.find('.list-detailed').slideUp();
+		transformList.find('.list-short').fadeIn();
+		transformList.find('.edit').fadeIn();
+	} else {
+		transformList.find('.edit').fadeOut();
+		transformList.find('.list-short').fadeOut();
+		transformList.find('.list-detailed').slideDown();
+	}
+	
+});
 jQuery(document).ready(function() {
-	jQuery('#filterMonstringer').fastLiveFilter('#lokalmonstringer, #fylkesmonstringer', 
+	jQuery('#filterMonstringer').fastLiveFilter('#lokalmonstringer ul', 
 											{callback:
 												function(numShown) {
 													if( jQuery('#filterMonstringer').val().length == 0 ) {
@@ -69,22 +83,30 @@ jQuery(document).ready(function() {
 												}
 											});
 	jQuery('#filterMonstringer').change();
-	jQuery('.monstringSok').hide();
+	//jQuery('.monstringSok').hide();
 });
 
 jQuery(document).on('monstring_none_found', function() {
-	jQuery('#plStartSearch').hide();
+	//jQuery('#plStartSearch').hide();
 	jQuery('#plNoneFound').show();
 });
 
 jQuery(document).on('monstring_some_found', function() {
-	jQuery('#plStartSearch').hide();
+	//jQuery('#plStartSearch').hide();
 	jQuery('#plNoneFound').hide();
+	jQuery('#lokalmonstringer ul').each(function() {
+											if(jQuery(this).find('li:visible').length == 0) {
+												jQuery('#header_'+jQuery(this).attr('data-fylke')).hide();
+											}
+											else {
+												jQuery('#header_'+jQuery(this).attr('data-fylke')).show();
+											}
+										})
 });
 
 jQuery(document).on('monstring_not_searching', function() {
-	jQuery('.monstringSok').hide();
+	//jQuery('.monstringSok').hide();
 
-	jQuery('#plStartSearch').show();
+	//jQuery('#plStartSearch').show();
 	jQuery('#plNoneFound').hide();
 });

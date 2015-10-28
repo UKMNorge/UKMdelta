@@ -17,6 +17,14 @@
 	margin-right: auto;
 }
 
+.center {
+	text-align: center;
+}
+
+.click {
+	cursor: pointer;
+}
+
 .delta-form textarea {
 	border-radius: 2px;
 	border: 1.5px solid @primary-green;
@@ -68,28 +76,31 @@
 }
 
 .overunder {
-		text-align: center; 
-		font-weight: bold;
-		color: inherit;
-		text-rendering: optimizelegibility;
-		padding: 4px 0px 4px 0px;
+	.center;
+	text-align: center; 
+	font-weight: bold;
+	color: inherit;
+	text-rendering: optimizelegibility;
+	padding: 4px 0px 4px 0px;
 }
 
 .overunder .over {
-		line-height: 20px;
-		font-size: 30px;
+	.center;
+	line-height: 20px;
+	font-size: 30px;
 }
 
 .overunder .over small {
-		font-weight: normal;
-		font-size: 14px;
-		margin: 0px;
+	font-weight: normal;
+	font-size: 14px;
+	margin: 0px;
 }
 
 .overunder .under {
-		margin-top: 3px;
-		font-size: 11px;
-		line-height: 11px;
+	.center;
+	margin-top: 3px;
+	font-size: 11px;
+	line-height: 11px;
 }
 
 .delta-input-header small {
@@ -115,6 +126,11 @@
 	color: @primary-grey !important;
 	font-size: 0.9em !important;
 
+}
+
+.summaryDetailsList > .details,
+.inactiveSummaryDetailsList > .details {
+	display: none;
 }
 
 .delta-subtext {

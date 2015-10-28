@@ -151,8 +151,8 @@ class MusikkController extends Controller
 		$titler = $innslag->titler($pl_id); 
 
 
-		var_dump($personer);
-		var_dump($innslag); 
+		#var_dump($personer);
+		#var_dump($innslag); 
 
 		$view_data['k_id'] = $k_id;
 		$view_data['pl_id'] = $pl_id;

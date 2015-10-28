@@ -1,5 +1,12 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/innslag.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
 {% block content %}
 
 	<div class="form-group delta-form">
@@ -24,56 +31,72 @@
 			</div>
 		</div>
 		<br>
-		<div class="">
-			<a data-toggle="collapse" data-target="#deltakerliste" >
-				<div class="row">
-					<div class="col-xs-12 delta-input-header">
-						<span>Personer</span>{% if personer|length > 0 %}<small class="right">rediger</small>{% endif %}
-					</div>
+		<div class="row {{ personer|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
+			<a class="trigger">
+				<div class="col-xs-12 delta-input-header">
+					<span>Personer</span>{% if personer|length > 0 %}<small class="right edit">rediger</small>{% endif %}
 				</div>
-				<hr class="">
-				<div class="row" id="deltakerlistetekst">
-					<div class="col-xs-12 delta-list"> 
-						<span>
-							{% for person in personer %}
-								{{ loop.first ? '' : ', ' }}{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }} ({{ person.age is defined ? person.age~', ' : ''}}{{ (person.instrument is defined) and not ( person.instrument is empty) ? person.instrument : 'instrument' }}, {{ person.p_id }})
-							{% endfor %}
-						</span>
-					</div>
+				<hr />
+				<div class="summary col-xs-12 delta-list"> 
+					<span>
+						{% for person in personer %}
+							{{ loop.first ? '' : ', ' }}
+								{{ person.p_firstname is defined ? person.p_firstname : '' }} 
+								{{ person.p_lastname is defined ? person.p_lastname : '' }} 
+								(
+									{{ person.age is defined ? person.age~', ' : ''}}
+									{{ (person.instrument is defined) and not ( person.instrument is empty) ? person.instrument : 'instrument' }}
+									, {{ person.p_id }}
+								)
+						{% endfor %}
+					</span>
 				</div>
-				</a>
-				<div id="deltakerliste" class="collapse delta-list">
+			</a>
+			<div class="details col-xs-12">
+				<div id="deltakerliste" class="delta-list">
 					{% for person in personer %}
-						<div class="row">
-							<div class="col-xs-1 delta-age overunder">
-								{% if person.age is defined %}
-									<span class="over">{{ person.age }}</span>
-									<small class="under">år</small>
-								{% endif %}
-							</div>
-							<div class="col-xs-10 delta-person">
-								<div class="row">
-									<div class="col-xs-12">
-										<span>{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }}</span>
+						<ul class="list-unstyled">
+							<li class="row click triggerLink">
+								<div class="col-xs-2">
+									<div class="overunder">
+										{% if person.age is defined %}
+											<div class="over">{{ person.age }}</div>
+											<div class="under">år</div>
+										{% else %}
+											<div class="over">?</div>
+											<div class="under">år</div>
+										{% endif %}
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-xs-12">
-										<span>{{ (person.instrument is defined) and not ( person.instrument is empty) ? person.instrument : 'instrument' }}</span>
-									</div>
+								<div class="col-xs-7">
+									<p style="line-height:1em">
+										{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }}
+										<br />
+										<small>
+											{% if (person.instrument is defined) and not ( person.instrument is empty) %}
+												{{ person.instrument }}
+											{% else %}
+												<span>ukjent instrument</span>
+											{% endif %}
+										</small>
+									</p>
 								</div>
-							</div>
-							<div class="col-xs-1 delta-list delta-edit">
-								<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_alene_personinfo', { k_id: k_id, pl_id: pl_id, b_id: b_id, p_id: person.p_id } ) }} ">rediger</a>
-							</div>
-						</div>
+								<div class="col-xs-3">
+									<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_alene_personinfo', { k_id: k_id, pl_id: pl_id, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">rediger</a>
+								</div>
+							</li>
+						</ul>
 					{% endfor %}
-					<div class="row">
-						<div class="col-xs-12">
-							<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
-						</div>
+					<div class="clearfix"></div>
+					<div class="col-xs-12">
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
 					</div>
+					<p>&nbsp;</p>
+					<p class="center">
+						<a class="list-close" href="#">lukk listen</a>
+					</p>
 				</div>
+			</div>
 			
 			{% if personer|length < 1 %} 
 				<div class="row">
