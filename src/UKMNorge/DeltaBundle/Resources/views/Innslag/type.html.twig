@@ -2,30 +2,25 @@
 
 {% block content %}
 	<h1 class="center">Hva vil du melde på?</h1>
-	
-	<p>&nbsp;</p>
-	{# <p class="lead center">
-		Velg hvilken type innslag du vil delta med.
-	</p> #}
 	<div>
 		{% for type in typer %} 
 			{% if loop.first %}
-				<p class="lead center">Vise frem noe</p>
+				<small><b>Vise frem noe</b></small>
 			{% elseif loop.last %}
-				<p class="lead center">Jobbe med UKM</p> 
+				<small><b>Jobbe med UKM</b></small>
 			{% endif %}
 
 			<ul class="list list-unstyled list-group">
 			{% for enkelttype in type %}
-				<li>
+				<li class="list-group-item">
 					<div class="row">
-						<div class="col-md-9 col-xs-9">
+						<div class="col-md-9 col-xs-9 typeText">
 							<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
 							{ 	k_id: k_id,  
 								pl_id: pl_id }) }}">{{ enkelttype.name|raw }}</a> 
 						</div>
-						<div class="col-md-3 col-xs-3">
-							Ikon her
+						<div class="col-md-3 col-xs-3 center">
+							<img src="http://ico.ukm.no/delta/{{ enkelttype.ico }}.png" height="35" />
 						</div>
 					</div>
 				</li>

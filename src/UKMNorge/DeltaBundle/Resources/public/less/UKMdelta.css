@@ -6,6 +6,29 @@
 @secondary-grey: #9e9e9e;
 @tertiary-grey: #ededed;
 
+
+@bootstrap-danger: #a94442;
+@bootstrap-warning: #8a6d3b;
+@bootstrap-success: #3c763d;
+@bootstrap-info: #31708f;
+
+.text-danger {
+	color: @bootstrap-danger !important;
+}
+.text-warning {
+	color: @bootstrap-warning !important;
+}
+.text-success {
+	color: @bootstrap-success !important;
+}
+.text-info {
+	color: @bootstrap-info !important;
+}
+
+h1, .h1 {
+    font-size: 26px;
+    font-weight: 300;
+}
 .btn-delta {
 
 	background-color: @tertiary-grey;
@@ -131,7 +154,7 @@
 }
 
 .delta-list span {
-	color: @primary-grey !important;
+	color: @primary-grey;
 	font-size: 0.9em !important;
 
 }
@@ -155,4 +178,8 @@
 
 .delta-subtext .left {
 	text-align: left;
+}
+
+.typeText {
+    padding-top: 6px;
 }
