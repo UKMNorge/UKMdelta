@@ -18,19 +18,25 @@ overviewAction:
         ingen: Ingen låter er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til ny låt
-        tittel:
-            min: min
-            sek: sek
-            info_mangler: informasjon mangler
-            rediger: rediger
     personer:
         overskrift: Personer
         endre: leggtil / endre
         ingen: Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
-        person:
-            rolle_ukjent: ukjent instrument
-            ar: år
-            rediger: rediger
     lagre: Lagre
+
+person:
+    rolle: 
+        label: instrument
+        placeholder: 
+        help: Skriv inn hva %s spiller/gjør (f.eks vokal, bass, gitar)
+        ukjent: ukjent instrument
+    ar: år
+    rediger: rediger
+
+tittel:
+    min: min
+    sek: sek
+    info_mangler: informasjon mangler
+    rediger: rediger

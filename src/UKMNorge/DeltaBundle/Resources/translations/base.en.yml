@@ -1,0 +1,7 @@
+person:
+    fornavn:
+        label: Fornavn
+    etternavn:
+        label: Etternavn
+    mobil: 
+        label: Mobil
