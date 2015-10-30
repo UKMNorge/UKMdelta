@@ -59,6 +59,8 @@ h1, .h1 {
 .delta-form textarea {
 	border-radius: 2px;
 	border: 1.5px solid @primary-green;
+
+	width: 90%;
 }
 
 .delta-form button {

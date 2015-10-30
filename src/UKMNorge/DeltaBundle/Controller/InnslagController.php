@@ -194,4 +194,26 @@ class InnslagController extends Controller
         die();
         return $this->redirect('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
     }
+
+    public function technicalAction($k_id, $pl_id, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        $view_data['teknisk'] = $innslag->get('td_demand');
+        return $this->render('UKMDeltaBundle:Innslag:teknisk.html.twig', $view_data);
+    }
+
+    public function saveTechnicalAction($k_id, $pl_id, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+        $request = Request::createFromGlobals();
+
+        $tekniskekrav = $request->request->get('teknisk');
+
+        $innslagService->lagreTekniskeBehov($b_id, $tekniskekrav);
+
+        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+    }
 }

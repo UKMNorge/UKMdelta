@@ -165,6 +165,7 @@
 						</ul>
 					{% endfor %}
 					<div class="clearfix"></div>
+					<p>&nbsp;</p>
 					<div class="col-xs-12">
 						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">{{ 'overviewAction.titler.legg_til'|trans }}</a>
 					</div>
@@ -174,7 +175,6 @@
 					</p>
 				</div>
 			</div>
-			
 			{% if titler|length == 0 %} 
 				<div class="row">
 					<div class="col-xs-12">
@@ -183,6 +183,36 @@
 				</div>
 			{% endif %}
 		</div>
+		<p>
+			&nbsp;
+		</p>
+		{# TEKNISKE BEHOV #}
+		<div class="row {{ teknisk|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
+			<div class="trigger click">
+				<div class="col-xs-12 delta-input-header">
+					<span>Tekniske behov</span>{% if teknisk|length > 0 %}<small class="right edit">legg til / endre</small>{% endif %}
+				</div>
+				<hr />
+				<div class="summary col-xs-12 delta-list"> 
+					<span>
+					{% if teknisk|length > 0 %}
+						{{ teknisk }}
+					{% else %}
+						Tekniske behov ikke lagt til. <a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_teknisk', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til tekniske behov</a>
+					{% endif %}
+					</span>
+				</div>
+			</div>
+			<p>&nbsp;</p>
+			<div class="col-xs-12">
+				{% if teknisk|length == 0 %}
+					<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_teknisk', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til tekniske behov</a>
+				{% else %}
+					<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_teknisk', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Endre tekniske behov</a>
+				{% endif %}
+			</div>			
+		</div>
+		
 		<p>&nbsp;</p>
 		<div class="row">
 			<a href="">
