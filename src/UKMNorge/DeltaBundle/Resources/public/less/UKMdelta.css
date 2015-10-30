@@ -169,6 +169,8 @@ h1, .h1 {
 .delta-subtext {
 	display: block;
 	margin-bottom: 15px;
+	color: @secondary-grey;
+	font-size: 0.9em !important;
 }
 .delta-subtext .center {
 	text-align: center;

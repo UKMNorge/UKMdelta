@@ -216,4 +216,19 @@ class InnslagController extends Controller
 
         return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
     }
+
+    public function statusAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        $frist = array('maned' => 1, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);
+
+        $view_data['frist'] = $frist;
+
+        // Sjekk alle felt, at de som er fylt inn ikke er tomme og ikke har default-verdier
+
+        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
+
+    }
 }

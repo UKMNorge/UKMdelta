@@ -10,13 +10,6 @@
 	
 {% block content %}
 	<h1 class="center">Rediger låt</h1>
-
-	<p class="lead">
-		Skriv inn dine/deres tekniske behov.
-	</p>
-	<p class="">
-		Her lurer vi på ting som... [mer forklaring kommer]
-	</p>
 	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
 		<div class="row">

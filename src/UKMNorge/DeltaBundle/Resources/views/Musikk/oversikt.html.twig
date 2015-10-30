@@ -10,7 +10,7 @@
 
 {% block content %}
 
-	<div class="form-group delta-form">
+	<form class="form-group delta-form" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_status', { k_id: k_id, pl_id: pl_id, type: 'musikk', b_id: b_id }) }}">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
 				<small>{{ 'overviewAction.artistnavn.label'|trans }}</small>
@@ -159,7 +159,11 @@
 									</p>
 								</div>
 								<div class="col-xs-3">
+<<<<<<< HEAD
 									<a href="javascript:alert('Coming');" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'overviewAction.titler.tittel.rediger'|trans }}</a>
+=======
+									<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}" class="actionLink" id="editT{{ person.p_id }}">rediger</a>
+>>>>>>> Begynt på status-validering og view.
 								</div>
 							</li>
 						</ul>
@@ -167,7 +171,11 @@
 					<div class="clearfix"></div>
 					<p>&nbsp;</p>
 					<div class="col-xs-12">
+<<<<<<< HEAD
 						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+=======
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til låt</a>
+>>>>>>> Begynt på status-validering og view.
 					</div>
 					<p>&nbsp;</p>
 					<p class="center">
@@ -178,7 +186,11 @@
 			{% if titler|length == 0 %} 
 				<div class="row">
 					<div class="col-xs-12">
+<<<<<<< HEAD
 						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+=======
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til låt</a>
+>>>>>>> Begynt på status-validering og view.
 					</div>
 				</div>
 			{% endif %}
@@ -221,6 +233,6 @@
 				</div>
 			</a>
 		</div>
-	</div>
+	</form>
 
 {% endblock %}
