@@ -42,7 +42,7 @@ assetic:
     filters:
         cssrewrite: ~
         less:
-            node: /usr/bin/nodejs
+            node: /usr/local/bin/node
             node_paths: 
                 - '/usr/local/lib/node_modules'
                 - '/etc/.node_modules'
