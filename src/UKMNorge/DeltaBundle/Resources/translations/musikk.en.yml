@@ -1,0 +1,36 @@
+whoAction:
+    sporsmal: Spiller du alene eller med andre?
+    alene: Jeg spiller alene
+    sammen: Jeg spiller sammen med andre
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+    
+overviewAction:
+    artistnavn:
+        label: Artistnavn / Gruppenavn
+        placeholder: Eks. Superbandet
+    beskrivelse:
+        label: Beskrivelse av artist / gruppe
+        placeholder: Eks. Jeg spiller og synger...
+    titler:
+        overskrift: Låter
+        endre: legg til / endre
+        ingen: Ingen låter er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til ny låt
+        tittel:
+            min: min
+            sek: sek
+            info_mangler: informasjon mangler
+            rediger: rediger
+    personer:
+        overskrift: Personer
+        endre: leggtil / endre
+        ingen: Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+        person:
+            rolle_ukjent: ukjent instrument
+            ar: år
+            rediger: rediger
+    lagre: Lagre

@@ -1,4 +1,5 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
 {% block scripts %}
 	{{ parent() }}
@@ -12,22 +13,22 @@
 	<div class="form-group delta-form">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>Artistnavn / Gruppenavn</small>
+				<small>{{ 'overviewAction.artistnavn.label'|trans }}</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="navn" class="form-control" placeholder="Jens Jensen" value="{{ innslag.b_name is defined ? innslag.b_name : '' }}"> 
+				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ innslag.b_name is defined ? innslag.b_name : '' }}"> 
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>Beskrivelse av artist / gruppe</small>
+				<small>{{ 'overviewAction.beskrivelse.label'|trans }}</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="Eks. Jeg spiller og synger..."></textarea>
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.placeholder'|trans }}"></textarea>
 			</div>
 		</div>
 		<br>
@@ -35,7 +36,7 @@
 		<div class="row {{ personer|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
 			<div class="trigger click">
 				<div class="col-xs-12 delta-input-header">
-					<span>Personer</span>{% if personer|length > 0 %}<small class="right edit">legg til / endre</small>{% endif %}
+					<span>{{ 'overviewAction.personer.overskrift'|trans }}</span>{% if personer|length > 0 %}<small class="right edit">{{ 'overviewAction.personer.endre'|trans }}</small>{% endif %}
 				</div>
 				<hr />
 				<div class="summary col-xs-12 delta-list"> 
@@ -47,7 +48,8 @@
 								<small>({{ person.age is defined ? person.age~', ' : ''}}
 								{% if (person.instrument is defined) and not ( person.instrument is empty) %}
 									{{ person.instrument }}
-								{% else %}<span class="text-danger">ukjent instrument</span>{% endif %})</small>
+								{% else %}<span class="text-danger">{{ 'overviewAction.personer.person.rolle_ukjent'|trans }}</span>{% endif %})</small>				{% else %}
+							{{ 'overviewAction.personer.ingen'|trans }}
 						{% endfor %}
 					</span>
 				</div>
@@ -61,10 +63,10 @@
 									<div class="overunder">
 										{% if person.age is defined %}
 											<div class="over">{{ person.age }}</div>
-											<div class="under">år</div>
+											<div class="under">{{ 'overviewAction.personer.person.ar'|trans }}</div>
 										{% else %}
 											<div class="over">?</div>
-											<div class="under">år</div>
+											<div class="under">{{ 'overviewAction.personer.person.ar'|trans }}</div>
 										{% endif %}
 									</div>
 								</div>
@@ -76,24 +78,24 @@
 											{% if (person.instrument is defined) and not ( person.instrument is empty) %}
 												{{ person.instrument }}
 											{% else %}
-												<span class="text-danger">ukjent instrument</span>
+												<span class="text-danger">{{ 'overviewAction.personer.person.rolle_ukjent'|trans }}</span>
 											{% endif %}
 										</small>
 									</p>
 								</div>
 								<div class="col-xs-3">
-									<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_alene_personinfo', { k_id: k_id, pl_id: pl_id, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">rediger</a>
+									<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_alene_personinfo', { k_id: k_id, pl_id: pl_id, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">{{ 'overviewAction.personer.person.rediger'|trans }}</a>
 								</div>
 							</li>
 						</ul>
 					{% endfor %}
 					<div class="clearfix"></div>
 					<div class="col-xs-12">
-						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
 					</div>
 					<p>&nbsp;</p>
 					<p class="center">
-						<a class="list-close" href="#">lukk listen</a>
+						<a class="list-close" href="#">{{ 'overviewAction.personer.lukk_listen'|trans }}</a>
 					</p>
 				</div>
 			</div>
@@ -101,7 +103,7 @@
 			{% if personer|length < 1 %} 
 				<div class="row">
 					<div class="col-xs-12">
-						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Legg til person</a>
+						<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_ny_person', {k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
 					</div>
 				</div>
 			{% endif %}
@@ -113,7 +115,7 @@
 		<div class="row {{ titler|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
 			<div class="trigger click">
 				<div class="col-xs-12 delta-input-header">
-					<span>Låter</span>{% if titler|length > 0 %}<small class="right edit">legg til / endre</small>{% endif %}
+					<span>{{ 'overviewAction.titler.overskrift'|trans }}</span>{% if titler|length > 0 %}<small class="right edit">{{ 'overviewAction.titler.endre'|trans }}</small>{% endif %}
 				</div>
 				<hr />
 				<div class="summary col-xs-12 delta-list"> 
@@ -122,7 +124,7 @@
 							{{ loop.first ? '' : ', ' }}
 							{{ tittel.tittel is defined ? tittel.tittel : '' }} 
 						{% else %}
-							Ingen låter er lagt til
+							{{ 'overviewAction.titler.ingen'|trans }}
 						{% endfor %}
 					</span>
 				</div>
@@ -135,11 +137,11 @@
 								<div class="col-xs-2">
 									<div class="overunder">
 										{% if tittel.varighet is defined %}
-											<div class="over">xx min</div>
-											<div class="under">xx sek</div>
+											<div class="over">xx {{ 'overviewAction.titler.tittel.min'|trans }}</div>
+											<div class="under">xx {{ 'overviewAction.titler.tittel.sek'|trans }}</div>
 										{% else %}
-											<div class="over">? min</div>
-											<div class="under">? sek</div>
+											<div class="over">? {{ 'overviewAction.titler.tittel.min'|trans }}</div>
+											<div class="under">? {{ 'overviewAction.titler.tittel.sek'|trans }}</div>
 										{% endif %}
 									</div>
 								</div>
@@ -151,24 +153,24 @@
 											{% if tittel.type is defined and not tittel.type is empty %}
 												{{ tittel.type }}
 											{% else %}
-												<span class="text-danger">info mangler</span>
+												<span class="text-danger">{{ 'overviewAction.titler.tittel.info_mangler'|trans }}</span>
 											{% endif %}
 										</small>
 									</p>
 								</div>
 								<div class="col-xs-3">
-									<a href="javascript:alert('Coming');" class="actionLink" id="editT{{ person.p_id }}">rediger</a>
+									<a href="javascript:alert('Coming');" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'overviewAction.titler.tittel.rediger'|trans }}</a>
 								</div>
 							</li>
 						</ul>
 					{% endfor %}
 					<div class="clearfix"></div>
 					<div class="col-xs-12">
-						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">Legg til låt</a>
+						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">{{ 'overviewAction.titler.legg_til'|trans }}</a>
 					</div>
 					<p>&nbsp;</p>
 					<p class="center">
-						<a class="list-close" href="#">lukk listen</a>
+						<a class="list-close" href="#">{{ 'overviewAction.titler.lukk_listen'|trans }}</a>
 					</p>
 				</div>
 			</div>
@@ -176,7 +178,7 @@
 			{% if titler|length == 0 %} 
 				<div class="row">
 					<div class="col-xs-12">
-						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">Legg til låt</a>
+						<a type="button" class="btn btn-block btn-delta" href="javascript:alert('Coming');">{{ 'overviewAction.titler.legg_til'|trans }}</a>
 					</div>
 				</div>
 			{% endif %}
@@ -185,7 +187,7 @@
 		<div class="row">
 			<a href="">
 				<div class="col-xs-12">
-					<button type="submit" class="btn btn-block btn-delta"> Lagre</button>
+					<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
 				</div>
 			</a>
 		</div>

@@ -1,26 +1,28 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
+{% trans_default_domain translationDomain %}
+
 {% block content %}
 
-	<h1 class="center">Spiller du alene eller med andre?</h1>
+	<h1 class="center">{{ 'whoAction.sporsmal'|trans }}</h1>
 
 	<div class="row">
-		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-delta btn-primary btn-block">{{ knapp1 }}</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-delta btn-primary btn-block">{{ 'whoAction.alene'|trans }}</a>
 	</div>
 		<p>&nbsp;</p>
 	<div class="row">
-		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-delta btn-primary btn-block">{{ knapp2 }}</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-delta btn-primary btn-block">{{ 'whoAction.sammen'|trans }}</a>
 	</div>
 		<p>&nbsp;</p>
 	<div class="row">
-		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-delta btn-primary btn-block">Jeg er kun kontaktperson</a>
+		<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-delta btn-primary btn-block">{{ 'whoAction.kontakt'|trans }}</a>
 	</div>
 	<div class="row">
 		<div class="col-xs-1"></div>
 		<div class="col-xs-10">
-			<p class="delta-subtext">
+			<p class="delta-subtext center">
 				<small>
-					Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+					{{ 'whoAction.forklaring'|trans }}
 				</small>
 			</p>
 		</div>

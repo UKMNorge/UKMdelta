@@ -52,13 +52,12 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Innslag:type.html.twig', $view_data);
     }
 
-    public function whoAction($k_id, $pl_id, $type, $knapp1, $knapp2)
+    public function whoAction($k_id, $pl_id, $type, $translationDomain)
     {
     	$view_data['k_id'] = $k_id;
     	$view_data['pl_id'] = $pl_id;
     	$view_data['type'] = $type;
-    	$view_data['knapp1'] = $knapp1;
-    	$view_data['knapp2'] = $knapp2;
+    	$view_data['translationDomain'] = $translationDomain;
 
     	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
     }

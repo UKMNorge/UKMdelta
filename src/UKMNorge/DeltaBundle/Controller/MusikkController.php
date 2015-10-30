@@ -14,8 +14,7 @@ class MusikkController extends Controller
 			'k_id' 		=> $k_id,
 			'pl_id' 	=> $pl_id, 
 			'type' 		=> 'musikk',
-			'knapp1' 	=> "Jeg spiller alene",
-			'knapp2' 	=> "Jeg spiller sammen med noen"
+			'translationDomain' => 'musikk'
 		);
 
 		return $this->forward('UKMDeltaBundle:Innslag:who', $info);
@@ -154,6 +153,7 @@ class MusikkController extends Controller
 		#var_dump($personer);
 		#var_dump($innslag); 
 
+		$view_data['translationDomain'] = 'musikk';
 		$view_data['k_id'] = $k_id;
 		$view_data['pl_id'] = $pl_id;
 		$view_data['b_id'] = $b_id;
@@ -164,6 +164,7 @@ class MusikkController extends Controller
 		$view_data['innslag'] = $innslag->info;
 		$view_data['personer'] = $personer;
 		$view_data['titler'] = $titler;
+
 		
 		return $this->render('UKMDeltaBundle:Musikk:oversikt.html.twig', $view_data);
 	}
