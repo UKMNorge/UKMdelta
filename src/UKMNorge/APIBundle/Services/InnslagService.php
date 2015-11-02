@@ -114,15 +114,8 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 		var_dump($teknisk);
 
-		if ( $innslag->get('td_demand') != utf8_encode($teknisk)) {
-	        $innslag->set('td_demand', $teknisk);
-	    	$innslag->lagre();
-	    	// DETTE FUNKER IKKE! Sjekk lagre-funksjonen, og evnt gjør det her.
-	    	
-	    }
-
-	    echo $innslag->get('td_demand');
-	    die();
+		$innslag->set('td_demand', $teknisk);
+	   	$innslag->lagre();
 	}
 
 	public function hentAdvarsler($innslagsID, $pl_id) {

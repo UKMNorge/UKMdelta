@@ -141,8 +141,13 @@ class MusikkController extends Controller
 		$innslagService = $this->get('ukm_api.innslag');
 		$personService = $this->get('ukm_api.person');
 		$innslag = $innslagService->hent($b_id);
-		$teknisk = ''; //TODO
+		
 		// Legg data fra innslaget i variabler som kan jobbes med enklere i twig
+		$teknisk = $innslag->get('td_demand');
+		if (strlen($teknisk) > 220) {
+			$teknisk = substr_replace($teknisk, '...', 220);
+			// Dette vil ikke påvirke lagret informasjon.
+		}
 		
 		$personer = $innslag->personer();
 		foreach ($personer as &$person) {

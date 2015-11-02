@@ -232,7 +232,6 @@ class InnslagController extends Controller
 
         $frist = array('maned' => 2, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);   
 
-
         $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
