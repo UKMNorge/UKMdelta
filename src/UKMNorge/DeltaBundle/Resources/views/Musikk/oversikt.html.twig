@@ -47,8 +47,8 @@
 								{{ person.p_lastname is defined ? person.p_lastname : '' }} 
 								<small>({{ person.age is defined ? person.age~', ' : ''}}
 								{% if (person.instrument is defined) and not ( person.instrument is empty) %}
-									{{ person.instrument }}
-								{% else %}<span class="text-danger">{{ 'person.rolle.ukjent'|trans }}</span>{% endif %})</small>				{% else %}
+									{{ person.instrument }}{% else %}<span class="text-danger">{{ 'person.rolle.ukjent'|trans }}</span>{% endif %})</small>
+									{% else %}
 							{{ 'overviewAction.personer.ingen'|trans }}
 						{% endfor %}
 					</span>

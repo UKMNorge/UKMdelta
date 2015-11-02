@@ -28,3 +28,4 @@ parameters:
     ukmsms.sender: "UKMNorge"
     ukmdelta.sms.validation.text: "#code er din engangskode for å opprette UKM-bruker."
     ukmdelta.sms.password.reset_text: "Trykk på lenken for å resette ditt passord. #link"
+    UKM_HOSTNAME:

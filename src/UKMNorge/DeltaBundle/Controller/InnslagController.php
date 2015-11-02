@@ -151,6 +151,7 @@ class InnslagController extends Controller
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
         $request = Request::createFromGlobals();
+        $type = '';
         $seasonService = $this->get('ukm_delta.season');
 
         $tittelnavn = $request->request->get('tittel');
@@ -162,6 +163,10 @@ class InnslagController extends Controller
             $selvlaget = $request->request->get('selvlaget');
             $tekstforfatter = $request->request->get('tekstforfatter');
             $melodiforfatter = $request->request->get('melodiforfatter');
+            var_dump($sangtype);
+            var_dump($selvlaget);
+            var_dump($tekstforfatter);
+            var_dump($melodiforfatter);
         }
         elseif ($type == "dans") {
             $koreografi = $request->request->get('koreografi');
@@ -170,10 +175,6 @@ class InnslagController extends Controller
 
         var_dump($tittelnavn);
         var_dump($lengde);
-        var_dump($sangtype);
-        var_dump($selvlaget);
-        var_dump($tekstforfatter);
-        var_dump($melodiforfatter);
 
         $form = array();
 
@@ -186,7 +187,6 @@ class InnslagController extends Controller
             $form['koreografi'] = $koreografi;
         }
 
-
         $tittel = new tittel(false); // Lag et tomt objekt
         $tittel->set('', $tittelnavn);
         // Send ting til innslag.class.php
@@ -197,7 +197,7 @@ class InnslagController extends Controller
 
     public function technicalAction($k_id, $pl_id, $b_id) {
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
-
+        $view_data['translationDomain'] = 'innslag';
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
 
@@ -207,6 +207,7 @@ class InnslagController extends Controller
 
     public function saveTechnicalAction($k_id, $pl_id, $b_id) {
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+       
         $innslagService = $this->get('ukm_api.innslag');
         $request = Request::createFromGlobals();
 
@@ -218,17 +219,30 @@ class InnslagController extends Controller
     }
 
     public function statusAction($k_id, $pl_id, $type, $b_id) {
+        require_once('UKM/inc/validate_innslag.inc.php');
+
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
+
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
 
-        $frist = array('maned' => 1, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);
+        $innslag->get('b_status');
+        $innslag->get('b_status_text');
 
+        $frist = array('maned' => 2, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);   
+
+
+        $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
+        //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
 
-        // Sjekk alle felt, at de som er fylt inn ikke er tomme og ikke har default-verdier
-
-        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
+        if ($innslag->get('b_status') != 8) {
+            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
+        }
+        else {
+            return $this->redirectToRoute('UKMDeltaBundle:Innslag:pamelt.html.twig', $view_data);
+        }
 
     }
 }

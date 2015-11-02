@@ -1,27 +1,28 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="center">Tekniske behov</h1>
+	<h1 class="center">{{ 'technicalAction.overskrift'|trans }}</h1>
 
 	<p class="lead">
-		Skriv inn dine/deres tekniske behov.
+		{{ 'technicalAction.ledetekst'|trans }}
 	</p>
 	<p class="">
-		Her lurer vi på ting som... [mer forklaring kommer]
+		{{ 'technicalAction.forklaring'|trans }}
 	</p>
 	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_teknisk', { k_id: k_id, pl_id: pl_id, b_id: b_id}) }}">
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea rows="8" name="teknisk" placeholder="Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...">{{ teknisk is defined ? teknisk : '' }}</textarea>
+				<textarea rows="8" name="teknisk" placeholder="{{ 'technicalAction.placeholder_teknisk'|trans }}">{{ teknisk is defined ? teknisk : '' }}</textarea>
 			</div>
 		</div>
 		<p>&nbsp;</p>
 		<div class="col-xs-12">
-			<button type="submit" class="btn btn-block btn-delta">Lagre og gå til oversikten</button>
+			<button type="submit" class="btn btn-block btn-delta">{{ 'technicalAction.lagreknapp'|trans }}</button>
 		</div>
 
 		<div class="col-xs-12 center">
-			<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">avbryt</a>
+			<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">{{ 'technicalAction.avbryttekst'|trans }}</a>
 		</div>
 	</form>
 {% endblock %}

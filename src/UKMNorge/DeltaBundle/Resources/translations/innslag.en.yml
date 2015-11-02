@@ -4,3 +4,24 @@ whoAction:
     sammen: Jeg deltar sammen med andre
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+statusAction:
+    obs-topptekst: "OBS: Du er ikke meldt på UKM enda!"
+    infotekst: Denne informasjonen mangler før innslaget er påmeldt:
+    artistnavn: Artistnavn / gruppenavn
+    lat: Du må legge til minst én låt
+    teknisk: Du må fylle ut tekniske behov
+    varighet: Du må legge inn en lengde på innslaget
+    ingendeltakere: Du må legge til minst én deltaker på innslaget
+    tilbakeknapp: Gå tilbake for å fylle ut det siste
+    videreknapp: Ok, jeg fyller ut senere
+    undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
+    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%.%maned% kl. %time%.%minutt%
+
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    placeholder_teknisk: Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt

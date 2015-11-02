@@ -112,10 +112,50 @@ class InnslagService {
 
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
 		$innslag = new innslag($innslagsID, false);
+		var_dump($teknisk);
+
 		if ( $innslag->get('td_demand') != utf8_encode($teknisk)) {
 	        $innslag->set('td_demand', $teknisk);
 	    	$innslag->lagre();
+	    	// DETTE FUNKER IKKE! Sjekk lagre-funksjonen, og evnt gjør det her.
+	    	
 	    }
+
+	    echo $innslag->get('td_demand');
+	    die();
+	}
+
+	public function hentAdvarsler($innslagsID, $pl_id) {
+		$validate = validateBand($innslagsID);
+       	
+       	$innslag = new innslag($innslagsID, false);
+		$warnings = $innslag->warning_array($pl_id);
+
+		#var_dump($warnings);
+
+		$warnings = $this->_warningToText($warnings);
+
+		return $warnings;
+	}
+
+	private function _warningToText($warnings) {
+		$output = array();
+		foreach ($warnings as $warning) {
+			if ($warning == 'innslaget har ingen titler (og vil derfor ikke kunne settes opp i et program)') {
+				$output[] = 'lat';
+			}
+			elseif ($warning == 'innslaget har en total varighet p&aring; 0 sek (mindre enn 10 sekunder)') {
+				$output[] = 'varighet';
+			}
+			elseif ($warning == 'innslaget har ingen tekniske behov') {
+				$output[] = 'teknisk';
+			}
+			elseif ($warning == 'innslaget har ingen deltakere') {
+				$output[] = 'ingendeltakere';
+			}
+		}
+
+		return $output;
 	}
 }
 

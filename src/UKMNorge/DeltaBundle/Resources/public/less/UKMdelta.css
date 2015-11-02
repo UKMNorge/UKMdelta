@@ -6,7 +6,6 @@
 @secondary-grey: #9e9e9e;
 @tertiary-grey: #ededed;
 
-
 @bootstrap-danger: #a94442;
 @bootstrap-warning: #8a6d3b;
 @bootstrap-success: #3c763d;
@@ -54,6 +53,10 @@ h1, .h1 {
   	background-color: #d9534f;
   	border-color: #d43f3a;
 
+}
+
+.delta-danger {
+	/*width: 95%;*/
 }
 
 .delta-form textarea {
@@ -172,6 +175,15 @@ h1, .h1 {
 	color: @secondary-grey;
 	font-size: 0.9em !important;
 }
+
+.delta-fat {
+	font-weight: bold;
+}
+
+.delta-fat li {
+	font-size: 0.9em;
+}
+
 .delta-subtext .center {
 	text-align: center;
 }

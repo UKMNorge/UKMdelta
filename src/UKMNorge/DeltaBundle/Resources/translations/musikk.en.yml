@@ -20,7 +20,7 @@ overviewAction:
         legg_til: Legg til ny låt
     personer:
         overskrift: Personer
-        endre: leggtil / endre
+        endre: legg til / endre
         ingen: Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
