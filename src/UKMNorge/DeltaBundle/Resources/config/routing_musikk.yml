@@ -21,6 +21,22 @@ ukmid_delta_ukmid_pamelding_musikk_innslag:
               pl_id: ([0-9]{1,5})
               b_id: ([0-9]{1,11})
 
+ukmid_delta_ukmid_pamelding_musikk_innslag_teknisk:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/teknisk/
+    defaults: { _controller: UKMDeltaBundle:Innslag:technical }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
+ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_teknisk:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/teknisk/lagre/
+    defaults: { _controller: UKMDeltaBundle:Innslag:saveTechnical }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
 ukmid_delta_ukmid_pamelding_musikk_innslag_ny_tittel:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-tittel/
     defaults: { _controller: UKMDeltaBundle:Innslag:newTitle }
@@ -29,8 +45,17 @@ ukmid_delta_ukmid_pamelding_musikk_innslag_ny_tittel:
               pl_id: ([0-9]{1,5})
               b_id: ([0-9]{1,11})
 
+ukmid_delta_ukmid_pamelding_musikk_innslag_rediger_tittel:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/t{t_id}/
+    defaults: { _controller: UKMDeltaBundle:Innslag:editTitle }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+              t_id: ([0-9]{1,5})
+
 ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-tittel/lagre
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-tittel/lagre/
     defaults: { _controller: UKMDeltaBundle:Innslag:saveNewTitle }
     requirements:
               k_id: ([0-9]{1,4})
@@ -55,7 +80,7 @@ ukmid_delta_ukmid_pamelding_musikk_lagre_ny_person:
               b_id: ([0-9]{1,11})
 
 ukmid_delta_ukmid_pamelding_musikk_lagre_innslag:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/lagre
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/lagre/
     defaults: { _controller: UKMDeltaBundle:Musikk:saveOverview }
     requirements:
               k_id: ([0-9]{1,4})
@@ -81,7 +106,7 @@ ukmid_delta_ukmid_pamelding_musikk_fjern_person:
               p_id: ([0-9]{1,11})
 
 ukmid_delta_ukmid_pamelding_musikk_alene_lagre_personinfo: 
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/p{p_id}/lagre
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/p{p_id}/lagre/
     defaults: { _controller: UKMDeltaBundle:Musikk:savePerson }
     requirements:
               k_id: ([0-9]{1,4})

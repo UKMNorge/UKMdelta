@@ -9,7 +9,7 @@
 
 	
 {% block content %}
-	<h1 class="center">Legg til låt</h1>
+	<h1 class="center">Rediger låt</h1>
 	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
 		<div class="row">
@@ -19,7 +19,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive...">
+				<input type="text" name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.g('t_name') is defined ? tittel.g('t_name') : '' }}">
 			</div>
 		</div>
 		<div class="row">
@@ -61,7 +61,7 @@
 				<small>Tekst av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="tekstforfatter" class="form-control" placeholder="">
+				<input type="text" name="tekstforfatter" class="form-control" placeholder="Eks. Adele, Aretha Franklin"  value="{{ tittel.g('t_titleby') is defined ? tittel.g('t_titleby') : '' }}">
 			</div>
 		</div>
 		<div class="row" id="melodi-rad">
@@ -69,7 +69,7 @@
 				<small>Melodi av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="melodiforfatter" class="form-control" placeholder="">
+				<input type="text" name="melodiforfatter" class="form-control" placeholder="Eks. Adele, Aretha Franklin"  value="{{ tittel.g('t_musicby') is defined ? tittel.g('t_musicby') : '' }}">
 			</div>
 		</div>
 		<p>&nbsp;</p>

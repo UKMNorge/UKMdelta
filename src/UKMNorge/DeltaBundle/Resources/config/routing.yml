@@ -23,6 +23,14 @@ ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
 
+ukm_delta_ukmid_pamelding_status:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/status/
+    defaults: { _controller: UKMDeltaBundle:Innslag:status }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              b_id: ([0-9]{1,11})
+
 ukm_delta_ukmid_pamelding_hva:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/
     defaults: { _controller: UKMDeltaBundle:Innslag:type }

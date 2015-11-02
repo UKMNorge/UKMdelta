@@ -110,6 +110,13 @@ class InnslagService {
 	    }
 	}	
 
+	public function lagreTekniskeBehov($innslagsID, $teknisk) {
+		$innslag = new innslag($innslagsID, false);
+		if ( $innslag->get('td_demand') != utf8_encode($teknisk)) {
+	        $innslag->set('td_demand', $teknisk);
+	    	$innslag->lagre();
+	    }
+	}
 }
 
 ?>

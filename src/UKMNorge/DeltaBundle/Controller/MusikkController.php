@@ -141,6 +141,7 @@ class MusikkController extends Controller
 		$innslagService = $this->get('ukm_api.innslag');
 		$personService = $this->get('ukm_api.person');
 		$innslag = $innslagService->hent($b_id);
+		$teknisk = ''; //TODO
 		// Legg data fra innslaget i variabler som kan jobbes med enklere i twig
 		
 		$personer = $innslag->personer();
@@ -148,7 +149,6 @@ class MusikkController extends Controller
 			$person['age'] = $personService->alder($personService->hent($person['p_id']));
 		}
 		$titler = $innslag->titler($pl_id); 
-
 
 		#var_dump($personer);
 		#var_dump($innslag); 
@@ -161,6 +161,7 @@ class MusikkController extends Controller
 		if ($innslag->info['b_name'] != 'Innslag uten navn') {
 			$view_data['name'] = $innslag->info['b_name'];	
 		}
+		$view_data['teknisk'] = $teknisk;
 		$view_data['innslag'] = $innslag->info;
 		$view_data['personer'] = $personer;
 		$view_data['titler'] = $titler;

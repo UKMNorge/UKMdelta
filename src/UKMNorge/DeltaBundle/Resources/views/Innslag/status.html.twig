@@ -1,0 +1,19 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}
+
+<p>&nbsp;</p>
+	<div class="col-xs-12">		
+		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">Gå tilbake for å fylle ut det siste</a>
+	</div>
+	<p>&nbsp;</p>
+	<div class="col-xs-12">
+		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">OK, jeg fyller ut senere</a>
+	</div>	
+
+	<div class="">
+		<span class="delta-subtext center">Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.</span>
+		<p>&nbsp;</p>
+		<span class="delta-subtext center text-danger">OBS: du MÅ fylle ut all informasjon før {{ frist.dag }}.{{ frist.maned }} kl. {{ frist.time }}.{{ frist.minutt }}</span>
+	</div>
+{% endblock %}

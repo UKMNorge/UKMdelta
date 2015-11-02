@@ -115,6 +115,34 @@ class InnslagController extends Controller
     public function newTitleAction($k_id, $pl_id, $b_id) {
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $view_data['innslag'] = $innslagService->hent($b_id);
+
+        return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
+    }
+
+    public function editTitleAction($k_id, $pl_id, $b_id) {
+
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+
+        // Tittel er et array bestående av:
+        /*
+            t_id
+            b_id
+            t_name
+            t_titleby
+            t_musicby
+            t_coreography
+            t_time
+            season
+
+            Der urelevante felt er tomme.
+        */
+
+        $view_data['tittel'] = null;
+        $view_data['innslag'] = $innslagService->hent($b_id);
 
         return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
     }
@@ -123,24 +151,84 @@ class InnslagController extends Controller
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
         $request = Request::createFromGlobals();
+        $seasonService = $this->get('ukm_delta.season');
 
-        $tittel = $request->request->get('tittel');
-        $lengde = $request->request->get('lengde');
-        $sangtype = $request->request->get('sangtype');
-        $selvlaget = $request->request->get('selvlaget');
-        $tekstforfatter = $request->request->get('tekstforfatter');
-        $melodiforfatter = $request->request->get('melodiforfatter');
+        $tittelnavn = $request->request->get('tittel');
+        $lengde = $request->request->get('lengde'); // I sekunder
+        $season = $seasonService->getActive();
 
-        var_dump($tittel);
+        if ($type == "musikk") {
+            $sangtype = $request->request->get('sangtype');
+            $selvlaget = $request->request->get('selvlaget');
+            $tekstforfatter = $request->request->get('tekstforfatter');
+            $melodiforfatter = $request->request->get('melodiforfatter');
+        }
+        elseif ($type == "dans") {
+            $koreografi = $request->request->get('koreografi');
+        }
+  
+
+        var_dump($tittelnavn);
         var_dump($lengde);
         var_dump($sangtype);
         var_dump($selvlaget);
         var_dump($tekstforfatter);
         var_dump($melodiforfatter);
-        
-        
+
+        $form = array();
+
+        if ($type == 'musikk') {
+            $form['tittel'] = $tittelnavn;
+            $form['tekst_av'] = $tittelnavn;
+            $form['tittel'] = $tittelnavn;
+        }  
+        elseif ($type == 'dans') {
+            $form['koreografi'] = $koreografi;
+        }
+
+
+        $tittel = new tittel(false); // Lag et tomt objekt
+        $tittel->set('', $tittelnavn);
+        // Send ting til innslag.class.php
 
         die();
         return $this->redirect('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+    }
+
+    public function technicalAction($k_id, $pl_id, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        $view_data['teknisk'] = $innslag->get('td_demand');
+        return $this->render('UKMDeltaBundle:Innslag:teknisk.html.twig', $view_data);
+    }
+
+    public function saveTechnicalAction($k_id, $pl_id, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+        $request = Request::createFromGlobals();
+
+        $tekniskekrav = $request->request->get('teknisk');
+
+        $innslagService->lagreTekniskeBehov($b_id, $tekniskekrav);
+
+        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+    }
+
+    public function statusAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        $frist = array('maned' => 1, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);
+
+        $view_data['frist'] = $frist;
+
+        // Sjekk alle felt, at de som er fylt inn ikke er tomme og ikke har default-verdier
+
+        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
+
     }
 }
