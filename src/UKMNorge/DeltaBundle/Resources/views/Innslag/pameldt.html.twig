@@ -1,0 +1,50 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+
+	<h1 class="lead center col-xs-10 col-xs-offset-1">
+		{{ 'attendingAction.overskrift'|trans }}
+	</h1>
+	<p>&nbsp;</p>
+	<div class="row">
+		<div class="col-xs-12 center">
+			<span class="">UKM Stedsnavn{# monstring.navn #}</span>
+		</div>
+	</div>
+	<div class="col-xs-12 center">
+		<span class="center">{{ 'attendingAction.monstringstarter'|trans({ '%dag%': pl.dag, '%maned%': pl.maned, '%time%': pl.time, '%minutt%': pl.minutt}) }}
+	</div>
+	<div class="col-xs-12 center">
+		<span class="center">{{ 'attendingAction.viktigbeskjed.label'|trans }}</span>
+	</div>
+	<div class="col-xs-12 center">
+		<span class="center">{{ 'attendingAction.viktigbeskjed.placeholder'|trans }}
+	</div>
+	<p>&nbsp;</p>
+	<div class="row">
+		<div class="col-xs-6">		
+			<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.visprogram'|trans }}</a>
+		</div>
+		<div class="col-xs-6">
+			<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.vispameldte'|trans }}</a>
+		</div>	
+	</div>
+	<div class="col-xs-12">
+		<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.viskontakt'|trans }}</a>
+	</div>	
+	<div class="col-xs-12">
+		<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.rediger'|trans }}</a>
+	</div>	
+	<p>&nbsp;</p>
+	<div class="col-xs-12">
+		<span class="center">{{ 'attendingAction.flertekst'|trans }}
+	</div>
+	<div class="col-xs-12">
+		<span class="center">{{ 'attendingAction.meldtekst'|trans }}
+	</div>
+	<p>&nbsp;</p>
+	<div class="col-xs-12">
+		<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.videreknapp'|trans }}</a>
+	</div>	
+{% endblock %}

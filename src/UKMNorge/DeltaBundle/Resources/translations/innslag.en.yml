@@ -16,7 +16,7 @@ statusAction:
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     videreknapp: Ok, jeg fyller ut senere
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
-    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%.%maned% kl. %time%.%minutt%
+    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%. %maned% kl. %time%:%minutt%
 
 technicalAction:
     overskrift: Tekniske behov
@@ -25,3 +25,46 @@ technicalAction:
     placeholder_teknisk: Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt
+
+attendingAction:
+    overskrift: Du er påmeldt!
+    hortom: 
+        label: Hvordan hørte du om UKM?
+        alt1: 
+            tekst: Gjennom venner/familie
+            value: venner_familie
+        alt2: 
+            tekst: Kinoreklame
+            value: kinoreklame
+        alt3: 
+            tekst: Avisreklame
+            value: avisreklame
+        alt4: 
+            tekst: Via bibliotekene
+            value: bibliotek
+        alt5: 
+            tekst: Via skolen
+            value: skolen
+        alt6: 
+            tekst: Kulturkontorene
+            value: kulturkontorene
+        alt7: 
+            tekst: Facebook/Sosiale medier
+            value: sosialemedier
+        alt8: 
+            tekst: Informasjonsmateriell fra UKM (Plakater, flyers etc)
+            value: infomateriell
+        alt9: 
+            tekst: Vært deltaker før
+            value: tidl_deltaker
+    monstringstarter: starter %dag%. %maned%, kl %time%:%minutt%
+    viktigbeskjed:
+        label: Viktig beskjed fra lokalkontakten:
+        placeholder: Her får lokalkontakten fylle ut informasjon
+    visprogram: Vis program
+    vispameldte: Vis påmeldte
+    viskontakt: Vis kontaktpersoner
+    rediger: Rediger innslaget
+    flertekst: Det er lov å delta med flere ting.
+    meldtekst: Meld deg på fra Din side.
+    videreknapp: Gå til Din side

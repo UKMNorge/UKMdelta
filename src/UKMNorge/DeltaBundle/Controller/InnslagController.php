@@ -263,6 +263,15 @@ class InnslagController extends Controller
     }
 
     public function attendingAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
 
-    }
+        $pl['dag'] = 15;
+        $pl['maned'] = "januar";
+        $pl['time'] = 15;
+        $pl['minutt'] = 30;
+        $view_data['pl'] = $pl;
+
+        return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
+    }   
 }

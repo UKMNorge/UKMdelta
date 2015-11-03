@@ -136,16 +136,20 @@ class InnslagService {
        	
        	$innslag = new innslag($innslagsID, false);
 		$warnings = $innslag->warning_array($pl_id);
-
-		#var_dump($warnings);
-
 		$warnings = $this->_warningToText($warnings);
+
+		// Ekstrasjekker
+		// Instrument
+
+		// Beskrivelse
+
 
 		return $warnings;
 	}
 
 	private function _warningToText($warnings) {
 		$output = array();
+		//var_dump($warnings);
 		foreach ($warnings as $warning) {
 			if ($warning == 'innslaget har ingen titler (og vil derfor ikke kunne settes opp i et program)') {
 				$output[] = 'lat';
@@ -161,6 +165,14 @@ class InnslagService {
 			}
 		}
 
+		$pos = array_search('varighet', $output);
+		if (!($pos === FALSE)) {
+			if (in_array('lat', $output)) {
+				// Hvis lat finnes i arrayet, fjern "varighet"
+				unset($output[$pos]);
+				$output = array_values($output);
+			}
+		}
 		return $output;
 	}
 }
