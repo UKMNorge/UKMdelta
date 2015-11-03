@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use monstring;
 use monstringer;
 use innslag;
+use tittel;
 use Exception;
 
 class InnslagController extends Controller
@@ -148,51 +149,54 @@ class InnslagController extends Controller
     }
 
     public function saveNewTitleAction($k_id, $pl_id, $b_id) {
+        require_once('UKM/tittel.class.php');
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
         $request = Request::createFromGlobals();
-        $type = '';
         $seasonService = $this->get('ukm_delta.season');
 
-        $tittelnavn = $request->request->get('tittel');
-        $lengde = $request->request->get('lengde'); // I sekunder
-        $season = $seasonService->getActive();
+        $type = 'musikk'; // TODO: OBS / WTF
+		switch( $type ) {
+			case 'film':		$form = 'smartukm_titles_video';		break;
+			case 'utstilling':	$form = 'smartukm_titles_exhibition';	break;
+			default:			$form = 'smartukm_titles_scene';		break;
+		}
 
+		// Hent variabler		
+        $tittelnavn = $request->request->get('tittel');
+        $season = $seasonService->getActive();
+		
+		// Opprett tittel-objektet og sett tittel navn
+		$tittel = new tittel(false, $form);
+		$tittel->create( $b_id );
+    	$tittel->set( 'tittel', $tittelnavn );		
+    	$tittel->set( 'season', $season );
+
+		// Sett felter for musikk
         if ($type == "musikk") {
+	        $lengde = $request->request->get('lengde'); // I sekunder
             $sangtype = $request->request->get('sangtype');
             $selvlaget = $request->request->get('selvlaget');
             $tekstforfatter = $request->request->get('tekstforfatter');
             $melodiforfatter = $request->request->get('melodiforfatter');
-            var_dump($sangtype);
-            var_dump($selvlaget);
-            var_dump($tekstforfatter);
-            var_dump($melodiforfatter);
+            
+            $tittel->set('tekst_av', $tekstforfatter);
+            $tittel->set('melodi_av', $melodiforfatter);
+            $tittel->set('varighet', $lengde);
         }
+        // Sett felter for dans
         elseif ($type == "dans") {
+	        $lengde = $request->request->get('lengde'); // I sekunder
             $koreografi = $request->request->get('koreografi');
+            
+            $tittel->set('koreografi', $koreografi);
+            $tittel->set('varighet', $lengde);
         }
   
+		// Lagre tittel
+		$tittel->lagre();
 
-        var_dump($tittelnavn);
-        var_dump($lengde);
-
-        $form = array();
-
-        if ($type == 'musikk') {
-            $form['tittel'] = $tittelnavn;
-            $form['tekst_av'] = $tittelnavn;
-            $form['tittel'] = $tittelnavn;
-        }  
-        elseif ($type == 'dans') {
-            $form['koreografi'] = $koreografi;
-        }
-
-        $tittel = new tittel(false); // Lag et tomt objekt
-        $tittel->set('', $tittelnavn);
-        // Send ting til innslag.class.php
-
-        die();
-        return $this->redirect('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
     }
 
     public function technicalAction($k_id, $pl_id, $b_id) {
