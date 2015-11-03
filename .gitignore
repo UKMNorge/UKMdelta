@@ -15,3 +15,4 @@
 /web/js/*
 /web/css/*
 *.DS_Store
+/web/error_log
