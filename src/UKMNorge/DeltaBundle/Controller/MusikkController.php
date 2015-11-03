@@ -89,11 +89,11 @@ class MusikkController extends Controller
         $mobil = $request->request->get('mobil');
 
         echo '<br>saveNewPersonAction():<br/>';
-        var_dump($fornavn);
-        var_dump($etternavn);
-        var_dump($mobil);
-        var_dump($alder);
-        var_dump($instrument);
+        // var_dump($fornavn);
+        // var_dump($etternavn);
+        // var_dump($mobil);
+        // var_dump($alder);
+        // var_dump($instrument);
 
         // Hent personobjekt om deltakeren finnes, opprett en ny en hvis ikke.
         $person = $personService->opprett($fornavn, $etternavn, $mobil, $pl_id);

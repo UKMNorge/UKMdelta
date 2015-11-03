@@ -140,7 +140,7 @@ class InnslagService {
 
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
 		$innslag = new innslag($innslagsID, false);
-		var_dump($teknisk);
+		// var_dump($teknisk);
 
 		$innslag->set('td_demand', $teknisk);
 	   	$innslag->lagre();

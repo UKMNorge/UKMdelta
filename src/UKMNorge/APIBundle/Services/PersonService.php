@@ -20,10 +20,10 @@ class PersonService {
 		// p_firstname
 		// p_lastname
 		// p_phone
-		echo '<br>opprett():<br/>';
-		var_dump($fornavn);
-        var_dump($etternavn);
-        var_dump($mobil);
+		// echo '<br>opprett():<br/>';
+		// var_dump($fornavn);
+  //       var_dump($etternavn);
+  //       var_dump($mobil);
 
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 
@@ -33,7 +33,7 @@ class PersonService {
 		// Sjekk om personen finnes
 		$finnes = $person->getExistingPerson($fornavn, $etternavn, $mobil);
 
-		var_dump($finnes);
+		// var_dump($finnes);
 		if ($finnes)
 			return $finnes;
 
@@ -43,7 +43,7 @@ class PersonService {
 		$person->set('p_lastname', $etternavn);
 		$person->set('p_phone', $mobil);
 		// Send data til databasen
-		var_dump($person);
+		// var_dump($person);
 		$person->lagre('delta', $user->getId(), $pl_id);
 
 		return $person;
