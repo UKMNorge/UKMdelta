@@ -44,7 +44,11 @@
 							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 10px">
 								<div class="col-xs-12"><span>Siden dette er en fellesmønstring, må du velge hvilken bydel/kommune du vil representere.</span></div> 
 								{% for key,kommune in monstring.kommuner %}
+									{% if app.environment == 'test' and fylke.id != 21 %}
+									<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">
+									{% else %}
 									<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
+									{% endif %}
 										<div class="row">
 											<div class="col-xs-12">
 												{{ kommune }} 
@@ -54,7 +58,11 @@
 								{% endfor %}
 							</div>
 						{% else %}
+							{% if app.environment == 'test' and fylke.id != 21 %}
+							<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">
+							{% else %}
 							<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
+							{% endif %}
 								<div class="row">
 									<div class="col-md-9 col-xs-9">
 										{{ monstring.name }}
