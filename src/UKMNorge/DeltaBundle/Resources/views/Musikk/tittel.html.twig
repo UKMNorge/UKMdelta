@@ -89,6 +89,7 @@
 		<button type="submit" class="btn btn-block btn-delta">Lagre</button>
 
 		{% if tittel.tittel is defined %}
+			<p>&nbsp;</p>
 			<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett låt</a>
 		{% endif %}
 	</form>
