@@ -96,6 +96,16 @@ ukmid_delta_ukmid_pamelding_musikk_innslag_rediger_tittel:
               b_id: ([0-9]{1,11})
               t_id: ([0-9]{1,5})
 
+ukmid_delta_ukmid_pamelding_musikk_innslag_slett_tittel:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/t{t_id}/slett
+    defaults: { _controller: UKMDeltaBundle:Innslag:deleteTitle }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              type: .+
+              b_id: ([0-9]{1,11})
+              t_id: ([0-9]{1,5})
+
 ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/ny-tittel/lagre/
     defaults: { _controller: UKMDeltaBundle:Innslag:saveNewTitle }

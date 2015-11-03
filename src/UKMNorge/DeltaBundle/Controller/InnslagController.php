@@ -115,38 +115,31 @@ class InnslagController extends Controller
     }
 
     public function newTitleAction($k_id, $pl_id, $type, $b_id) {
-
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $innslagService = $this->get('ukm_api.innslag');
 
         $view_data['innslag'] = $innslagService->hent($b_id);
 
-        return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
+        return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
     }
 
-    public function editTitleAction($k_id, $pl_id, $b_id) {
+    public function editTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
+        require_once('UKM/tittel.class.php');
 
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id, 't_id' => $t_id);
         $innslagService = $this->get('ukm_api.innslag');
+        switch( $type ) {
+            case 'film':        $form = 'smartukm_titles_video';        break;
+            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            default:            $form = 'smartukm_titles_scene';        break;
+        }
 
-        // Tittel er et array bestående av:
-        /*
-            t_id
-            b_id
-            t_name
-            t_titleby
-            t_musicby
-            t_coreography
-            t_time
-            season
+        $tittel = new tittel($t_id, $form);
 
-            Der urelevante felt er tomme.
-        */
-
-        $view_data['tittel'] = null;
+        $view_data['tittel'] = $tittel;
         $view_data['innslag'] = $innslagService->hent($b_id);
 
-        return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
+        return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
     }
 
     public function saveNewTitleAction($k_id, $pl_id, $type, $b_id) {
@@ -154,6 +147,7 @@ class InnslagController extends Controller
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id);
         $request = Request::createFromGlobals();
+        $t_id = $request->request->get('t_id');
         $seasonService = $this->get('ukm_delta.season');
 
 		switch( $type ) {
@@ -167,8 +161,14 @@ class InnslagController extends Controller
         $season = $seasonService->getActive();
 		
 		// Opprett tittel-objektet og sett tittel navn
-		$tittel = new tittel(false, $form);
-		$tittel->create( $b_id );
+        if ($t_id == 'new') {
+		    $tittel = new tittel(false, $form);
+            $tittel->create( $b_id );
+        }
+        else {
+            $tittel = new tittel($t_id, $form);
+        }
+
     	$tittel->set( 'tittel', $tittelnavn );		
     	$tittel->set( 'season', $season );
 
@@ -195,8 +195,29 @@ class InnslagController extends Controller
   
 		// Lagre tittel
 		$tittel->lagre();
-
         return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+    }
+
+    public function deleteTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
+        require_once('UKM/tittel.class.php');
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id, 't_id' => $t_id);
+        // Gjøre noe validering her?
+
+
+        switch( $type ) {
+            case 'film':        $form = 'smartukm_titles_video';        break;
+            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            default:            $form = 'smartukm_titles_scene';        break;
+        }
+        $tittel = new tittel($t_id, $form);
+       
+        // Slett tittel fra innslaget
+        if ($deleted = $tittel->delete()) {
+            return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);    
+        }
+        // TODO: Feilmelding her!
+        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag_tittel', $view_data);
+        
     }
 
     public function technicalAction($k_id, $pl_id, $b_id) {

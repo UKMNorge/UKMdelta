@@ -131,6 +131,7 @@
 				</div>
 			</div>
 			<div class="details col-xs-12">
+				
 				<div id="deltakerliste" class="delta-list">
 					{% for tittel in titler %}
 						<ul class="list-unstyled">
@@ -138,8 +139,8 @@
 								<div class="col-xs-2">
 									<div class="overunder">
 										{% if tittel.varighet is defined %}
-											<div class="over">xx {{ 'tittel.min'|trans }}</div>
-											<div class="under">xx {{ 'tittel.sek'|trans }}</div>
+											<div class="over">{{ tittel.varighet / 60 }} {{ 'tittel.min'|trans }}</div>
+											<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.sek'|trans }}</div>
 										{% else %}
 											<div class="over">? {{ 'tittel.min'|trans }}</div>
 											<div class="under">? {{ 'tittel.sek'|trans }}</div>
@@ -151,8 +152,8 @@
 										{{ tittel.tittel is defined ? tittel.tittel : '' }}
 										<br />
 										<small>
-											{% if tittel.type is defined and not tittel.type is empty %}
-												{{ tittel.type }}
+											{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
+												{{ tittel.parentes }}
 											{% else %}
 												<span class="text-danger">{{ 'tittel.info_mangler'|trans }}</span>
 											{% endif %}
