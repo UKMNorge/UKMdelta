@@ -113,9 +113,9 @@ class InnslagController extends Controller
     	return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $innslag->get('b_id')));
     }
 
-    public function newTitleAction($k_id, $pl_id, $b_id) {
+    public function newTitleAction($k_id, $pl_id, $type, $b_id) {
 
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $innslagService = $this->get('ukm_api.innslag');
 
         $view_data['innslag'] = $innslagService->hent($b_id);
@@ -148,14 +148,13 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Musikk:nyTittel.html.twig', $view_data);
     }
 
-    public function saveNewTitleAction($k_id, $pl_id, $b_id) {
+    public function saveNewTitleAction($k_id, $pl_id, $type, $b_id) {
         require_once('UKM/tittel.class.php');
 
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id);
         $request = Request::createFromGlobals();
         $seasonService = $this->get('ukm_delta.season');
 
-        $type = 'musikk'; // TODO: OBS / WTF
 		switch( $type ) {
 			case 'film':		$form = 'smartukm_titles_video';		break;
 			case 'utstilling':	$form = 'smartukm_titles_exhibition';	break;
@@ -258,6 +257,11 @@ class InnslagController extends Controller
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
 
+        // Oppdater status på innslaget!
+        if(empty($view_data['grunner'])) {
+            $innslagService->lagreStatus($b_id, 8);
+        }
+     
         if ($innslag->get('b_status') != 8) {
             return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
         }

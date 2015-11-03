@@ -15,15 +15,20 @@ class UKMIDController extends Controller
 	    $user = $this->get('ukm_user')->getCurrentUser();
 	    $view_data['user'] = $user;
         $innslagService = $this->get('ukm_api.innslag');
+
+        $type = array();
+        $pl_id = array();
+        $innslagsliste2 = array();
         // List opp påmeldte og ikke fullførte innslag denne brukeren er kontaktperson for
         $contact_id = $user->getPameldUser();
         $innslagsliste = $innslagService->hentInnslagFraKontaktperson($contact_id, $user->getId());
-        $innslagsliste2 = array();
+        
         foreach ($innslagsliste as $innslag) {
             $pl_id[] = $innslag[1];
             $type[] = $innslag[2];
             $innslagsliste2[] = $innslag[0];
         }
+
         // var_dump($pl_id);
         // var_dump($type);
         // var_dump($innslagsliste2);

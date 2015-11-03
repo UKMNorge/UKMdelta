@@ -65,8 +65,14 @@ class InnslagService {
 	}
 
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
+		$innslag = array();
 		// Søk etter innslag i databasen?
-		$qry = new SQL("SELECT smartukm_band.b_id, smartukm_technical.pl_id, smartukm_band.b_kategori FROM smartukm_band LEFT JOIN smartukm_technical ON smartukm_band.b_id = smartukm_technical.b_id WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+		if (empty($contact_id)) {
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id'", array('user_id' => $user_id));
+		}
+		else {
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+		}
 
 		$res = $qry->run();
 		while($row = mysql_fetch_assoc($res)) {
@@ -122,6 +128,15 @@ class InnslagService {
 	    	$innslag->lagre();
 	    }
 	}	
+
+	public function lagreStatus($innslagsID, $b_status) {
+		$innslag = new innslag($innslagsID, false);
+
+		if ( $innslag->get('b_status') != $b_status) {
+			$innslag->set('b_status', $b_status);
+			$innslag->lagre();
+		}
+	}
 
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
 		$innslag = new innslag($innslagsID, false);
