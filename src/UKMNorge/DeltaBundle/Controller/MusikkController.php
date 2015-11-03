@@ -8,13 +8,15 @@ use innslag;
 use person;
 
 class MusikkController extends Controller
-{
+{	
+	var $type = 'musikk';
+
 	public function whoAction($k_id, $pl_id) {
 		$info = array(
 			'k_id' 		=> $k_id,
 			'pl_id' 	=> $pl_id, 
-			'type' 		=> 'musikk',
-			'translationDomain' => 'musikk'
+			'type' 		=> $this->type,
+			'translationDomain' => $this->type
 		);
 
 		return $this->forward('UKMDeltaBundle:Innslag:who', $info);
@@ -24,7 +26,7 @@ class MusikkController extends Controller
 		$info = array(
 			'k_id' 		=> $k_id,
 			'pl_id' 	=> $pl_id, 
-			'type' 		=> 'musikk',
+			'type' 		=> $this->type,
 			'hvem'		=> $hvem
 			);
 
@@ -44,7 +46,7 @@ class MusikkController extends Controller
 	}
 
 	public function editPersonAction($k_id, $pl_id, $b_id, $p_id) {
-		$view_data = array();
+		$view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id, 'p_id' => $p_id);
 
 		// TODO: Hent data fra database (PersonService), ikke UserBundle
 
@@ -62,10 +64,6 @@ class MusikkController extends Controller
 		// var_dump($person);
 		// var_dump($innslagsPerson);
 
-		$view_data['k_id'] = $k_id;
-		$view_data['pl_id'] = $pl_id;
-		$view_data['b_id'] = $b_id;
-		$view_data['p_id'] = $p_id;
 		$view_data['user'] = $user;
 		$view_data['person'] = $person;
 		$view_data['innslag'] = $innslagsPerson;
@@ -79,6 +77,7 @@ class MusikkController extends Controller
 		// var_dump($b_id);
 		// Ta imot post-variabler
         $request = Request::createFromGlobals();
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
 
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');	
@@ -105,12 +104,13 @@ class MusikkController extends Controller
         $personService->lagreAlder($p_id, $pl_id, $alder);
         $personService->lagreMobil($p_id, $pl_id, $mobil);
 
-		return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
+		return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
 	}
 
 	public function savePersonAction($k_id, $pl_id, $b_id, $p_id) {
 		// Ta imot post-variabler
         $request = Request::createFromGlobals();
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
 
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');	
@@ -129,13 +129,15 @@ class MusikkController extends Controller
         $personService->lagreAlder($p_id, $pl_id, $alder);
         $personService->lagreMobil($p_id, $pl_id, $mobil);
 
-		return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
+		return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
 	}
 	
 	public function overviewAction($k_id, $pl_id, $b_id) {
 		require_once('UKM/innslag.class.php');
 
-		$view_data = array();
+		$view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+		$view_data['type'] = $this->type;
+
 		$user = $this->get('ukm_user')->getCurrentUser();
 		// Hent data om innslaget 
 		$innslagService = $this->get('ukm_api.innslag');
@@ -159,9 +161,6 @@ class MusikkController extends Controller
 		#var_dump($innslag); 
 
 		$view_data['translationDomain'] = 'musikk';
-		$view_data['k_id'] = $k_id;
-		$view_data['pl_id'] = $pl_id;
-		$view_data['b_id'] = $b_id;
 		$view_data['user'] = $user;
 		if ($innslag->info['b_name'] != 'Innslag uten navn') {
 			$view_data['name'] = $innslag->info['b_name'];	
@@ -176,6 +175,7 @@ class MusikkController extends Controller
 	}
 
 	public function saveOverviewAction($k_id, $pl_id, $b_id) {
+		$view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
 		$request = Request::createFromGlobals();
 
         $innslagService = $this->get('ukm_api.innslag');
@@ -188,7 +188,7 @@ class MusikkController extends Controller
 
 	    // Sjekk om alt er utfylt, og sett i så fall status til 8/9?
 	    #TODO: Redircet til "fullfør og send inn påmelding"-steget
-	    return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id));
+	    return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
 
 	}
 }

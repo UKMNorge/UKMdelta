@@ -14,9 +14,10 @@
 	<div class="text-center" style="background-color: #85cdcf; color: white;">
   		<h1 class="page-header">Dine påmeldinger</h1>
 	</div>
+
 	<div>
 		<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
-		{% if innslag is defined %}
+		{% if innslag is defined and innslag is not empty %}
 			<span class="delta-input-header">Fullførte påmeldinger</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
@@ -43,9 +44,10 @@
 		<div class="row">
 			<div class="col-xs-10 col-xs-offset-1">
 				<form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
-					<button class="btn btn-block btn-delta" type="submit" value="Start påmelding" style=""/>Start påmelding</button>
+					<button class="btn btn-block btn-delta" type="submit" value="Start ny påmelding" style=""/>Start ny påmelding</button>
 				</form>	
 			</div>
 		</div>
 	</div>
+	
 {% endblock %}

@@ -21,48 +21,6 @@ ukmid_delta_ukmid_pamelding_musikk_innslag:
               pl_id: ([0-9]{1,5})
               b_id: ([0-9]{1,11})
 
-ukmid_delta_ukmid_pamelding_musikk_innslag_teknisk:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/teknisk/
-    defaults: { _controller: UKMDeltaBundle:Innslag:technical }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              b_id: ([0-9]{1,11})
-
-ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_teknisk:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/teknisk/lagre/
-    defaults: { _controller: UKMDeltaBundle:Innslag:saveTechnical }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              b_id: ([0-9]{1,11})
-
-ukmid_delta_ukmid_pamelding_musikk_innslag_ny_tittel:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-tittel/
-    defaults: { _controller: UKMDeltaBundle:Innslag:newTitle }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              b_id: ([0-9]{1,11})
-
-ukmid_delta_ukmid_pamelding_musikk_innslag_rediger_tittel:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/t{t_id}/
-    defaults: { _controller: UKMDeltaBundle:Innslag:editTitle }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              b_id: ([0-9]{1,11})
-              t_id: ([0-9]{1,5})
-
-ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-tittel/lagre/
-    defaults: { _controller: UKMDeltaBundle:Innslag:saveNewTitle }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              b_id: ([0-9]{1,11})
-    methods:  [POST]
-
 ukmid_delta_ukmid_pamelding_musikk_ny_person:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/{b_id}/ny-person/ 
     defaults: { _controller: UKMDeltaBundle:Musikk:newPerson }
