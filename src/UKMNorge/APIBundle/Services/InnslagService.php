@@ -64,6 +64,20 @@ class InnslagService {
 		return $innslag;
 	}
 
+	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
+		// Søk etter innslag i databasen?
+		$qry = new SQL("SELECT smartukm_band.b_id, smartukm_technical.pl_id, smartukm_band.b_kategori FROM smartukm_band LEFT JOIN smartukm_technical ON smartukm_band.b_id = smartukm_technical.b_id WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+
+		$res = $qry->run();
+		while($row = mysql_fetch_assoc($res)) {
+			#$dump[] = $row;
+			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $row['b_kategori']);
+		}
+		//var_dump($innslag);
+		//die();
+		return $innslag;
+	}
+
 	public function leggTilPerson($innslagsID, $personID) {
 		// $innslagsID er b_id. $person er personid eller personobjekt?
 		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
@@ -87,7 +101,6 @@ class InnslagService {
 		$person->set('instrument', $instrument);
 		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
 		$person->lagre('delta', $user->getId(), $pl_id);
-
 	}
 
 	public function lagreBeskrivelse($innslagsID, $beskrivelse) {

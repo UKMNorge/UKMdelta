@@ -148,7 +148,7 @@ class MusikkController extends Controller
 			$teknisk = substr_replace($teknisk, '...', 220);
 			// Dette vil ikke påvirke lagret informasjon.
 		}
-		
+
 		$personer = $innslag->personer();
 		foreach ($personer as &$person) {
 			$person['age'] = $personService->alder($personService->hent($person['p_id']));

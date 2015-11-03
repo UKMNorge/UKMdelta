@@ -209,6 +209,7 @@ class InnslagController extends Controller
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
        
         $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
         $request = Request::createFromGlobals();
 
         $tekniskekrav = $request->request->get('teknisk');
@@ -216,6 +217,23 @@ class InnslagController extends Controller
         $innslagService->lagreTekniskeBehov($b_id, $tekniskekrav);
 
         return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+    }
+
+    public function saveOverviewAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $innslagService = $this->get('ukm_api.innslag');
+        $request = Request::createFromGlobals();
+
+        $path = $request->request->get('path');
+        $name = $request->request->get('navn');
+        $desc = $request->request->get('beskrivelse');
+
+        $innslagService->lagreBeskrivelse($b_id, $desc);
+        $innslagService->lagreArtistnavn($b_id, $name);
+
+        // Sjekk om path er en route?
+        return $this->redirectToRoute($path, $view_data);
+       
     }
 
     public function statusAction($k_id, $pl_id, $type, $b_id) {
@@ -239,9 +257,12 @@ class InnslagController extends Controller
         if ($innslag->get('b_status') != 8) {
             return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
         }
-        else {
-            return $this->redirectToRoute('UKMDeltaBundle:Innslag:pamelt.html.twig', $view_data);
+        else { // Innslaget er ferdig påmeldt!
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
         }
+    }
+
+    public function attendingAction($k_id, $pl_id, $type, $b_id) {
 
     }
 }

@@ -29,6 +29,27 @@ ukm_delta_ukmid_pamelding_status:
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,5})
+              type: .+
+              b_id: ([0-9]{1,11})
+    methods:  [GET]
+
+ukm_delta_ukmid_pamelding_lagre:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/status/
+    defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              type: .+
+              b_id: ([0-9]{1,11})
+    methods:  [POST]
+
+ukm_delta_ukmid_pamelding_pameldt:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/pameldt/
+    defaults: { _controller: UKMDeltaBundle:Innslag:attending }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              type: .+
               b_id: ([0-9]{1,11})
 
 ukm_delta_ukmid_pamelding_hva:
