@@ -14,7 +14,7 @@
 	{% else %}
 		<h1 class="center">Legg til låt</h1>
 	{% endif %}
-	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<input type="hidden" name="t_id" value="{{ tittel.t_id is defined ? tittel.t_id : 'new' }}">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
@@ -42,8 +42,10 @@
 						disabled>Velg lengde på innslaget</option>
 					{% for i in 0..60 %}
 						<option value="{{ i * 10 }}" 
-							{% if tittel.varighet == i * 10 %}
-								selected
+							{% if tittel.varighet is defined %}
+								{% if tittel.varighet == i * 10 %}
+									selected
+								{% endif %}
 							{% endif %}
 							>{{ (i / 6)|round(0, 'floor') }} min{% if ((i % 6) * 10 ) != 0 %}, {{ (i % 6) * 10 }} sek</option>
 							{% endif %}
@@ -90,7 +92,7 @@
 
 		{% if tittel.tittel is defined %}
 			<p>&nbsp;</p>
-			<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett låt</a>
+			<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett låt</a>
 		{% endif %}
 	</form>
 

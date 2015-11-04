@@ -1,0 +1,73 @@
+{% trans_default_domain translationDomain %}
+
+<div class="row {{ titler|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
+	<div class="trigger click">
+		<div class="col-xs-12 delta-input-header">
+			<span>{{ 'overviewAction.titler.overskrift'|trans }}</span>{% if titler|length > 0 %}<small class="right edit">{{ 'overviewAction.titler.endre'|trans }}</small>{% endif %}
+		</div>
+		<hr />
+		<div class="summary col-xs-12 delta-list"> 
+			<span>
+				{% for tittel in titler %}
+					{{ loop.first ? '' : ', ' }}
+					{{ tittel.tittel is defined ? tittel.tittel : '' }} 
+				{% else %}
+					{{ 'overviewAction.titler.ingen'|trans }}
+				{% endfor %}
+			</span>
+		</div>
+	</div>
+	<div class="details col-xs-12">
+		<div id="deltakerliste" class="delta-list">
+			{% for tittel in titler %}
+				<ul class="list-unstyled">
+					<li class="row click triggerLink">
+						<div class="col-xs-2">
+							<div class="overunder">
+								{% if tittel.varighet is defined %}
+									<div class="over">{{ tittel.varighet / 60 }} {{ 'tittel.min'|trans }}</div>
+									<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.sek'|trans }}</div>
+								{% else %}
+									<div class="over">? {{ 'tittel.min'|trans }}</div>
+									<div class="under">? {{ 'tittel.sek'|trans }}</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-xs-7">
+							<p style="line-height:1em">
+								{{ tittel.tittel is defined ? tittel.tittel : '' }}
+								<br />
+								<small>
+									{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
+										{{ tittel.parentes }}
+									{% else %}
+										<span class="text-danger">{{ 'tittel.info_mangler'|trans }}</span>
+									{% endif %}
+								</small>
+							</p>
+						</div>
+						<div class="col-xs-3">
+							<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans }}</a>
+						</div>
+					</li>
+				</ul>
+			{% endfor %}
+			<div class="clearfix"></div>
+			<p>&nbsp;</p>
+			<div class="col-xs-12">
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+			</div>
+			<p>&nbsp;</p>
+			<p class="center">
+				<a class="list-close" href="#">{{ 'overviewAction.titler.lukk_listen'|trans }}</a>
+			</p>
+		</div>
+	</div>
+	{% if titler|length == 0 %} 
+		<div class="row">
+			<div class="col-xs-12">
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+			</div>
+		</div>
+	{% endif %}
+</div>

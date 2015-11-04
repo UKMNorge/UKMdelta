@@ -10,7 +10,7 @@
 	<p class="">
 		{{ 'technicalAction.forklaring'|trans }}
 	</p>
-	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_innslag_lagre_teknisk', { k_id: k_id, pl_id: pl_id, b_id: b_id}) }}">
+	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_innslag_lagre_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id}) }}">
 		<div class="row">
 			<div class="col-xs-12">
 				<textarea rows="8" class="form-control" name="teknisk" placeholder="{{ 'technicalAction.placeholder_teknisk'|trans }}">{{ teknisk is defined ? teknisk : '' }}</textarea>
@@ -22,7 +22,7 @@
 		</div>
 		<p>&nbsp;</p>
 		<div class="col-xs-12 center">
-			<a href="{{ path('ukmid_delta_ukmid_pamelding_musikk_innslag', { k_id: k_id, pl_id: pl_id, b_id: b_id }) }}">{{ 'technicalAction.avbryttekst'|trans }}</a>
+			<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'technicalAction.avbryttekst'|trans }}</a>
 		</div>
 	</form>
 {% endblock %}

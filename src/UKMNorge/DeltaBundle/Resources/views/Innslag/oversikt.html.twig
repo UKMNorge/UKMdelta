@@ -1,0 +1,57 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/innslag.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+
+	<form class="form-group delta-form" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+		<input type="hidden" name="path" id="deltapath" value="ukm_delta_ukmid_pamelding_status">
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>{{ 'overviewAction.artistnavn.label'|trans }}</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ innslag.b_name is defined ? innslag.b_name : '' }}"> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>{{ 'overviewAction.beskrivelse.label'|trans }}</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.placeholder'|trans }}">{{ beskrivelse }}</textarea>
+			</div>
+		</div>
+		<br>
+		{# PERSONER #}
+		{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
+		<p>&nbsp;</p>
+		
+		{# TITLER #}
+		{% include 'UKMDeltaBundle:Musikk:titler.html.twig' %}
+		<p>&nbsp;</p>
+
+		{# TEKNISKE BEHOV #}
+		{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
+		<p>&nbsp;</p>
+
+		<div class="row">
+			<a href="">
+				<div class="col-xs-12">
+					<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
+				</div>
+			</a>
+		</div>
+	</form>
+
+{% endblock %}
