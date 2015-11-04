@@ -21,7 +21,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ innslag.b_name is defined ? innslag.b_name : '' }}"> 
+				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
 			</div>
 		</div>
 		<div class="row">

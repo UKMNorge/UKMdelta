@@ -200,7 +200,6 @@ class InnslagController extends Controller
         // Opprett et nytt innslag
         $innslag = $innslagService->opprett($k_id, $pl_id, $type, $hvem, $person, $user->getId());        
 
-
         $view_data['b_id'] = $innslag->get('b_id');
         //var_dump($hvem);
 
@@ -388,10 +387,13 @@ class InnslagController extends Controller
         #var_dump($personer);
         #var_dump($innslag); 
 
-        $view_data['translationDomain'] = 'musikk';
+        $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {
             $view_data['name'] = $innslag->info['b_name'];  
+        }
+        else {
+            $view_data['name'] = '';
         }
         $view_data['teknisk'] = $teknisk;
         $view_data['innslag'] = $innslag->info;
