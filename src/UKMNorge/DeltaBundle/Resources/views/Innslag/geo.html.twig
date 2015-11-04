@@ -42,7 +42,7 @@
 								</div>
 							</a>
 							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 10px">
-								<div class="col-xs-12"><span>Siden dette er en fellesmønstring, må du velge hvilken bydel/kommune du vil representere.</span></div> 
+								<div class="col-xs-12"><span>Hvilken kommune/bydel representerer du?</span></div> 
 								{% for key,kommune in monstring.kommuner %}
 									{% if app.environment == 'test' and fylke.id != 21 %}
 									<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">
