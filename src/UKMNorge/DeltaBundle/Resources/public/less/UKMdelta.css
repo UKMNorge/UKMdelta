@@ -28,7 +28,8 @@ h1, .h1 {
     font-size: 26px;
     font-weight: 300;
 }
-.btn-delta {
+.btn-delta,
+.btn-primary {
 
 	background-color: @tertiary-grey;
 	border: 1px solid @primary-green;
