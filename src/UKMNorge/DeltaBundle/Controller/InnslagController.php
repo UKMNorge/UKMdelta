@@ -9,6 +9,7 @@ use monstringer;
 use innslag;
 use tittel;
 use Exception;
+use DateTime;
 
 class InnslagController extends Controller
 {
@@ -432,6 +433,7 @@ class InnslagController extends Controller
 
     public function statusAction($k_id, $pl_id, $type, $b_id) {
         require_once('UKM/inc/validate_innslag.inc.php');
+        require_once('UKM/monstring.class.php');
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'innslag';
@@ -442,8 +444,11 @@ class InnslagController extends Controller
         $innslag->get('b_status');
         $innslag->get('b_status_text');
 
-        $frist = array('maned' => 2, 'dag' => 'sistefrist-dag', 'time' => 12, 'minutt' => 0);   
-
+        $monstring = new monstring($pl_id);
+        
+        $frist = new DateTime();
+        $frist->setTimestamp($monstring->get('pl_deadline'));
+        
         $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
