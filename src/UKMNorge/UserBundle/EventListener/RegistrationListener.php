@@ -25,10 +25,36 @@ class RegistrationListener implements EventSubscriberInterface
         return array(FOSUserEvents::REGISTRATION_INITIALIZE => 'onRegistrationInitialize',
         			 FOSUserEvents::REGISTRATION_SUCCESS => 'onRegistrationSuccess',
 					 UKMUserEvents::REGISTRATION_ERROR => 'onRegistrationError',
+					 FOSUserEvents::REGISTRATION_CONFIRM => 'onRegistrationConfirm',
 					 FOSUserEvents::RESETTING_RESET_SUCCESS => 'onResetComplete',
 					);
     }
 
+
+	/**
+	 * onRegistrationConfirm
+	 *
+	 * User is confirmed and activated. Send password by SMS before
+	 * completing registration process
+	 *
+	 **/
+	public function onRegistrationConfirm(GetResponseUserEvent $event) {
+		require_once('UKM/inc/password.inc.php');
+		
+		$tokenGenerator = $this->container->get('fos_user.util.token_generator');
+		$password = UKM_ordpass(true); // true gives numbers before words
+		$event->getUser()->setPlainPassword( $password );
+
+   		$text = $this->container->getParameter('ukmdelta.sms.password.created');
+		
+		$UKMSMS = $this->container->get('ukmsms');
+        try {
+	        $UKMSMS->sendSMS( $event->getUser()->getPhone(), str_replace('#code', $password, $text) );
+	    } catch( Exception $e ) {
+		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
+	    }
+
+	}
 
 	/**
 	 * onRegistrationSuccess
