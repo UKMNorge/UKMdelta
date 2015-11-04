@@ -167,6 +167,7 @@ class MusikkController extends Controller
 		}
 		$view_data['teknisk'] = $teknisk;
 		$view_data['innslag'] = $innslag->info;
+		$view_data['beskrivelse'] = utf8_decode($innslag->get('b_description'));
 		$view_data['personer'] = $personer;
 		$view_data['titler'] = $titler;
 

@@ -114,7 +114,7 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 	
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
-	        $innslag->set('b_description', $beskrivelse);
+	        $innslag->set('b_description', utf8_encode($beskrivelse));
 	    	$innslag->lagre();
 	    }
 	}	
