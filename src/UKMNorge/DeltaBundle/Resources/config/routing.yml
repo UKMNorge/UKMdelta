@@ -43,7 +43,7 @@ ukm_delta_ukmid_pamelding_status:
     methods:  [GET]
 
 ukm_delta_ukmid_pamelding_lagre:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/status/
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
     defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
     requirements:
               k_id: ([0-9]{1,4})
@@ -51,6 +51,15 @@ ukm_delta_ukmid_pamelding_lagre:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
     methods:  [POST]
+
+# ukmid_delta_ukmid_pamelding_lagre_innslag:
+#     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
+#     defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
+#     requirements:
+#               k_id: ([0-9]{1,4})
+#               pl_id: ([0-9]{1,5})
+#               type: ([a-z]+)
+#               b_id: ([0-9]{1,11})
 
 ukm_delta_ukmid_pamelding_pameldt:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/pameldt/
@@ -80,15 +89,6 @@ ukmid_delta_ukmid_pamelding_ny_person:
 ukmid_delta_ukmid_pamelding_lagre_ny_person:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/ny-person/lagre/
     defaults: { _controller: UKMDeltaBundle:Innslag:saveNewPerson }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              type: ([a-z]+)
-              b_id: ([0-9]{1,11})
-
-ukmid_delta_ukmid_pamelding_lagre_innslag:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
-    defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,5})

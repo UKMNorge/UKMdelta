@@ -414,8 +414,16 @@ class InnslagController extends Controller
         $innslagService->lagreBeskrivelse($b_id, $desc);
         $innslagService->lagreArtistnavn($b_id, $name);
 
+
+        // var_dump($path);
+        // die();
+        // Path er henta fra deltapath, som blir satt javascriptet til path generert via Twig.
+        if (empty($path)) {
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
+        }
+        return $this->redirect($path);
         // Sjekk om path er en route?
-        return $this->redirectToRoute($path, $view_data);
+        
        
     }
 

@@ -35,21 +35,21 @@ class MusikkController extends Controller
 
 	
 
-	public function saveOverviewAction($k_id, $pl_id, $b_id) {
-		$view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
-		$request = Request::createFromGlobals();
+// 	public function saveOverviewAction($k_id, $pl_id, $b_id) {
+// 		$view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'b_id' => $b_id);
+// 		$request = Request::createFromGlobals();
 
-        $innslagService = $this->get('ukm_api.innslag');
+//         $innslagService = $this->get('ukm_api.innslag');
 
-        $artistnavn = $request->request->get('artistnavn');
-        $beskrivelse = $request->request->get('beskrivelse');
+//         $artistnavn = $request->request->get('artistnavn');
+//         $beskrivelse = $request->request->get('beskrivelse');
         
-        $innslagService->lagreBeskrivelse($b_id, $beskrivelse);
-        $innslagService->lagreArtistnavn($b_id, $artistnavn);
+//         $innslagService->lagreBeskrivelse($b_id, $beskrivelse);
+//         $innslagService->lagreArtistnavn($b_id, $artistnavn);
 
-	    // Sjekk om alt er utfylt, og sett i så fall status til 8/9?
-	    #TODO: Redircet til "fullfør og send inn påmelding"-steget
-	    return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
+// 	    // Sjekk om alt er utfylt, og sett i så fall status til 8/9?
+// 	    #TODO: Redircet til "fullfør og send inn påmelding"-steget
+// 	    return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_musikk_innslag', $view_data);
 
-	}
+// 	}
 }
