@@ -23,7 +23,8 @@ class InnslagController extends Controller
     public function geoAction()
     {
         require_once('UKM/monstringer.class.php');
-
+        $view_data['translationDomain'] = 'innslag';
+        
         $season = $this->container->get('ukm_delta.season')->getActive();
 
         $monstringer = new monstringer($season);
@@ -423,8 +424,6 @@ class InnslagController extends Controller
         }
         return $this->redirect($path);
         // Sjekk om path er en route?
-        
-       
     }
 
     public function statusAction($k_id, $pl_id, $type, $b_id) {

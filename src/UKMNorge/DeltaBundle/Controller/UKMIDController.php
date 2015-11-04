@@ -41,8 +41,9 @@ class UKMIDController extends Controller
 
     public function checkInfoAction()
     {
-
         $view_data = array();
+        $view_data['translationDomain'] = 'ukmid';
+
         $user = $this->get('ukm_user')->getCurrentUser();
         
         // Har vi all data lagret om denne brukeren?

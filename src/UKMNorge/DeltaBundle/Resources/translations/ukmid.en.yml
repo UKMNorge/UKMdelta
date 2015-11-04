@@ -1,0 +1,12 @@
+checkInfoAction:
+    overskrift: Litt mer info
+    topptekst: Ettersom du er kontaktperson, trenger vi litt mer info om deg.
+    adresse: Adresse
+    postnummer: Postnummer
+    poststed: Poststed
+    alder: Alder
+    alderVelger:
+        Label: Velg riktig alder
+        aar: år
+        gammel: Over 25 år
+    nesteLabel: Neste

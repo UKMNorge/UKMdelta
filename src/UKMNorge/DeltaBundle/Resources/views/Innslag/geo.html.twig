@@ -1,4 +1,5 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
 {% block scripts %}
 	{{ parent() }}
@@ -9,15 +10,15 @@
 	{% endjavascripts %}
 {% endblock %}
 {% block content %}
-	<h1 class="center">Hvor skal du melde deg på?</h1>
+	<h1 class="center">{{ 'geoAction.overskrift'|trans }}</h1>
 	
 	<p>&nbsp;</p>
 	
 	<p class="lead center">
-		Velg hvor du vil delta på UKM.
+		{{ 'geoAction.topptekst'|trans }}
 	</p>
 	<!-- Søkefelt her -->
-	<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterMonstringer" placeholder="Skriv her for å filtrere listen..." />
+	<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 	<div id="lokalmonstringer">
 	
 		{% for fylke in monstringsliste %}
@@ -42,7 +43,7 @@
 								</div>
 							</a>
 							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 10px">
-								<div class="col-xs-12"><span>Hvilken kommune/bydel representerer du?</span></div> 
+								<div class="col-xs-12"><span>{{ 'geoAction.fellesmonstringLabel'|trans }}</span></div> 
 								{% for key,kommune in monstring.kommuner %}
 									{% if app.environment == 'test' and fylke.id != 21 %}
 									<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">

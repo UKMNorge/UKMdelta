@@ -1,16 +1,17 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="center">Litt mer info</h1>
+	<h1 class="center">{{ 'checkInfoAction.overskrift'|trans }}</h1>
 	<p>&nbsp;</p>
 	<p class="lead center">
-		Ettersom du er kontaktperson, trenger vi litt mer info om deg.
+		{{ 'checkInfoAction.topptekst'|trans }}
 	</p>
 	<form class="" method="POST" action="{{ path('ukm_delta_ukmid_verifyInfo') }}">
 		<div class="form-group">
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
-					<small>Adresse</small>
+					<small>{{ 'checkInfoAction.adresse'|trans }}</small>
 				</div>
 			</div>
 			<div class="row">
@@ -20,7 +21,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
-					<small>Postnummer</small>
+					<small>{{ 'checkInfoAction.postnummer'|trans }}</small>
 				</div>
 			</div>
 			<div class="row">
@@ -30,7 +31,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
-					<small>Poststed (Fylles inn automatisk)</small>
+					<small>{{ 'checkInfoAction.poststed'|trans }}</small>
 				</div>
 			</div>
 			<div class="row">
@@ -40,24 +41,24 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
-					<small>Alder</small>
+					<small>{{ 'checkInfoAction.alder'|trans }}</small>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
 					<select name="age" class="form-control">
-						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>Velg riktig alder</option> 
+						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'checkInfoAction.alderVelger.Label'|trans }}</option> 
 						{% for i in 10..25 %}
-							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} år</option> 
+							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans }}</option> 
 						{% endfor %}
-							<option value="0">Over 25 år</option>
+							<option value="0">{{ 'checkInfoAction.alderVelger.gammel'|trans }}</option>
 					</select>
 				</div>
 			</div>
 			<br /> 
 			<div class="row">
 				<div class="col-xs-12">
-					<button type="submit" class="btn btn-delta btn-default btn-block center">Neste</button>
+					<button type="submit" class="btn btn-delta btn-default btn-block center">{{ 'checkInfoAction.nesteLabel'|trans }}</button>
 				</div>
 			</div>
 		</div>

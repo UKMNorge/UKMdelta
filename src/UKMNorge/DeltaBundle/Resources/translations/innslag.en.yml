@@ -5,6 +5,12 @@ whoAction:
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+geoAction:
+    overskrift: Hvor skal du melde deg på?
+    topptekst: Velg hvor du vil delta på UKM.
+    filterLabel: Skriv her for å filtrere listen...
+    fellesmonstringLabel: Hvilken kommune/bydel representerer du?
+
 statusAction:
     obs-topptekst: "OBS: Du er ikke meldt på UKM enda!"
     infotekst: Denne informasjonen mangler før innslaget er påmeldt:
