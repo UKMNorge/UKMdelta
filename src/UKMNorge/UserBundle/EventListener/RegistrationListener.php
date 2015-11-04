@@ -82,7 +82,7 @@ class RegistrationListener implements EventSubscriberInterface
 		$password = substr($tokenGenerator->generateToken(), 0, 8); // 8 chars		
 		$password = '1234';
 		
-		$smscode = (int) ( rand(10,99).''.rand(10,99).''.rand(10,99) );
+		$smscode = (int) ( rand(10,99).''.rand(10,99) ); #.''.rand(10,99) );
 		
 		$user->setPlainPassword( $password );
 		$user->setSmsValidationCode( $smscode );
