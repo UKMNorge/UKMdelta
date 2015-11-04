@@ -15,7 +15,7 @@
 		<h1 class="center">Legg til låt</h1>
 	{% endif %}
 	<form class="delta-form form-group" method="POST" action="{{ path('ukmid_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-		<input type="hidden" name="t_id" value="{{ tittel.t_id is defined ? tittel.t_id : 'new' }}">
+		<input type="hidden" name="t_id" value="{{ tittel.get('t_id') is defined ? tittel.get('t_id') : 'new' }}">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
 				<small>Tittel</small>
@@ -23,7 +23,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.tittel is defined ? tittel.tittel : '' }}">
+				<input type="text" name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.get('tittel') is defined ? tittel.get('tittel') : '' }}">
 			</div>
 		</div>
 
@@ -76,7 +76,7 @@
 				<small>Tekst av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.tekst_av is defined ? tittel.tekst_av : '' }}">
+				<input type="text" name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.get('tekst_av') is defined ? tittel.get('tekst_av') : '' }}">
 			</div>
 		</div>
 		<div class="row" id="melodi-rad">
@@ -84,7 +84,7 @@
 				<small>Melodi av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.melodi_av is defined ? tittel.melodi_av : '' }}">
+				<input type="text" name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('melodi_av') is defined ? tittel.get('melodi_av') : '' }}">
 			</div>
 		</div>
 		<p>&nbsp;</p>

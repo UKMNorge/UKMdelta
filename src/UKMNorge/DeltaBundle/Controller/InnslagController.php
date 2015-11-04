@@ -297,6 +297,8 @@ class InnslagController extends Controller
             $melodiforfatter = $request->request->get('melodiforfatter');
             
             $tittel->set('tekst_av', $tekstforfatter);
+            // var_dump(mb_detect_encoding($melodiforfatter));
+            // die();
             $tittel->set('melodi_av', $melodiforfatter);
             $tittel->set('varighet', $lengde);
         }
