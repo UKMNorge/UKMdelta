@@ -256,14 +256,14 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
     }
 
-    public function saveNewTitleAction($k_id, $pl_id, $type, $b_id) {
+    public function saveTitleAction($k_id, $pl_id, $type, $b_id) {
         require_once('UKM/tittel.class.php');
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id);
         $request = Request::createFromGlobals();
         $t_id = $request->request->get('t_id');
-        $seasonService = $this->get('ukm_delta.season');
 
+        $seasonService = $this->get('ukm_delta.season');
 		switch( $type ) {
 			case 'film':		$form = 'smartukm_titles_video';		break;
 			case 'utstilling':	$form = 'smartukm_titles_exhibition';	break;
@@ -276,15 +276,17 @@ class InnslagController extends Controller
 		
 		// Opprett tittel-objektet og sett tittel navn
         if ($t_id == 'new') {
+            // Create empty object
 		    $tittel = new tittel(false, $form);
             $tittel->create( $b_id );
         }
         else {
+            // Create object with data
             $tittel = new tittel($t_id, $form);
         }
 
-    	$tittel->set( 'tittel', $tittelnavn );		
-    	$tittel->set( 'season', $season );
+    	$tittel->set('tittel', $tittelnavn );		
+    	$tittel->set('season', $season );
 
 		// Sett felter for musikk
         if ($type == "musikk") {
