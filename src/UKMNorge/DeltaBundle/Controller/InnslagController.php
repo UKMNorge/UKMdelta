@@ -65,12 +65,11 @@ class InnslagController extends Controller
     	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
     }
 
+    /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         
         return $this->render('UKMDeltaBundle:Innslag:nyPerson.html.twig', $view_data);
-        
-
     }
 
     public function editPersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
@@ -166,8 +165,7 @@ class InnslagController extends Controller
         return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
-    public function createAction($k_id, $pl_id, $type, $hvem) 
-    {
+    public function createAction($k_id, $pl_id, $type, $hvem) {
     	require_once('UKM/innslag.class.php');
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type);
 
@@ -336,7 +334,6 @@ class InnslagController extends Controller
         }
         // TODO: Feilmelding her!
         return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_tittel', $view_data);
-        
     }
 
     public function technicalAction($k_id, $pl_id, $type, $b_id) {
@@ -456,13 +453,11 @@ class InnslagController extends Controller
         // Oppdater status på innslaget!
         if(empty($view_data['grunner'])) {
             $innslagService->lagreStatus($b_id, 8);
-        }
-     
-        if ($innslag->get('b_status') != 8) {
-            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
-        }
-        else { // Innslaget er ferdig påmeldt!
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
+        }
+        else {
+            $innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
+            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
         }
     }
 
