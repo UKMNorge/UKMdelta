@@ -38,6 +38,21 @@ ukm_delta_ukmid_pamelding_dans_opprett:
               pl_id: ([0-9]{1,5})
               hvem: ([a-z]+)
 
+ukm_delta_ukmid_pamelding_teater_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
+    defaults: { _controller: UKMDeltaBundle:Teater:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+
+ukm_delta_ukmid_pamelding_teater_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Teater:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
 ukm_delta_ukmid_pamelding_innslag_oversikt:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/
     defaults: { _controller: UKMDeltaBundle:Innslag:overview }

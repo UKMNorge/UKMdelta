@@ -4,7 +4,7 @@ whoAction:
     sammen: Jeg spiller sammen med andre
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-    
+
 overviewAction:
     artistnavn:
         label: Artistnavn / Gruppenavn

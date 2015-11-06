@@ -56,13 +56,14 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>Har du/dere laget dansen selv?</small>
+				<small>Har du/dere laget teaterstykket selv?</small>
 			</div>
 		</div>
 		<div class="col-xs-12"  id="melodi-valg" >
 			<label class="radio-inline"><input type="radio" name="selvlaget" value="1">Ja</label>
 			<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>Nei</label>
 		</div>
+		{# 
 		<div class="row" id="tekst-rad">
 			<div class="col-xs-12 delta-input-header">
 				<small>Koreografi av</small>
@@ -73,12 +74,13 @@
 		</div>
 		<div class="row" id="melodi-rad">
 			<div class="col-xs-12 delta-input-header">
-				<small>Melodi av</small>
+				<small>Melodi til eventuelle melodier av</small>
 			</div>
 			<div class="col-xs-12">
 				<input type="text" name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
 			</div>
 		</div>
+		#}
 		<p>&nbsp;</p>
 		<button type="submit" class="btn btn-block btn-delta">Lagre</button>
 

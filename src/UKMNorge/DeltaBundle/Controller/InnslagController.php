@@ -234,6 +234,9 @@ class InnslagController extends Controller
         elseif ($type == 'dans') {
             return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
         }
+        elseif ($type == 'teater') {
+            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+        }
         else {
             // Midlertidig, bør gjøre noe annet her.
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
@@ -262,6 +265,9 @@ class InnslagController extends Controller
         }
         elseif ($type == 'dans') {
             return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+        }
+        elseif ($type == 'teater') {
+            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
         }
         else {
             // Midlertidig, bør gjøre noe annet her.
