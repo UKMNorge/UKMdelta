@@ -1,6 +1,6 @@
 {% trans_default_domain translationDomain %}
 <div class="row">
-	<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+	<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<div class="col-xs-12 delta-input-header">
 			<span>Tekniske behov</span>{% if teknisk|length > 0 %}<small class="right edit">endre</small>{% endif %}
 		</div>
@@ -10,7 +10,7 @@
 			{% if teknisk|length > 0 %}
 				{{ teknisk }}
 			{% else %}
-				Tekniske behov ikke lagt til. <a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">Legg til tekniske behov</a>
+				Tekniske behov ikke lagt til. <a href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">Legg til tekniske behov</a>
 			{% endif %}
 			</span>
 		</div>
@@ -18,7 +18,7 @@
 	{% if teknisk|length == 0 %}
 		<p>&nbsp;</p>
 		<div class="col-xs-12">
-			<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">Legg til tekniske behov</a>
+			<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">Legg til tekniske behov</a>
 		</div>
 	{% endif %}
 </div>

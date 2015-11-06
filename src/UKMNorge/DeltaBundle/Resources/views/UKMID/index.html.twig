@@ -22,7 +22,7 @@
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.info.b_status == 8 %}
-						<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
 							<li class="list-group-item">{{ event.info.b_name }}</li>
 						</a>
 					{% endif %}
@@ -32,7 +32,7 @@
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.info.b_status != 8 %}
-						<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}"><li class="list-group-item alert alert-danger">{{ event.info.b_name }}</li></a>
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}"><li class="list-group-item alert alert-danger">{{ event.info.b_name }}</li></a>
 					{% endif %}
 				{% endfor %}
 			</ul>

@@ -36,7 +36,7 @@
 		<a type="button" class="btn btn-block btn-delta" href="">{{ 'attendingAction.viskontakt'|trans }}</a>
 	</div>	
 	<div class="col-xs-12">
-		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'attendingAction.rediger'|trans }}</a>
+		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'attendingAction.rediger'|trans }}</a>
 	</div>	
 	<p>&nbsp;</p>
 	<div class="col-xs-12">
@@ -47,6 +47,6 @@
 	</div>
 	<p>&nbsp;</p>
 	<div class="col-xs-12">
-		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
+		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_homepage') }}"}>{{ 'attendingAction.videreknapp'|trans }}</a>
 	</div>	
 {% endblock %}

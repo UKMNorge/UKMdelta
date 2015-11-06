@@ -1,4 +1,5 @@
-{% trans_default_domain translationDomain %}
+{# Denne er lik uansett #}
+{% trans_default_domain 'musikk' %}
 
 <div class="row {{ titler|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
 	<div class="trigger click">
@@ -47,7 +48,7 @@
 							</p>
 						</div>
 						<div class="col-xs-3">
-							<a href="{{ path('ukmid_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans }}</a>
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans }}</a>
 						</div>
 					</li>
 				</ul>
@@ -55,7 +56,7 @@
 			<div class="clearfix"></div>
 			<p>&nbsp;</p>
 			<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
 			</div>
 			<p>&nbsp;</p>
 			<p class="center">
@@ -66,7 +67,7 @@
 	{% if titler|length == 0 %} 
 		<div class="row">
 			<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
 			</div>
 		</div>
 	{% endif %}
