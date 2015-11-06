@@ -19,8 +19,11 @@ class SenderService {
 	}
 
 	public function sendSMS( $recipient, $message ) {
-		#$this->SMSapi->text($message)->to($recipient)->from($this->sender)->ok();
-		throw new Exception( 'Utviklingsmodus, sms ikke sendt: ('. $recipient.': '. $message .')' );
+		if( $this->container->getParameter("kernel.environment") == 'test' && $this->container->getParameter('UKM_HOSTNAME') == 'ukm.no' ) {
+			$this->SMSapi->text($message)->to($recipient)->from($this->sender)->ok();
+		} else {
+			throw new Exception( 'Utviklingsmodus, sms ikke sendt: ('. $recipient.': '. $message .')' );
+		}
 		$result = $this->report();
 		
 		if( !is_integer( $result ) ) {
