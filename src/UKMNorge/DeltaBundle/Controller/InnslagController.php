@@ -350,10 +350,12 @@ class InnslagController extends Controller
        
         // Slett tittel fra innslaget
         if ($deleted = $tittel->delete()) {
+            $this->addFlash('success', 'Tittel "'.$tittel->get('tittel').'" slettet!');
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
         }
-        // TODO: Feilmelding her!
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_tittel', $view_data);
+        
+        $this->addFlash('danger', 'En feil oppsto ved sletting av tittel. Forsøk igjen, og kontakt support hvis problemet fortsetter.');
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function technicalAction($k_id, $pl_id, $type, $b_id) {
@@ -392,6 +394,8 @@ class InnslagController extends Controller
         $personService = $this->get('ukm_api.person');
         $innslag = $innslagService->hent($b_id);
         
+
+
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
         $teknisk = $innslag->get('td_demand');
         if (strlen($teknisk) > 220) {

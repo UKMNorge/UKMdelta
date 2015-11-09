@@ -26,6 +26,14 @@ overviewAction:
         legg_til: Legg til person
     lagre: Lagre
 
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    placeholder_teknisk: Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt
+
 person:
     rolle: 
         label: instrument
