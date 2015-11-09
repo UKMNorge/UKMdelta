@@ -1,9 +1,12 @@
 extra:
     resource: 'routing_musikk.yml'
 
+# FORSIDE
 ukm_delta_homepage:
     path:     /
     defaults: { _controller: UKMDeltaBundle:Default:index }
+
+### UKMID
 
 ukm_delta_ukmid_homepage:
     path:     /ukmid/
@@ -19,39 +22,10 @@ ukm_delta_ukmid_verifyInfo:
     defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
     methods:  [POST]
 
+### INNSLAG
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
-
-ukm_delta_ukmid_pamelding_dans_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/
-    defaults: { _controller: UKMDeltaBundle:Dans:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_dans_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Dans:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-ukm_delta_ukmid_pamelding_teater_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
-    defaults: { _controller: UKMDeltaBundle:Teater:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_teater_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Teater:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
 
 ukm_delta_ukmid_pamelding_innslag_oversikt:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/
@@ -81,15 +55,6 @@ ukm_delta_ukmid_pamelding_lagre:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
     methods:  [POST]
-
-# ukmid_delta_ukmid_pamelding_lagre_innslag:
-#     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
-#     defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
-#     requirements:
-#               k_id: ([0-9]{1,4})
-#               pl_id: ([0-9]{1,5})
-#               type: ([a-z]+)
-#               b_id: ([0-9]{1,11})
 
 ukm_delta_ukmid_pamelding_pameldt:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/pameldt/
@@ -212,6 +177,49 @@ ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
     methods:  [POST]
+
+### DANS
+ukm_delta_ukmid_pamelding_dans_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/
+    defaults: { _controller: UKMDeltaBundle:Dans:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+
+ukm_delta_ukmid_pamelding_dans_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Dans:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+### TEATER
+ukm_delta_ukmid_pamelding_teater_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
+    defaults: { _controller: UKMDeltaBundle:Teater:who }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+
+ukm_delta_ukmid_pamelding_teater_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Teater:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+# ukmid_delta_ukmid_pamelding_lagre_innslag:
+#     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
+#     defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
+#     requirements:
+#               k_id: ([0-9]{1,4})
+#               pl_id: ([0-9]{1,5})
+#               type: ([a-z]+)
+#               b_id: ([0-9]{1,11})
+
+
 
 ukm_delta_ukmid_pamelding_film_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/film/

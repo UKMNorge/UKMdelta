@@ -61,7 +61,16 @@ class InnslagService {
 	public function hent($innslagsID) {
 		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
 		$innslag->personer(); // Tving en oppdatering av personer-arrrayet.
-		return $innslag;
+
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+		else {
+			return $innslag;
+		}		
 	}
 
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
@@ -88,14 +97,31 @@ class InnslagService {
 		// $innslagsID er b_id. $person er personid eller personobjekt?
 		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
 		
-		$innslag->addPerson($personID);
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+		else {
+			$innslag->addPerson($personID);
+		}		
+		
 	}
 
 	public function fjernPerson($innslagsID, $personID) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$innslag = new innslag($innslagsID, false);
 
-		$innslag->removePerson($personID);
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+		else {
+			$innslag->removePerson($personID);
+		}	
 	}
 
 	public function lagreInstrument($innslagsID, $personID, $pl_id, $instrument) {
@@ -103,6 +129,12 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 		$person = new person($personID, $innslagsID);
 		
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
 		#Oppdatert lagre-funksjon: 
 		$person->set('instrument', $instrument);
 		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
@@ -112,7 +144,13 @@ class InnslagService {
 	public function lagreBeskrivelse($innslagsID, $beskrivelse) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$innslag = new innslag($innslagsID, false);
-	
+		
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
 	        $innslag->set('b_description', utf8_encode($beskrivelse));
 	    	$innslag->lagre();
@@ -122,7 +160,13 @@ class InnslagService {
 	public function lagreArtistnavn($innslagsID, $artistnavn) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$innslag = new innslag($innslagsID, false);
-	
+		
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
 		if ( $innslag->get('b_name') != utf8_encode($artistnavn)) {
 	        $innslag->set('b_name', $artistnavn);
 	    	$innslag->lagre();
@@ -131,6 +175,13 @@ class InnslagService {
 
 	public function lagreStatus($innslagsID, $b_status) {
 		$innslag = new innslag($innslagsID, false);
+
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
 
 		if ( $innslag->get('b_status') != $b_status) {
 			$innslag->set('b_status', $b_status);
@@ -142,6 +193,13 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 		// var_dump($teknisk);
 
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
 		$innslag->set('td_demand', $teknisk);
 	   	$innslag->lagre();
 	}
@@ -150,6 +208,14 @@ class InnslagService {
 		$validate = validateBand($innslagsID);
        	
        	$innslag = new innslag($innslagsID, false);
+		
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+       	if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
 		$warnings = $innslag->warning_array($pl_id);
 		$warnings = $this->_warningToText($warnings);
 
