@@ -29,7 +29,11 @@ overviewAction:
 technicalAction:
     overskrift: Tekniske behov
     ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    forklaring: |
+        Her lurer vi på ting som vil gjøre det enklere for teknikerne å gjøre jobben sin. Fyller du inn dette skikkelig vil det også bli en bedre opplevelse for deg på de tekniske prøvene.
+
+        Eksempel 
+        Skal to av dere synge? Skriv opp to vokalmikrofoner. Vil du helst ha et flygel om det er tilgjengelig, eller et elektrisk piano? Er gitaren akustisk eller elektrisk, trenger den mikrofon eller forsterker? Ønsker dere noe spesielt av lysdesign?
     placeholder_teknisk: Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt
