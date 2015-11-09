@@ -48,7 +48,12 @@
 									selected
 								{% endif %}
 							{% endif %}
-							>{{ (i / 6)|round(0, 'floor') }} min{% if ((i % 6) * 10 ) != 0 %}, {{ (i % 6) * 10 }} sek</option>
+							>
+							{% if (i / 6)|round(0, 'floor') < 1 %}
+								{{ (i % 6) * 10 }} sek</option>
+							{% else %}
+								{{ (i / 6)|round(0, 'floor') }} min{% if ((i % 6) * 10 ) != 0 %}, {{ (i % 6) * 10 }} sek</option>
+								{% endif %}
 							{% endif %}
 					{% endfor %}
 				</select>
