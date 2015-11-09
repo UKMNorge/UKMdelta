@@ -11,28 +11,53 @@
 		Her velger du hva du skal delta med på UKM.
 	</p>
 
-	<div class="text-center" style="background-color: #85cdcf; color: white;">
+	<div class="text-center delta-header">
   		<h1 class="page-header">Dine påmeldinger</h1>
 	</div>
 
-	<div>
+	<div class="delta-input-header"> 
 		<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
 		{% if innslag is defined and innslag is not empty %}
-			<span class="delta-input-header">Fullførte påmeldinger</span>
+			<span class="delta-fat">Fullførte påmeldinger</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.info.b_status == 8 %}
 						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
-							<li class="list-group-item">{{ event.info.b_name }}</li>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-10">
+										{{ event.info.b_name }}
+									</div>
+									<div class="col-xs-1">
+										{{ event.info.kategori|capitalize }}
+									</div>
+									<div class="col-xs-1">
+										rediger 
+									</div>
+								</div>
+							</li>
 						</a>
 					{% endif %}
 				{% endfor %}
 			</ul>
-			<span class="delta-input-header">Ikke fullførte påmeldinger</span>
+			<span class="delta-fat">Ikke fullførte påmeldinger</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.info.b_status != 8 %}
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}"><li class="list-group-item alert alert-danger">{{ event.info.b_name }}</li></a>
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-10">
+										{{ event.info.b_name }}
+									</div>
+									<div class="col-xs-1">
+										{{ event.info.kategori|capitalize }}
+									</div>
+									<div class="col-xs-1">
+										rediger
+									</div>
+								</div>
+							</li></a>
 					{% endif %}
 				{% endfor %}
 			</ul>
