@@ -1,0 +1,66 @@
+whoAction:
+    sporsmal: Har du laget filmen alene eller med andre?
+    alene: Jeg er alene
+    sammen: Vi er en gruppe
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+overviewAction:
+    artistnavn:
+        alene:
+            label: Navn
+            placeholder: Eks. Film-Fredrik
+        sammen:
+            label: Gruppenavn
+            placeholder: Eks. Film-gjengen
+        kontakt:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Film-gjengen
+    beskrivelse:
+        alene:
+            label: Beskrivelse
+            placeholder: >
+                Eks. Jeg har laget filmer i to år, og fant ut at det var på tide å melde meg på UKM.
+                Jeg går siste året på ungdomsskolen og liker å lage filmer om hverdagslige ting.
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før vi fant ut av vi skulle lage en film.
+                Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
+                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før de fant ut av de skulle lage en film.
+                Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
+                Det endte opp med at de fant ut at dette var så gøy at de ville melde seg på UKM med det.
+    titler:
+        overskrift: Titler
+        endre: legg til / endre
+        ingen: Ingen titler er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til ny tittel
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    lagre: Lagre
+
+person:
+    rolle: 
+        label: rolle
+        placeholder: 
+        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        ukjent: ukjent rolle
+    ar: år
+    rediger: rediger
+
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter og playback av musikk. I tillegg ønsker vi at lyset skal skifte mellom temaene "Dag" og "Natt" flere ganger i koreografien.
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt 

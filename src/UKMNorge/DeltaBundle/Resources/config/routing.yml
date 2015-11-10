@@ -227,6 +227,14 @@ ukm_delta_ukmid_pamelding_film_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_film_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/film/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Film:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
 ### UTSTILLING
 ukm_delta_ukmid_pamelding_utstilling_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/
@@ -234,6 +242,14 @@ ukm_delta_ukmid_pamelding_utstilling_hvem:
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_utstilling_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Utstilling:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
 
 ### LITTERATUR
 ukm_delta_ukmid_pamelding_litteratur_hvem:
@@ -243,6 +259,14 @@ ukm_delta_ukmid_pamelding_litteratur_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_litteratur_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Litteratur:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
 ### ANNET
 ukm_delta_ukmid_pamelding_annet_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/
@@ -250,6 +274,14 @@ ukm_delta_ukmid_pamelding_annet_hvem:
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_annet_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Annet:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
 
 ### MATKULTUR
 ukm_delta_ukmid_pamelding_matkultur_hvem:

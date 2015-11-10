@@ -25,6 +25,7 @@ class UKMIDController extends Controller
         
         foreach ($innslagsliste as $innslag) {
             $pl_id[] = $innslag[1];
+            
             $type[] = $innslag[2];
             $innslagsliste2[] = $innslag[0];
         }
