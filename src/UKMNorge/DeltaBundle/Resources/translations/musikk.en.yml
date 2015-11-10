@@ -7,11 +7,33 @@ whoAction:
 
 overviewAction:
     artistnavn:
-        label: Artistnavn / Gruppenavn
-        placeholder: Eks. Superbandet
+        alene:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Superbandet
+        sammen:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Superbandet
+        kontakt:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Superbandet
     beskrivelse:
-        label: Beskrivelse av artist / gruppe
-        placeholder: Eks. Jeg spiller og synger...
+        alene:
+            label: Beskrivelse av artist
+            placeholder: >
+                Eks. Jeg spiller gitar og synger alene på scenen. Jeg har spilt gitar i mange år, men dette er det første året jeg synger også.
+                Jeg har aldri deltatt før på UKM, men har lyst til å delta fordi flere venner av meg har fortalt at det er kjempegøy!
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Eks. Vi er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre i musikklassen på ungdomsskolen.
+                Vi spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
+                Gruppa øver sammen minst tre ganger i uka, og dette blir vår andre deltakelse på UKM!
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Eks. Gruppa har spilt sammen i ett år, og møtte hverandre på kulturskolens jam-kveld.
+                De spiller popjazz-rock med fokus på vokal og kule gitarsoloer. 
+                Dette er første gangen de deltar på UKM.
     titler:
         overskrift: Låter
         endre: legg til / endre

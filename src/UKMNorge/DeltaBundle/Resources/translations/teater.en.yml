@@ -7,11 +7,28 @@ whoAction:
 
 overviewAction:
     artistnavn:
-        label: Artistnavn / Gruppenavn
-        placeholder: Eks. Teaterteamet
+        alene:
+            label: Artistnavn
+            placeholder: Eks. Teater-Trond
+        sammen:
+            label: Gruppenavn
+            placeholder: Eks. Teaterteamet
+        kontakt:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Teaterteamet
     beskrivelse:
-        label: Beskrivelse av gruppe
-        placeholder: Eks. Jeg/Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp på Hadeland
+        alene:
+            label: Beskrivelse av artist
+            placeholder: >
+                Eks. Jeg spiller et teaterstykke/monolog jeg har skrevet selv, som handler om hvordan det er for en ungom å vokse opp på Hadeland.
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Eks. Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Eks. Gruppa spiller et teaterstykke de har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
     titler:
         overskrift: Titler
         endre: legg til / endre

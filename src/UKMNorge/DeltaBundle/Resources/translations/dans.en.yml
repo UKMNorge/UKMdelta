@@ -7,11 +7,31 @@ whoAction:
 
 overviewAction:
     artistnavn:
-        label: Artistnavn / Gruppenavn
-        placeholder: Eks. Superdanserne
+        alene:
+            label: Artistnavn
+            placeholder: Eks. Danse-Daniel
+        sammen:
+            label: Gruppenavn
+            placeholder: Eks. Superdanserne
+        kontakt:
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Superdanserne
     beskrivelse:
-        label: Beskrivelse av gruppe
-        placeholder: Eks. Vi danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams
+        alene:
+            label: Beskrivelse av artist
+            placeholder: >
+                Eks. Jeg danser  en egenkoreografert dans til låta 'Happy' av Pharrell Williams. 
+                Jeg har danset i to år, men dette er første gang jeg deltar på UKM.
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Eks. Vi danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams.
+                Vi har danset sammen i to år, men dette er første gang vi deltar på UKM.
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Eks. Gruppa danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams.
+                De har danset sammen i to år, men dette er første gang de deltar på UKM.
     titler:
         overskrift: Titler
         endre: legg til / endre

@@ -168,7 +168,7 @@ class InnslagController extends Controller
 
     public function createAction($k_id, $pl_id, $type, $hvem) {
     	require_once('UKM/innslag.class.php');
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type);
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'hvem' => $hvem);
 
     	$user = $this->get('ukm_user')->getCurrentUser();
         $userManager = $this->container->get('fos_user.user_manager');

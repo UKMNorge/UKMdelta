@@ -26,22 +26,39 @@
 		<input type="hidden" name="path" id="deltapath" value="">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'overviewAction.artistnavn.label'|trans }}</small>
+				{% if hvem is defined %}
+					<small>{{ 'overviewAction.artistnavn.'~hvem~'.label'|trans }}</small>
+				{% else %}
+					<small>{{ 'overviewAction.artistnavn.sammen.label'|trans }}</small>
+				{% endif %}
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				{% if hvem is defined %}
+					<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.'~hvem~'.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				{% else %}
+					<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.sammen.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				{% endif %}
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'overviewAction.beskrivelse.label'|trans }}</small>
+				{% if hvem is defined %}
+					<small>{{ 'overviewAction.beskrivelse.'~hvem~'.label'|trans }}</small>
+				{% else %}
+					<small>{{ 'overviewAction.beskrivelse.sammen.label'|trans }}</small>
+				{% endif %}
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.placeholder'|trans }}">{{ beskrivelse }}</textarea>
+				{% if hvem is defined %}
+					<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.'~hvem~'.placeholder'|trans }}">{{ beskrivelse }}</textarea>
+				{% else %}
+					<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.sammen.placeholder'|trans }}">{{ beskrivelse }}</textarea>
+				{% endif %}
+				
 			</div>
 		</div>
 		<br>
