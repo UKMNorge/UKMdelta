@@ -288,8 +288,16 @@ ukm_delta_ukmid_pamelding_matkultur_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/
     defaults: { _controller: UKMDeltaBundle:Matkultur:who }
     requirements:
-              k_id: ([0-9]{1,4}) 
+              k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_pamelding_matkultur_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Matkultur:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
 
 ### NETTREDAKSJON
 ukm_delta_ukmid_pamelding_nettredaksjon_hvem:

@@ -1,5 +1,5 @@
 whoAction:
-    sporsmal: Har du skrevet verket alene eller med andre?
+    sporsmal: Er du alene eller med andre?
     alene: Jeg er alene
     sammen: Vi er en gruppe
     kontakt: Jeg er kun kontaktperson
@@ -9,31 +9,28 @@ overviewAction:
     artistnavn:
         alene:
             label: Navn
-            placeholder: Eks. Forfatter-Frank
+            placeholder: Eks. Kokke-Kari
         sammen:
             label: Gruppenavn
-            placeholder: Eks. Skrivegjengen
+            placeholder: Eks. Kokkegjengen
         kontakt:
             label: Artistnavn / Gruppenavn
-            placeholder: Eks. Forfatter-Frank, Skrivegjengen
+            placeholder: Eks. Kokke-Kari, Kokkegjengen
     beskrivelse:
         alene:
             label: Beskrivelse
             placeholder: >
-                Eks. Jeg har skrevet historier i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å fortelle historier om morsomme historier fra skolen.
+                Eks. Jeg begynte å lage mat allerede på barneskolen, og har lyst til å vise frem noen bakverk på UKM i år.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
+                Eks. Vi går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
+                Vi syntes det var kjempegøy, så vi vil vise fram noen bakverk under årets UKM!
         kontakt:
-            label: Beskrivelse av artist / gruppe
+            label: Beskrivelse av person / gruppe
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                De fant ut at dette var så gøy at de ville melde seg på UKM med det.
+                Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
+                De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
     titler:
         overskrift: Titler
         endre: legg til / endre
@@ -52,7 +49,7 @@ person:
     rolle: 
         label: rolle
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks forfatter, fremfører)
+        help: Skriv inn hva %s gjør (f.eks kokk, konditor)
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
@@ -62,8 +59,7 @@ technicalAction:
     ledetekst: Skriv inn dine/deres tekniske behov
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
     placeholder_teknisk: >
-        Eks. Jeg vil fremføre verket selv fra scenen, 
-        så jeg trenger en mikrofon og tid til å diskutere lyssetting med 
-        lysteknikeren. Temaene i diktet passer bra til hurtige lysskifter med sterke kontraster.
+        Eks. Vi skal lage mat, og har derfor bruk for en koketopp med minst 3 plater, 
+        arbeidsbenk med plass til minst to skjærefjøler, fire mellomstore boller og en stor bakebolle.
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt 

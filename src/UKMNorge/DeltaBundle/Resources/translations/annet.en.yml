@@ -1,5 +1,5 @@
 whoAction:
-    sporsmal: Har du skrevet verket alene eller med andre?
+    sporsmal: Er du alene eller med andre?
     alene: Jeg er alene
     sammen: Vi er en gruppe
     kontakt: Jeg er kun kontaktperson
@@ -8,32 +8,30 @@ whoAction:
 overviewAction:
     artistnavn:
         alene:
-            label: Navn
-            placeholder: Eks. Forfatter-Frank
+            label: Artistnavn
+            placeholder: Eks. Super-Anne
         sammen:
             label: Gruppenavn
-            placeholder: Eks. Skrivegjengen
+            placeholder: Eks. Supergjengen
         kontakt:
             label: Artistnavn / Gruppenavn
-            placeholder: Eks. Forfatter-Frank, Skrivegjengen
+            placeholder: Eks. Super-Anne, Supergjengen
     beskrivelse:
         alene:
             label: Beskrivelse
             placeholder: >
-                Eks. Jeg har skrevet historier i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å fortelle historier om morsomme historier fra skolen.
+                Eks. Jeg har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der jeg lærte å sjonglere med brennende fakler.
+                Det er noe av det jeg vil vise frem på UKM i år.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
+                Eks. Vi har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der vi lærte å sjonglere med brennende fakler og noen andre triks.
+                Det er noe av det vi vil vise frem på UKM.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                De fant ut at dette var så gøy at de ville melde seg på UKM med det.
+                Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
+                Det er noe av det de vil vise frem på UKM.
     titler:
         overskrift: Titler
         endre: legg til / endre
@@ -61,9 +59,6 @@ technicalAction:
     overskrift: Tekniske behov
     ledetekst: Skriv inn dine/deres tekniske behov
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: >
-        Eks. Jeg vil fremføre verket selv fra scenen, 
-        så jeg trenger en mikrofon og tid til å diskutere lyssetting med 
-        lysteknikeren. Temaene i diktet passer bra til hurtige lysskifter med sterke kontraster.
+    placeholder_teknisk: Eks. Vi trenger en scene som er 8x4 meter, med en takhøyde på minst 3 meter. Vi trenger også en hjelper til å ta i mot og gi oss rekvisita under akten.
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt 

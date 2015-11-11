@@ -25,13 +25,13 @@ overviewAction:
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før vi fant ut av vi skulle lage en film.
+                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før vi fant ut at vi skulle lage en film.
                 Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
                 Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før de fant ut av de skulle lage en film.
+                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før de fant ut at de skulle lage en film.
                 Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
                 Det endte opp med at de fant ut at dette var så gøy at de ville melde seg på UKM med det.
     titler:
@@ -58,9 +58,10 @@ person:
     rediger: rediger
 
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
+    overskrift: Teknisk informasjon
+    ledetekst: Skriv inn teknisk informasjon om innslaget
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter og playback av musikk. I tillegg ønsker vi at lyset skal skifte mellom temaene "Dag" og "Natt" flere ganger i koreografien.
+    placeholder_teknisk: >
+        Eks. Video 1 leveres i FullHD-oppløsning, QuickTime .mov-format.
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt 

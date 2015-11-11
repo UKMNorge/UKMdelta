@@ -399,8 +399,6 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
         $innslag = $innslagService->hent($b_id);
-        
-
 
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
         $teknisk = $innslag->get('td_demand');
@@ -420,7 +418,9 @@ class InnslagController extends Controller
         // Hvis hvem-variabelen blir sendt med.
         $request = Request::createFromGlobals();
         $hvem = $request->get('hvem');
-        $view_data['hvem'] = $hvem;
+        if (!empty($hvem)) {
+            $view_data['hvem'] = $hvem;
+        }
         
         $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
