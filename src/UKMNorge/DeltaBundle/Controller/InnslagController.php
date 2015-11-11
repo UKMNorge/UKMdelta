@@ -237,6 +237,9 @@ class InnslagController extends Controller
         elseif ($type == 'teater') {
             return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
         }
+        elseif ($type == 'film') {
+            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+        }
         else {
             // Midlertidig, bør gjøre noe annet her.
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
@@ -268,6 +271,9 @@ class InnslagController extends Controller
         }
         elseif ($type == 'teater') {
             return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+        }
+        elseif ($type == 'film') {
+            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
         }
         else {
             // Midlertidig, bør gjøre noe annet her.
@@ -411,7 +417,11 @@ class InnslagController extends Controller
 
         #var_dump($personer);
         #var_dump($innslag); 
-
+        // Hvis hvem-variabelen blir sendt med.
+        $request = Request::createFromGlobals();
+        $hvem = $request->get('hvem');
+        $view_data['hvem'] = $hvem;
+        
         $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {

@@ -1,5 +1,5 @@
 whoAction:
-    sporsmal: Har du laget verket alene eller med andre?
+    sporsmal: Har du skrevet verket alene eller med andre?
     alene: Jeg er alene
     sammen: Vi er en gruppe
     kontakt: Jeg er kun kontaktperson
@@ -9,30 +9,30 @@ overviewAction:
     artistnavn:
         alene:
             label: Navn
-            placeholder: Eks. Kunstner-Kari
+            placeholder: Eks. Forfatter-Frank
         sammen:
             label: Gruppenavn
-            placeholder: Eks. Kunstgjengen
+            placeholder: Eks. Skrivegjengen
         kontakt:
             label: Artistnavn / Gruppenavn
-            placeholder: Eks. Kunstgjengen
+            placeholder: Eks. Forfatter-Frank, Skrivegjengen
     beskrivelse:
         alene:
             label: Beskrivelse
             placeholder: >
-                Eks. Jeg har laget maleri i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å fange øyeblikkene med malepenselen min.
+                Eks. Jeg har skrevet historier i to år, og fant ut at det var på tide å melde meg på UKM.
+                Jeg går siste året på ungdomsskolen og liker å fortelle historier om morsomme historier fra skolen.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
                 Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville lage et kunstverk, og Per ble med fordi han syntes ideen var så bra.
+                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
                 Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
                 Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville lage et kunstverk, og Per ble med fordi han syntes ideen var så bra.
+                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
                 De fant ut at dette var så gøy at de ville melde seg på UKM med det.
     titler:
         overskrift: Titler
@@ -52,7 +52,7 @@ person:
     rolle: 
         label: rolle
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        help: Skriv inn hva %s gjør (f.eks forfatter, fremfører)
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
@@ -61,6 +61,6 @@ technicalAction:
     overskrift: Tekniske behov
     ledetekst: Skriv inn dine/deres tekniske behov
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: Eks. Vi trenger en måte å henge opp maleriene, som har kroker på baksiden.
+    placeholder_teknisk: Eks. [Fylles inn senere]
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt 
