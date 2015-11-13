@@ -409,7 +409,14 @@ class InnslagController extends Controller
 
         $personer = $innslag->personer();
         foreach ($personer as &$person) {
-            $person['age'] = $personService->alder($personService->hent($person['p_id']));
+            $alder = $personService->alder($personService->hent($person['p_id']));
+            if ($alder > 0) {
+               $person['age'] = $alder; 
+            }
+            else {
+               $person['age'] =  '25+';
+            }
+            
         }
         $titler = $innslag->titler($pl_id); 
 
