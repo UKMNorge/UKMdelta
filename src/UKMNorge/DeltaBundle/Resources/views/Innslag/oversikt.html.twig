@@ -20,7 +20,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
 			</div>
 		</div>
 		<div class="row">
@@ -47,11 +47,9 @@
 		<p>&nbsp;</p>
 
 		<div class="row">
-			<a href="">
-				<div class="col-xs-12">
-					<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
-				</div>
-			</a>
+			<div class="col-xs-12">
+				<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
+			</div>
 		</div>
 	</form>
 

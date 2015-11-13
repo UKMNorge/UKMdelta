@@ -32,7 +32,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}">
+				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}">
 			</div>
 		</div>
 
@@ -43,7 +43,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<select name="lengde" class="form-control">
+				<select name="lengde" required class="form-control">
 					<option value="0" 
 						{% if tittel.varighet is not defined %}
 							selected
@@ -90,7 +90,7 @@
 				<small>Tekst av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
+				<input type="text" required name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
 			</div>
 		</div>
 		<div class="row" id="melodi-rad">
@@ -98,7 +98,7 @@
 				<small>Melodi av</small>
 			</div>
 			<div class="col-xs-12">
-				<input type="text" name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
+				<input type="text" required name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
 			</div>
 		</div>
 		<p>&nbsp;</p>
