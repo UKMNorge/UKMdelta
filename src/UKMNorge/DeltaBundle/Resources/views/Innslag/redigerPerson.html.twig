@@ -1,7 +1,6 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}
-	
 	<h1 class="center">Rediger {{ person.get('p_firstname') }}</h1>
 	<form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: p_id }) }}">
 		<div class="form-group"> 
