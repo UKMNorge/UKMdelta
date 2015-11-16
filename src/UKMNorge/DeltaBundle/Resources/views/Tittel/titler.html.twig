@@ -1,4 +1,3 @@
-{# Denne er lik uansett #}
 {% trans_default_domain translationDomain %}
 
 <div class="row {{ titler|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
@@ -26,11 +25,11 @@
 						<div class="col-xs-2">
 							<div class="overunder">
 								{% if tittel.varighet is defined %}
-									<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.min'|trans }}</div>
-									<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.sek'|trans }}</div>
+									<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+									<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
 								{% else %}
-									<div class="over">? {{ 'tittel.min'|trans }}</div>
-									<div class="under">? {{ 'tittel.sek'|trans }}</div>
+									<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+									<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
 								{% endif %}
 							</div>
 						</div>
@@ -48,7 +47,7 @@
 							</p>
 						</div>
 						<div class="col-xs-3">
-							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans }}</a>
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans({}, 'base') }}</a>
 						</div>
 					</li>
 				</ul>
