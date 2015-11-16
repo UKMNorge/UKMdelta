@@ -1,7 +1,6 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}
-	
 	<h1 class="center">Rediger {{ person.get('p_firstname') }}</h1>
 	<form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: p_id }) }}">
 		<div class="form-group"> 
@@ -12,7 +11,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}">
+					<input type="text" required name="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -22,7 +21,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="etternavn" class="form-control" placeholder="" value="{{ person.get('p_lastname') is defined ? person.get('p_lastname') : '' }}">
+					<input type="text" required name="etternavn" class="form-control" placeholder="" value="{{ person.get('p_lastname') is defined ? person.get('p_lastname') : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -32,7 +31,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<select name="alder" class="form-control delta-select">
+					<select name="alder" required class="form-control delta-select">
 						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>Velg riktig alder</option> 
 						{% for i in 10..25 %}
 							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} år</option> 
@@ -49,7 +48,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="mobil" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}">
+					<input type="text" required name="mobil" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -59,7 +58,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="instrument" class="form-control" placeholder="" value="{{ innslag['instrument'] is defined ? innslag['instrument'] : '' }}">
+					<input type="text" required name="instrument" class="form-control" placeholder="" value="{{ innslag['instrument'] is defined ? innslag['instrument'] : '' }}">
 				</div>
 			</div>
 			<div class="row">

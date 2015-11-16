@@ -168,7 +168,7 @@ class InnslagController extends Controller
 
     public function createAction($k_id, $pl_id, $type, $hvem) {
     	require_once('UKM/innslag.class.php');
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type);
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'hvem' => $hvem);
 
     	$user = $this->get('ukm_user')->getCurrentUser();
         $userManager = $this->container->get('fos_user.user_manager');
@@ -237,6 +237,9 @@ class InnslagController extends Controller
         elseif ($type == 'teater') {
             return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
         }
+        elseif ($type == 'film') {
+            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+        }
         else {
             // Midlertidig, bør gjøre noe annet her.
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
@@ -268,6 +271,9 @@ class InnslagController extends Controller
         }
         elseif ($type == 'teater') {
             return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+        }
+        elseif ($type == 'film') {
+            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
         }
         else {
             // Midlertidig, bør gjøre noe annet her.
@@ -393,8 +399,6 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
         $innslag = $innslagService->hent($b_id);
-        
-
 
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
         $teknisk = $innslag->get('td_demand');
@@ -405,13 +409,26 @@ class InnslagController extends Controller
 
         $personer = $innslag->personer();
         foreach ($personer as &$person) {
-            $person['age'] = $personService->alder($personService->hent($person['p_id']));
+            $alder = $personService->alder($personService->hent($person['p_id']));
+            if ($alder > 0) {
+               $person['age'] = $alder; 
+            }
+            else {
+               $person['age'] =  '25+';
+            }
+            
         }
         $titler = $innslag->titler($pl_id); 
 
         #var_dump($personer);
         #var_dump($innslag); 
-
+        // Hvis hvem-variabelen blir sendt med.
+        $request = Request::createFromGlobals();
+        $hvem = $request->get('hvem');
+        if (!empty($hvem)) {
+            $view_data['hvem'] = $hvem;
+        }
+        
         $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {

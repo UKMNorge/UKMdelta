@@ -8,5 +8,13 @@
 {% endblock %}
 
 {% block content_pre %}
-	{% embed "UKMDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+	{# DENNE TAR KUN ERRORS #}
+	{#{% embed "UKMDesignBundle:FlashBag:list.html.twig" %}{% endembed %}} #}
+
+	{# FLASHBAG	#}
+	{% for type, messages in app.session.flashBag.all %}
+		{% for message in messages %}
+			<div class="alert alert-{{ type == 'error' ? 'danger' : type }}">{{ message|trans }}</div>
+		{% endfor %}
+	{% endfor %}
 {% endblock %}

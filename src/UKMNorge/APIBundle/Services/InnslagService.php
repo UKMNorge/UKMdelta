@@ -77,20 +77,39 @@ class InnslagService {
 		$innslag = array();
 		// Søk etter innslag i databasen?
 		if (empty($contact_id)) {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id'", array('user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id'", array('user_id' => $user_id));
 		}
 		else {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
 		}
 
 		$res = $qry->run();
 		while($row = mysql_fetch_assoc($res)) {
 			#$dump[] = $row;
-			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $row['b_kategori']);
+			if ($row['bt_id'] == 1) {
+				$type = $row['b_kategori']; 
+			}
+			else {
+				$type = getBandTypeFromID($row['bt_id']);
+			}
+
+			// Finpuss for routing
+			if ($type == 'video') {
+				$type = 'film';
+			}
+
+			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $type);
 		}
 		//var_dump($innslag);
 		//die();
 		return $innslag;
+	}
+
+	public function getBandType($b_id) {
+		// $innslagsID er b_id. $person er personid eller personobjekt?
+		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
+
+		return getBandTypeFromID($innslag->get('bt_id'));
 	}
 
 	public function leggTilPerson($innslagsID, $personID) {

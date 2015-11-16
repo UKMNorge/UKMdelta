@@ -1,7 +1,7 @@
 whoAction:
-    sporsmal: Spiller du alene eller med andre?
-    alene: Jeg spiller alene
-    sammen: Jeg spiller sammen med andre
+    sporsmal: Er du alene eller med andre?
+    alene: Jeg er alene
+    sammen: Vi er en gruppe
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
@@ -9,26 +9,29 @@ overviewAction:
     artistnavn:
         alene:
             label: Artistnavn
-            placeholder: Eks. Teater-Trond
+            placeholder: Eks. Super-Anne
         sammen:
             label: Gruppenavn
-            placeholder: Eks. Teaterteamet
+            placeholder: Eks. Supergjengen
         kontakt:
             label: Artistnavn / Gruppenavn
-            placeholder: Eks. Teaterteamet
+            placeholder: Eks. Super-Anne, Supergjengen
     beskrivelse:
         alene:
-            label: Beskrivelse av artist
+            label: Beskrivelse
             placeholder: >
-                Eks. Jeg spiller et teaterstykke/monolog jeg har skrevet selv, som handler om hvordan det er for en ungom å vokse opp på Hadeland.
+                Eks. Jeg har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der jeg lærte å sjonglere med brennende fakler.
+                Det er noe av det jeg vil vise frem på UKM i år.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Eks. Vi har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der vi lærte å sjonglere med brennende fakler og noen andre triks.
+                Det er noe av det vi vil vise frem på UKM.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa spiller et teaterstykke de har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
+                Det er noe av det de vil vise frem på UKM.
     titler:
         overskrift: Titler
         endre: legg til / endre
@@ -47,7 +50,7 @@ person:
     rolle: 
         label: rolle
         placeholder: 
-        help: Skriv inn hva %s gjør eller spiller (f.eks gutt 17 fra Hadeland, koreograf)
+        help: Skriv inn hva %s gjør (f.eks forfatter, fremfører)
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
@@ -56,6 +59,6 @@ technicalAction:
     overskrift: Tekniske behov
     ledetekst: Skriv inn dine/deres tekniske behov
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
+    placeholder_teknisk: Eks. Vi trenger en scene som er 8x4 meter, med en takhøyde på minst 3 meter. Vi trenger også en hjelper til å ta i mot og gi oss rekvisita under akten.
     lagreknapp: Lagre og gå til oversikten
     avbryttekst: avbryt 
