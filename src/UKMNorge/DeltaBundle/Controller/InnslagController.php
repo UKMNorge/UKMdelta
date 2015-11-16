@@ -470,7 +470,7 @@ class InnslagController extends Controller
         require_once('UKM/monstring.class.php');
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = 'innslag';
+        $view_data['translationDomain'] = $type;
 
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
@@ -484,8 +484,8 @@ class InnslagController extends Controller
         $frist->setTimestamp($monstring->get('pl_deadline'));
         
         $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
-        //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
+        $view_data['innslag'] = $innslag;
 
         // Oppdater status på innslaget!
         if(empty($view_data['grunner'])) {
