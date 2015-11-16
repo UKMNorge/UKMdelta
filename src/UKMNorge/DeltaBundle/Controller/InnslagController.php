@@ -228,21 +228,12 @@ class InnslagController extends Controller
 
         $view_data['tittel'] = $tittel;
 
-        if ($type == 'musikk') {
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
-        }
-        elseif ($type == 'dans') {
-            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'teater') {
-            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'film') {
-            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-        }
-        else {
-            // Midlertidig, bør gjøre noe annet her.
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+        switch($type) {
+            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
 
@@ -263,21 +254,13 @@ class InnslagController extends Controller
         $view_data['innslag'] = $innslagService->hent($b_id);
         $view_data['translationDomain'] = $type;
 
-        if ($type == 'musikk') {
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
-        }
-        elseif ($type == 'dans') {
-            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'teater') {
-            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'film') {
-            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-        }
-        else {
-            // Midlertidig, bør gjøre noe annet her.
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+
+        switch($type) {
+            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
 
@@ -313,29 +296,34 @@ class InnslagController extends Controller
     	$tittel->set('tittel', $tittelnavn );		
     	$tittel->set('season', $season );
 
-		// Sett felter for musikk
-        if ($type == "musikk") {
-	        $lengde = $request->request->get('lengde'); // I sekunder
-            $sangtype = $request->request->get('sangtype');
-            $selvlaget = $request->request->get('selvlaget');
-            $tekstforfatter = $request->request->get('tekstforfatter');
-            $melodiforfatter = $request->request->get('melodiforfatter');
-            
-            $tittel->set('tekst_av', $tekstforfatter);
-            // var_dump(mb_detect_encoding($melodiforfatter));
-            // die();
-            $tittel->set('melodi_av', $melodiforfatter);
-            $tittel->set('varighet', $lengde);
+		// Sett felter basert på type
+        switch ($type) {
+            case 'musikk':
+                $lengde = $request->request->get('lengde'); // I sekunder
+                $sangtype = $request->request->get('sangtype');
+                $selvlaget = $request->request->get('selvlaget');
+                $tekstforfatter = $request->request->get('tekstforfatter');
+                $melodiforfatter = $request->request->get('melodiforfatter');
+                
+                $tittel->set('tekst_av', $tekstforfatter);
+                // var_dump(mb_detect_encoding($melodiforfatter));
+                // die();
+                $tittel->set('melodi_av', $melodiforfatter);
+                $tittel->set('varighet', $lengde);
+                break;
+            case 'dans':
+                $lengde = $request->request->get('lengde'); // I sekunder
+                $koreografi = $request->request->get('koreografi');
+                
+                $tittel->set('koreografi', $koreografi);
+                $tittel->set('varighet', $lengde);
+                break;
+            default:
+                $lengde = $request->request->get('lengde');
+
+                $tittel->set('varighet', $lengde);
+                break;
         }
-        // Sett felter for dans
-        elseif ($type == "dans") {
-	        $lengde = $request->request->get('lengde'); // I sekunder
-            $koreografi = $request->request->get('koreografi');
-            
-            $tittel->set('koreografi', $koreografi);
-            $tittel->set('varighet', $lengde);
-        }
-  
 		// Lagre tittel
 		$tittel->lagre();
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);

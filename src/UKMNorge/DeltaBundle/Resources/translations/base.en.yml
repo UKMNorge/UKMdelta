@@ -5,3 +5,9 @@ person:
         label: Etternavn
     mobil: 
         label: Mobil
+
+tittel:
+    min: min
+    sek: sek
+    info_mangler: informasjon mangler
+    rediger: rediger
