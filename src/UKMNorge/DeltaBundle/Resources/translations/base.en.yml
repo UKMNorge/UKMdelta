@@ -11,3 +11,24 @@ tittel:
     sek: sek
     info_mangler: informasjon mangler
     rediger: rediger
+
+mangler:
+    person.fornavn: Fornavn mangler
+    person.etternavn: Etternavn mangler
+    person.phone: Telefonnummeret består ikke av 8 siffer
+    person.rolle: Funksjon/rolle/instrument mangler
+    innslag.ingendeltakere: Det er ingen deltakere i innslaget
+    innslag.navn: Innslaget mangler navn
+    innslag.sjanger: Sjanger må være oppgitt
+    innslag.beskrivelse: Innslaget mangler beskrivelse
+    innslag.beskrivelseLengde: Beskrivelsen må være mer enn 20 tegn lang
+    td.mangler: Tekniske behov mangler
+    td.lengde: Tekniske behov må være mer enn 5 tegn lang
+    kontakt.fornavn: Kontaktperson mangler fornavn
+    kontakt.etternavn: Kontaktperson mangler etternavn
+    kontakt.epost: Kontaktperson mangler epostadresse
+    kontakt.telefon: Kontaktperson mangler telefonnummer
+    kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
+    kontakt.adresse: Kontaktperson mangler adresse
+    kontakt.postnummer: Kontaktperson mangler postnummer
+    tittel.mangler: Innslaget har ingen titler

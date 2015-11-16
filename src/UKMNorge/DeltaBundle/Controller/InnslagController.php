@@ -496,18 +496,21 @@ class InnslagController extends Controller
         $frist = new DateTime();
         $frist->setTimestamp($monstring->get('pl_deadline'));
 
-        $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
+        $validering = $innslagService->hentAdvarsler($b_id, $pl_id);
+        $view_data['status'] = $validering[0];
+        $view_data['grunner'] = $validering[1];
         //var_dump($view_data['grunner']);
        
         $view_data['frist'] = $frist;
 
-        // Oppdater status på innslaget!
+        // Oppdater status på innslaget! 
+        // ValidateBand2 tar seg av status-oppdateringen??
         if(empty($view_data['grunner'])) {
-            $innslagService->lagreStatus($b_id, 8);
+            //$innslagService->lagreStatus($b_id, 8);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
         }
         else {
-            $innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
+            //$innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
             return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
         }
     }

@@ -15,8 +15,27 @@
 		<span class="">{{ 'statusAction.infotekst'|trans }}</span>
 	
 		<ul class="col-xs-12 list-unstyled">
-			{% for tekst in grunner %}
+			{# {% for tekst in grunner %}
 				<li>- {{ ('statusAction.'~tekst)|trans }}</li>
+			{% endfor %} #}
+
+			{% for key, grunn in grunner %}
+				{% if key == 'personer' %}
+					{% for person in grunn %}
+						- {{ person[0] }}:
+						<ul>
+							{% for tekst in person[1] %}
+								<li>{{ ('mangler.'~tekst)|trans({}, 'base') }}</li>
+							{% endfor %}
+						</ul>
+						{#{{ person }} {# person-ID #}
+						{# {% for tekst in person %}
+							<li>{{ tekst }}</li>
+						{% endfor %} #}
+					{% endfor %}
+				{% else %}
+					<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li>   
+				{% endif %}
 			{% endfor %}
 		</ul>
 	</div>
@@ -33,4 +52,4 @@
 		<span class="delta-subtext center">{{ 'statusAction.undertekst'|trans }}</span>
 		<span class="delta-subtext center text-danger">{{ 'statusAction.obstekst'|trans({ '%dag%': frist|date('l')|dato('l'), '%dato%': frist|date('d'), '%maned%': frist|date('m'), '%time%': frist|date('h'), '%minutt%': frist|date('i') }) }}</span> 
 	</div>
-{% endblock %}
+{% endblock %} 

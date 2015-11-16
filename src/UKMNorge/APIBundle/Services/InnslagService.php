@@ -172,6 +172,7 @@ class InnslagService {
 
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
 	        $innslag->set('b_description', utf8_encode($beskrivelse));
+	        $innslag->set('td_konferansier', utf8_encode($beskrivelse)); // Hvorfor lagrer ikke denne?
 	    	$innslag->lagre();
 	    }
 	}	
@@ -224,9 +225,7 @@ class InnslagService {
 	}
 
 	public function hentAdvarsler($innslagsID, $pl_id) {
-		$validate = validateBand($innslagsID);
-       	
-       	$innslag = new innslag($innslagsID, false);
+		$innslag = new innslag($innslagsID, false);
 		
 		// Sjekk om Symfony-brukeren matcher delta_-feltet
 		$user = $this->container->get('ukm_user')->getCurrentUser();
@@ -235,16 +234,13 @@ class InnslagService {
 			throw new Exception('Du har ikke tilgang til dette innslaget!');
 		}
 
-		$warnings = $innslag->warning_array($pl_id);
-		$warnings = $this->_warningToText($warnings);
+		$validate = $innslag->validateBand2($innslagsID);
+       	//var_dump($validate);
 
-		// Ekstrasjekker
-		// Instrument
+		// $warnings = $innslag->warning_array($pl_id);
+		// $warnings = $this->_warningToText($warnings);
 
-		// Beskrivelse
-
-
-		return $warnings;
+		return $validate;
 	}
 
 	private function _warningToText($warnings) {

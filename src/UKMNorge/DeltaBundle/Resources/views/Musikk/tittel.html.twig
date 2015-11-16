@@ -66,8 +66,8 @@
 			</div>
 		</div>
 		<div class="col-xs-12" id="tekst-valg">
-			<label class="radio-inline"><input type="radio" name="sangtype" value="sang" {{ instrumental == 0 ? 'checked' : '' }}>Tekst</label>
-			<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental" {{ instrumental == 1 ? 'checked' : '' }}>Instrumental</label>
+			<label class="radio-inline"><input type="radio" name="sangtype" value="sang" {{ instrumental is defined and (instrumental == 0) ? 'checked' : '' }}>Tekst</label>
+			<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental" {{ instrumental is defined and (instrumental == 1) ? 'checked' : '' }}>Instrumental</label>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
@@ -75,8 +75,8 @@
 			</div>
 		</div>
 		<div class="col-xs-12"  id="melodi-valg" >
-			<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget == 1 ? 'checked' : '' }}>Ja</label>
-			<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget == 0 ? 'checked' : '' }}>Nei</label>
+			<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }}>Ja</label>
+			<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }}>Nei</label>
 		</div>
 		<div class="row" id="tekst-rad">
 			<div class="col-xs-12 delta-input-header">
