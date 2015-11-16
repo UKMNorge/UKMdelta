@@ -251,6 +251,8 @@ class InnslagController extends Controller
         $tittel = new tittel($t_id, $form);
 
         $view_data['tittel'] = $tittel;
+        $view_data['selvlaget'] = $tittel->get('selvlaget');
+        $view_data['instrumental'] = $tittel->get('instrumental');
         $view_data['innslag'] = $innslagService->hent($b_id);
         $view_data['translationDomain'] = $type;
 
@@ -292,9 +294,20 @@ class InnslagController extends Controller
             // Create object with data
             $tittel = new tittel($t_id, $form);
         }
-
+ 
     	$tittel->set('tittel', $tittelnavn );		
     	$tittel->set('season', $season );
+
+
+        // Kun gjør dette med sceneinnslag?
+        $selvlaget = $request->request->get('selvlaget'); // 1 eller 0
+        $instrumental = $request->request->get('sangtype');
+        if ($request->request->get('sangtype') == 'instrumental') {
+            $instrumental = 1;
+        }
+        else {
+            $instrumental = 0; 
+        }
 
 		// Sett felter basert på type
         switch ($type) {
@@ -304,12 +317,19 @@ class InnslagController extends Controller
                 $selvlaget = $request->request->get('selvlaget');
                 $tekstforfatter = $request->request->get('tekstforfatter');
                 $melodiforfatter = $request->request->get('melodiforfatter');
+
+                if ($instrumental) {
+                    $tittel->set('tekst_av', '');   
+                }
+                else {
+                    $tittel->set('tekst_av', $tekstforfatter);
+                }
                 
-                $tittel->set('tekst_av', $tekstforfatter);
-                // var_dump(mb_detect_encoding($melodiforfatter));
-                // die();
                 $tittel->set('melodi_av', $melodiforfatter);
                 $tittel->set('varighet', $lengde);
+
+                $tittel->set('instrumental', $instrumental);
+                $tittel->set('selvlaget', $selvlaget);
                 break;
             case 'dans':
                 $lengde = $request->request->get('lengde'); // I sekunder
