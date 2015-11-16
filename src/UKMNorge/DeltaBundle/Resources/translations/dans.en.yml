@@ -5,60 +5,128 @@ whoAction:
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
 overviewAction:
     artistnavn:
         alene:
-            label: Artistnavn
-            placeholder: Eks. Danse-Daniel
+            label: Artistnavn / gruppenavn
+            placeholder: Eks. Danse-%fornavn, %fornavn %etternavn, %etternavn dance crew
         sammen:
-            label: Gruppenavn
-            placeholder: Eks. Superdanserne
+            label: Gruppenavn / artistnavn
+            placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
         kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Superdanserne
+            label: Gruppenavn / artistnavn
+            placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
     beskrivelse:
         alene:
-            label: Beskrivelse av artist
+            label: Beskrivelse av danser / gruppe
             placeholder: >
-                Eks. Jeg danser  en egenkoreografert dans til låta 'Happy' av Pharrell Williams. 
-                Jeg har danset i to år, men dette er første gang jeg deltar på UKM.
+                Her vil vi vite mer om deg som danser.
+                Eks. Jeg har danset i to år, og lager vanligvis min egen koreografi.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams.
-                Vi har danset sammen i to år, men dette er første gang vi deltar på UKM.
+                Her vil vi vite mer om dere som danser.
+                Eks. Vi møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
+                Vi danser som oftest klassisk ballett, men har meldt oss på UKM med popping.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams.
-                De har danset sammen i to år, men dette er første gang de deltar på UKM.
+                Her vil vi vite mer om de som danser.
+                Eks. De møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
+                De danser som oftest klassisk ballett, men har meldt seg på UKM med popping.
     titler:
-        overskrift: Titler
+        overskrift: Danser
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Du må legge til minst én dans.
         lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
+        legg_til: Legg til ny dans
     personer:
         overskrift: Personer
         endre: legg til / endre
-        ingen: Ingen personer er lagt til
+        ingen: Du må legge til minst én person. Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
+    tekniske:
+        overskrift: Tekniske behov / utstyrsbehov
+        endre: endre
+        ingen: Tekniske behov ikke lagt til.
+        legg_til: Legg til tekniske behov
+        
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
 person:
     rolle: 
-        label: rolle
+        label: Rolle
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        help: Skriv inn hva %person gjør i dansenummeret. (f.eks danser, koreograf osv..)
         ukjent: ukjent rolle
-    ar: år
-    rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
 
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til dans
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Dansens tittel / navn
+        placeholder: Eks. Svanesjøen, Love me like you do, Spretten mix osv...
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge dansen varer
+    tekst:
+        label: Har låta tekst, eller er det en instrumental?
+        tekst: Tekst
+        instrumental: Instrumental
+    selvlaget:
+        label: Har du/dere laget (koreografert) dansen selv?
+    koreografi:
+        label: Koreografi av
+        placeholder: Hvem har koreografert dansen?
+    melodi_av:
+        label: Melodi av
+        placeholder: Hvem har laget melodien? Eks. Philter, Rihanna osv...
+    info_mangler: Info mangler
+    slett: Slett dansen
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+    
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    artistnavn: Gruppenavn / artistnavn
+    lat: Du må legge til minst én dans
+    ingendeltakere: Du må legge til minst én person
+    
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter og playback av musikk. I tillegg ønsker vi at lyset skal skifte mellom temaene "Dag" og "Natt" flere ganger i koreografien.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
+    eksempler: >
+        Trenger dere dansematter? Eller en barstol, eller andre rekvisitter? Skal noen av dere synge og trenger en mikrofon?
+    placeholder_teknisk: Så lenge scenen er tilpasset dansing trenger vi ikke dansematter, og ingen av oss skal synge osv.. Har dere ingen behov: skriv "ingen behov".
