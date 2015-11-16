@@ -64,7 +64,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" required name="instrument" class="form-control" placeholder="" value="{{ person.get('instrument') is defined ? person.get('instrument') : '' }}">
+					<input type="text" required name="instrument" class="form-control" placeholder="{{ 'person.rolle.placeholder'|trans({'%person': person.get('p_firstname') is defined ? person.get('p_firstname') : 'personen'}) }}" value="{{ person.get('instrument') is defined ? person.get('instrument') : '' }}">
 				</div>
 			</div>
 			<div class="row">

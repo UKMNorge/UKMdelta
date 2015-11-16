@@ -1,21 +1,35 @@
 whoAction:
-    sporsmal: Spiller du alene eller med andre?
-    alene: Jeg spiller alene
-    sammen: Jeg spiller sammen med andre
+    sporsmal: Fremfører du alene eller med andre?
+    alene: Jeg fremfører alene
+    sammen: Jeg fremfører sammen med andre
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
 overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
     artistnavn:
         alene:
-            label: Artistnavn
-            placeholder: Eks. Teater-Trond
+            label: Artistnavn / teatergruppe-navn
+            placeholder: Eks. Teater-%fornavn, %fornavn %etternavn osv...
         sammen:
-            label: Gruppenavn
-            placeholder: Eks. Teaterteamet
+            label: Teatergruppe-navn / artistnavn
+            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
         kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Teaterteamet
+            label: Teatergruppe-navn / artistnavn
+            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
     beskrivelse:
         alene:
             label: Beskrivelse av artist
@@ -41,21 +55,76 @@ overviewAction:
         ingen: Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
+    tekniske:
+        overskrift: Tekniske behov / utstyrsbehov
+        endre: endre
+        ingen: Tekniske behov ikke lagt til.
+        legg_til: Legg til tekniske behov
+
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
+#     person.rolle.label
+#     person.rolle.placeholder
 person:
     rolle: 
-        label: rolle
-        placeholder: 
-        help: Skriv inn hva %s gjør eller spiller (f.eks gutt 17 fra Hadeland, koreograf)
+        label: Hva spiller eller gjør %person?
+        placeholder: F.eks hovedperson, Operafantomet, koreograf, skuespiller osv...
+        help: ""
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
+
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til teaterstykke / sketsj
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Navn på teaterstykke / sketsj
+        placeholder: Eks. Karlson på taket, Putti plutti pott osv...
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge teaterstykket / sketsjen varer
+    tekst:
+        label: Har låta tekst, eller er det en instrumental?
+        tekst: Tekst
+        instrumental: Instrumental
+    selvlaget:
+        label: Har du/dere laget teaterstykket / sketsjen selv?
+    tekst_av:
+        label: Tekst av
+        placeholder: (valgfritt felt)
+        help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
+    melodi_av:
+        label: Melodi av
+        placeholder: (valgfritt felt)
+        help: Hvis det er brukt musikk i teaterstykket, skriver du hvem som har laget den her.
+    
+    info_mangler: Info mangler
+    slett: Slett filmen
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+ 
 
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
     placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
+    eksempler: >
+        Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
+    placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.

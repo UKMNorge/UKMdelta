@@ -25,10 +25,10 @@ overviewAction:
             label: Artistnavn / Gruppenavn
             placeholder: Eks. Superbandet, %fornavn %etternavn, %etternavn-band...
         sammen:
-            label: Artistnavn / Gruppenavn
+            label: Gruppenavn / Artistnavn
             placeholder: Eks. Superbandet, %fornavn and the others...
         kontakt:
-            label: Artistnavn / Gruppenavn
+            label: Gruppenavn / Artistnavn
             placeholder: Eks. Superbandet, Musikalske villmenn, Ole og %fornavn...
     beskrivelse:
         alene:
@@ -78,6 +78,7 @@ overviewAction:
 #   %innslaget substitueres med innslagets navn
 #   GJELDER
 #     person.fjern.label
+#     person.rolle.label
 person:
     rolle: 
         label: Instrument
@@ -95,29 +96,23 @@ person:
 #     tittel.overskrift.rediger
 tittel:
     overskrift:
-        legg_til: Legg til film
+        legg_til: Legg til låt
         rediger: Rediger "%tittel"
     tittel:
-        label: Filmens tittel / navn
-        placeholder: Eks. Skyfall, Spectre, Dancing Craig...
+        label: Låtens tittel / navn
+        placeholder: Eks. Skyfall, Utadæsjælåplevelse osv...
     varighet:
         label: Varighet
-        velg_varighet: Velg hvor lenge filmen varer
+        velg_varighet: Velg hvor lenge låta varer
     tekst:
         label: Har låta tekst, eller er det en instrumental?
         tekst: Tekst
         instrumental: Instrumental
     selvlaget:
-        label: Har du/dere laget låta selv?
-    tekst_av:
-        label: Tekst av
-        placeholder: Hvem har skrevet teksten?
-    melodi_av:
-        label: Melodi av
-        placeholder: Hvem har skrevet melodien?
+        label: Har du/dere laget låten selv?
     
     info_mangler: Info mangler
-    slett: Slett filmen
+    slett: Slett låta
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
@@ -125,8 +120,8 @@ tittel:
 statusAction:
     obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
     infotekst: Denne informasjonen mangler før det er påmeldt:
-    artistnavn: Navn / filmgruppens navn
-    lat: Du må legge til minst én film
+    artistnavn: Artistnavn / Gruppenavn
+    lat: Du må legge til minst én låt
     ingendeltakere: Du må legge til minst én person
     teknisk: Du må oppgi tekniske behov
     

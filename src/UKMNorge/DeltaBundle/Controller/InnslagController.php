@@ -311,7 +311,7 @@ class InnslagController extends Controller
         $tittel->set('varighet', $lengde);
 
 		// Sett felter for musikk
-        if ($type == "musikk") {
+        if ($type == "musikk" || $type == 'teater') {
             $sangtype = $request->request->get('sangtype');
             $selvlaget = $request->request->get('selvlaget');
             $tekstforfatter = $request->request->get('tekstforfatter');
