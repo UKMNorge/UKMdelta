@@ -75,12 +75,13 @@ class InnslagService {
 
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
 		$innslag = array();
+		$seasonService = $this->container->get('ukm_delta.season');
 		// Søk etter innslag i databasen?
 		if (empty($contact_id)) {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id'", array('user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id' AND `b_season` = '#season'", array('user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 		else {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE (`b_contact` = '#c_id' OR `b_password` = 'delta_#user_id') AND `b_season` = '#season'", array('c_id' => $contact_id, 'user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 
 		$res = $qry->run();
