@@ -19,15 +19,6 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.help
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
 overviewAction:
 ## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
     artistnavn:
@@ -74,6 +65,17 @@ overviewAction:
         legg_til: Legg til person
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
 person:
     rolle: 
         label: Rolle / oppgave
@@ -102,3 +104,10 @@ tittel:
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
+    
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    artistnavn: Navn / filmgruppens navn
+    lat: Du må legge til minst én film
+    ingendeltakere: Du må legge til minst én person

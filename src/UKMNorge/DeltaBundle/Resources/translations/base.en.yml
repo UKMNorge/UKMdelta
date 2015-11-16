@@ -29,3 +29,20 @@ tittel:
         minutter: minutter
     rediger: rediger
     lagre: Lagre
+    
+    
+statusAction:
+    videreknapp: Ok, jeg fyller ut senere
+    undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
+    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%.%maned% kl. %time%:%minutt%!
+    tilbakeknapp: Gå tilbake for å fylle ut det siste
+    
+    
+technicalAction:
+    overskrift: Skriv inn tekniske behov
+    forklaring: >
+        Her lurer vi på ting som vil gjøre det enklere for teknikerne å gjøre jobben sin. Fyller du inn dette grundig vil vi kunne gi deg en bedre opplevelse.
+
+        For eksempel: 
+    lagreknapp: Lagre og gå til oversikten
+    avbryt: avbryt

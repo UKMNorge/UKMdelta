@@ -1,45 +1,59 @@
 whoAction:
-    sporsmal: Har du laget verket alene eller med andre?
-    alene: Jeg er alene
-    sammen: Vi er en gruppe
+    sporsmal: Har du laget kunstverket alene eller med andre?
+    alene: Jeg har laget det alene
+    sammen: Jeg har laget det sammen med andre
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
 overviewAction:
     artistnavn:
         alene:
-            label: Navn
-            placeholder: Eks. Kunstner-Kari
+            label: Navn / kunstner-navn
+            placeholder: Eks. Kunst-%fornavn, %fornavn %etternavn...
         sammen:
-            label: Gruppenavn
-            placeholder: Eks. Kunstgjengen
+            label: Kunstnernavn / navn på gruppe
+            placeholder: Eks. Kunstlinja, painting cowboys, %etternavn-gjengen...
         kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Kunstgjengen
+            label: Kunstnernavn / navn på gruppe
+            placeholder: Eks. Kunstlinja, painting cowboys, tegneklassen...
     beskrivelse:
         alene:
-            label: Beskrivelse
+            label: Beskrivelse av kunstner
             placeholder: >
-                Eks. Jeg har laget maleri i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å fange øyeblikkene med malepenselen min.
+                Her vil vi vite mer om deg og hvordan du har laget kunstverket.
+                Eks. Jeg liker å holde på med origami, og har i det siste lagd svære origami-montasjer som er mer enn 2 meter høye.
         sammen:
-            label: Beskrivelse av gruppe
+            label: Beskrivelse av kunstner-gruppen
             placeholder: >
-                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville lage et kunstverk, og Per ble med fordi han syntes ideen var så bra.
-                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
+                Her vil vi vite mer om dere og hvordan dere har laget kunstverket.
+                Eks. Vi går ikke på samme skole, men har møttes gjennom ungdomsklubben.
+                Her har vi lært å lage små origamifigurer fra kjente filmer. Vi har planer om å leve av å lage origami.
         kontakt:
-            label: Beskrivelse av artist / gruppe
+            label: Beskrivelse av kunstner-gruppen
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
-                Martine ville lage et kunstverk, og Per ble med fordi han syntes ideen var så bra.
-                De fant ut at dette var så gøy at de ville melde seg på UKM med det.
+                Her vil vi vite mer om gruppa / kunstneren og hvordan de har laget kunstverket.
+                Eks. De går ikke på samme skole, men har møttes gjennom ungdomsklubben.
+                Her har de lært å lage små origamifigurer fra kjente filmer. 
+                De har ingen planer om å leve av å lage origami, men synes det er en hyggelig hobby.
     titler:
-        overskrift: Titler
+        overskrift: Kunstverk / utstillingsobjekter
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Du må legge til minst ett kunstverk / utstillingsobjekt.
         lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
+        legg_til: Legg til nytt kunstverk
     personer:
         overskrift: Personer
         endre: legg til / endre
@@ -48,19 +62,60 @@ overviewAction:
         legg_til: Legg til person
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
 person:
     rolle: 
-        label: rolle
+        label: Hva gjør %person?
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        help: Skriv inn hvilken rolle %person har, eller hva %person gjør (f.eks maler, tegner, illustratør, skulptør osv..)
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
 
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til film
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Filmens tittel / navn
+        placeholder: Eks. Skyfall, Spectre, Dancing Craig...
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge filmen varer
+    info_mangler: Info mangler
+    slett: Slett filmen
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+    
 technicalAction:
     overskrift: Tekniske behov
     ledetekst: Skriv inn dine/deres tekniske behov
     forklaring: Her lurer vi på ting som... [mer forklaring kommer]
     placeholder_teknisk: Eks. Vi trenger en måte å henge opp maleriene, som har kroker på baksiden.
     lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
+    avbryttekst: avbryt
+    
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    artistnavn: Kunstnernavn / navn på gruppe
+    lat: Du må legge til minst ett kunstverk / utstillingsobjekt
+    ingendeltakere: Du må legge til minst én person
+    tilbakeknapp: Gå tilbake for å fylle ut det siste

@@ -59,7 +59,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
-					<small>{{ 'person.rolle.label'|trans }}</small>
+					<small>{{ 'person.rolle.label'|trans({'%person': person.get('p_firstname') is defined ? person.get('p_firstname') : 'personen'})  }}</small>
 				</div>
 			</div>
 			<div class="row">
