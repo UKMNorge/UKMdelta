@@ -1,4 +1,5 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
 {% block scripts %}
 	{{ parent() }}
@@ -6,13 +7,12 @@
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
 {% endblock %}
-
 	
 {% block content %}
 	{% if tittel.tittel is defined %}
-		<h1 class="center">Endre låt</h1>
+		<h1 class="center">Endre tittel</h1>
 	{% else %}
-		<h1 class="center">Legg til låt</h1>
+		<h1 class="center">Legg til tittel</h1>
 	{% endif %}
 	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
@@ -61,25 +61,17 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>Har låta tekst, eller er det en instrumental?</small>
-			</div>
-		</div>
-		<div class="col-xs-12" id="tekst-valg">
-			<label class="radio-inline"><input type="radio" name="sangtype" value="sang" checked>Tekst</label>
-			<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental">Instrumental</label>
-		</div>
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>Har du/dere laget låta selv?</small>
+				<small>Har du/dere laget teaterstykket selv?</small>
 			</div>
 		</div>
 		<div class="col-xs-12"  id="melodi-valg" >
 			<label class="radio-inline"><input type="radio" name="selvlaget" value="1">Ja</label>
 			<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>Nei</label>
 		</div>
+		{# 
 		<div class="row" id="tekst-rad">
 			<div class="col-xs-12 delta-input-header">
-				<small>Tekst av</small>
+				<small>Koreografi av</small>
 			</div>
 			<div class="col-xs-12">
 				<input type="text" name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
@@ -87,18 +79,19 @@
 		</div>
 		<div class="row" id="melodi-rad">
 			<div class="col-xs-12 delta-input-header">
-				<small>Melodi av</small>
+				<small>Melodi til eventuelle melodier av</small>
 			</div>
 			<div class="col-xs-12">
 				<input type="text" name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
 			</div>
 		</div>
+		#}
 		<p>&nbsp;</p>
 		<button type="submit" class="btn btn-block btn-delta">Lagre</button>
 
 		{% if tittel.get('t_id') > 0 %}
 			<p>&nbsp;</p>
-			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett låt</a>
+			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett tittel</a>
 		{% endif %}
 		<p>&nbsp;</p>
 		<div class="col-xs-12 center">

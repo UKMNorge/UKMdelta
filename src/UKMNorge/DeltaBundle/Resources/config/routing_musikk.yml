@@ -5,7 +5,7 @@ ukm_delta_ukmid_pamelding_musikk_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,5})
 
-ukmid_delta_ukmid_pamelding_musikk_opprett:
+ukm_delta_ukmid_pamelding_musikk_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/musikk/opprett/{hvem}/
     defaults: { _controller: UKMDeltaBundle:Musikk:create }
     requirements:

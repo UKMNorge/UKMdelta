@@ -4,7 +4,7 @@ whoAction:
     sammen: Jeg spiller sammen med andre
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-    
+
 overviewAction:
     artistnavn:
         label: Artistnavn / Gruppenavn
@@ -25,6 +25,18 @@ overviewAction:
         lukk_listen: lukk listen
         legg_til: Legg til person
     lagre: Lagre
+
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: |
+        Her lurer vi på ting som vil gjøre det enklere for teknikerne å gjøre jobben sin. Fyller du inn dette skikkelig vil det også bli en bedre opplevelse for deg på de tekniske prøvene.
+
+        Eksempel 
+        Skal to av dere synge? Skriv opp to vokalmikrofoner. Vil du helst ha et flygel om det er tilgjengelig, eller et elektrisk piano? Er gitaren akustisk eller elektrisk, trenger den mikrofon eller forsterker? Ønsker dere noe spesielt av lysdesign?
+    placeholder_teknisk: Vi trenger en dobbel trommepedal, og den akustiske gitaren har ikke innebygd mikrofon osv...
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt
 
 person:
     rolle: 

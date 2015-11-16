@@ -1,0 +1,44 @@
+whoAction:
+    sporsmal: Danser du alene eller med andre?
+    alene: Jeg danser alene
+    sammen: Jeg danser sammen med andre
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+overviewAction:
+    artistnavn:
+        label: Artistnavn / Gruppenavn
+        placeholder: Eks. Superdanserne
+    beskrivelse:
+        label: Beskrivelse av gruppe
+        placeholder: Eks. Vi danser en egenkoreografert dans til låta 'Happy' av Pharrell Williams
+    titler:
+        overskrift: Titler
+        endre: legg til / endre
+        ingen: Ingen titler er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til ny tittel
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    lagre: Lagre
+
+person:
+    rolle: 
+        label: rolle
+        placeholder: 
+        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        ukjent: ukjent rolle
+    ar: år
+    rediger: rediger
+
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter og playback av musikk. I tillegg ønsker vi at lyset skal skifte mellom temaene "Dag" og "Natt" flere ganger i koreografien.
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt 

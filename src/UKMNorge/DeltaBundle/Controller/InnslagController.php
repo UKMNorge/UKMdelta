@@ -59,8 +59,9 @@ class InnslagController extends Controller
     public function whoAction($k_id, $pl_id, $type, $translationDomain)
     {   
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type);
-
+        
     	$view_data['translationDomain'] = $translationDomain;
+        //$view_data['translationDomain'] = 'innslag';
 
     	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
     }
@@ -128,7 +129,7 @@ class InnslagController extends Controller
         $personService->lagreAlder($p_id, $pl_id, $alder);
         $personService->lagreMobil($p_id, $pl_id, $mobil);
 
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function savePersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
@@ -153,7 +154,7 @@ class InnslagController extends Controller
         $personService->lagreAlder($p_id, $pl_id, $alder);
         $personService->lagreMobil($p_id, $pl_id, $mobil);
 
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function removePersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
@@ -162,7 +163,7 @@ class InnslagController extends Controller
         
         $innslagService->fjernPerson($b_id, $p_id);
 
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function createAction($k_id, $pl_id, $type, $hvem) {
@@ -205,12 +206,14 @@ class InnslagController extends Controller
     	// var_dump($user);
     	// var_dump($person);
     	//var_dump($innslag);
-    	return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    	return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function newTitleAction($k_id, $pl_id, $type, $b_id) {
         require_once('UKM/tittel.class.php');
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = $type;
+
         $innslagService = $this->get('ukm_api.innslag');
 
         $view_data['innslag'] = $innslagService->hent($b_id);
@@ -229,9 +232,13 @@ class InnslagController extends Controller
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
         }
         elseif ($type == 'dans') {
-
+            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+        }
+        elseif ($type == 'teater') {
+            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
         }
         else {
+            // Midlertidig, bør gjøre noe annet her.
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
         }
     }
@@ -251,8 +258,21 @@ class InnslagController extends Controller
 
         $view_data['tittel'] = $tittel;
         $view_data['innslag'] = $innslagService->hent($b_id);
+        $view_data['translationDomain'] = $type;
 
-        return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+        if ($type == 'musikk') {
+            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
+        }
+        elseif ($type == 'dans') {
+            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+        }
+        elseif ($type == 'teater') {
+            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+        }
+        else {
+            // Midlertidig, bør gjøre noe annet her.
+            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+        }
     }
 
     public function saveTitleAction($k_id, $pl_id, $type, $b_id) {
@@ -312,7 +332,7 @@ class InnslagController extends Controller
   
 		// Lagre tittel
 		$tittel->lagre();
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function deleteTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
@@ -330,15 +350,18 @@ class InnslagController extends Controller
        
         // Slett tittel fra innslaget
         if ($deleted = $tittel->delete()) {
-            return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
+            $this->addFlash('success', 'Tittel "'.$tittel->get('tittel').'" slettet!');
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
         }
-        // TODO: Feilmelding her!
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_tittel', $view_data);
+        
+        $this->addFlash('danger', 'En feil oppsto ved sletting av tittel. Forsøk igjen, og kontakt support hvis problemet fortsetter.');
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function technicalAction($k_id, $pl_id, $type, $b_id) {
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = 'innslag';
+        $view_data['translationDomain'] = $type
+        ;
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
 
@@ -357,7 +380,7 @@ class InnslagController extends Controller
 
         $innslagService->lagreTekniskeBehov($b_id, $tekniskekrav);
 
-        return $this->redirectToRoute('ukmid_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
     public function overviewAction($k_id, $pl_id, $type, $b_id) {
@@ -371,6 +394,8 @@ class InnslagController extends Controller
         $personService = $this->get('ukm_api.person');
         $innslag = $innslagService->hent($b_id);
         
+
+
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
         $teknisk = $innslag->get('td_demand');
         if (strlen($teknisk) > 220) {

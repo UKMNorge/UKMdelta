@@ -1,0 +1,44 @@
+whoAction:
+    sporsmal: Spiller du alene eller med andre?
+    alene: Jeg spiller alene
+    sammen: Jeg spiller sammen med andre
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+overviewAction:
+    artistnavn:
+        label: Artistnavn / Gruppenavn
+        placeholder: Eks. Teaterteamet
+    beskrivelse:
+        label: Beskrivelse av gruppe
+        placeholder: Eks. Jeg/Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp på Hadeland
+    titler:
+        overskrift: Titler
+        endre: legg til / endre
+        ingen: Ingen titler er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til ny tittel
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    lagre: Lagre
+
+person:
+    rolle: 
+        label: rolle
+        placeholder: 
+        help: Skriv inn hva %s gjør eller spiller (f.eks gutt 17 fra Hadeland, koreograf)
+        ukjent: ukjent rolle
+    ar: år
+    rediger: rediger
+
+technicalAction:
+    overskrift: Tekniske behov
+    ledetekst: Skriv inn dine/deres tekniske behov
+    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
+    lagreknapp: Lagre og gå til oversikten
+    avbryttekst: avbryt 

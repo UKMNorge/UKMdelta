@@ -50,14 +50,14 @@
 							</p>
 						</div>
 						<div class="col-xs-3">
-							<a href="{{ path('ukmid_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">{{ 'person.rediger'|trans }}</a>
+							<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">{{ 'person.rediger'|trans }}</a>
 						</div>
 					</li>
 				</ul>
 			{% endfor %}
 			<div class="clearfix"></div>
 			<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
 			</div>
 			<p>&nbsp;</p>
 			<p class="center">
@@ -69,7 +69,7 @@
 	{% if personer|length < 1 %} 
 		<div class="row">
 			<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukmid_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
+				<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.personer.legg_til'|trans }}</a>
 			</div>
 		</div>
 	{% endif %}
