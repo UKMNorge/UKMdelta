@@ -22,13 +22,6 @@ jQuery(document).on('click', '#melodi-valg', function() {
 	var innslagsnavn = $(":input[name='innslagsnavn']").val();
 	var selvlaget = $(":radio:checked", Valg);
 	
-	console.debug(Valg);
-	console.debug(Rad);
-	console.debug(melodiforfatter);
-	console.debug(tekstforfatter);
-	console.debug(innslagsnavn);
-	console.debug(selvlaget);
-
 	if (selvlaget.val() == '0') {
 		if (melodiforfatter.val() == innslagsnavn) {
 			melodiforfatter.val('');	
@@ -49,6 +42,31 @@ jQuery(document).on('click', '#melodi-valg', function() {
 		}
 		
 	}
+});
 
+jQuery(document).on('click', '#koreografi-valg', function() {
+	var Valg = $("#koreografi-valg");
+	var Rad = $("#koreografi-rad");
+	var koreografi = $(":input[name='koreografi']", Rad);
+	var selvlaget = $(":radio:checked", Valg);
+	var innslagsnavn = $(":input[name='innslagsnavn']").val();
+	
+	if (selvlaget.val() == '0') {
+		if (koreografi.val() == innslagsnavn) {
+			koreografi.val('');	
+		}
+		if (koreografi.val() == innslagsnavn) {
+			koreografi.val('');
+		}
+	}
+	else if (selvlaget.val() == '1') {
+		if (koreografi.val() == '') {
+			koreografi.val(innslagsnavn);	
+		}
 
+		if (koreografi.val() == '') {
+			koreografi.val(innslagsnavn);	
+		}
+		
+	}
 });

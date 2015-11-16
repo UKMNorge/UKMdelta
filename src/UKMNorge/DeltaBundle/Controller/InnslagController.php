@@ -324,10 +324,10 @@ class InnslagController extends Controller
         }
         // Sett felter for dans
         elseif ($type == "dans") {
-	        $lengde = $request->request->get('lengde'); // I sekunder
-            $koreografi = $request->request->get('koreografi');
-            
+            $koreografi = $request->request->get('koreografi');            
+            $melodi_av = $request->request->get('melodiforfatter');            
             $tittel->set('koreografi', $koreografi);
+            $tittel->set('melodi_av', $melodi_av);
         }
   
 		// Lagre tittel

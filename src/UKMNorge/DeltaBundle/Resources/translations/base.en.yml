@@ -20,6 +20,9 @@ person:
     overskrift:
         legg_til: Legg til person
         rediger: Rediger %fornavn
+
+ja: ja
+nei: nei
         
 tittel:
     varighet:

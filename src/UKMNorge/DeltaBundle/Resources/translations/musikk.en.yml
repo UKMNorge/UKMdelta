@@ -60,6 +60,11 @@ overviewAction:
         ingen: Du må legge til minst én person. Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
+    tekniske:
+        overskrift: Tekniske behov / utstyrsbehov
+        endre: endre
+        ingen: Tekniske behov ikke lagt til.
+        legg_til: Legg til tekniske behov
     lagre: Lagre
 
 # SUBSTITUERING VARIABLER
@@ -98,6 +103,19 @@ tittel:
     varighet:
         label: Varighet
         velg_varighet: Velg hvor lenge filmen varer
+    tekst:
+        label: Har låta tekst, eller er det en instrumental?
+        tekst: Tekst
+        instrumental: Instrumental
+    selvlaget:
+        label: Har du/dere laget låta selv?
+    tekst_av:
+        label: Tekst av
+        placeholder: Hvem har skrevet teksten?
+    melodi_av:
+        label: Melodi av
+        placeholder: Hvem har skrevet melodien?
+    
     info_mangler: Info mangler
     slett: Slett filmen
     slettet: %tittel er nå slettet
