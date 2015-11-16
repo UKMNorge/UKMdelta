@@ -475,9 +475,10 @@ class InnslagController extends Controller
         
         $frist = new DateTime();
         $frist->setTimestamp($monstring->get('pl_deadline'));
-        
+
         $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
         //var_dump($view_data['grunner']);
+       
         $view_data['frist'] = $frist;
 
         // Oppdater status på innslaget!
@@ -495,11 +496,20 @@ class InnslagController extends Controller
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'innslag';
 
-        $pl['dag'] = 15;
-        $pl['maned'] = "januar";
-        $pl['time'] = 15;
-        $pl['minutt'] = 30;
-        $view_data['pl'] = $pl;
+        require_once('UKM/monstring.class.php');
+        $monstring = new monstring($pl_id);
+
+        $start = new DateTime();
+        $start->setTimestamp($monstring->get('pl_start'));
+
+        $name = $monstring->get('pl_name');
+        $view_data['pl_navn'] = $name;
+
+        $pl_start['dag'] = $start->format("d");
+        $pl_start['maned'] = $start->format("F");
+        $pl_start['time'] = $start->format("G");
+        $pl_start['minutt'] = $start->format("i");
+        $view_data['pl_start'] = $pl_start;
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
