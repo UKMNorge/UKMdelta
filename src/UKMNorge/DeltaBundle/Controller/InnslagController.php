@@ -69,8 +69,10 @@ class InnslagController extends Controller
     /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['person'] = false;
+        $view_data['translationDomain'] = $type;
         
-        return $this->render('UKMDeltaBundle:Innslag:nyPerson.html.twig', $view_data);
+        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
     }
 
     public function editPersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
@@ -82,21 +84,14 @@ class InnslagController extends Controller
         $personService = $this->get('ukm_api.person');
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
-        $person = $personService->hent($p_id);
-        foreach($innslag->personer() as $personInfo) {
-            // Send kun den personinfoen som stemmer med den personen man vil redigere
-            if ($personInfo['p_id'] == $p_id) {
-                $innslagsPerson = $personInfo;
-            }
-        }
-        // var_dump($person);
-        // var_dump($innslagsPerson);
+        $person = $personService->hent($p_id, $b_id);
 
         $view_data['user'] = $user;
         $view_data['person'] = $person;
-        $view_data['innslag'] = $innslagsPerson;
+        $view_data['innslag'] = $innslag;
         $view_data['age'] = $personService->alder($person);
-        return $this->render('UKMDeltaBundle:Innslag:redigerPerson.html.twig', $view_data);
+        $view_data['translationDomain'] = $type;
+        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
     }
 
     public function saveNewPersonAction($k_id, $pl_id, $type, $b_id) {
@@ -224,9 +219,9 @@ class InnslagController extends Controller
             default:            $form = 'smartukm_titles_scene';        break;
         }
 
-        $tittel = new tittel(false, $form);
+       // $tittel = new tittel(false, $form);
 
-        $view_data['tittel'] = $tittel;
+//        $view_data['tittel'] = false;
 
         if ($type == 'musikk') {
             return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
@@ -242,7 +237,7 @@ class InnslagController extends Controller
         }
         else {
             // Midlertidig, bør gjøre noe annet her.
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
 
@@ -297,7 +292,8 @@ class InnslagController extends Controller
 
 		// Hent variabler		
         $tittelnavn = $request->request->get('tittel');
-        $season = $seasonService->getActive();
+		$lengde = $request->request->get('lengde'); // I sekunder
+		$season = $seasonService->getActive();
 		
 		// Opprett tittel-objektet og sett tittel navn
         if ($t_id == 'new') {
@@ -312,10 +308,10 @@ class InnslagController extends Controller
 
     	$tittel->set('tittel', $tittelnavn );		
     	$tittel->set('season', $season );
+        $tittel->set('varighet', $lengde);
 
 		// Sett felter for musikk
         if ($type == "musikk") {
-	        $lengde = $request->request->get('lengde'); // I sekunder
             $sangtype = $request->request->get('sangtype');
             $selvlaget = $request->request->get('selvlaget');
             $tekstforfatter = $request->request->get('tekstforfatter');
@@ -325,7 +321,6 @@ class InnslagController extends Controller
             // var_dump(mb_detect_encoding($melodiforfatter));
             // die();
             $tittel->set('melodi_av', $melodiforfatter);
-            $tittel->set('varighet', $lengde);
         }
         // Sett felter for dans
         elseif ($type == "dans") {
@@ -333,7 +328,6 @@ class InnslagController extends Controller
             $koreografi = $request->request->get('koreografi');
             
             $tittel->set('koreografi', $koreografi);
-            $tittel->set('varighet', $lengde);
         }
   
 		// Lagre tittel
@@ -356,7 +350,8 @@ class InnslagController extends Controller
        
         // Slett tittel fra innslaget
         if ($deleted = $tittel->delete()) {
-            $this->addFlash('success', 'Tittel "'.$tittel->get('tittel').'" slettet!');
+	        $translated_message = $this->get('translator')->trans('tittel.slettet', array('%tittel'=>$tittel->tittel), $type);
+            $this->addFlash('success', $translated_message);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
         }
         

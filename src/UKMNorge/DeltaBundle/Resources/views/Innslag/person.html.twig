@@ -1,0 +1,89 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	{% if person is defined and person %}
+		<h1 class="center">{{ 'person.overskrift.rediger'|trans({'%fornavn': person.get('p_firstname')}, 'base') }}</h1>
+		<form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: p_id }) }}">
+	{% else %}
+		<h1 class="center">{{ 'person.overskrift.legg_til'|trans({}, 'base') }}</h1>
+		<form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_ny_person', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}"> 
+	{% endif %}
+		<div class="form-group"> 
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ 'person.fornavn.label'|trans({}, 'base') }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" required name="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ 'person.etternavn.label'|trans({}, 'base') }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" required name="etternavn" class="form-control" placeholder="" value="{{ person.get('p_lastname') is defined ? person.get('p_lastname') : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ 'person.alder.label'|trans({}, 'base') }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<select name="alder" required class="form-control delta-select">
+						<option value="" {{ (person.get('age') is defined) and (person.get('age') < 25) and (person.get('age') > 9) and (person.get('age') != '25+') ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option> 
+						{% for i in 10..25 %}
+							<option value="{{ i }}" {{ (person.get('age') is defined) and (person.get('age') == i) ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({}, 'base') }}</option> 
+						{% endfor %}
+							<option value="0"{{ (person.get('age') is defined) and person.get('age') == '25+' ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
+					</select>
+					<span class="caret delta-caret"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ 'person.mobil.label'|trans({}, 'base') }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" required name="mobil" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ 'person.rolle.label'|trans }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" required name="instrument" class="form-control" placeholder="" value="{{ person.get('instrument') is defined ? person.get('instrument') : '' }}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<small class="delta-subtext left">{{ 'person.rolle.help'|trans({'%person': person.get('p_firstname') is defined ? person.get('p_firstname') : 'personen'}) }}</small>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-block btn-delta">{{ 'person.lagre'|trans({}, 'base') }}</button>
+			{% if person is defined and person %}
+				<p>&nbsp;</p>
+				<a href="{{ path('ukm_delta_ukmid_pamelding_fjern_person', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: p_id }) }}" type="button" class="btn btn-danger btn-block btn-delta">{{ 'person.fjern.label'|trans({'%person': person.get('p_firstname'), '%innslag': innslag.get('b_name')}) }}</a>
+			{% endif %}
+			
+			<p>&nbsp;</p>
+			<p class="center">
+				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'person.avbryt'|trans({},'base') }}</a>
+			</p>
+		</div>
+	</form>
+
+{% endblock %}

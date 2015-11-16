@@ -20,17 +20,17 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ name is defined ? name : '' }}"> 
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</small>
+				<small>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans  }}">{{ beskrivelse }}</textarea>				
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>				
 			</div>
 		</div>
 		<br>
@@ -39,7 +39,7 @@
 		<p>&nbsp;</p>
 		
 		{# TITLER #}
-		{% include 'UKMDeltaBundle:Musikk:titler.html.twig' %}
+		{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 		<p>&nbsp;</p>
 
 		{# TEKNISKE BEHOV #}

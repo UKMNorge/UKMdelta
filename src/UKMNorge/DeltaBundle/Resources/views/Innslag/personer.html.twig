@@ -27,13 +27,8 @@
 					<li class="row click triggerLink">
 						<div class="col-xs-2">
 							<div class="overunder">
-								{% if person.age is defined %}
-									<div class="over">{{ person.age }}</div>
-									<div class="under">{{ 'person.ar'|trans }}</div>
-								{% else %}
-									<div class="over">?</div>
-									<div class="under">{{ 'person.ar'|trans }}</div>
-								{% endif %}
+								<div class="over">{{ person.age is defined ? person.age : '?' }}</div>
+								<div class="under">{{ 'person.alder.ar'|trans({}, 'base') }}</div>
 							</div>
 						</div>
 						<div class="col-xs-7">
@@ -50,7 +45,7 @@
 							</p>
 						</div>
 						<div class="col-xs-3">
-							<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">{{ 'person.rediger'|trans }}</a>
+							<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.p_id } ) }}" class="actionLink" id="editP{{ person.p_id }}">{{ 'person.rediger'|trans({},'base') }}</a>
 						</div>
 					</li>
 				</ul>
