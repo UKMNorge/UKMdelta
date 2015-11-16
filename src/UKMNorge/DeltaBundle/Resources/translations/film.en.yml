@@ -1,67 +1,104 @@
+#### HVEM SKAL DU MELDE PÅ?
 whoAction:
-    sporsmal: Har du laget filmen alene eller med andre?
-    alene: Jeg er alene
-    sammen: Vi er en gruppe
+    sporsmal: Vil du melde på en film du har laget alene eller sammen med andre?
+    alene: Jeg har laget filmen alene
+    sammen: Vi er flere som har laget filmen sammen
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.help
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
 overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
     artistnavn:
         alene:
-            label: Navn
-            placeholder: Eks. Film-Fredrik
+            label: Navn / filmgruppens navn
+            placeholder: Eks. %etternavn Productions, %fornavn %etternavn
         sammen:
-            label: Gruppenavn
-            placeholder: Eks. Film-gjengen
+            label: Filmgruppens navn
+            placeholder: Eks. Film-gjengen, %fornavn %etternavn, %etternavn Productions...
         kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Film-gjengen
+            label: Filmgruppens navn
+            placeholder: Eks. Film-gjengen, Per, Pål og Espen...
+## BESKRIVELSE AV INNSLAGET
     beskrivelse:
         alene:
             label: Beskrivelse
             placeholder: >
-                Eks. Jeg har laget filmer i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å lage filmer om hverdagslige ting.
+                Her vil vi vite mer om deg og hvordan du lager film.
+                Eks. Jeg startet å lage film når jeg var 12 år, og liker å lage filmer om folk som danser.
+                Jeg filmer med speilrefleks, og liker å bruke mye tid på lyssetting.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før vi fant ut at vi skulle lage en film.
-                Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
-                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
+                Her vil vi vite mer om de som har laget filmen.
+                Eks. Vi har gått på samme skole i fire år, men aldri gjort så mye sammen før vi fant ut at vi skulle lage en film.
+                Vi har aldri gjort skjult kamera før, men syns dette var veldig gøy!
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før de fant ut at de skulle lage en film.
-                Martine ville gjøre skjult kamera, og Per var personen som hadde peiling på kamera i klassen.
-                Det endte opp med at de fant ut at dette var så gøy at de ville melde seg på UKM med det.
+                Her vil vi vite mer om de som har laget filmen.
+                Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
+                De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
     titler:
-        overskrift: Titler
+        overskrift: Filmer
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Her legger du til hvilke filmer du vil melde på. Du må legge til minst én film.
         lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
+        legg_til: Legg til en film
     personer:
         overskrift: Personer
         endre: legg til / endre
-        ingen: Ingen personer er lagt til
+        ingen: Du må legge til minst én person. Ingen personer er lagt til.
         lukk_listen: lukk listen
         legg_til: Legg til person
     lagre: Lagre
 
 person:
     rolle: 
-        label: rolle
+        label: Rolle / oppgave
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks danser, koreograf)
+        help: Skriv inn hva %person har gjort i filmene (f.eks kameraoperatør, regi, skuespiller osv)
         ukjent: ukjent rolle
-    ar: år
-    rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
 
-technicalAction:
-    overskrift: Teknisk informasjon
-    ledetekst: Skriv inn teknisk informasjon om innslaget
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: >
-        Eks. Video 1 leveres i FullHD-oppløsning, QuickTime .mov-format.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til film
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Filmens tittel / navn
+        placeholder: Eks. Skyfall, Spectre, Dancing Craig...
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge filmen varer
+    info_mangler: Info mangler
+    slett: Slett filmen
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt

@@ -1,3 +1,7 @@
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.overskrift.rediger
 person:
     fornavn:
         label: Fornavn
@@ -5,3 +9,23 @@ person:
         label: Etternavn
     mobil: 
         label: Mobil
+    alder:
+        label: Alder
+        listDefault: Velg riktig alder
+        ar: år
+        over25: Over 25 år
+    avbryt: avbryt
+    rediger: rediger
+    lagre: Lagre
+    overskrift:
+        legg_til: Legg til person
+        rediger: Rediger %fornavn
+        
+tittel:
+    varighet:
+        sek: sek
+        min: min
+        sekunder: sekunder
+        minutter: minutter
+    rediger: rediger
+    lagre: Lagre
