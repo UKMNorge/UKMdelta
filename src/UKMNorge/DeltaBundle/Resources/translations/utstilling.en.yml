@@ -119,8 +119,5 @@ technicalAction:
     
 statusAction:
     obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
     infotekst: Denne informasjonen mangler før det er påmeldt:
-    artistnavn: Kunstnernavn / navn på gruppe
-    lat: Du må legge til minst ett kunstverk / utstillingsobjekt
-    ingendeltakere: Du må legge til minst én person
-    tilbakeknapp: Gå tilbake for å fylle ut det siste
