@@ -484,7 +484,7 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
 
-        $innslag->get('b_status');
+        $status = $innslag->get('b_status');
         $innslag->get('b_status_text');
 
         $monstring = new monstring($pl_id);
@@ -492,6 +492,7 @@ class InnslagController extends Controller
         $frist = new DateTime();
         $frist->setTimestamp($monstring->get('pl_deadline'));
 		$validering = $innslagService->hentAdvarsler($b_id, $pl_id);
+        //var_dump($validering);
         $view_data['status'] = $validering[0];
         $view_data['grunner'] = $validering[1];
         //var_dump($view_data['grunner']);
@@ -500,7 +501,7 @@ class InnslagController extends Controller
 
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??
-        if(empty($view_data['grunner'])) {
+        if($view_data['status'] == 8) {
             //$innslagService->lagreStatus($b_id, 8);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
         }

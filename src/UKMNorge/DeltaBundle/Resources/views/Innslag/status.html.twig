@@ -18,25 +18,23 @@
 			{# {% for tekst in grunner %}
 				<li>- {{ ('statusAction.'~tekst)|trans }}</li>
 			{% endfor %} #}
-
-			{% for key, grunn in grunner %}
-				{% if key == 'personer' %}
-					{% for person in grunn %}
+			{% for key, kategori in grunner %}
+				{% if (key == 'personer') %}
+					{% for person in grunner['personer'] %}
 						- {{ person[0] }}:
 						<ul>
 							{% for tekst in person[1] %}
 								<li>{{ ('mangler.'~tekst)|trans({}, 'base') }}</li>
 							{% endfor %}
-						</ul>
-						{#{{ person }} {# person-ID #}
-						{# {% for tekst in person %}
-							<li>{{ tekst }}</li>
-						{% endfor %} #}
+						</ul>  
 					{% endfor %}
-				{% else %}
-					<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li>   
+				{% elseif (key == 'innslag') %}
+					{% for grunn in grunner['innslag'] %}
+						<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li>   
+					{% endfor %}
 				{% endif %}
 			{% endfor %}
+
 		</ul>
 	</div>
 	<p>&nbsp;</p>
