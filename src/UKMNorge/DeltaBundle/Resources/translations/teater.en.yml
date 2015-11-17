@@ -124,10 +124,14 @@ tittel:
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
- 
 
 technicalAction:
     placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
     placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.
+    
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
+    infotekst: Denne informasjonen mangler før det er påmeldt:

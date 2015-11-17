@@ -529,6 +529,7 @@ class InnslagController extends Controller
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
+        $view_data['status_real'] = $status;
 
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??
