@@ -89,7 +89,39 @@ person:
     rediger: rediger
     fjern:
         label: Fjern %person fra %innslag
+        
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til tekst / verk
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Navn på tekst / verk
+        placeholder: Eks. Hobbiten, Enders Game, Paper Towns osv...
+    tekst_av:
+        label: Medforfattere
+        placeholder: Eks. J.R.R Tolkien, Orson Scott Card, John Green osv...
+        help: Hvis flere har bidratt, kan du oppgi de som medforfattere her.
+    leseopp:
+        label: Ønsker du å lese opp denne?
+        help: Hvis du svarer "nei", vil det mest sannsynlig stilles ut i kunstutstillingen.
+    varighet:
+        label: Hvor lang tid trenger du for å lese opp?
+        velg_varighet: Velg hvor lang tid du trenger
+        help: OBS: Vi anbefaler at du holder deg under 5 minutter, og kanskje leser ut et utdrag hvis teksten er lang.
+    info_mangler: Info mangler
+    slett: Slett tekst / verk
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
 
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    
 technicalAction:
     eksempler: >
         Noen vil lese opp verket sitt, mens andre vil vise det frem i utstillingen.

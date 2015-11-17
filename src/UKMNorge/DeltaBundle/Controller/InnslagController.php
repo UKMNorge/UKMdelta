@@ -229,6 +229,7 @@ class InnslagController extends Controller
             case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
             case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
             case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
             default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
@@ -254,10 +255,11 @@ class InnslagController extends Controller
 
 
         switch($type) {
-            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
-            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'musikk':  	return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':  	  	return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':	    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
             default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
@@ -334,9 +336,17 @@ class InnslagController extends Controller
 	            $tittel->set('koreografi', $koreografi);
 	            $tittel->set('melodi_av', $melodi_av);
                 break;
+            case 'litteratur':
+                $tekstforfatter = $request->request->get('tekstforfatter');
+                $lese_opp = $request->request->get('leseopp');
+				$tittel->set('tekst_av', $tekstforfatter);
+				$tittel->set('litterature_read', $lese_opp);
+				if( $lese_opp == ('0' || 0) ) {
+	                $tittel->set('varighet', 0);
+				}
+				break;
             default:
                 $lengde = $request->request->get('lengde');
-
                 $tittel->set('varighet', $lengde);
                 break;
         }
