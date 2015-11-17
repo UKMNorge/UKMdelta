@@ -442,6 +442,7 @@ class InnslagController extends Controller
         else {
             $view_data['name'] = '';
         }
+        $view_data['sjanger'] = $innslag->get('b_sjanger');
         $view_data['teknisk'] = $teknisk;
         $view_data['innslag'] = $innslag->info;
         $view_data['beskrivelse'] = utf8_decode($innslag->get('b_description'));
@@ -461,7 +462,7 @@ class InnslagController extends Controller
         $name = $request->request->get('navn');
         $desc = $request->request->get('beskrivelse');
         
-        if($type == 'musikk' or $type == 'film' or $type == 'annet') {
+        if(($type == 'musikk') || ($type == 'film') || ($type == 'annet')) {
             $genre = $request->request->get('sjanger');
             $innslagService->lagreSjanger($b_id, $genre);
         }
