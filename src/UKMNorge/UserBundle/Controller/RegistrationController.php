@@ -50,7 +50,8 @@ class RegistrationController extends BaseController
 
             $userManager->updateUser($user);
 
-            if (null === $response = $event->getResponse()) {
+			$response = $event->getResponse();
+            if (null === $response) {
                 $url = $this->generateUrl('fos_user_registration_confirmed');
                 $response = new RedirectResponse($url);
             }
@@ -108,6 +109,7 @@ class RegistrationController extends BaseController
 			return $this->redirect( $this->get('router')->generate('ukm_user_registration_check_sms') );
 		}
 		
+		// TODO: Hvis $user->getConfirmationToken() == null, redirect til error-handler..
 		$url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
 		return $this->redirect( $url );
 	}
