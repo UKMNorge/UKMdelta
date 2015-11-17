@@ -67,7 +67,7 @@ jQuery(document).on('click', '#koreografi-valg', function() {
 			koreografi.val(innslagsnavn);	
 		}		
 	}
-}
+});
 
 
 $( document ).ready( function() { 
