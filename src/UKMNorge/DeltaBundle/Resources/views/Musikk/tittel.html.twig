@@ -26,7 +26,7 @@
 			<small>{{ 'tittel.tekst_av.label'|trans }}</small>
 		</div>
 		<div class="col-xs-12">
-			<input type="text" required name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
+			<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
 		</div>
 	</div>
 	<div class="row" id="melodi-rad">
@@ -34,7 +34,7 @@
 			<small>{{ 'tittel.melodi_av.label'|trans }}</small>
 		</div>
 		<div class="col-xs-12">
-			<input type="text" required name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
+			<input type="text" name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
 		</div>
 	</div>
 {% endblock %}
