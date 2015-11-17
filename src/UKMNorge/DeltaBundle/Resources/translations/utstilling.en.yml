@@ -90,14 +90,19 @@ person:
 #     tittel.overskrift.rediger
 tittel:
     overskrift:
-        legg_til: Legg til film
+        legg_til: Legg til verk / utstillingsobjekt
         rediger: Rediger "%tittel"
     tittel:
-        label: Filmens tittel / navn
-        placeholder: Eks. Skyfall, Spectre, Dancing Craig...
-    varighet:
-        label: Varighet
-        velg_varighet: Velg hvor lenge filmen varer
+        label: Verket / utstillingsobjektets tittel eller navn
+        placeholder: Eks. Elg i Solnedgang, Vakker bru osv...
+    type:
+        label: Type og teknikk
+        placeholder: Eks. portrettfoto, akvarellmaling, acryl osv...
+    beskrivelse:
+        label: Beskrivelse av verket / utstillingsobjektet
+        placeholder: >
+            Eks. Bildet av elgen ble tatt med 50mm, og den så veldig stor ut på så kort avstand.
+            Solen sto i en unik vinkel på grunn av måneformørkelsen og det hele er meget merkelig.
     info_mangler: Info mangler
     slett: Slett filmen
     slettet: %tittel er nå slettet

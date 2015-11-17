@@ -22,18 +22,22 @@
 			{% for tittel in titler %}
 				<ul class="list-unstyled">
 					<li class="row click triggerLink">
-						<div class="col-xs-2">
-							<div class="overunder">
-								{% if tittel.varighet is defined %}
-									<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-									<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
-								{% else %}
-									<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-									<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
-								{% endif %}
+						{% if translationDomain == 'utstilling' %}
+							<div class="col-xs-9">						
+						{% else %}
+							<div class="col-xs-2">
+								<div class="overunder">
+									{% if tittel.varighet is defined %}
+										<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+										<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+									{% else %}
+										<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+										<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+									{% endif %}
+								</div>
 							</div>
-						</div>
-						<div class="col-xs-7">
+							<div class="col-xs-7">
+						{% endif %}
 							<p style="line-height:1em">
 								{{ tittel.tittel is defined ? tittel.tittel : '' }}
 								<br />
