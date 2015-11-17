@@ -1,41 +1,41 @@
 whoAction:
-    sporsmal: Er du alene eller med andre?
-    alene: Jeg er alene
-    sammen: Vi er en gruppe
+    sporsmal: Deltar du alene eller med andre?
+    alene: Jeg deltar alene
+    sammen: Vi er en gruppe som skal delta
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
 overviewAction:
     artistnavn:
         alene:
-            label: Artistnavn
-            placeholder: Eks. Super-Anne
-        sammen:
-            label: Gruppenavn
-            placeholder: Eks. Supergjengen
-        kontakt:
             label: Artistnavn / Gruppenavn
-            placeholder: Eks. Super-Anne, Supergjengen
+            placeholder: Eks. Sjonglør-%fornavn, %fornavn %etternavn, %etternavn Stacking osv...
+        sammen:
+            label: Gruppenavn / Artistnavn
+            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
+        kontakt:
+            label: Gruppenavn / Artistnavn
+            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
     beskrivelse:
         alene:
-            label: Beskrivelse
+            label: Beskrivelse av gruppe / artist
             placeholder: >
+                Her vil vi vite mer om deg og hva du gjør.
                 Eks. Jeg har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der jeg lærte å sjonglere med brennende fakler.
-                Det er noe av det jeg vil vise frem på UKM i år.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
+                Her vil vi vite mer om dere og hva dere gjør.
                 Eks. Vi har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der vi lærte å sjonglere med brennende fakler og noen andre triks.
-                Det er noe av det vi vil vise frem på UKM.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
+                Her vil vi vite mer om gruppen / artisten.
                 Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
-                Det er noe av det de vil vise frem på UKM.
     titler:
         overskrift: Titler
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Du må legge til minst én tittel. Ingen titler er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til ny tittel
     personer:
@@ -44,21 +44,54 @@ overviewAction:
         ingen: Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
+    tekniske:
+        overskrift: Tekniske behov / utstyrsbehov
+        endre: endre
+        ingen: Tekniske behov ikke lagt til.
+        legg_til: Legg til tekniske behov
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
 person:
     rolle: 
-        label: rolle
+        label: Rolle / oppgave
         placeholder: 
-        help: Skriv inn hva %s gjør (f.eks forfatter, fremfører)
+        help: Skriv inn hva %person gjør (f.eks sjonglør, danser, skuespiller osv)
         ukjent: ukjent rolle
-    ar: år
-    rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
 
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til tittel
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Tittel / navn på det som skal fremføres
+        placeholder: Eks. Stacking 1-2-3, BMX-cycle, Banankake-kasting osv..
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge det varer
+    info_mangler: Info mangler
+    slett: Slett tittel
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+    
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
-    placeholder_teknisk: Eks. Vi trenger en scene som er 8x4 meter, med en takhøyde på minst 3 meter. Vi trenger også en hjelper til å ta i mot og gi oss rekvisita under akten.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
+    eksempler: >
+        Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
+    placeholder_teknisk: Vi trenger en bord på 2x3 meter, 4 stoler, og en krakk. Thomas skal snakke, så han trenger mikrofon, gjerne en håndholdt en.
