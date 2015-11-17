@@ -467,7 +467,7 @@ class InnslagController extends Controller
                 $view_data['krev_sjanger'] = false;  
         }
 
-        if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('dans','litteratur')) ) {
+		if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('dans','litteratur')) ) {
 	    	$view_data['krev_tekniske'] = true;   
 	    } else {
 		    $view_data['krev_tekniske'] = false;
