@@ -225,11 +225,12 @@ class InnslagController extends Controller
 //        $view_data['tittel'] = false;
 
         switch($type) {
-            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
-            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'musikk':		return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':		return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':  		return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
             case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
+            case 'utstilling':  return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
             default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
@@ -248,20 +249,25 @@ class InnslagController extends Controller
         $tittel = new tittel($t_id, $form);
 
         $view_data['tittel'] = $tittel;
-        $view_data['selvlaget'] = $tittel->get('selvlaget');
-        $view_data['instrumental'] = $tittel->get('instrumental');
         $view_data['innslag'] = $innslagService->hent($b_id);
         $view_data['translationDomain'] = $type;
-
-
-        switch($type) {
-            case 'musikk':  	return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
-            case 'dans':  	  	return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-            case 'film':	    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
-            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
-        }
+		switch( $form ) {
+			case 'smartukm_titles_scene':
+		        $view_data['selvlaget'] = $tittel->get('selvlaget');
+		        $view_data['instrumental'] = $tittel->get('instrumental');
+		        switch($type) {
+		            case 'musikk':  	return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+		            case 'dans':  	  	return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+		            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+		            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
+		            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
+		        }
+		        break;
+		    case 'smartukm_titles_exhibition':
+		    	return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
+			case 'smartukm_titles_video':
+				return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+		}
     }
 
     public function saveTitleAction($k_id, $pl_id, $type, $b_id) {
@@ -269,7 +275,6 @@ class InnslagController extends Controller
 
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id);
         $request = Request::createFromGlobals();
-        $t_id = $request->request->get('t_id');
 
         $seasonService = $this->get('ukm_delta.season');
 		switch( $type ) {
@@ -278,12 +283,9 @@ class InnslagController extends Controller
 			default:			$form = 'smartukm_titles_scene';		break;
 		}
 
-		// Hent variabler		
-        $tittelnavn = $request->request->get('tittel');
-		$lengde = $request->request->get('lengde'); // I sekunder
-		$season = $seasonService->getActive();
-		
 		// Opprett tittel-objektet og sett tittel navn
+        $t_id = $request->request->get('t_id');
+
         if ($t_id == 'new') {
             // Create empty object
 		    $tittel = new tittel(false, $form);
@@ -293,63 +295,59 @@ class InnslagController extends Controller
             // Create object with data
             $tittel = new tittel($t_id, $form);
         }
- 
-    	$tittel->set('tittel', $tittelnavn );		
-    	$tittel->set('season', $season );
-        $tittel->set('varighet', $lengde);
+		
+		// Sett standard-felter
+    	$tittel->set('tittel', $request->request->get('tittel') );		
+    	$tittel->set('season', $seasonService->getActive() );
+    	
+    	// Switch på de forskjellige tabellene
+    	switch( $form ) {
+	    	case 'smartukm_titles_scene':
+				$tittel->set('varighet', $request->request->get('lengde'));	
 
-        // Kun gjør dette med sceneinnslag?
-        $selvlaget = $request->request->get('selvlaget'); // 1 eller 0
-        $instrumental = $request->request->get('sangtype');
-        if ($request->request->get('sangtype') == 'instrumental') {
-            $instrumental = 1;
-        }
-        else {
-            $instrumental = 0; 
-        }
+				// Sett felter basert på type (i scene-tabellen)
+		        switch ($type) {
+		            case 'musikk':
+						$instrumental = $request->request->get('sangtype') == 'instrumental' ? 1 : 0;		                
+		                $tittel->set('instrumental', $instrumental);
+		                // Musikk fortsetter inn i teater (no break)
+		            case 'teater':
+		                $tittel->set('melodi_av', $request->request->get('melodiforfatter'));		
+		                $tittel->set('selvlaget', $request->request->get('selvlaget'));
+		                
+		                // I teater skal tekstforfatter alltid lagres
+		                // For musikk skal tekstforfatter kun lagres hvis det 
+		                // ikke er en instrumental
+						if( $type == 'teater' || ( isset($instrumental) && !$instrumental) ) {
+							$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
+						} else {
+		                    $tittel->set('tekst_av', '');   
+		                }
+		                break;
+		            case 'dans':
+			            $tittel->set('koreografi', $request->request->get('koreografi'));
+			            $tittel->set('melodi_av', $request->request->get('melodiforfatter'));
+		                break;
+		            case 'litteratur':
+						$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
 
-		// Sett felter basert på type
-        switch ($type) {
-            case 'musikk':
-            case 'teater':
-                $sangtype = $request->request->get('sangtype');
-                $selvlaget = $request->request->get('selvlaget');
-                $tekstforfatter = $request->request->get('tekstforfatter');
-                $melodiforfatter = $request->request->get('melodiforfatter');
-
-                if ($instrumental) {
-                    $tittel->set('tekst_av', '');   
-                }
-                else {
-                    $tittel->set('tekst_av', $tekstforfatter);
-                }
-                
-                $tittel->set('melodi_av', $melodiforfatter);
-                $tittel->set('varighet', $lengde);
-
-                $tittel->set('instrumental', $instrumental);
-                $tittel->set('selvlaget', $selvlaget);
-                break;
-            case 'dans':
-	            $koreografi = $request->request->get('koreografi');            
-	            $melodi_av = $request->request->get('melodiforfatter');            
-	            $tittel->set('koreografi', $koreografi);
-	            $tittel->set('melodi_av', $melodi_av);
-                break;
-            case 'litteratur':
-                $tekstforfatter = $request->request->get('tekstforfatter');
-                $lese_opp = $request->request->get('leseopp');
-				$tittel->set('tekst_av', $tekstforfatter);
-				$tittel->set('litterature_read', $lese_opp);
-				if( $lese_opp == ('0' || 0) ) {
-	                $tittel->set('varighet', 0);
-				}
+		                $lese_opp = $request->request->get('leseopp');
+						$tittel->set('litterature_read', $lese_opp);
+						if( $lese_opp == ('0' || 0) ) {
+			                $tittel->set('varighet', 0);
+						}
+						break;
+		        }
 				break;
-            default:
-                $lengde = $request->request->get('lengde');
-                $tittel->set('varighet', $lengde);
-                break;
-        }
+	    	case 'smartukm_titles_exhibition':
+	            $tittel->set('type', $request->request->get('type'));
+	            $tittel->set('beskrivelse', $request->request->get('beskrivelse'));
+	    		break;
+			case 'smartukm_titles_video':
+				$tittel->set('varighet', $request->request->get('lengde'));	
+				break;
+    	}
+
 		// Lagre tittel
 		$tittel->lagre();
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
@@ -435,8 +433,6 @@ class InnslagController extends Controller
         }
         $titler = $innslag->titler($pl_id); 
 
-        #var_dump($personer);
-        #var_dump($innslag); 
         // Hvis hvem-variabelen blir sendt med.
         $request = Request::createFromGlobals();
         $hvem = $request->get('hvem');
@@ -458,6 +454,12 @@ class InnslagController extends Controller
         $view_data['beskrivelse'] = utf8_decode($innslag->get('b_description'));
         $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
+        
+        if( $innslag->g('bt_form') == 'smartukm_titles_scene' ) {
+	    	$view_data['krev_tekniske'] = true;   
+	    } else {
+		    $view_data['krev_tekniske'] = false;
+	    }
 
         
         return $this->render('UKMDeltaBundle:Innslag:oversikt.html.twig', $view_data);

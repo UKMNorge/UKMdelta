@@ -56,10 +56,11 @@
 		{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 		<p>&nbsp;</p>
 
-		{# TEKNISKE BEHOV #}
-		{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
-		<p>&nbsp;</p>
-
+		{% if krev_tekniske %}
+			{# TEKNISKE BEHOV #}
+			{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
+			<p>&nbsp;</p>
+		{% endif %}
 		<div class="row">
 			<div class="col-xs-12">
 				<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
