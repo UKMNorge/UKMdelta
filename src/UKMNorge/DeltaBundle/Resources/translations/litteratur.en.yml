@@ -1,69 +1,100 @@
 whoAction:
     sporsmal: Har du skrevet verket alene eller med andre?
-    alene: Jeg er alene
-    sammen: Vi er en gruppe
+    alene: Jeg har skrevet det alene
+    sammen: Vi er flere som har samarbeidet
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
 overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
     artistnavn:
         alene:
-            label: Navn
-            placeholder: Eks. Forfatter-Frank
+            label: Navn på forfatter
+            placeholder: Eks. Forfatter-Frank, %fornavn %etternavn...
         sammen:
-            label: Gruppenavn
-            placeholder: Eks. Skrivegjengen
+            label: Navn på forfattergruppe / forfatter
+            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
         kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Forfatter-Frank, Skrivegjengen
+            label: Navn på forfattergruppe / forfatter
+            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
     beskrivelse:
         alene:
-            label: Beskrivelse
+            label: Beskrivelse av forfatter
             placeholder: >
-                Eks. Jeg har skrevet historier i to år, og fant ut at det var på tide å melde meg på UKM.
-                Jeg går siste året på ungdomsskolen og liker å fortelle historier om morsomme historier fra skolen.
+                Her vil vi vite litt om deg som forfatter.
+                Eks. Jeg har skrevet historier i to år, går siste året på ungdomsskolen og liker å fortelle morsomme historier fra skolen.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
+                Her vil vi vite litt om dere forfatterne.
                 Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
                 Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                Vi fant ut at dette var så gøy at vi ville melde oss på UKM med det.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
+                Her vil vi vite litt om  forfatterne.
+                Eks. De har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
                 Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-                De fant ut at dette var så gøy at de ville melde seg på UKM med det.
     titler:
-        overskrift: Titler
+        overskrift: Tekster / verk
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Du må legge til minst én tekst / verk. Ingen er lagt til
         lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
+        legg_til: Legg til ny tekst / nytt verk
     personer:
         overskrift: Personer
         endre: legg til / endre
-        ingen: Ingen personer er lagt til
+        ingen: Du må legge til minst én person. Ingen personer er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til person
+    tekniske:
+        overskrift: Informasjon om visning / fremføring
+        endre: endre
+        ingen: Vi trenger å vite litt om hvordan du vil vise frem verket.
+        legg_til: Legg til beskrivelse og tekniske behov
     lagre: Lagre
 
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
+#     person.rolle.label
 person:
     rolle: 
-        label: rolle
-        placeholder: 
-        help: Skriv inn hva %s gjør (f.eks forfatter, fremfører)
-        ukjent: ukjent rolle
+        label: Rolle / funksjon
+        placeholder: " "
+        help: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen (f.eks oppleser, forfatter kapittel 1, korrekturleser)
+        ukjent: ukjent rolle / funksjon
     ar: år
     rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
 
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
+    eksempler: >
+        Noen vil lese opp verket sitt, mens andre vil vise det frem i utstillingen.
+        Skriv inn hva du ønsker i feltet nedenfor.
     placeholder_teknisk: >
         Eks. Jeg vil fremføre verket selv fra scenen, 
         så jeg trenger en mikrofon og tid til å diskutere lyssetting med 
         lysteknikeren. Temaene i diktet passer bra til hurtige lysskifter med sterke kontraster.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 
