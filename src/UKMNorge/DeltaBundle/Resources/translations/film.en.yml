@@ -1,0 +1,116 @@
+#### HVEM SKAL DU MELDE PÅ?
+whoAction:
+    sporsmal: Vil du melde på en film du har laget alene eller sammen med andre?
+    alene: Jeg har laget filmen alene
+    sammen: Vi er flere som har laget filmen sammen
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
+    artistnavn:
+        alene:
+            label: Navn / filmgruppens navn
+            placeholder: Eks. %etternavn Productions, %fornavn %etternavn
+        sammen:
+            label: Filmgruppens navn
+            placeholder: Eks. Film-gjengen, %fornavn %etternavn, %etternavn Productions...
+        kontakt:
+            label: Filmgruppens navn
+            placeholder: Eks. Film-gjengen, Per, Pål og Espen...
+## BESKRIVELSE AV INNSLAGET
+    beskrivelse:
+        alene:
+            label: Beskrivelse
+            placeholder: >
+                Her vil vi vite mer om deg og hvordan du lager film.
+                Eks. Jeg startet å lage film når jeg var 12 år, og liker å lage filmer om folk som danser.
+                Jeg filmer med speilrefleks, og liker å bruke mye tid på lyssetting.
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Her vil vi vite mer om de som har laget filmen.
+                Eks. Vi har gått på samme skole i fire år, men aldri gjort så mye sammen før vi fant ut at vi skulle lage en film.
+                Vi har aldri gjort skjult kamera før, men syns dette var veldig gøy!
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Her vil vi vite mer om de som har laget filmen.
+                Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
+                De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
+    sjanger:
+        label: Sjanger
+        placeholder: Eks musikkvideo, animasjon...
+    titler:
+        overskrift: Filmer
+        endre: legg til / endre
+        ingen: Her legger du til hvilke filmer du vil melde på. Du må legge til minst én film.
+        lukk_listen: lukk listen
+        legg_til: Legg til en film
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Du må legge til minst én person. Ingen personer er lagt til.
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    lagre: Lagre
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
+person:
+    rolle: 
+        label: Rolle / oppgave
+        placeholder: 
+        help: Skriv inn hva %person har gjort i filmene (f.eks kameraoperatør, regi, skuespiller osv)
+        ukjent: ukjent rolle
+    fjern:
+        label: Fjern %person fra %innslag
+
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til film
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Filmens tittel / navn
+        placeholder: Eks. Skyfall, Spectre, Dancing Craig...
+    varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge filmen varer
+    info_mangler: Info mangler
+    slett: Slett filmen
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+    
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    artistnavn: Navn / filmgruppens navn
+    lat: Du må legge til minst én film
+    ingendeltakere: Du må legge til minst én person

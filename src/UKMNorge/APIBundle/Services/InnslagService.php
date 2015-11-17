@@ -75,22 +75,42 @@ class InnslagService {
 
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
 		$innslag = array();
+		$seasonService = $this->container->get('ukm_delta.season');
 		// Søk etter innslag i databasen?
 		if (empty($contact_id)) {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id'", array('user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id' AND `b_season` = '#season'", array('user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 		else {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_contact` = '#c_id' OR `b_password` = 'delta_#user_id'", array('c_id' => $contact_id, 'user_id' => $user_id));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE (`b_contact` = '#c_id' OR `b_password` = 'delta_#user_id') AND `b_season` = '#season'", array('c_id' => $contact_id, 'user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 
 		$res = $qry->run();
 		while($row = mysql_fetch_assoc($res)) {
 			#$dump[] = $row;
-			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $row['b_kategori']);
+			if ($row['bt_id'] == 1) {
+				$type = $row['b_kategori']; 
+			}
+			else {
+				$type = getBandTypeFromID($row['bt_id']);
+			}
+
+			// Finpuss for routing
+			if ($type == 'video') {
+				$type = 'film';
+			}
+
+			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $type);
 		}
 		//var_dump($innslag);
 		//die();
 		return $innslag;
+	}
+
+	public function getBandType($b_id) {
+		// $innslagsID er b_id. $person er personid eller personobjekt?
+		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
+
+		return getBandTypeFromID($innslag->get('bt_id'));
 	}
 
 	public function leggTilPerson($innslagsID, $personID) {
@@ -153,6 +173,7 @@ class InnslagService {
 
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
 	        $innslag->set('b_description', utf8_encode($beskrivelse));
+	        $innslag->set('td_konferansier', utf8_encode($beskrivelse)); // Hvorfor lagrer ikke denne?
 	    	$innslag->lagre();
 	    }
 	}	
@@ -189,6 +210,21 @@ class InnslagService {
 		}
 	}
 
+	public function lagreSjanger($innslagsID, $sjanger) {
+		$innslag = new innslag($innslagsID, false);
+		// var_dump($teknisk);
+
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
+		$innslag->set('b_sjanger', $sjanger);
+	   	$innslag->lagre();
+	}
+
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
 		$innslag = new innslag($innslagsID, false);
 		// var_dump($teknisk);
@@ -205,9 +241,7 @@ class InnslagService {
 	}
 
 	public function hentAdvarsler($innslagsID, $pl_id) {
-		$validate = validateBand($innslagsID);
-       	
-       	$innslag = new innslag($innslagsID, false);
+		$innslag = new innslag($innslagsID, false);
 		
 		// Sjekk om Symfony-brukeren matcher delta_-feltet
 		$user = $this->container->get('ukm_user')->getCurrentUser();
@@ -216,16 +250,13 @@ class InnslagService {
 			throw new Exception('Du har ikke tilgang til dette innslaget!');
 		}
 
-		$warnings = $innslag->warning_array($pl_id);
-		$warnings = $this->_warningToText($warnings);
+		$validate = $innslag->validateBand2($innslagsID);
+       	//var_dump($validate);
 
-		// Ekstrasjekker
-		// Instrument
+		// $warnings = $innslag->warning_array($pl_id);
+		// $warnings = $this->_warningToText($warnings);
 
-		// Beskrivelse
-
-
-		return $warnings;
+		return $validate;
 	}
 
 	private function _warningToText($warnings) {

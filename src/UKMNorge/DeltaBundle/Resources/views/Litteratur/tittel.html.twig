@@ -1,0 +1,56 @@
+{% extends "UKMDeltaBundle:Tittel:skjema.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+
+{% block form_body %}
+	<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
+	<input type="hidden" name="t_id" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}">
+	<div class="row">
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'tittel.tittel.label'|trans }}</small>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}">
+		</div>
+	</div>
+	
+	<div class="row" id="tekst-rad">
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'tittel.tekst_av.label'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<input type="text" required name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}">
+			<small class="delta-subtext left">{{ 'tittel.tekst_av.help'|trans }}</small>
+		</div>		
+	</div>
+	
+
+
+	<div class="row">
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'tittel.leseopp.label'|trans }}</small>
+		</div>
+	</div>
+	<div class="col-xs-12"  id="leseopp-valg" >
+		<label class="radio-inline"><input type="radio" name="leseopp" value="1" {{ (tittel is defined and tittel.get('litterature_read') == 1) or tittel is not defined ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="leseopp" value="0" {{ tittel is defined and tittel.get('litterature_read') == 0 ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
+	</div>
+	
+	
+	
+	<div class="row leseopp-true">
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'tittel.varighet.label'|trans }}</small>
+		</div>
+	</div>
+	<div class="row leseopp-true">
+		<div class="col-xs-12">
+			{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+			<small class="delta-subtext left">{{ 'tittel.varighet.help'|trans }}</small>
+		</div>
+	</div>
+	
+{% endblock form_body %}

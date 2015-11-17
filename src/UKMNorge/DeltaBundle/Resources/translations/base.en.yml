@@ -1,3 +1,7 @@
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.overskrift.rediger
 person:
     fornavn:
         label: Fornavn
@@ -5,3 +9,67 @@ person:
         label: Etternavn
     mobil: 
         label: Mobil
+    alder:
+        label: Alder
+        listDefault: Velg riktig alder
+        ar: år
+        over25: Over 25 år
+    avbryt: avbryt
+    rediger: rediger
+    lagre: Lagre
+    overskrift:
+        legg_til: Legg til person
+        rediger: Rediger %fornavn
+
+ja: ja
+nei: nei
+
+filmfoto:
+    samtykke: Ved å delta på UKM samtykker du i at det blir tatt bilder og video av deg som deltar.
+
+tittel:
+    varighet:
+        sek: sek
+        min: min
+        sekunder: sekunder
+        minutter: minutter
+    rediger: rediger
+    lagre: Lagre
+    
+    
+statusAction:
+    videreknapp: Ok, jeg fyller ut senere
+    undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
+    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%.%maned% kl. %time%:%minutt%!
+    tilbakeknapp: Gå tilbake for å fylle ut det siste
+    
+    
+technicalAction:
+    overskrift: Skriv inn tekniske behov
+    forklaring: >
+        Her lurer vi på ting som vil gjøre det enklere for teknikerne å gjøre jobben sin. Fyller du inn dette grundig vil vi kunne gi deg en bedre opplevelse.
+
+        For eksempel: 
+    lagreknapp: Lagre og gå til oversikten
+    avbryt: avbryt
+
+mangler:
+    person.fornavn: Fornavn mangler
+    person.etternavn: Etternavn mangler
+    person.phone: Telefonnummeret består ikke av 8 siffer
+    person.rolle: Funksjon/rolle/instrument mangler
+    innslag.ingendeltakere: Det er ingen deltakere i innslaget
+    innslag.navn: Innslaget mangler navn
+    innslag.sjanger: Sjanger må være oppgitt
+    innslag.beskrivelse: Innslaget mangler beskrivelse
+    innslag.beskrivelseLengde: Beskrivelsen må være mer enn 20 tegn lang
+    td.mangler: Tekniske behov mangler
+    td.lengde: Tekniske behov må være mer enn 5 tegn lang
+    kontakt.fornavn: Kontaktperson mangler fornavn
+    kontakt.etternavn: Kontaktperson mangler etternavn
+    kontakt.epost: Kontaktperson mangler epostadresse
+    kontakt.telefon: Kontaktperson mangler telefonnummer
+    kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
+    kontakt.adresse: Kontaktperson mangler adresse
+    kontakt.postnummer: Kontaktperson mangler postnummer
+    tittel.mangler: Innslaget har ingen titler

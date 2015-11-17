@@ -62,8 +62,8 @@ class PersonService {
 		$person->lagre('delta', $user->getId(), $pl_id);
 	}
 
-	public function hent($id) {
-		$person = new person($id, false);
+	public function hent($id, $b_id=false) {
+		$person = new person($id, $b_id);
 
 		if (!is_numeric($person->get('p_id'))) {
 			throw new Exception('Fant ikke person med id ' . $id);
@@ -77,8 +77,14 @@ class PersonService {
 		$birthdate = new DateTime();
 		$birthdate->setTimestamp($person->get('p_dob'));
 
-        $now = new DateTime('now');
-        $age = $birthdate->diff($now)->y;
+		if( $person->get('p_dob') == 0 ) {
+			$age = '25+';			
+		} else {
+	        $now = new DateTime('now');
+			$age = $birthdate->diff($now)->y;
+		}
+
+        $person->set('age', $age);
         return $age;
 	}
 
@@ -126,6 +132,9 @@ class PersonService {
 			$dob = $alder->getTimestamp();
 			$alder = date("Y") - $alder->format("Y");
 		}
+		elseif( $alder == 0) {
+			$dob = 0;
+		}
 		else {
 			// Konverter fra alder i tall til år
 			$dob = new DateTime();
@@ -156,8 +165,20 @@ class PersonService {
 			$person->set('p_phone', $mobil);
 			$person->lagre('delta', $user->getId(), $pl_id);
 		}
-
 	}
+
+	public function lagreEpost($personID, $pl_id, $epost) {
+		$person = new person($personID);
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+
+		if ($person->get('p_email') != $epost) {
+			$person->set('p_email', $epost);
+			$person->lagre('delta', $user->getId(), $pl_id);
+		}
+	}
+
+
+
 }
 
 ?>

@@ -1,4 +1,4 @@
-jQuery(document).on('click', '#tekst-valg', function() {
+function tekstValg() {
 	var tekstValg = $("#tekst-valg");
 	var tekstRad = $("#tekst-rad");
 	var sangtype = $(":radio:checked", tekstValg);
@@ -12,9 +12,8 @@ jQuery(document).on('click', '#tekst-valg', function() {
 	}
 
 	//console.debug(sangtype);
-});
-
-jQuery(document).on('click', '#melodi-valg', function() {
+}
+function melodiValg() {
 	var Valg = $("#melodi-valg");
 	var Rad = $("#melodi-rad");
 	var melodiforfatter = $(":input[name='melodiforfatter']", Rad);
@@ -22,13 +21,6 @@ jQuery(document).on('click', '#melodi-valg', function() {
 	var innslagsnavn = $(":input[name='innslagsnavn']").val();
 	var selvlaget = $(":radio:checked", Valg);
 	
-	console.debug(Valg);
-	console.debug(Rad);
-	console.debug(melodiforfatter);
-	console.debug(tekstforfatter);
-	console.debug(innslagsnavn);
-	console.debug(selvlaget);
-
 	if (selvlaget.val() == '0') {
 		if (melodiforfatter.val() == innslagsnavn) {
 			melodiforfatter.val('');	
@@ -49,6 +41,52 @@ jQuery(document).on('click', '#melodi-valg', function() {
 		}
 		
 	}
+}
 
+jQuery(document).on('click', '#koreografi-valg', function() {
+	var Valg = $("#koreografi-valg");
+	var Rad = $("#koreografi-rad");
+	var koreografi = $(":input[name='koreografi']", Rad);
+	var selvlaget = $(":radio:checked", Valg);
+	var innslagsnavn = $(":input[name='innslagsnavn']").val();
+	
+	if (selvlaget.val() == '0') {
+		if (koreografi.val() == innslagsnavn) {
+			koreografi.val('');	
+		}
+		if (koreografi.val() == innslagsnavn) {
+			koreografi.val('');
+		}
+	}
+	else if (selvlaget.val() == '1') {
+		if (koreografi.val() == '') {
+			koreografi.val(innslagsnavn);	
+		}
 
+		if (koreografi.val() == '') {
+			koreografi.val(innslagsnavn);	
+		}		
+	}
+});
+
+$(document).on('click', '#leseopp-valg', function(){
+	if( $("#leseopp-valg").find(':radio:checked').val() == 0 ) {
+		$('.leseopp-true').slideUp();
+	} else {
+		$('.leseopp-true').slideDown();
+	}
+});
+
+$( document ).ready( function() { 
+	melodiValg();
+	tekstValg();
+	$('#leseopp-valg').click();
+});
+
+jQuery(document).on('click', '#tekst-valg', function() {
+	tekstValg();
+});
+
+jQuery(document).on('click', '#melodi-valg', function() {
+	melodiValg();
 });

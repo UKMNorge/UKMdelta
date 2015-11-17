@@ -1,0 +1,132 @@
+whoAction:
+    sporsmal: Har du skrevet verket alene eller med andre?
+    alene: Jeg har skrevet det alene
+    sammen: Vi er flere som har samarbeidet
+    kontakt: Jeg er kun kontaktperson
+    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
+
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
+    artistnavn:
+        alene:
+            label: Navn på forfatter
+            placeholder: Eks. Forfatter-Frank, %fornavn %etternavn...
+        sammen:
+            label: Navn på forfattergruppe / forfatter
+            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
+        kontakt:
+            label: Navn på forfattergruppe / forfatter
+            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
+    beskrivelse:
+        alene:
+            label: Beskrivelse av forfatter
+            placeholder: >
+                Her vil vi vite litt om deg som forfatter.
+                Eks. Jeg har skrevet historier i to år, går siste året på ungdomsskolen og liker å fortelle morsomme historier fra skolen.
+        sammen:
+            label: Beskrivelse av gruppe
+            placeholder: >
+                Her vil vi vite litt om dere forfatterne.
+                Eks. Vi har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
+                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
+        kontakt:
+            label: Beskrivelse av artist / gruppe
+            placeholder: >
+                Her vil vi vite litt om  forfatterne.
+                Eks. De har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
+                Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
+    titler:
+        overskrift: Tekster / verk
+        endre: legg til / endre
+        ingen: Du må legge til minst én tekst / verk. Ingen er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til ny tekst / nytt verk
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Du må legge til minst én person. Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    tekniske:
+        overskrift: Informasjon om visning / fremføring
+        endre: endre
+        ingen: Vi trenger å vite litt om hvordan du vil vise frem verket.
+        legg_til: Legg til beskrivelse og tekniske behov
+    lagre: Lagre
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   GJELDER
+#     person.rolle.label
+#     person.rolle.help
+
+# SUBSTITUERING VARIABLER
+#   %person substitueres med gjeldende persons fornavn
+#   %innslaget substitueres med innslagets navn
+#   GJELDER
+#     person.fjern.label
+#     person.rolle.label
+person:
+    rolle: 
+        label: Rolle / funksjon
+        placeholder: " "
+        help: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen (f.eks oppleser, forfatter kapittel 1, korrekturleser)
+        ukjent: ukjent rolle / funksjon
+    ar: år
+    rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
+        
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+tittel:
+    overskrift:
+        legg_til: Legg til tekst / verk
+        rediger: Rediger "%tittel"
+    tittel:
+        label: Navn på tekst / verk
+        placeholder: Eks. Hobbiten, Enders Game, Paper Towns osv...
+    tekst_av:
+        label: Medforfattere
+        placeholder: Eks. J.R.R Tolkien, Orson Scott Card, John Green osv...
+        help: Hvis flere har bidratt, kan du oppgi de som medforfattere her.
+    leseopp:
+        label: Ønsker du å lese opp denne?
+        help: Hvis du svarer "nei", vil det mest sannsynlig stilles ut i kunstutstillingen.
+    varighet:
+        label: Hvor lang tid trenger du for å lese opp?
+        velg_varighet: Velg hvor lang tid du trenger
+        help: OBS: Vi anbefaler at du holder deg under 5 minutter, og kanskje leser ut et utdrag hvis teksten er lang.
+    info_mangler: Info mangler
+    slett: Slett tekst / verk
+    slettet: %tittel er nå slettet
+    lagre: Lagre
+    avbryt: avbryt
+
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    
+technicalAction:
+    eksempler: >
+        Noen vil lese opp verket sitt, mens andre vil vise det frem i utstillingen.
+        Skriv inn hva du ønsker i feltet nedenfor.
+    placeholder_teknisk: >
+        Eks. Jeg vil fremføre verket selv fra scenen, 
+        så jeg trenger en mikrofon og tid til å diskutere lyssetting med 
+        lysteknikeren. Temaene i diktet passer bra til hurtige lysskifter med sterke kontraster.

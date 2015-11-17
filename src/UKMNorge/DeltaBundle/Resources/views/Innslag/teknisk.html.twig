@@ -2,27 +2,25 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="center">{{ 'technicalAction.overskrift'|trans }}</h1>
+	<h1 class="center">{{ 'technicalAction.overskrift'|trans({}, 'base') }}</h1>
 
-	<p class="lead">
-		{{ 'technicalAction.ledetekst'|trans }}
-	</p>
-	<p class="">
-		{{ 'technicalAction.forklaring'|trans|nl2br }}
+	<p class="xs-center">
+		{{ 'technicalAction.forklaring'|trans({}, 'base')|nl2br }}
+		{{ 'technicalAction.eksempler'|trans|nl2br }}
 	</p>
 	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id}) }}">
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea rows="8" class="form-control" name="teknisk" placeholder="{{ 'technicalAction.placeholder_teknisk'|trans }}">{{ teknisk is defined ? teknisk : '' }}</textarea>
+				<textarea rows="8" required class="form-control" name="teknisk" placeholder="{{ 'technicalAction.placeholder_teknisk'|trans }}">{{ teknisk is defined ? teknisk : '' }}</textarea>
 			</div>
 		</div>
 		<p>&nbsp;</p> 
 		<div class="col-xs-12">
-			<button type="submit" class="btn btn-block btn-delta">{{ 'technicalAction.lagreknapp'|trans }}</button>
+			<button type="submit" class="btn btn-block btn-delta">{{ 'technicalAction.lagreknapp'|trans({}, 'base') }}</button>
 		</div>
 		<p>&nbsp;</p>
 		<div class="col-xs-12 center">
-			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'technicalAction.avbryttekst'|trans }}</a>
+			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'technicalAction.avbryt'|trans({}, 'base') }}</a>
 		</div>
 	</form>
 {% endblock %}

@@ -1,7 +1,7 @@
 whoAction:
-    sporsmal: Fremfører du alene eller med andre?
-    alene: Jeg fremfører alene
-    sammen: Jeg fremfører sammen med andre
+    sporsmal: Deltar du alene eller med andre?
+    alene: Jeg deltar alene
+    sammen: Vi er en gruppe som skal delta
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
@@ -19,34 +19,40 @@ whoAction:
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
 overviewAction:
-## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG    
     artistnavn:
         alene:
-            label: Artistnavn / teatergruppe-navn
-            placeholder: Eks. Teater-%fornavn, %fornavn %etternavn osv...
+            label: Artistnavn / Gruppenavn
+            placeholder: Eks. Sjonglør-%fornavn, %fornavn %etternavn, %etternavn Stacking osv...
         sammen:
-            label: Teatergruppe-navn / artistnavn
-            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
+            label: Gruppenavn / Artistnavn
+            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
         kontakt:
-            label: Teatergruppe-navn / artistnavn
-            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
+            label: Gruppenavn / Artistnavn
+            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
     beskrivelse:
         alene:
-            label: Beskrivelse av artist
+            label: Beskrivelse av gruppe / artist
             placeholder: >
-                Eks. Jeg spiller et teaterstykke/monolog jeg har skrevet selv, som handler om hvordan det er for en ungom å vokse opp på Hadeland.
+                Her vil vi vite mer om deg og hva du gjør.
+                Eks. Jeg har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der jeg lærte å sjonglere med brennende fakler.
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Her vil vi vite mer om dere og hva dere gjør.
+                Eks. Vi har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der vi lærte å sjonglere med brennende fakler og noen andre triks.
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa spiller et teaterstykke de har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Her vil vi vite mer om gruppen / artisten.
+                Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
+    sjanger:
+        label: Sjanger
+        placeholder: Eks sjonglering, flammeblåsing...
     titler:
         overskrift: Titler
         endre: legg til / endre
-        ingen: Ingen titler er lagt til
+        ingen: Du må legge til minst én tittel. Ingen titler er lagt til
         lukk_listen: lukk listen
         legg_til: Legg til ny tittel
     personer:
@@ -60,7 +66,6 @@ overviewAction:
         endre: endre
         ingen: Tekniske behov ikke lagt til.
         legg_til: Legg til tekniske behov
-
     lagre: Lagre
 
 # SUBSTITUERING VARIABLER
@@ -74,16 +79,12 @@ overviewAction:
 #   %innslaget substitueres med innslagets navn
 #   GJELDER
 #     person.fjern.label
-#     person.rolle.label
-#     person.rolle.placeholder
 person:
     rolle: 
-        label: Hva spiller eller gjør %person?
-        placeholder: F.eks hovedperson, Operafantomet, koreograf, skuespiller osv...
-        help: ""
+        label: Rolle / oppgave
+        placeholder: " "
+        help: Skriv inn hva %person gjør (f.eks sjonglør, danser, skuespiller osv)
         ukjent: ukjent rolle
-    ar: år
-    rediger: rediger
     fjern:
         label: Fjern %person fra %innslag
 
@@ -93,38 +94,25 @@ person:
 #     tittel.overskrift.rediger
 tittel:
     overskrift:
-        legg_til: Legg til teaterstykke / sketsj
+        legg_til: Legg til tittel
         rediger: Rediger "%tittel"
     tittel:
-        label: Navn på teaterstykke / sketsj
-        placeholder: Eks. Karlson på taket, Putti plutti pott osv...
+        label: Tittel / navn på det som skal fremføres
+        placeholder: Eks. Stacking 1-2-3, BMX-cycle, Banankake-kasting osv..
     varighet:
         label: Varighet
-        velg_varighet: Velg hvor lenge teaterstykket / sketsjen varer
-    tekst:
-        label: Har låta tekst, eller er det en instrumental?
-        tekst: Tekst
-        instrumental: Instrumental
-    selvlaget:
-        label: Har du/dere laget teaterstykket / sketsjen selv?
-    tekst_av:
-        label: Tekst av
-        placeholder: (valgfritt felt)
-        help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
-    melodi_av:
-        label: Melodi av
-        placeholder: (valgfritt felt)
-        help: Hvis det er brukt musikk i teaterstykket, skriver du hvem som har laget den her.
-    
+        velg_varighet: Velg hvor lenge det varer
     info_mangler: Info mangler
-    slett: Slett filmen
+    slett: Slett tittel
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
- 
+
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
 
 technicalAction:
-    placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
-    placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.
+    placeholder_teknisk: Vi trenger en bord på 2x3 meter, 4 stoler, og en krakk. Thomas skal snakke, så han trenger mikrofon, gjerne en håndholdt en.

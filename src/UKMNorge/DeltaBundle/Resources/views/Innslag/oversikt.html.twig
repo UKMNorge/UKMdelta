@@ -11,58 +11,60 @@
 {% endblock %}
 
 {% block content %}
-	{% for type, messages in app.session.flashBag.all %}
-		{% for message in messages %}
-			{% if type == 'danger' %}
-				<div class="alert alert-danger">{{ message|trans }}</div>
-			{% elseif type == 'success' %}
-				<div class="alert alert-success">{{ message|trans }}</div>
-			{% elseif type == 'warning' %}
-				<div class="alert alert-warning">{{ message|trans }}</div>
-			{% endif %}
-		{% endfor %}
-	{% endfor %}
 	<form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<input type="hidden" name="path" id="deltapath" value="">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'overviewAction.artistnavn.label'|trans }}</small>
+				<small>{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" name="navn" class="form-control" placeholder="{{ 'overviewAction.artistnavn.placeholder'|trans }}, {{ user.getFirstName() }} {{ user.getLastName() }}..." value="{{ name is defined ? name : '' }}"> 
+				<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ name is defined ? name : '' }}"> 
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'overviewAction.beskrivelse.label'|trans }}</small>
+				<small>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</small>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ 'overviewAction.beskrivelse.placeholder'|trans }}">{{ beskrivelse }}</textarea>
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>				
 			</div>
 		</div>
+		{# SJANGER #}
+		{# Kun printe denne om kategori er musikk, film, annet? #}
+		{% if type == 'musikk' or type == 'film' or type == 'annet' %}
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ ('overviewAction.sjanger.label')|trans }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ sjanger is defined ? sjanger : '' }}">
+				</div>
+			</div>
+		{% endif %}
 		<br>
 		{# PERSONER #}
 		{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
 		<p>&nbsp;</p>
 		
 		{# TITLER #}
-		{% include 'UKMDeltaBundle:Musikk:titler.html.twig' %}
+		{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 		<p>&nbsp;</p>
 
-		{# TEKNISKE BEHOV #}
-		{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
-		<p>&nbsp;</p>
-
+		{% if krev_tekniske %}
+			{# TEKNISKE BEHOV #}
+			{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
+			<p>&nbsp;</p>
+		{% endif %}
 		<div class="row">
-			<a href="">
-				<div class="col-xs-12">
-					<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
-				</div>
-			</a>
+			<div class="col-xs-12">
+				<button type="submit" class="btn btn-block btn-delta">{{ 'overviewAction.lagre'|trans }}</button>
+			</div>
 		</div>
 	</form>
 

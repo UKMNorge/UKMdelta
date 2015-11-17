@@ -25,7 +25,7 @@
 			<h4 id="header_{{ fylke.id }}" class="text-center">{{ fylke.name }}</h4>
 			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 				{% for monstring in fylke.monstringer %}
-						<li class="list-group-item" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ') }} {{ fylke.name }}" >
+						<li class="list-group-item" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
 							<a data-toggle="collapse" data-target="#box{{ monstring.id }}">
 								{# Lag en div som kan utvides ved å trykkes på #}

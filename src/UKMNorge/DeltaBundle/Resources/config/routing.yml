@@ -7,7 +7,6 @@ ukm_delta_homepage:
     defaults: { _controller: UKMDeltaBundle:Default:index }
 
 ### UKMID
-
 ukm_delta_ukmid_homepage:
     path:     /ukmid/
     defaults: { _controller: UKMDeltaBundle:UKMID:index }
@@ -220,7 +219,7 @@ ukm_delta_ukmid_pamelding_teater_opprett:
 #               b_id: ([0-9]{1,11})
 
 
-
+### FILM
 ukm_delta_ukmid_pamelding_film_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/film/
     defaults: { _controller: UKMDeltaBundle:Film:who }
@@ -228,20 +227,15 @@ ukm_delta_ukmid_pamelding_film_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
-ukm_delta_ukmid_pamelding_dans_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/
-    defaults: { _controller: UKMDeltaBundle:Dans:who }
+ukm_delta_ukmid_pamelding_film_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/film/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Film:create }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
 
-ukm_delta_ukmid_pamelding_teater_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
-    defaults: { _controller: UKMDeltaBundle:Teater:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
-
+### UTSTILLING
 ukm_delta_ukmid_pamelding_utstilling_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/
     defaults: { _controller: UKMDeltaBundle:Utstilling:who }
@@ -249,6 +243,15 @@ ukm_delta_ukmid_pamelding_utstilling_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_utstilling_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Utstilling:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+### LITTERATUR
 ukm_delta_ukmid_pamelding_litteratur_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/
     defaults: { _controller: UKMDeltaBundle:Litteratur:who }
@@ -256,6 +259,15 @@ ukm_delta_ukmid_pamelding_litteratur_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_litteratur_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Litteratur:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+### ANNET
 ukm_delta_ukmid_pamelding_annet_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/
     defaults: { _controller: UKMDeltaBundle:Annet:who }
@@ -263,13 +275,31 @@ ukm_delta_ukmid_pamelding_annet_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_annet_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Annet:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+### MATKULTUR
 ukm_delta_ukmid_pamelding_matkultur_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/
     defaults: { _controller: UKMDeltaBundle:Matkultur:who }
     requirements:
-              k_id: ([0-9]{1,4}) 
+              k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+ukm_delta_ukmid_pamelding_matkultur_opprett:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/opprett/{hvem}/
+    defaults: { _controller: UKMDeltaBundle:Matkultur:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              hvem: ([a-z]+)
+
+### NETTREDAKSJON
 ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/nettredaksjon/
     defaults: { _controller: UKMDeltaBundle:Nettredaksjon:who }
@@ -277,6 +307,7 @@ ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+### KONFERANSIER
 ukm_delta_ukmid_pamelding_konferansier_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/konferansier/
     defaults: { _controller: UKMDeltaBundle:Konferansier:who }
@@ -284,6 +315,7 @@ ukm_delta_ukmid_pamelding_konferansier_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+### ARRANGØR
 ukm_delta_ukmid_pamelding_arrangor_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/arrangor/
     defaults: { _controller: UKMDeltaBundle:Arrangor:who }
@@ -291,6 +323,7 @@ ukm_delta_ukmid_pamelding_arrangor_hvem:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+### SCENETEKNIKK
 ukm_delta_ukmid_pamelding_sceneteknikk_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/sceneteknikk/
     defaults: { _controller: UKMDeltaBundle:Sceneteknikk:who }
