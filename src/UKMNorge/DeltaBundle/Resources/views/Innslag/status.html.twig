@@ -2,6 +2,9 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
+	<h1 class="center">
+		Nesten ferdig!
+	</h1>
 	<div class="row">
 		<div class="alert alert-danger col-xs-10 col-xs-offset-1">
 			{{ 'statusAction.obs-topptekst'|trans({'%innslag': innslag.get('b_name')}) }}
@@ -12,22 +15,41 @@
 		<span class="">{{ 'statusAction.infotekst'|trans }}</span>
 	
 		<ul class="col-xs-12 list-unstyled">
-			{% for tekst in grunner %}
+			{# {% for tekst in grunner %}
 				<li>- {{ ('statusAction.'~tekst)|trans }}</li>
+			{% endfor %} #}
+
+			{% for key, grunn in grunner %}
+				{% if key == 'personer' %}
+					{% for person in grunn %}
+						- {{ person[0] }}:
+						<ul>
+							{% for tekst in person[1] %}
+								<li>{{ ('mangler.'~tekst)|trans({}, 'base') }}</li>
+							{% endfor %}
+						</ul>
+						{#{{ person }} {# person-ID #}
+						{# {% for tekst in person %}
+							<li>{{ tekst }}</li>
+						{% endfor %} #}
+					{% endfor %}
+				{% else %}
+					<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li>   
+				{% endif %}
 			{% endfor %}
 		</ul>
 	</div>
 	<p>&nbsp;</p>
 	<div class="col-xs-12">		
-		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'statusAction.tilbakeknapp'|trans({},'base') }}</a>
+		<a type="button" class="btn btn-block btn-delta btn-success" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'statusAction.tilbakeknapp'|trans({},'base') }}</a>
 	</div>
 	<p>&nbsp;</p>
 	<div class="col-xs-12">
-		<a type="button" class="btn btn-block btn-delta" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'statusAction.videreknapp'|trans({},'base') }}</a>
+		<a type="button" class="btn btn-block btn-delta btn-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'statusAction.videreknapp'|trans({},'base') }}</a>
 	</div>	
 
 	<div class="">
 		<span class="delta-subtext center">{{ 'statusAction.undertekst'|trans({},'base') }}</span>
-		<span class="delta-subtext center text-danger">{{ 'statusAction.obstekst'|trans({ '%dag%': frist|date('d'), '%maned%': frist|date('m'), '%time%': frist|date('h'), '%minutt%': frist|date('m') }, 'base') }}</span> 
+		<span class="delta-subtext center text-danger">{{ 'statusAction.obstekst'|trans({ '%dag%': frist|date('l')|dato('l'), '%dato%': frist|date('d'), '%maned%': frist|date('m'), '%time%': frist|date('h'), '%minutt%': frist|date('i') }) }}</span> 
 	</div>
-{% endblock %}
+{% endblock %} 

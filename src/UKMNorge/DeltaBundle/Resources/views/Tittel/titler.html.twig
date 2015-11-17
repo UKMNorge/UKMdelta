@@ -41,7 +41,7 @@
 									{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
 										{{ tittel.parentes }}
 									{% else %}
-										<span class="text-danger">{{ 'tittel.info_mangler'|trans }}</span>
+										<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
 									{% endif %}
 								</small>
 							</p>

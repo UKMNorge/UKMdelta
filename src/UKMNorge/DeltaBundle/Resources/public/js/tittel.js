@@ -1,4 +1,4 @@
-jQuery(document).on('click', '#tekst-valg', function() {
+function tekstValg() {
 	var tekstValg = $("#tekst-valg");
 	var tekstRad = $("#tekst-rad");
 	var sangtype = $(":radio:checked", tekstValg);
@@ -12,9 +12,8 @@ jQuery(document).on('click', '#tekst-valg', function() {
 	}
 
 	//console.debug(sangtype);
-});
-
-jQuery(document).on('click', '#melodi-valg', function() {
+}
+function melodiValg() {
 	var Valg = $("#melodi-valg");
 	var Rad = $("#melodi-rad");
 	var melodiforfatter = $(":input[name='melodiforfatter']", Rad);
@@ -69,4 +68,18 @@ jQuery(document).on('click', '#koreografi-valg', function() {
 		}
 		
 	}
+}
+
+
+$( document ).ready( function() { 
+	melodiValg();
+	tekstValg();
+});
+
+jQuery(document).on('click', '#tekst-valg', function() {
+	tekstValg();
+});
+
+jQuery(document).on('click', '#melodi-valg', function() {
+	melodiValg();
 });

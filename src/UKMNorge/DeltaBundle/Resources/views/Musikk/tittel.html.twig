@@ -9,8 +9,8 @@
 		</div>
 	</div>
 	<div class="col-xs-12" id="tekst-valg">
-		<label class="radio-inline"><input type="radio" name="sangtype" value="sang" checked>{{ 'tittel.tekst.tekst'|trans }}</label>
-		<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental">{{ 'tittel.tekst.instrumental'|trans }}</label>
+		<label class="radio-inline"><input type="radio" name="sangtype" value="sang" {{ instrumental is defined and (instrumental == 0) ? 'checked' : '' }}>{{ 'tittel.tekst.tekst'|trans }}</label>
+		<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental" {{ instrumental is defined and (instrumental == 1) ? 'checked' : '' }}>{{ 'tittel.tekst.instrumental'|trans }}</label>
 	</div>
 	<div class="row">
 		<div class="col-xs-12 delta-input-header">
@@ -18,8 +18,8 @@
 		</div>
 	</div>
 	<div class="col-xs-12"  id="melodi-valg" >
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="1">{{ 'ja'|trans({}, 'base') }}</label>
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>{{ 'nei'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
 	</div>
 	<div class="row" id="tekst-rad">
 		<div class="col-xs-12 delta-input-header">

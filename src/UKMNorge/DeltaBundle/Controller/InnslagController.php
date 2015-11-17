@@ -223,21 +223,12 @@ class InnslagController extends Controller
 
 //        $view_data['tittel'] = false;
 
-        if ($type == 'musikk') {
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
-        }
-        elseif ($type == 'dans') {
-            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'teater') {
-            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'film') {
-            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-        }
-        else {
-            // Midlertidig, bør gjøre noe annet her.
-            return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
+        switch($type) {
+            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
 
@@ -255,24 +246,18 @@ class InnslagController extends Controller
         $tittel = new tittel($t_id, $form);
 
         $view_data['tittel'] = $tittel;
+        $view_data['selvlaget'] = $tittel->get('selvlaget');
+        $view_data['instrumental'] = $tittel->get('instrumental');
         $view_data['innslag'] = $innslagService->hent($b_id);
         $view_data['translationDomain'] = $type;
 
-        if ($type == 'musikk') {
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);   
-        }
-        elseif ($type == 'dans') {
-            return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'teater') {
-            return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-        }
-        elseif ($type == 'film') {
-            return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-        }
-        else {
-            // Midlertidig, bør gjøre noe annet her.
-            return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+
+        switch($type) {
+            case 'musikk':  return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':    return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':  return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':    return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
 
@@ -305,31 +290,55 @@ class InnslagController extends Controller
             // Create object with data
             $tittel = new tittel($t_id, $form);
         }
-
+ 
     	$tittel->set('tittel', $tittelnavn );		
     	$tittel->set('season', $season );
         $tittel->set('varighet', $lengde);
 
-		// Sett felter for musikk
-        if ($type == "musikk" || $type == 'teater') {
-            $sangtype = $request->request->get('sangtype');
-            $selvlaget = $request->request->get('selvlaget');
-            $tekstforfatter = $request->request->get('tekstforfatter');
-            $melodiforfatter = $request->request->get('melodiforfatter');
-            
-            $tittel->set('tekst_av', $tekstforfatter);
-            // var_dump(mb_detect_encoding($melodiforfatter));
-            // die();
-            $tittel->set('melodi_av', $melodiforfatter);
+        // Kun gjør dette med sceneinnslag?
+        $selvlaget = $request->request->get('selvlaget'); // 1 eller 0
+        $instrumental = $request->request->get('sangtype');
+        if ($request->request->get('sangtype') == 'instrumental') {
+            $instrumental = 1;
         }
-        // Sett felter for dans
-        elseif ($type == "dans") {
-            $koreografi = $request->request->get('koreografi');            
-            $melodi_av = $request->request->get('melodiforfatter');            
-            $tittel->set('koreografi', $koreografi);
-            $tittel->set('melodi_av', $melodi_av);
+        else {
+            $instrumental = 0; 
         }
-  
+
+		// Sett felter basert på type
+        switch ($type) {
+            case 'musikk':
+            case 'teater':
+                $sangtype = $request->request->get('sangtype');
+                $selvlaget = $request->request->get('selvlaget');
+                $tekstforfatter = $request->request->get('tekstforfatter');
+                $melodiforfatter = $request->request->get('melodiforfatter');
+
+                if ($instrumental) {
+                    $tittel->set('tekst_av', '');   
+                }
+                else {
+                    $tittel->set('tekst_av', $tekstforfatter);
+                }
+                
+                $tittel->set('melodi_av', $melodiforfatter);
+                $tittel->set('varighet', $lengde);
+
+                $tittel->set('instrumental', $instrumental);
+                $tittel->set('selvlaget', $selvlaget);
+                break;
+            case 'dans':
+	            $koreografi = $request->request->get('koreografi');            
+	            $melodi_av = $request->request->get('melodiforfatter');            
+	            $tittel->set('koreografi', $koreografi);
+	            $tittel->set('melodi_av', $melodi_av);
+                break;
+            default:
+                $lengde = $request->request->get('lengde');
+
+                $tittel->set('varighet', $lengde);
+                break;
+        }
 		// Lagre tittel
 		$tittel->lagre();
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
@@ -482,18 +491,21 @@ class InnslagController extends Controller
         
         $frist = new DateTime();
         $frist->setTimestamp($monstring->get('pl_deadline'));
-        
-        $view_data['grunner'] = $innslagService->hentAdvarsler($b_id, $pl_id);
+		$validering = $innslagService->hentAdvarsler($b_id, $pl_id);
+        $view_data['status'] = $validering[0];
+        $view_data['grunner'] = $validering[1];
+        //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
 
-        // Oppdater status på innslaget!
+        // Oppdater status på innslaget! 
+        // ValidateBand2 tar seg av status-oppdateringen??
         if(empty($view_data['grunner'])) {
-            $innslagService->lagreStatus($b_id, 8);
+            //$innslagService->lagreStatus($b_id, 8);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
         }
         else {
-            $innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
+            //$innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
             return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
         }
     }
@@ -502,11 +514,20 @@ class InnslagController extends Controller
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'innslag';
 
-        $pl['dag'] = 15;
-        $pl['maned'] = "januar";
-        $pl['time'] = 15;
-        $pl['minutt'] = 30;
-        $view_data['pl'] = $pl;
+        require_once('UKM/monstring.class.php');
+        $monstring = new monstring($pl_id);
+
+        $start = new DateTime();
+        $start->setTimestamp($monstring->get('pl_start'));
+
+        $name = $monstring->get('pl_name');
+        $view_data['pl_navn'] = $name;
+
+        $pl_start['dag'] = $start->format("d");
+        $pl_start['maned'] = $start->format("F");
+        $pl_start['time'] = $start->format("G");
+        $pl_start['minutt'] = $start->format("i");
+        $view_data['pl_start'] = $pl_start;
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
