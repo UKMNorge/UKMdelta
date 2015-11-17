@@ -210,6 +210,21 @@ class InnslagService {
 		}
 	}
 
+	public function lagreSjanger($innslagsID, $sjanger) {
+		$innslag = new innslag($innslagsID, false);
+		// var_dump($teknisk);
+
+		// Sjekk om Symfony-brukeren matcher delta_-feltet
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$u_id = $user->getId();
+		if ($innslag->get('b_password') != 'delta_'.$u_id) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
+		$innslag->set('b_sjanger', $sjanger);
+	   	$innslag->lagre();
+	}
+
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
 		$innslag = new innslag($innslagsID, false);
 		// var_dump($teknisk);

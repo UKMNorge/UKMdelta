@@ -48,6 +48,9 @@ overviewAction:
                 Her vil vi vite mer om dere som opptrer.
                 Eks. De er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
                 De spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
+    sjanger:
+        label: Sjanger
+        placeholder: Eks hardrock, visesang...
     titler:
         overskrift: Låter
         endre: legg til / endre

@@ -460,10 +460,14 @@ class InnslagController extends Controller
         $path = $request->request->get('path');
         $name = $request->request->get('navn');
         $desc = $request->request->get('beskrivelse');
+        
+        if($type == 'musikk' or $type == 'film' or $type == 'annet') {
+            $genre = $request->request->get('sjanger');
+            $innslagService->lagreSjanger($b_id, $genre);
+        }
 
         $innslagService->lagreBeskrivelse($b_id, $desc);
         $innslagService->lagreArtistnavn($b_id, $name);
-
 
         // var_dump($path);
         // die();

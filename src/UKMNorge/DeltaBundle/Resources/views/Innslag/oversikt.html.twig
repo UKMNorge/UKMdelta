@@ -33,6 +33,20 @@
 				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>				
 			</div>
 		</div>
+		{# SJANGER #}
+		{# Kun printe denne om kategori er musikk, film, annet? #}
+		{% if type == 'musikk' or type == 'film' or type == 'annet' %}
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ ('overviewAction.sjanger.label')|trans }}</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ sjanger is defined ? sjanger : '' }}">
+				</div>
+			</div>
+		{% endif %}
 		<br>
 		{# PERSONER #}
 		{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
