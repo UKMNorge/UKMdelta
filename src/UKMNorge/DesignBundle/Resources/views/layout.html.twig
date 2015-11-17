@@ -35,7 +35,11 @@
         {% endif %}
 		<style type="text/css">{% block additional_css %}{% endblock %}</style>
 		<script type="text/javascript">{% block additional_js %}{% endblock %}</script>
-		{% block scripts %}{% endblock %}
+		{% block scripts %}
+			{% javascripts '@UKMDesignBundle/Resources/public/js/*' %}
+		    	<script src="{{ asset_url }}"></script> 
+			{% endjavascripts %}
+		{% endblock %}
 {#		<title>{% block HTMLtitle %}{{SEO.title|raw}}{% endblock %}</title> #}
 	</head>
 	<body>
@@ -108,36 +112,44 @@
 
 	{% block jumbo_post %}
 	{% endblock %}
-
-	{% block content_container_pre %}
-	{% endblock %}
-
-	{% block content_container %}
-	<div class="row">
-		<div id="pagecontent">
-			{# SIDEINNHOLD #}
-		  	<div id="ukm_page_pre_content" class="container" style="display:none"></div>
-		  	<div class="clearfix"></div>
-		  	<div id="ukm_page_content" class="container">
-			  	{% block content_pre %}{% endblock %}
-			  	{% block content %}{% endblock %}
-			  	{% block post_content %}{% endblock %}
-			  	<div class="clearfix"></div>
-		  	</div>
-		  	<div class="clearfix"></div>
-		  	<div id="ukm_page_post_content" class="container" style="display:none">
-			  	<button id="pageDeFocus" class="btn btn-block btn-success"></button>
-			  	<div class="clearfix"></div>
-		  	</div>
-		  	<div class="clearfix"></div>
+	<div class="container" id="page_load_loader" style="display:none;">
+		<div class="col-xs-12">
+			<div align="center">
+				<img src="//ico.ukm.no/loading.gif" style="max-width:100%;" />
+				<h3 align="center">Laster inn...</h3>
+			</div>
 		</div>
-	{# EO SIDEINNHOLD #}
 	</div>
-	{% endblock %}
+	<div id="page_load_content">
+		{% block content_container_pre %}
+		{% endblock %}
 	
-	{% block content_container_post %}
-	{% endblock %}
-	
+		{% block content_container %}
+		<div class="row">
+			<div id="pagecontent">
+				{# SIDEINNHOLD #}
+			  	<div id="ukm_page_pre_content" class="container" style="display:none"></div>
+			  	<div class="clearfix"></div>
+			  	<div id="ukm_page_content" class="container">
+				  	{% block content_pre %}{% endblock %}
+				  	{% block content %}{% endblock %}
+				  	{% block post_content %}{% endblock %}
+				  	<div class="clearfix"></div>
+			  	</div>
+			  	<div class="clearfix"></div>
+			  	<div id="ukm_page_post_content" class="container" style="display:none">
+				  	<button id="pageDeFocus" class="btn btn-block btn-success"></button>
+				  	<div class="clearfix"></div>
+			  	</div>
+			  	<div class="clearfix"></div>
+			</div>
+		{# EO SIDEINNHOLD #}
+		</div>
+		{% endblock %}
+		
+		{% block content_container_post %}
+		{% endblock %}
+	</div>
 	
 	{% if nav is defined %}
 	<div class="row">
@@ -153,61 +165,5 @@
 	  	<div class="clearfix"></div>
   	</div>
   	{% endif %}
-  	
-  	
-{#	
-	
-	<div class="row">
-		<div id="footer" class="center">
-			<div class="container">
-				<a href="#top" class="pull-right btn-xs" style="margin-right:10px;">Til toppen</a>
-			</div>
-			<div class="clearfix"></div>
-			<div class="row">
-				<div class="col-xs-12 center">
-					<img src="http://grafikk.ukm.no/profil/logo/UKM_logo.png" id="footerlogo" />
-				</div>
-				<div class="col-xs-12">
-					<a href="http://creativecommons.org/licenses/by-sa/3.0/deed.no">
-						UKM Norge <img src="//ico.ukm.no/cc-16.png" id="footerCC" alt="cc" /> {{"now"|date('Y')}}
-					</a>
-				</div>
-				<div class="col-xs-12 hidden-xs hidden-sm">
-					<a href="//om.ukm.no/kontakt/">Kontakt</a>
-					&middot; 
-					<a href="//om.ukm.no/vilkar/">Vilkår for bruk av innhold</a>
-					&middot;
-					<a href="//om.ukm.no/cookies/">Cookies</a>
-				</div>
-				<div class="visible-sm">
-					<div class="row">
-						<a class="btn btn-default" href="//om.ukm.no/kontakt/">Kontakt</a>
-						&middot; 
-						<a class="btn btn-default" href="//om.ukm.no/vilkar/">Vilkår for bruk av innhold</a>
-						&middot;
-						<a class="btn btn-default" href="//om.ukm.no/cookies/">Cookies</a>
-					</div>					
-				</div>
-				<div class="col-xs-12 visible-xs">
-					<a class="btn btn-default col-xs-12 col-sm-8 col-sm-offset-2" href="//om.ukm.no/kontakt/">Kontakt</a>
-
-					<div class="clearfix visible-xs col-xs-12">&middot;</div>
-
-					<a class="btn btn-default col-xs-12 col-sm-8 col-sm-offset-2" href="//om.ukm.no/vilkar/">Vilkår for bruk av innhold</a>
-
-					<div class="clearfix visible-xs col-xs-12">&middot;</div>
-
-					<a class="btn btn-default col-xs-12 col-sm-8 col-sm-offset-2" href="//om.ukm.no/cookies/">Cookies</a>
-				</div>
-
-			</div>
-
-		</div>
-		<div class="clearfix"></div>
-	</div>
-	{% if isMobile is defined and isMobile == true %}
-	</div>
-	{% endif %}
-#}
   </body>
 </html>
