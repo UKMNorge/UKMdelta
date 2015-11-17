@@ -5,7 +5,21 @@ whoAction:
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
 overviewAction:
+## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG    
     artistnavn:
         alene:
             label: Artistnavn / Gruppenavn
@@ -68,7 +82,7 @@ overviewAction:
 person:
     rolle: 
         label: Rolle / oppgave
-        placeholder: 
+        placeholder: " "
         help: Skriv inn hva %person gjør (f.eks sjonglør, danser, skuespiller osv)
         ukjent: ukjent rolle
     fjern:
@@ -93,7 +107,11 @@ tittel:
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
-    
+
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+
 technicalAction:
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?

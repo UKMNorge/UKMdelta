@@ -85,7 +85,7 @@ overviewAction:
 person:
     rolle: 
         label: Instrument
-        placeholder: 
+        placeholder: " "
         help: Skriv inn hva %person spiller/gjør (f.eks vokal, bass, gitar)
         ukjent: ukjent instrument
     ar: år
@@ -106,16 +106,22 @@ tittel:
         placeholder: Eks. Skyfall, Utadæsjælåplevelse osv...
     varighet:
         label: Varighet
-        velg_varighet: Velg hvor lenge låta varer
+        velg_varighet: Velg hvor lenge låten varer
     tekst:
-        label: Har låta tekst, eller er det en instrumental?
+        label: Har låten tekst, eller er det en instrumental?
         tekst: Tekst
         instrumental: Instrumental
+    tekst_av:
+        label: Hvem har skrevet teksten?
+        placeholder: Eks. Razika, Leonard Cohen osv..
+    melodi_av:
+        label: Hvem har laget melodien?
+        placeholder: Eks. Philter, Rihanna osv...
     selvlaget:
         label: Har du/dere laget låten selv?
     
     info_mangler: Info mangler
-    slett: Slett låta
+    slett: Slett låten
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
