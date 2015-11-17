@@ -53,7 +53,7 @@ overviewAction:
                 De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
     sjanger:
         label: Sjanger
-        placeholder: Eks musikkvideo, animasjon...
+        placeholder: Eks musikkvideo, action, animasjon...
     titler:
         overskrift: Filmer
         endre: legg til / endre

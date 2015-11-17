@@ -43,6 +43,9 @@ overviewAction:
             label: Beskrivelse av artist / gruppe
             placeholder: >
                 Eks. Gruppa spiller et teaterstykke de har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+    sjanger:
+        label: Sjanger
+        placeholder: Eks monolog, revy osv...
     titler:
         overskrift: Titler
         endre: legg til / endre

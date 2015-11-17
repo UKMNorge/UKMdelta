@@ -460,6 +460,7 @@ class InnslagController extends Controller
             case 'film':
             case 'litteratur':
             case 'dans':
+            case 'teater':
             case 'annet':
                 $view_data['krev_sjanger'] = true;
                 break;
