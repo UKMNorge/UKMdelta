@@ -455,7 +455,19 @@ class InnslagController extends Controller
         $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
         
-        if( $innslag->g('bt_form') == 'smartukm_titles_scene' ) {
+        switch ($type) {
+            case 'musikk':
+            case 'film':
+            case 'litteratur':
+            case 'dans':
+            case 'annet':
+                $view_data['krev_sjanger'] = true;
+                break;
+            default:
+                $view_data['krev_sjanger'] = false;  
+        }
+
+        if( $innslag->g('bt_form') == 'smartukm_titles_scene' AND ($type != 'dans') AND ($type != 'litteratur')) {
 	    	$view_data['krev_tekniske'] = true;   
 	    } else {
 		    $view_data['krev_tekniske'] = false;

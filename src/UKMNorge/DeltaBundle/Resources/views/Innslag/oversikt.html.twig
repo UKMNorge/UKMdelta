@@ -35,7 +35,7 @@
 		</div>
 		{# SJANGER #}
 		{# Kun printe denne om kategori er musikk, film, annet? #}
-		{% if type == 'musikk' or type == 'film' or type == 'annet' %}
+		{% if krev_sjanger %}
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
 					<small>{{ ('overviewAction.sjanger.label')|trans }}</small>
