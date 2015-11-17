@@ -180,6 +180,7 @@ class InnslagController extends Controller
             // Sett alder basert på user-bundle-alder
             $alder = $user->getBirthdate();
             $personService->lagreAlder($p_id, $pl_id, $alder);
+            $personService->lagreEpost($p_id, $pl_id, $user->getEmail());
             // Oppdater personobjektet
             $person = $personService->hent($p_id);
 

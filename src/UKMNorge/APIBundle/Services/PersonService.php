@@ -165,8 +165,20 @@ class PersonService {
 			$person->set('p_phone', $mobil);
 			$person->lagre('delta', $user->getId(), $pl_id);
 		}
-
 	}
+
+	public function lagreEpost($personID, $pl_id, $epost) {
+		$person = new person($personID);
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+
+		if ($person->get('p_email') != $epost) {
+			$person->set('p_email', $epost);
+			$person->lagre('delta', $user->getId(), $pl_id);
+		}
+	}
+
+
+
 }
 
 ?>

@@ -28,9 +28,9 @@
 							{% endfor %}
 						</ul>  
 					{% endfor %}
-				{% elseif (key == 'innslag') %}
-					{% for grunn in grunner['innslag'] %}
-						<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li>   
+				{% else %} 
+					{% for grunn in kategori %}
+						<li class="">- {{ ('mangler.'~grunn)|trans({}, 'base') }}</li> 
 					{% endfor %}
 				{% endif %}
 			{% endfor %}
