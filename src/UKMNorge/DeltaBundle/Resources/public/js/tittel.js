@@ -41,7 +41,7 @@ function melodiValg() {
 		}
 		
 	}
-});
+}
 
 jQuery(document).on('click', '#koreografi-valg', function() {
 	var Valg = $("#koreografi-valg");
@@ -65,8 +65,7 @@ jQuery(document).on('click', '#koreografi-valg', function() {
 
 		if (koreografi.val() == '') {
 			koreografi.val(innslagsnavn);	
-		}
-		
+		}		
 	}
 }
 
