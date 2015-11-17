@@ -62,7 +62,7 @@ mangler:
     innslag.navn: Innslaget mangler navn
     innslag.sjanger: Sjanger må være oppgitt
     innslag.beskrivelse: Innslaget mangler beskrivelse
-    innslag.beskrivelseLengde: Beskrivelsen må være mer enn 20 tegn lang
+    innslag.beskrivelseLengde: Beskrivelsen må være mer enn 5 tegn lang
     td.mangler: Tekniske behov mangler
     td.lengde: Tekniske behov må være mer enn 5 tegn lang
     kontakt.fornavn: Kontaktperson mangler fornavn
