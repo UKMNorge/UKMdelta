@@ -455,7 +455,20 @@ class InnslagController extends Controller
         $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
         
-        if( $innslag->g('bt_form') == 'smartukm_titles_scene' ) {
+        switch ($type) {
+            case 'musikk':
+            case 'film':
+            case 'litteratur':
+            case 'dans':
+            case 'teater':
+            case 'annet':
+                $view_data['krev_sjanger'] = true;
+                break;
+            default:
+                $view_data['krev_sjanger'] = false;  
+        }
+
+		if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('dans','litteratur')) ) {
 	    	$view_data['krev_tekniske'] = true;   
 	    } else {
 		    $view_data['krev_tekniske'] = false;
@@ -516,6 +529,7 @@ class InnslagController extends Controller
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
+        $view_data['status_real'] = $status;
 
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??

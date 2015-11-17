@@ -128,6 +128,7 @@ tittel:
     
 statusAction:
     obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
     infotekst: Denne informasjonen mangler før det er påmeldt:
     artistnavn: Artistnavn / Gruppenavn
     lat: Du må legge til minst én låt

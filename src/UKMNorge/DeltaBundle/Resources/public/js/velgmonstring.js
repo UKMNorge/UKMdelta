@@ -39,3 +39,8 @@ jQuery(document).on('monstring_not_searching', function() {
 	//jQuery('#plStartSearch').show();
 	jQuery('#plNoneFound').hide();
 });
+
+$(document).on('click', '.fellesmonstring', function(){
+	$(this).find('.fellesmonstring-chooser').slideToggle();
+	$(this).find('.fellesmonstring-list').toggle();
+});

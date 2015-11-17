@@ -110,9 +110,10 @@ tittel:
 
 statusAction:
     obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
     infotekst: Denne informasjonen mangler før det er påmeldt:
 
 technicalAction:
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
-    placeholder_teknisk: Vi trenger en bord på 2x3 meter, 4 stoler, og en krakk. Thomas skal snakke, så han trenger mikrofon, gjerne en håndholdt en.
+    placeholder_teknisk: Vi trenger et bord på 2x3 meter, 4 stoler, og en krakk. Thomas skal snakke, så han trenger mikrofon, gjerne en håndholdt en.

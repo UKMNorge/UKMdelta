@@ -27,37 +27,40 @@
 				{% for monstring in fylke.monstringer %}
 						<li class="list-group-item" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
-							<a data-toggle="collapse" data-target="#box{{ monstring.id }}">
-								{# Lag en div som kan utvides ved å trykkes på #}
-								<div class="row">
+							{# Lag en div som kan utvides ved å trykkes på #}
+							<div class="fellesmonstring">
+								<div class="row fellesmonstring-header">
 									<div class="col-xs-9">
-										{{ monstring.name }}
+										<a href="#" onclick="return false;">{{ monstring.name }}</a>
 									</div>
-									<div class="col-xs-3 delta-input-header">
-										<div>
-											{% for kommuner in monstring.kommuner %}
-												<small>{{ kommuner }}</small>
-											{% endfor %}
-										</div>
+									<div class="col-xs-3 delta-input-header fellesmonstring-list">
+										{% for kommuner in monstring.kommuner %}
+											<small>{{ kommuner }}</small>
+										{% endfor %}
+									</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="row fellesmonstring-chooser" style="padding-left: 10px; display:none;">
+									<div class="col-xs-12">
+										<span>{{ 'geoAction.fellesmonstringLabel'|trans }}</span>
+									</div> 
+									<div class="col-xs-12 center">
+										{% for key,kommune in monstring.kommuner %}
+											{% if app.environment == 'test' and fylke.id != 21 %}
+											<a class="btn btn-block btn-primary" href="javascript:alert('Ikke tilgjengelig i testsystemet');">
+											{% else %}
+											<a class="btn btn-block btn-primary" href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
+											{% endif %}
+												<div class="row">
+													<div class="col-xs-12">
+														{{ kommune }} 
+													</div>
+												</div>
+											</a>
+										{% endfor %}
 									</div>
 								</div>
-							</a>
-							<div id="box{{ monstring.id }}" class="collapse row" style="padding-left: 10px">
-								<div class="col-xs-12"><span>{{ 'geoAction.fellesmonstringLabel'|trans }}</span></div> 
-								{% for key,kommune in monstring.kommuner %}
-									{% if app.environment == 'test' and fylke.id != 21 %}
-									<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">
-									{% else %}
-									<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
-									{% endif %}
-										<div class="row">
-											<div class="col-xs-12">
-												{{ kommune }} 
-											</div>
-										</div>
-									</a>
-								{% endfor %}
-							</div>
+							</div> {# .fellesmonstring #}
 						{% else %}
 							{% if app.environment == 'test' and fylke.id != 21 %}
 							<a href="javascript:alert('Ikke tilgjengelig i testsystemet');">

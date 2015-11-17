@@ -53,7 +53,7 @@ overviewAction:
                 De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
     sjanger:
         label: Sjanger
-        placeholder: Eks musikkvideo, animasjon...
+        placeholder: Eks musikkvideo, action, animasjon...
     titler:
         overskrift: Filmer
         endre: legg til / endre
@@ -110,6 +110,7 @@ tittel:
     
 statusAction:
     obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
     infotekst: Denne informasjonen mangler før det er påmeldt:
     artistnavn: Navn / filmgruppens navn
     lat: Du må legge til minst én film
