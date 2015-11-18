@@ -325,7 +325,7 @@ class InnslagController extends Controller
 		                break;
 		            case 'dans':
 			            $tittel->set('koreografi', $request->request->get('koreografi'));
-			            $tittel->set('melodi_av', $request->request->get('melodiforfatter'));
+			            #$tittel->set('melodi_av', $request->request->get('melodiforfatter'));
 		                break;
 		            case 'litteratur':
 						$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
