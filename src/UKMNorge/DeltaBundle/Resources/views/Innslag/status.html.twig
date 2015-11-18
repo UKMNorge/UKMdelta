@@ -27,7 +27,7 @@
 			{% for kategori, grunner_i_kategori in grunner %}
 				{% if kategori == 'personer' %}
 					{% for person in grunner_i_kategori %}
-						- Person {{ person[0] }} mangler (translate this!):
+						{{ 'mangler.overskrift.person'|trans({'%person': person[0]}, 'base') }}
 						<ul>
 							{% for arsak_person in person[1] %}
 								<li>{{ ( 'mangler.' ~ arsak_person )|trans({}, 'base') }}</li>
@@ -35,10 +35,10 @@
 						</ul>
 					{% endfor %}
 				{% elseif kategori == 'titler' %}
-					{% for tittel in grunner_i_kategori %}
-						- Tittel {{ tittel[0] }} mangler (translate this!):
+					{% for tittel in grunner_i_kategori %} {# For hver tittel som mangler noe #}
+						{{ 'mangler.overskrift.tittel'|trans({'%tittel': tittel[0]}, 'base') }}
 						<ul>
-							{% for arsak_tittel in tittel[1] %}
+							{% for arsak_tittel in tittel[1] %}{# For hver feil i hver tittel #}
 								<li>{{ ( 'mangler.' ~ arsak_tittel )|trans({}, 'base') }}</li>
 							{% endfor %}
 						</ul>
