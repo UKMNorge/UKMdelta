@@ -1,6 +1,14 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts 
+		'@UKMDeltaBundle/Resources/public/js/poststed.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
 {% block content %}
 	{# CONTENT #}
 	<h1 class="center">{{ 'checkInfoAction.overskrift'|trans }}</h1>
@@ -27,7 +35,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="postNumber" class="form-control" placeholder="" value="{{ user.post_number is defined ? user.post_number : '' }}">
+					<input type="text" id="postNumber" name="postNumber" class="form-control" placeholder="" value="{{ user.post_number is defined ? user.post_number : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -37,7 +45,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="postplace" class="form-control" placeholder="" value="{{ user.post_place is defined ? user.post_place : '' }}"> 
+					<input type="text" id="postPlace" name="postplace" class="form-control" placeholder="" value="{{ user.post_place is defined ? user.post_place : '' }}"> 
 				</div>
 			</div>
 			<div class="row">
