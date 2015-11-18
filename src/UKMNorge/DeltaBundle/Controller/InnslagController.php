@@ -487,7 +487,7 @@ class InnslagController extends Controller
         $name = $request->request->get('navn');
         $desc = $request->request->get('beskrivelse');
         
-        if(($type == 'musikk') || ($type == 'film') || ($type == 'annet')) {
+        if(($type == 'musikk') || ($type == 'litteratur') || ($type == 'film') || ($type == 'annet') || ($type == 'dans') || ($type == 'teater')) {
             $genre = $request->request->get('sjanger');
             $innslagService->lagreSjanger($b_id, $genre);
         }
