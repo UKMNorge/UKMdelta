@@ -18,7 +18,7 @@
 	{% endif %}
 	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
-		<input type="hidden" name="t_id" value="{{ tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}">
+		<input type="hidden" name="t_id" value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('t_id') : 'new' }}">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
 				<small>Tittel</small>
@@ -26,7 +26,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}">
+				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('tittel') : '' }}">
 			</div>
 		</div>
 
@@ -99,7 +99,7 @@
 		<p>&nbsp;</p>
 		<button type="submit" class="btn btn-block btn-delta">Lagre</button>
 
-		{% if tittel.get('t_id') > 0 %}
+		{% if (tittel is defined) and (tittel.get('t_id') > 0) %}
 			<p>&nbsp;</p>
 			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett tittel</a>
 		{% endif %}
