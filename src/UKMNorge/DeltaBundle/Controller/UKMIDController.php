@@ -62,13 +62,14 @@ class UKMIDController extends Controller
         
         $view_data['user'] = $user;
         //var_dump($view_data['user']);
+        // Legg til data som vi allerede har lagret, i tilfelle valideringsfeil
+
         // Rendre fyll-inn-visningen.
         return $this->render('UKMDeltaBundle:UKMID:info.html.twig', $view_data );
     }
 
     public function verifyInfoAction()
     {
-
         $dato = new DateTime('now');
         $userManager = $this->container->get('fos_user.user_manager');
 

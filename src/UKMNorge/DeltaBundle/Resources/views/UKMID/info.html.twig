@@ -26,7 +26,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" name="address" class="form-control" placeholder="" value="{{ user.address is defined ? user.address : '' }}">
+					<input type="text" required name="address" class="form-control" placeholder="" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -36,7 +36,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" id="postNumber" name="postNumber" class="form-control" placeholder="" value="{{ user.post_number is defined ? user.post_number : '' }}">
+					<input type="text" required id="postNumber" name="postNumber" class="form-control" placeholder="" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
 				</div>
 			</div>
 			<div class="row">
@@ -46,7 +46,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<input type="text" id="postPlace" name="postplace" class="form-control" placeholder="" value="{{ user.post_place is defined ? user.post_place : '' }}"> 
+					<input type="text" required id="postPlace" name="postplace" class="form-control" placeholder="" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}"> 
 				</div>
 			</div>
 			<div class="row">
@@ -56,7 +56,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-					<select name="age" class="form-control">
+					<select name="age" required class="form-control">
 						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'checkInfoAction.alderVelger.Label'|trans }}</option> 
 						{% for i in 10..25 %}
 							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans }}</option> 
