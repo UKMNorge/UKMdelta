@@ -525,6 +525,13 @@ class InnslagController extends Controller
 		$validering = $innslagService->hentAdvarsler($b_id, $pl_id);
         //var_dump($validering);
         $view_data['status'] = $validering[0];
+        // var_dump($view_data['status']);
+        // echo '<br>';
+        $innslag = $innslagService->hent($b_id);
+        // var_dump($innslag->get('b_status'));
+        // echo '<br>';
+        // var_dump($innslag);
+        // die();
         $view_data['grunner'] = $validering[1];
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
