@@ -42,13 +42,12 @@ class InnslagController extends Controller
 
     public function typeAction($k_id, $pl_id)
     {
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
         require_once('UKM/monstring.class.php');
         // Hent lister om hvilke typer som er tillatt på denne mønstringen.
         $pl = new monstring($pl_id);
         $typeListe = $pl->getAllBandTypesDetailedNew();
-        //var_dump($typeListe);
-        $view_data['k_id'] = $k_id;
-        $view_data['pl_id'] = $pl_id;
+        
         $view_data['typer'] = $typeListe;
     
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
