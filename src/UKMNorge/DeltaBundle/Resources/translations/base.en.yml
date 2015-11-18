@@ -51,6 +51,8 @@ technicalAction:
     avbryt: avbryt
 
 mangler:
+    overskrift.person: 'Person "%person" mangler følgende felt:'
+    overskrift.tittel: 'Tittel "%tittel" mangler følgende felt:'
     person.fornavn: Fornavn mangler
     person.etternavn: Etternavn mangler
     person.phone: Telefonnummeret består ikke av 8 siffer
@@ -70,3 +72,4 @@ mangler:
     kontakt.adresse: Kontaktperson mangler adresse
     kontakt.postnummer: Kontaktperson mangler postnummer
     tittel.mangler: Innslaget har ingen titler
+    tittel.t_time: Tittelen har ingen lengde
