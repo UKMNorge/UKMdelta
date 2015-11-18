@@ -24,7 +24,6 @@ class RegistrationListener implements EventSubscriberInterface
     {
         return array(FOSUserEvents::REGISTRATION_INITIALIZE => 'onRegistrationInitialize',
         			 FOSUserEvents::REGISTRATION_SUCCESS => 'onRegistrationSuccess',
-					 UKMUserEvents::REGISTRATION_ERROR => 'onRegistrationError',
 					 FOSUserEvents::REGISTRATION_CONFIRM => 'onRegistrationConfirm',
 					 FOSUserEvents::RESETTING_RESET_SUCCESS => 'onResetComplete',
 					);
@@ -54,32 +53,6 @@ class RegistrationListener implements EventSubscriberInterface
 		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
 	    }
 
-	}
-
-	/**
-	 * onRegistrationSuccess
-	 *
-	 * User is generated and stored in database
-	 * Generate and send SMS with confirmation code to user
-	 *
-	 **/
-    public function onRegistrationError(GetResponseUserEvent $event)
-    {
-	    $request = $event->getRequest();
-	    $email = $request->request->get('fos_user_registration_form')['email'];
-
-	    if( empty( $email ) ) {
-		    return;
-	    }
-	    
-        $userManager = $this->container->get('fos_user.user_manager');
-	    $user = $userManager->findUserByEmail( $email );
-		if( get_class( $user ) == 'UKMNorge\UserBundle\Entity\User' && !$user->isEnabled() ) {
-			$this->container->get('session')->set('fos_user_send_confirmation_email/email', $email);
-			$url = $this->container->get('router')->generate('ukm_user_registration_check_sms', array('sent_before'=>true));
-			
-			$event->setResponse( new RedirectResponse( $url ) );
-		}
 	}
 	
 	/**
