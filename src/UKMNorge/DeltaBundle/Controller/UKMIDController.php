@@ -59,10 +59,7 @@ class UKMIDController extends Controller
             $age = $birthdate->diff($now)->y;
             $view_data['age'] = $age;
         }
-        // Flashbag om film/foto her?
-        $translated_message = $this->get('translator')->trans('filmfoto.samtykke', array(), 'base');
-        $this->addFlash('warning', $translated_message);
-
+        
         $view_data['user'] = $user;
         //var_dump($view_data['user']);
         // Rendre fyll-inn-visningen.
