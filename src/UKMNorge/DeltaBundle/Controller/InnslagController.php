@@ -442,15 +442,15 @@ class InnslagController extends Controller
         $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {
-            $view_data['name'] = $innslag->info['b_name'];  
+            $view_data['name'] = $innslag->get('b_name');
         }
         else {
             $view_data['name'] = '';
         }
         $view_data['sjanger'] = $innslag->get('b_sjanger');
         $view_data['teknisk'] = $teknisk;
-        $view_data['innslag'] = $innslag->info;
-        $view_data['beskrivelse'] = utf8_decode($innslag->get('b_description'));
+        $view_data['innslag'] = $innslag;
+        $view_data['beskrivelse'] = $innslag->get('b_description');
         $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
         
@@ -514,7 +514,7 @@ class InnslagController extends Controller
 
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
-
+        
         $status = $innslag->get('b_status');
         $innslag->get('b_status_text');
 
