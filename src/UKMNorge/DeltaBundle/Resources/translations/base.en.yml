@@ -32,7 +32,7 @@ tittel:
         minutter: minutter
     rediger: rediger
     lagre: Lagre
-    
+    info_mangler: Info mangler
     
 statusAction:
     videreknapp: Ok, jeg fyller ut senere
