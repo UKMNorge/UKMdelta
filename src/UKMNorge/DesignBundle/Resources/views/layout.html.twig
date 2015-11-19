@@ -45,7 +45,7 @@
 	<header class="navbar navbar-static-top navbar-default" id="top" role="banner">
 		{% block header %}
 		<div class="container">
-			{% block navbar %}
+			{% block navbar %}		
 				{% block navbar_button %}
 				<button type="button" class="pull-right navbar-toggle hidden-md hidden-lg" data-action="show" data-toggle="#ukm_mobile_nav" data-toggletitle="Hovedmeny" data-toggleclose="Lukk hovedmeny" data-showJumboUKM="true" id="show_main_mobile_menu">
 					<span class="sr-only">Toggle navigation</span>
@@ -55,11 +55,16 @@
 				</button>
 				{% endblock %}
 				{% block navbar_logo %}
+					{# Din Side-knapp #}
+				<div class="pull-right delta-home">
+					<a href="{{ path('ukm_delta_homepage') }}">Hjem</a>
+				</div>
 				<div class="navbar-header">
 					<a href="/" class="navbar-brand">
 						<img src="http://grafikk.ukm.no/profil/logo/UKM_logo.png" width="70" />
 					</a>
 				</div>
+				
 				{% endblock %}
 				<nav role="navigation">
 					{% block navbar_nav_left %}
@@ -71,11 +76,11 @@
 #}					</ul>
 					{% endblock %}
 					{% block navbar_english %}
-					<div class="pull-right hidden-xs hidden-sm">
-						<a href="//ukm.no/about/">
-							<img src="http://ico.ukm.no/flagg/uk-16.png" class="img img-circle" id="ico_international" />
-						</a>
-					</div>
+						<div class="pull-right hidden-xs hidden-sm">
+							<a href="//ukm.no/about/">
+								<img src="http://ico.ukm.no/flagg/uk-16.png" class="img img-circle" id="ico_international" />
+							</a>
+						</div>
 					{% endblock %}
 					{% block navbar_right %}
 					<ul class="nav navbar-nav navbar-right hidden-xs hidden-sm">
