@@ -11,16 +11,32 @@
 namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\Templating;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Twig_Environment;
+use Symfony\Component\Config\FileLocatorInterface;
+use Symfony\Component\Templating\TemplateNameParserInterface;
+use Symfony\Component\Templating\TemplateNameParser;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+
 class ExceptionListener {
 	
-	// private $templateEngine;
+	// protected $templating;
 
-	// public function __construct(EngineInterface $templateEngine) {
-	// 	$this->templateEngine = $templateEngine;
+	public function __construct($container) {
+		// echo 'Constructing... ';
+		//var_dump($container);
+		$this->container = $container;
+	}
+
+	// function __construct($container) {
+	//     $this->container = $container;
 	// }
 
 	 /**
@@ -38,12 +54,53 @@ class ExceptionListener {
         //     array('status_text' => $event->getException()->getMessage())
         // );
 
+    	// echo 'Exception caught! ';
         $exception = $event->getException();
 
+        // echo $exception->getCode() . '<br>';
+        // echo $exception->getMessage().'<br>';
+        // die();
+        $response = new Response();
+        $view_data = array();
         // Sjekk hvilken exception det er her
-        $message = 'Ooops, feil! Koden sier: ' . $exception->getMessage() . $exception->getCode();
+        // TODO: Logg stuff her
+        switch ($exception->getCode()) {
+        	case 0:
+        		// Egne exceptions uten statuskode dukker opp her!'
+        		// echo 'deltaException:<br>';
+        		$view_data = $this->deltaException($event);
+        		break;
+        	case 404:
+        		// Not found Exception
+        		$view_data = $this->notFoundException($event);
+        		break;	
+        	case 500: 
+        		// Dette er intern-feil, men kan også være egne kastede exceptions.
+        	default:
+        		$view_data['message'] = "Out of cheese error! Divide by cucumber, reinstall universe and try again";
+        		break;
+        }
+        ####
+        # Historical reference:
+        # All kode jeg testa som til slutt viste seg å ikke være nødvendig (og som heller ikke funka)
+        # Burde fjernes en gang
+        ####
+        //var_dump($this->container);
+  		// $loader = new FilesystemLoader(__DIR__.'/../../UKMNorge/DeltaBundle/Resources/views/%name%');
+  		// var_dump($loader);
+		// $templating = new PhpEngine(new TemplateNameParser(), $loader);
+		// Lag TwigEngine?
+		// echo '<br>\r\nCreating TwigEngine';
+		// $environment = new Twig_Environment();
+		// //$parser = new TemplateNameParserInterface();
+		// //$locator = new FileLocatorInterface();
+		// //var_dump($environment);
+		// $templating = new TwigEngine($environment, TemplateNameParserInterface, FileLocatorInterface);
+		
+		//$response->setContent($templating->render('Error/index.html.twig', array('message' => 'test')));
 
-        $response = new Response($message, Response::HTTP_OK);
+        // $message = 'Ooops, feil! Koden sier: ' . $exception->getMessage(); 
+		// var_dump($this->templating);  
         // $response->setContent($message);
 
         // HttpExceptionInterface is a special type of exception that
@@ -55,10 +112,22 @@ class ExceptionListener {
         //     $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         // }
         
-        // $this->templateEngine->render('', $view_data);
+        // La Twig rendre i vei
+        $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
+        // Send data til nettleseren
+        echo $response;
 
         // Her sendes data til nettleseren.
-        $event->setResponse($response);
+        //$event->setResponse($response);
+    }
+
+    public function deltaException(GetResponseForExceptionEvent $event) {
+    	// This function is expected to return an 
+    	// array with text for exceptions generated within UKMdelta
+    	$view_data['message'] = "Damn it, Carl!";
+
+
+    	return $view_data;
     }
 }
 ?>
