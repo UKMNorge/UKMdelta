@@ -16,7 +16,7 @@ require_once('UKM/innslag.class.php');
 
 class InnslagService {
 	
-	public function __construct($container) {
+	public function __construct(ContainerInterface $container) {
 		$this->container = $container;
 	}
 
