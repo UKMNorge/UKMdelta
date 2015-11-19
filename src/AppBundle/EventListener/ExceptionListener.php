@@ -56,15 +56,34 @@ class ExceptionListener {
 
     	// echo 'Exception caught! ';
         $exception = $event->getException();
+        
+        $code = -1;
+        $view_data = array();
+        
+        // TODO: Bytt ut denne med != klasser som implementerer HttpExceptionInterface og inverter
+        if (get_class($exception) == 'Exception') {
+            // Don't run getStatusCode()!
+            $code = 0;
+        }
+        else {    
+            try {
+                $code = $exception->getStatusCode();
+            } 
+            catch(Exception $e) {
+                $code = -1;
+            }
+        }
+        //var_dump($exception);
 
         // echo $exception->getCode() . '<br>';
         // echo $exception->getMessage().'<br>';
         // die();
+
         $response = new Response();
-        $view_data = array();
+        
         // Sjekk hvilken exception det er her
         // TODO: Logg stuff her
-        switch ($exception->getCode()) {
+        switch ($code) {
         	case 0:
         		// Egne exceptions uten statuskode dukker opp her!'
         		// echo 'deltaException:<br>';
@@ -75,9 +94,9 @@ class ExceptionListener {
         		$view_data = $this->notFoundException($event);
         		break;	
         	case 500: 
-        		// Dette er intern-feil, men kan også være egne kastede exceptions.
-        	default:
-        		$view_data['message'] = "Out of cheese error! Divide by cucumber, reinstall universe and try again";
+        		// Dette er intern server-feil, men kan også være egne kastede exceptions.
+            default:
+                $view_data = $this->unknownErrorException($event);
         		break;
         }
         ####
@@ -117,17 +136,56 @@ class ExceptionListener {
         // Send data til nettleseren
         echo $response;
 
-        // Her sendes data til nettleseren.
-        //$event->setResponse($response);
+        // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
+        $event->setResponse(new Response());
     }
 
     public function deltaException(GetResponseForExceptionEvent $event) {
     	// This function is expected to return an 
     	// array with text for exceptions generated within UKMdelta
-    	$view_data['message'] = "Damn it, Carl!";
+        // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
 
+        ## Tekst
+        $key = 'feil.ingentilgang.';
+        
+        $view_data['overskrift'] = $key.'topptekst';
+        $view_data['ledetekst'] = $key.'ledetekst';
+        $view_data['tekst'] = $key.'tekst';
 
     	return $view_data;
+    }
+    public function unknownErrorException(GetResponseForExceptionEvent $event) {
+        // This function is expected to return an 
+        // array with text for any unknwon exceptions that occur.
+        // The text returned should be a key in translations/base.
+        // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
+        $key = 'feil.ukjentfeil.';
+
+        // Humornøkkel
+        $view_data['cheese'] = true;
+
+        $view_data['overskrift'] = $key.'topptekst';
+        $view_data['ledetekst'] = $key.'ledetekst';
+        $view_data['tekst'] = $key.'tekst';
+
+        return $view_data;
+    }
+    public function notFoundException(GetResponseForExceptionEvent $event) {
+        // This function is expected to return an 
+        // array with text for exceptions created when no file was found.
+        // The text returned should be a key in translations/base.
+        // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
+        
+        $key = 'feil.ikkefunnet.';
+
+        $view_data['overskrift'] = $key.'topptekst';
+        $view_data['ledetekst'] = $key.'ledetekst';
+        $view_data['tekst'] = $key.'tekst';
+
+        // Humornøkkel
+        $view_data['sadface'] = true;
+
+        return $view_data;
     }
 }
 ?>

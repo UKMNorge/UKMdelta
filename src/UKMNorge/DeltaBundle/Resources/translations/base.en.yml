@@ -73,3 +73,23 @@ mangler:
     kontakt.postnummer: Kontaktperson mangler postnummer
     tittel.mangler: Innslaget har ingen titler
     tittel.t_time: Tittelen har ingen lengde
+
+feil:
+    overskrift: Oops! Noe gikk galt
+    ikkefunnet: 
+        topptekst: Vi finner ikke det du leter etter.
+        ledetekst: >
+            Fulgte du en link er den sannsynligvis feil. 
+            Denne feilen kan også oppstå om vi har flyttet på noe.
+        tekst: |
+            Vi anbefaler at du går til forsiden, men du kan også laste inn siden på nytt om du tror det skal finnes noe her.
+    ukjentfeil: 
+        topptekst: Vi aner ikke hva som er feil, så spis litt ost og prøv igjen!
+    ingentilgang: 
+        topptekst: Du har ikke tilgang til dette innslaget!
+        ledetekst: >
+            Denne feilen dukker opp hvis du prøver å se på eller 
+            endre innslag du ikke er registrert som kontaktperson for.
+        tekst: |
+            Hvis du mener du skal ha tilgang til dette, ta kontakt med support eller din lokalkontakt.
+        
