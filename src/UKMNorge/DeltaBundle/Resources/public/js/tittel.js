@@ -72,8 +72,10 @@ jQuery(document).on('click', '#koreografi-valg', function() {
 $(document).on('click', '#leseopp-valg', function(){
 	if( $("#leseopp-valg").find(':radio:checked').val() == 0 ) {
 		$('.leseopp-true').slideUp();
+		$('.leseopp-true').find('select').removeAttr('required');
 	} else {
 		$('.leseopp-true').slideDown();
+		$('.leseopp-true').find('select').attr('required','required');
 	}
 });
 

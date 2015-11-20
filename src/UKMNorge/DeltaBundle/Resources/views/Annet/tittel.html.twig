@@ -35,30 +35,11 @@
 				<small>Lengde</small>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col-xs-12">
-				<select name="lengde" required class="form-control">
-					<option value="0" 
-						{% if tittel.varighet is not defined %}
-							selected
-						{% endif %} 
-						disabled>Velg lengde på innslaget</option>
-					{% for i in 0..60 %}
-						<option value="{{ i * 10 }}" 
-							{% if tittel.varighet is defined %}
-								{% if tittel.varighet == i * 10 %}
-									selected
-								{% endif %}
-							{% endif %}
-							>
-							{% if (i / 6)|round(0, 'floor') < 1 %}
-								{{ (i % 6) * 10 }} sek</option>
-							{% else %}
-								{{ (i / 6)|round(0, 'floor') }} min{% if ((i % 6) * 10 ) != 0 %}, {{ (i % 6) * 10 }} sek</option>
-								{% endif %}
-							{% endif %}
-					{% endfor %}
-				</select>
+				{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+				{# <small class="delta-subtext left">{{ 'tittel.varighet.help'|trans }}</small> #}
 			</div>
 		</div>
 		{# <div class="row">

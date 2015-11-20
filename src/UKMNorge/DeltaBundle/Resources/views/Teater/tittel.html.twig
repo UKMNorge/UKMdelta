@@ -17,7 +17,7 @@
 			<small>{{ 'tittel.tekst_av.label'|trans }}</small>
 		</div>
 		<div class="col-xs-12">
-			<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}"> 
+			<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}"> 
 		</div>
 	</div>
 {% endblock %}
