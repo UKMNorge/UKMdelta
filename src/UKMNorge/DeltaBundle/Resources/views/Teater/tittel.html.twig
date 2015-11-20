@@ -9,8 +9,8 @@
 		</div>
 	</div>
 	<div class="col-xs-12"  id="melodi-valg" >
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="1">{{ 'ja'|trans({}, 'base') }}</label>
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>{{ 'nei'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
 	</div>
 	<div class="row" id="tekst-rad">
 		<div class="col-xs-12 delta-input-header">
