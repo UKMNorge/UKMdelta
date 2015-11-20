@@ -1,6 +1,6 @@
 {% trans_default_domain translationDomain %}
-<select name="lengde" required class="form-control">
-	<option value="0" {{ tittel.varighet is not defined ? 'selected' : '' }} disabled>{{ 'tittel.varighet.velg_varighet'|trans }}</option>
+<select name="lengde" required="required" class="form-control">
+	<option value="" {{ tittel.varighet is not defined ? 'selected' : '' }} disabled>{{ 'tittel.varighet.velg_varighet'|trans }}</option>
 	{% for i in 0..60 %}
 		<option value="{{ i * 10 }}" {{ (tittel.varighet is defined) and (tittel.varighet == i * 10) ? 'selected' : '' }}>
 			{% if (i / 6)|round(0, 'floor') < 1 %}
