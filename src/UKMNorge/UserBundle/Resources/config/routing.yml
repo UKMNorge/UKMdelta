@@ -5,3 +5,7 @@ ukm_user_registration_check_sms:
 ukm_user_registration_validate_sms:
     path:     /register/validate-sms
     defaults: { _controller: UKMUserBundle:Registration:validateSMS }
+
+ukm_user_registration_existing_phone:
+    path:     /register/phone-exists-{phone}
+    defaults: { _controller: UKMUserBundle:Registration:phoneExists }

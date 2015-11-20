@@ -36,7 +36,10 @@
 		<style type="text/css">{% block additional_css %}{% endblock %}</style>
 		<script type="text/javascript">{% block additional_js %}{% endblock %}</script>
 		{% block scripts %}
-			{% javascripts '@UKMDesignBundle/Resources/public/js/*' %}
+			{% javascripts 
+				'@UKMDesignBundle/Resources/public/js/validation.jquery.js'
+				'@UKMDesignBundle/Resources/public/js/ukmdesignbundle.js'
+				 %}
 		    	<script src="{{ asset_url }}"></script> 
 			{% endjavascripts %}
 		{% endblock %}
