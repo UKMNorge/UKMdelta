@@ -61,18 +61,25 @@ class ExceptionListener {
         $view_data = array();
         
         // TODO: Bytt ut denne med != klasser som implementerer HttpExceptionInterface og inverter
-        if (get_class($exception) == 'Exception') {
-            // Don't run getStatusCode()!
-            $code = 0;
+        if (in_array('HttpExceptionInterface', class_implements($exception))) {
+            $code = $exception->getStatusCode();
         }
-        else {    
-            try {
-                $code = $exception->getStatusCode();
-            } 
-            catch(Exception $e) {
-                $code = -1;
-            }
+        else {
+            $code = $exception->getCode();
         }
+
+        // if (get_class($exception) == 'Exception') {
+        //     // Don't run getStatusCode()!
+        //     $code = 0;
+        // }
+        // else {    
+        //     try {
+                
+        //     } 
+        //     catch(Exception $e) {
+                
+        //     }
+        // }
         //var_dump($exception);
 
         // echo $exception->getCode() . '<br>';
@@ -145,12 +152,36 @@ class ExceptionListener {
     	// array with text for exceptions generated within UKMdelta
         // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
 
-        ## Tekst
-        $key = 'feil.ingentilgang.';
-        
-        $view_data['overskrift'] = $key.'topptekst';
-        $view_data['ledetekst'] = $key.'ledetekst';
-        $view_data['tekst'] = $key.'tekst';
+        $message = $event->getException()->getMessage();
+
+        if ($message == 'Du har ikke tilgang til dette innslaget!') {
+            ## Tekst
+            $key = 'feil.ingentilgang.';
+            
+            $view_data['overskrift'] = $key.'topptekst';
+            $view_data['ledetekst'] = $key.'ledetekst';
+            $view_data['tekst'] = $key.'tekst';
+
+        }
+        // elseif ($message == 'Notice: Undefined index: bt_name') {
+
+        // }
+        else {
+            $key = 'feil.ukjentfeil.';
+            // Humornøkkel
+            $view_data['cheese'] = true;
+
+            $view_data['ledetekst'] = $key.'topptekst';
+            // $view_data['tekst'] = $key.'tekst';
+            $teknisk = array();
+            $teknisk['message'] = $message;
+            $teknisk['file'] = $event->getException()->getFile();
+            $teknisk['line'] = $event->getException()->getLine();
+            $teknisk['trace'] = $event->getException()->getTraceAsString();
+            //$teknisk['exception'] = $event->getException();
+            $view_data['teknisk'] = $teknisk;
+
+        }
 
     	return $view_data;
     }
@@ -165,8 +196,8 @@ class ExceptionListener {
         $view_data['cheese'] = true;
 
         $view_data['overskrift'] = $key.'topptekst';
-        $view_data['ledetekst'] = $key.'ledetekst';
-        $view_data['tekst'] = $key.'tekst';
+        // $view_data['ledetekst'] = $key.'ledetekst';
+        // $view_data['tekst'] = $key.'tekst';
 
         return $view_data;
     }

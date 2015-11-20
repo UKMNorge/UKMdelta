@@ -75,7 +75,7 @@ mangler:
     tittel.t_time: Tittelen har ingen lengde
 
 feil:
-    overskrift: Oops! Noe gikk galt
+    overskrift: Oops! Noe gikk galt!
     ikkefunnet: 
         topptekst: Vi finner ikke det du leter etter.
         ledetekst: >
@@ -92,4 +92,9 @@ feil:
             endre innslag du ikke er registrert som kontaktperson for.
         tekst: |
             Hvis du mener du skal ha tilgang til dette, ta kontakt med support eller din lokalkontakt.
-        
+    teknisk: 
+        body: >
+            Skjer dette ofte? Kontakt support og send med beskjeden under.
+        overskrift: "Feilmelding:"
+        ifil: i fil
+        linje: på linje
