@@ -76,7 +76,7 @@ overviewAction:
 person:
     rolle: 
         label: Hva gjør %person?
-        placeholder: 
+        placeholder: " "
         help: Skriv inn hvilken rolle %person har, eller hva %person gjør (f.eks maler, tegner, illustratør, skulptør osv..)
         ukjent: ukjent rolle
     ar: år

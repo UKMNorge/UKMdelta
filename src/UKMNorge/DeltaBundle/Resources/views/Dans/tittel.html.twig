@@ -20,12 +20,4 @@
 			<input type="text" required name="koreografi" class="form-control" placeholder="{{ 'tittel.koreografi.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('koreografi') : '' }}">
 		</div>
 	</div>
-	<div class="row" id="melodi-rad">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.melodi_av.label'|trans }}</small>
-		</div>
-		<div class="col-xs-12">
-			<input type="text" required name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('melodi_av') : '' }}">
-		</div>
-	</div>
 {% endblock %}

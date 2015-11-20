@@ -16,7 +16,7 @@ require_once('UKM/innslag.class.php');
 
 class InnslagService {
 	
-	public function __construct($container) {
+	public function __construct(ContainerInterface $container) {
 		$this->container = $container;
 	}
 
@@ -61,6 +61,8 @@ class InnslagService {
 	public function hent($innslagsID) {
 		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
 		$innslag->personer(); // Tving en oppdatering av personer-arrrayet.
+
+		// get kjører en UTF8-encode på alle felt. Så droppe det på vei inn?
 
 		// Sjekk om Symfony-brukeren matcher delta_-feltet
 		$user = $this->container->get('ukm_user')->getCurrentUser();
@@ -126,7 +128,6 @@ class InnslagService {
 		else {
 			$innslag->addPerson($personID);
 		}		
-		
 	}
 
 	public function fjernPerson($innslagsID, $personID) {
@@ -172,8 +173,8 @@ class InnslagService {
 		}
 
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
-	        $innslag->set('b_description', utf8_encode($beskrivelse));
-	        $innslag->set('td_konferansier', utf8_encode($beskrivelse)); // Hvorfor lagrer ikke denne?
+	        $innslag->set('b_description', $beskrivelse);
+	        $innslag->set('td_konferansier', $beskrivelse); // Hvorfor lagrer ikke denne?
 	    	$innslag->lagre();
 	    }
 	}	

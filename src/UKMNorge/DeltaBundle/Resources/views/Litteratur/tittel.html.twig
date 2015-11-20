@@ -35,8 +35,8 @@
 		</div>
 	</div>
 	<div class="col-xs-12"  id="leseopp-valg" >
-		<label class="radio-inline"><input type="radio" name="leseopp" value="1" {{ (tittel is defined and tittel.get('litterature_read') == 1) or tittel is not defined ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
-		<label class="radio-inline"><input type="radio" name="leseopp" value="0" {{ tittel is defined and tittel.get('litterature_read') == 0 ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="leseopp" value="1" {{ (tittel is defined and tittel.get('litterature_read') == 1) or tittel is not defined ? 'checked' : '' }} required>{{ 'ja'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="leseopp" value="0" {{ tittel is defined and tittel.get('litterature_read') == 0 ? 'checked' : '' }} required>{{ 'nei'|trans({}, 'base') }}</label>
 	</div>
 	
 	

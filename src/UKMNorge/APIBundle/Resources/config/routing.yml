@@ -1,3 +1,10 @@
 ukmapi_homepage:
     path:     /hello/{name}
     defaults: { _controller: UKMAPIBundle:Default:index }
+
+### EKSTERNT API
+ukm_api_poststed:
+    path: /api/poststed/{postnummer}
+    defaults: { _controller: UKMAPIBundle:Default:poststed }
+    requirements: 
+        postnummer: ([0-9]{1,4})

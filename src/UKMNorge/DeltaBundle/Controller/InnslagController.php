@@ -42,13 +42,12 @@ class InnslagController extends Controller
 
     public function typeAction($k_id, $pl_id)
     {
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
         require_once('UKM/monstring.class.php');
         // Hent lister om hvilke typer som er tillatt på denne mønstringen.
         $pl = new monstring($pl_id);
         $typeListe = $pl->getAllBandTypesDetailedNew();
-        //var_dump($typeListe);
-        $view_data['k_id'] = $k_id;
-        $view_data['pl_id'] = $pl_id;
+        
         $view_data['typer'] = $typeListe;
     
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
@@ -326,7 +325,7 @@ class InnslagController extends Controller
 		                break;
 		            case 'dans':
 			            $tittel->set('koreografi', $request->request->get('koreografi'));
-			            $tittel->set('melodi_av', $request->request->get('melodiforfatter'));
+			            #$tittel->set('melodi_av', $request->request->get('melodiforfatter'));
 		                break;
 		            case 'litteratur':
 						$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
@@ -443,15 +442,15 @@ class InnslagController extends Controller
         $view_data['translationDomain'] = $type;
         $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {
-            $view_data['name'] = $innslag->info['b_name'];  
+            $view_data['name'] = $innslag->get('b_name');
         }
         else {
             $view_data['name'] = '';
         }
         $view_data['sjanger'] = $innslag->get('b_sjanger');
         $view_data['teknisk'] = $teknisk;
-        $view_data['innslag'] = $innslag->info;
-        $view_data['beskrivelse'] = utf8_decode($innslag->get('b_description'));
+        $view_data['innslag'] = $innslag;
+        $view_data['beskrivelse'] = $innslag->get('b_description');
         $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
         
@@ -468,7 +467,8 @@ class InnslagController extends Controller
                 $view_data['krev_sjanger'] = false;  
         }
 
-		if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('dans','litteratur')) ) {
+        // Krev tekniske behov for alle sceneinnslag, unntatt litteratur
+		if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('litteratur')) ) {
 	    	$view_data['krev_tekniske'] = true;   
 	    } else {
 		    $view_data['krev_tekniske'] = false;
@@ -487,7 +487,7 @@ class InnslagController extends Controller
         $name = $request->request->get('navn');
         $desc = $request->request->get('beskrivelse');
         
-        if(($type == 'musikk') || ($type == 'film') || ($type == 'annet')) {
+        if(($type == 'musikk') || ($type == 'litteratur') || ($type == 'film') || ($type == 'annet') || ($type == 'dans') || ($type == 'teater')) {
             $genre = $request->request->get('sjanger');
             $innslagService->lagreSjanger($b_id, $genre);
         }
@@ -514,7 +514,7 @@ class InnslagController extends Controller
 
         $innslagService = $this->get('ukm_api.innslag');
         $innslag = $innslagService->hent($b_id);
-
+        
         $status = $innslag->get('b_status');
         $innslag->get('b_status_text');
 
@@ -525,6 +525,13 @@ class InnslagController extends Controller
 		$validering = $innslagService->hentAdvarsler($b_id, $pl_id);
         //var_dump($validering);
         $view_data['status'] = $validering[0];
+        // var_dump($view_data['status']);
+        // echo '<br>';
+        $innslag = $innslagService->hent($b_id);
+        // var_dump($innslag->get('b_status'));
+        // echo '<br>';
+        // var_dump($innslag);
+        // die();
         $view_data['grunner'] = $validering[1];
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;

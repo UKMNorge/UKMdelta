@@ -22,15 +22,15 @@
 			<span class="delta-fat">Fullførte påmeldinger</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
-					{% if event.info.b_status == 8 %}
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
+					{% if event.get('b_status') == 8 %}
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.get('b_kommune'), pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.get('b_id') }) }}">
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-6">
-										{{ event.info.b_name }}
+										{{ event.get('b_name') }}
 									</div>
 									<div class="col-xs-3 text-right">
-										{{ event.info.kategori|capitalize }}
+										{{ event.get('kategori')|capitalize }}
 									</div>
 									<div class="col-xs-3">
 										rediger 
@@ -44,15 +44,15 @@
 			<span class="delta-fat">Ikke fullførte påmeldinger</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
-					{% if event.info.b_status != 8 %}
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.info.b_kommune, pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.info.b_id }) }}">
+					{% if event.get('b_status') != 8 %}
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.get('b_kommune'), pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.get('b_id') }) }}">
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-6">
-										{{ event.info.b_name }}
+										{{ event.get('b_name') }}
 									</div>
 									<div class="col-xs-3 text-right">
-										{{ event.info.kategori|capitalize }}
+										{{ event.get('kategori')|capitalize }}
 									</div>
 									<div class="col-xs-3">
 										rediger

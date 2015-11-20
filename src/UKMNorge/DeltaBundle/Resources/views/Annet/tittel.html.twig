@@ -18,7 +18,7 @@
 	{% endif %}
 	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
-		<input type="hidden" name="t_id" value="{{ tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}">
+		<input type="hidden" name="t_id" value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('t_id') : 'new' }}">
 		<div class="row">
 			<div class="col-xs-12 delta-input-header">
 				<small>Tittel</small>
@@ -26,7 +26,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}">
+				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('tittel') : '' }}">
 			</div>
 		</div>
 
@@ -35,30 +35,11 @@
 				<small>Lengde</small>
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col-xs-12">
-				<select name="lengde" required class="form-control">
-					<option value="0" 
-						{% if tittel.varighet is not defined %}
-							selected
-						{% endif %} 
-						disabled>Velg lengde på innslaget</option>
-					{% for i in 0..60 %}
-						<option value="{{ i * 10 }}" 
-							{% if tittel.varighet is defined %}
-								{% if tittel.varighet == i * 10 %}
-									selected
-								{% endif %}
-							{% endif %}
-							>
-							{% if (i / 6)|round(0, 'floor') < 1 %}
-								{{ (i % 6) * 10 }} sek</option>
-							{% else %}
-								{{ (i / 6)|round(0, 'floor') }} min{% if ((i % 6) * 10 ) != 0 %}, {{ (i % 6) * 10 }} sek</option>
-								{% endif %}
-							{% endif %}
-					{% endfor %}
-				</select>
+				{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+				{# <small class="delta-subtext left">{{ 'tittel.varighet.help'|trans }}</small> #}
 			</div>
 		</div>
 		{# <div class="row">
@@ -99,7 +80,7 @@
 		<p>&nbsp;</p>
 		<button type="submit" class="btn btn-block btn-delta">Lagre</button>
 
-		{% if tittel.get('t_id') > 0 %}
+		{% if (tittel is defined) and (tittel.get('t_id') > 0) %}
 			<p>&nbsp;</p>
 			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">Slett tittel</a>
 		{% endif %}

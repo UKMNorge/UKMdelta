@@ -11,6 +11,8 @@
 @bootstrap-success: #3c763d;
 @bootstrap-info: #31708f;
 
+@button-color: @primary-green;
+
 .text-danger {
 	color: @bootstrap-danger !important;
 }
@@ -24,6 +26,8 @@
 	color: @bootstrap-info !important;
 }
 
+
+
 h1, .h1 {
     font-size: 26px;
     font-weight: 300;
@@ -32,6 +36,11 @@ h1, .h1 {
 .delta-header {
 	background-color: #85cdcf; 
 	color: white;
+}
+
+/** KNAPPER **/
+.btn {
+	color: @button-color;
 }
 
 .btn-delta,
@@ -58,9 +67,24 @@ h1, .h1 {
 .right {
 	text-align: right;
 }
+.left {
+	text-align: left;
+}
 
 .click {
 	cursor: pointer;
+}
+
+/*** ***/
+.delta-home {
+	padding-right: 3.5em;
+	/*padding-top: 2em;*/
+	padding-top: 1em;
+}
+
+.delta-home a {
+	display: block;
+	position: absolute;
 }
 
 /*** Rød farge på fare-knapp */

@@ -22,27 +22,35 @@ overviewAction:
 ## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
     artistnavn:
         alene:
-            label: Artistnavn / teatergruppe-navn
+            label: Artistnavn
             placeholder: Eks. Teater-%fornavn, %fornavn %etternavn osv...
         sammen:
-            label: Teatergruppe-navn / artistnavn
+            label: Gruppe-navn
             placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
         kontakt:
-            label: Teatergruppe-navn / artistnavn
+            label: Gruppe-navn / artistnavn
             placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
     beskrivelse:
         alene:
             label: Beskrivelse av artist
             placeholder: >
-                Eks. Jeg spiller et teaterstykke/monolog jeg har skrevet selv, som handler om hvordan det er for en ungom å vokse opp på Hadeland.
+                Eks. Jeg kommer fra Hadeland, er 15 år og skal spille et teaterstykke/monolog jeg har skrevet selv. 
+                For meg er teater en god måte å gjøre kritikk og humor av samfunnet rundt meg, 
+                samtidig som det er gøy!
         sammen:
             label: Beskrivelse av gruppe
             placeholder: >
-                Eks. Vi spiller et teaterstykke vi har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Eks. Vi kommer fra Hadeland, går sammen på ungdomsskolen, er 15 og 16 år og 
+                skal spille et teaterstykke vi har skrevet selv. 
+                For oss er teater en god måte å gjøre kritikk og humor av samfunnet rundt oss, 
+                samtidig som det er gøy!
         kontakt:
             label: Beskrivelse av artist / gruppe
             placeholder: >
-                Eks. Gruppa spiller et teaterstykke de har skrevet selv, som handler om hvordan det er å vokse opp som ung på Hadeland.
+                Eks. Gruppa kommer fra Hadeland, går sammen på ungdomsskolen, er 15 og 16 år og
+                skal spille et teaterstykke de har skrevet selv.
+                For de er teater en god måte å gjøre kritikk og humor av samfunnet rundt seg, 
+                samtidig som det er gøy!
     sjanger:
         label: Sjanger
         placeholder: Eks monolog, revy osv...
@@ -82,7 +90,7 @@ overviewAction:
 person:
     rolle: 
         label: Hva spiller eller gjør %person?
-        placeholder: F.eks hovedperson, Operafantomet, koreograf, skuespiller osv...
+        placeholder: F.eks hovedperson, Operafantomet, skuespiller osv...
         help: ""
         ukjent: ukjent rolle
     ar: år
@@ -96,31 +104,23 @@ person:
 #     tittel.overskrift.rediger
 tittel:
     overskrift:
-        legg_til: Legg til teaterstykke / sketsj
+        legg_til: Legg til sketsj / stykke
         rediger: Rediger "%tittel"
     tittel:
-        label: Navn på teaterstykke / sketsj
+        label: Navn på sketsj / stykke
         placeholder: Eks. Karlson på taket, Putti plutti pott osv...
     varighet:
         label: Varighet
-        velg_varighet: Velg hvor lenge teaterstykket / sketsjen varer
-    tekst:
-        label: Har låta tekst, eller er det en instrumental?
-        tekst: Tekst
-        instrumental: Instrumental
+        velg_varighet: Velg hvor lenge sketsjen / stykket varer
     selvlaget:
-        label: Har du/dere laget teaterstykket / sketsjen selv?
+        label: Har du/dere laget sketsjen / stykket selv?
     tekst_av:
-        label: Tekst av
+        label: Hvem har skrevet manus?
         placeholder: (valgfritt felt)
-        help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
-    melodi_av:
-        label: Melodi av
-        placeholder: (valgfritt felt)
-        help: Hvis det er brukt musikk i teaterstykket, skriver du hvem som har laget den her.
+        #help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
     
     info_mangler: Info mangler
-    slett: Slett filmen
+    slett: Slett tittel
     slettet: %tittel er nå slettet
     lagre: Lagre
     avbryt: avbryt
@@ -129,6 +129,7 @@ technicalAction:
     placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
+        Skal dere ha playback av musikk?
     placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.
     
 statusAction:

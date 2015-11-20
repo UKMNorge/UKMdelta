@@ -9,26 +9,15 @@
 		</div>
 	</div>
 	<div class="col-xs-12"  id="melodi-valg" >
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="1">{{ 'ja'|trans({}, 'base') }}</label>
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>{{ 'nei'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
+		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
 	</div>
 	<div class="row" id="tekst-rad">
 		<div class="col-xs-12 delta-input-header">
 			<small>{{ 'tittel.tekst_av.label'|trans }}</small>
 		</div>
 		<div class="col-xs-12">
-			<input type="text" required name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
-			<small class="delta-subtext left">{{ 'tittel.tekst_av.help'|trans }}</small>
-		</div>
-	</div>
-
-	<div class="row" id="melodi-rad">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.melodi_av.label'|trans }}</small>
-		</div>
-		<div class="col-xs-12">
-			<input type="text" required name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
-			<small class="delta-subtext left">{{ 'tittel.melodi_av.help'|trans }}</small>
+			<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}"> 
 		</div>
 	</div>
 {% endblock %}

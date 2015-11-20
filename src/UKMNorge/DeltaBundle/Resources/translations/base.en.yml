@@ -24,9 +24,6 @@ person:
 ja: ja
 nei: nei
 
-filmfoto:
-    samtykke: Ved å delta på UKM samtykker du i at det blir tatt bilder og video av deg som deltar.
-
 tittel:
     varighet:
         sek: sek
@@ -35,12 +32,12 @@ tittel:
         minutter: minutter
     rediger: rediger
     lagre: Lagre
-    
+    info_mangler: Info mangler
     
 statusAction:
     videreknapp: Ok, jeg fyller ut senere
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
-    obstekst: OBS: du MÅ fylle ut all informasjon før %dag%.%maned% kl. %time%:%minutt%!
+    obstekst: OBS: du MÅ fylle ut all informasjon før %dag% %dato%. %maned% kl. %time%:%minutt%!
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     
     
@@ -54,6 +51,8 @@ technicalAction:
     avbryt: avbryt
 
 mangler:
+    overskrift.person: 'Person "%person" mangler følgende felt:'
+    overskrift.tittel: 'Tittel "%tittel" mangler følgende felt:'
     person.fornavn: Fornavn mangler
     person.etternavn: Etternavn mangler
     person.phone: Telefonnummeret består ikke av 8 siffer
@@ -73,3 +72,29 @@ mangler:
     kontakt.adresse: Kontaktperson mangler adresse
     kontakt.postnummer: Kontaktperson mangler postnummer
     tittel.mangler: Innslaget har ingen titler
+    tittel.t_time: Tittelen har ingen lengde
+
+feil:
+    overskrift: Oops! Noe gikk galt!
+    ikkefunnet: 
+        topptekst: Vi finner ikke det du leter etter.
+        ledetekst: >
+            Fulgte du en link er den sannsynligvis feil. 
+            Denne feilen kan også oppstå om vi har flyttet på noe.
+        tekst: |
+            Vi anbefaler at du går til forsiden, men du kan også laste inn siden på nytt om du tror det skal finnes noe her.
+    ukjentfeil: 
+        topptekst: Vi aner ikke hva som er feil, så spis litt ost og prøv igjen!
+    ingentilgang: 
+        topptekst: Du har ikke tilgang til dette innslaget!
+        ledetekst: >
+            Denne feilen dukker opp hvis du prøver å se på eller 
+            endre innslag du ikke er registrert som kontaktperson for.
+        tekst: |
+            Hvis du mener du skal ha tilgang til dette, ta kontakt med support eller din lokalkontakt.
+    teknisk: 
+        body: >
+            Skjer dette ofte? Kontakt support og send med beskjeden under.
+        overskrift: "Feilmelding:"
+        ifil: i fil
+        linje: på linje

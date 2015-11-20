@@ -55,7 +55,12 @@ class PersonService {
 		if (!get_class($person) == 'person') {
 			throw new Exception ('Kunne ikke oppdatere adresse - feil objekt mottatt. Ventet person, fikk ' . get_class($person));
 		}
-
+		
+		// Sjekk lengden på poststed, padd med 0 i starten om > 4
+		$postnummer = strval($postnummer);
+		while (strlen($postnummer) < 4) {
+			$postnummer = "0" . $postnummer;
+		}
 		$person->set('p_adress', $adresse);
 		$person->set('p_postnumber', $postnummer);
 		$person->set('p_postplace', $poststed);
