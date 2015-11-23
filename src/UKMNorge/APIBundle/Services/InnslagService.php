@@ -3,6 +3,7 @@ namespace UKMNorge\APIBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use UKMNorge\DeltaBundle\seasonService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use innslag;
 use person;
 use monstring;
@@ -287,6 +288,79 @@ class InnslagService {
 			}
 		}
 		return $output;
+	}
+
+	####
+	# SjekkTilgang
+	# Funksjonen sjekker om personen som prøver å gjøre endringer har tilgang til innslaget.
+	# Hvis ikke kaster den en exception med kode 0 og teksten 'ingentilgang'.
+	###
+	public function sjekkTilgang($b_id) {
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+
+		$u_id = $user->getId();
+		$p_id = $user->getPameldUser(); 
+
+		$innslag = new innslag($b_id, false);
+
+		if (($innslag->get('b_password') != 'delta_'.$u_id) || ($innslag->get('b_contact') != $p_id) ) {
+			throw new Exception('Du har ikke tilgang til dette innslaget!');
+		}
+
+	}
+
+	####
+	# SjekkBandtype
+	# Funksjonen sjekker om bandtypen som er registrert stemmer med URL'en man forsøker å åpne
+	# Mest for å forhindre trøbbel i databasen med forskjellige felt brukt samtidig
+	# Ved trøbbel kaster den en Exception med kode 0 og teksten 'feilbandtype'.
+	public function sjekkBandtype($b_id, $type) {
+		$innslag = new innslag($b_id, false);
+
+		$bandtype = getBandTypeFromID($innslag->get('bt_id'));
+
+		if ($bandtype == 'scene') {
+			// Scene
+			$bandtype = $innslag->get('b_kategori');
+		}
+
+		if ($bandtype != $type) {
+			#throw new Exception('feilbandtype');
+			// Redirect til rett type om vi kan?
+			$route = $this->container->get('request')->get('_route');
+			#var_dump($route);
+			$view_data['k_id'] = $this->container->get('request')->get('k_id');
+			$view_data['pl_id'] = $this->container->get('request')->get('pl_id');
+			$view_data['type'] = $bandtype; # Sett korrekt type for innslaget
+			$view_data['b_id'] = $b_id;
+			#$view_data['type'] = $this->container->get('request')->get('type');
+			#$view_data['b_id'] = $this->container->get('request')->get('b_id');
+			#var_dump($view_data);
+			$path = $this->container->get('router')->generate($route, $view_data, 301);
+			echo new RedirectResponse($path);
+
+			// Stop execution somehow.
+			throw new Exception('Feil kategori for innslaget! Vi videresender deg nå.');
+		}
+	}
+
+	### Sjekk
+	# Funksjonen kjører sjekkTilgang, SjekkBandtype og andre sjekkfunksjoner.
+	# Returnerer ingen ting
+	public function sjekk($b_id, $type) {
+		$this->sjekkTilgang($b_id);
+		$this->sjekkBandtype($b_id, $type);
+		if (!$this->sjekkFrist($b_id)) {
+			// Kast Exception for alle sider som ikke er Din Side.
+			throw new Exception('Påmeldingsfristen er ute!');
+		}
+	}
+
+	### Sjekk
+	# Funksjonen sjekker om fristen for å melde på innslag til mønstringen er ute
+	# Hvis den er det returnerer den false, hvis ikke true.
+	public function sjekkFrist($b_id) {
+		return true;
 	}
 }
 

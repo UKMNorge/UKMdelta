@@ -357,7 +357,6 @@ class InnslagController extends Controller
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id, 't_id' => $t_id);
         // Gjøre noe validering her?
 
-
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
             case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
@@ -410,6 +409,10 @@ class InnslagController extends Controller
         // Hent data om innslaget 
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+
+        // Sjekk tilgang og rett bandtype
+        $innslagService->sjekk($b_id, $type);
+        
         $innslag = $innslagService->hent($b_id);
 
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig

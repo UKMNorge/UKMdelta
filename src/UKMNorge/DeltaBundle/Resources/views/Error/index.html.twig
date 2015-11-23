@@ -2,7 +2,7 @@
 
 {% block content %}	
 	<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'base') : 'feil.overskrift'|trans({}, 'base') }}</h1>
-	<p class="lead center">{{ ledetekst is defined ? ledetekst|trans({}, 'base') : '' }}
+	<p class="lead center">{{ ledetekst is defined ? ledetekst|trans({}, 'base')|nl2br : '' }}
 	</p>
 	<p class="center">{{ tekst is defined ? tekst|trans({}, 'base') : '' }}</p>
 	{% if cheese is defined %}
