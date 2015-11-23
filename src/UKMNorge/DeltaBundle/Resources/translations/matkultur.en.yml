@@ -31,6 +31,9 @@ overviewAction:
             placeholder: >
                 Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
                 De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
+    sjanger:
+        label: sjanger
+        placeholder: Eks. Baking
     titler:
         overskrift: Titler
         endre: legg til / endre
@@ -47,12 +50,23 @@ overviewAction:
 
 person:
     rolle: 
-        label: rolle
-        placeholder: 
-        help: Skriv inn hva %s gjør (f.eks kokk, konditor)
+        label: Skriv inn hva personen gjør
+        placeholder: Eks kokk, konditor
+        help: " "
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
+    fjern:
+        label: Fjern %person fra %innslag
+
+statusAction:
+    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
+    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
+    infotekst: Denne informasjonen mangler før det er påmeldt:
+    artistnavn: Navn / Gruppenavn
+    lat: Du må legge til minst én tittel
+    ingendeltakere: Du må legge til minst én person
+    teknisk: Du må oppgi tekniske behov
 
 technicalAction:
     overskrift: Tekniske behov
