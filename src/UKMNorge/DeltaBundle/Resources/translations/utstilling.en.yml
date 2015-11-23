@@ -75,9 +75,9 @@ overviewAction:
 #     person.fjern.label
 person:
     rolle: 
-        label: Hva gjør %person?
-        placeholder: " "
-        help: Skriv inn hvilken rolle %person har, eller hva %person gjør (f.eks maler, tegner, illustratør, skulptør osv..)
+        label: Skriv inn hvilken rolle %person har, eller hva %person gjør
+        placeholder: F.eks maler, tegner, illustratør, skulptør osv..
+        help: " "
         ukjent: ukjent rolle
     ar: år
     rediger: rediger

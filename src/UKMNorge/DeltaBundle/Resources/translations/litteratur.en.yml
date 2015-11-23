@@ -84,9 +84,9 @@ overviewAction:
 #     person.rolle.label
 person:
     rolle: 
-        label: Rolle / funksjon
-        placeholder: " "
-        help: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen (f.eks oppleser, forfatter kapittel 1, korrekturleser)
+        label: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen
+        placeholder: F.eks oppleser, forfatter kapittel 1, korrekturleser
+        help: " "
         ukjent: ukjent rolle / funksjon
     ar: år
     rediger: rediger

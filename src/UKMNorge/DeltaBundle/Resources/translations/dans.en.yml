@@ -21,13 +21,13 @@ whoAction:
 overviewAction:
     artistnavn:
         alene:
-            label: Artistnavn / gruppenavn
+            label: Artistnavn / dansegruppe
             placeholder: Eks. Danse-%fornavn, %fornavn %etternavn, %etternavn dance crew
         sammen:
-            label: Gruppenavn / artistnavn
+            label: Dansegruppe / artistnavn / crew
             placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
         kontakt:
-            label: Gruppenavn / artistnavn
+            label: Dansegruppe / artistnavn / crew
             placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
     beskrivelse:
         alene:
@@ -51,11 +51,11 @@ overviewAction:
         label: Sjanger
         placeholder: Eks samba, ballett, moderne...
     titler:
-        overskrift: Danser
+        overskrift: Koreografi / dans / innslag
         endre: legg til / endre
-        ingen: Du må legge til minst én dans.
+        ingen: Du må legge til minst én koreografi/dans.
         lukk_listen: lukk listen
-        legg_til: Legg til ny dans
+        legg_til: Legg til ny koreografi/dans
     personer:
         overskrift: Personer
         endre: legg til / endre
@@ -83,10 +83,10 @@ overviewAction:
 #     person.fjern.label
 person:
     rolle: 
-        label: Rolle
-        placeholder: 
-        help: Skriv inn hva %person gjør i dansenummeret. (f.eks danser, koreograf osv..)
-        ukjent: ukjent rolle
+        label: Skriv inn hva %person gjør i dansenummeret
+        placeholder: F.eks danser, koreograf osv...
+        help: " "
+        ukjent: ukjent rolle / funksjon
     fjern:
         label: Fjern %person fra %innslag
 

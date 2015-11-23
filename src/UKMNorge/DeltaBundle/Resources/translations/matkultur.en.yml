@@ -47,9 +47,9 @@ overviewAction:
 
 person:
     rolle: 
-        label: rolle
-        placeholder: 
-        help: Skriv inn hva %s gjør (f.eks kokk, konditor)
+        label: Skriv inn hva %person gjør
+        placeholder: F.eks kokk, konditor
+        help: " "
         ukjent: ukjent rolle
     ar: år
     rediger: rediger
