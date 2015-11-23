@@ -13,10 +13,9 @@ checkInfoAction:
         gammel: Over 25 år
     nesteLabel: Neste
     filmfoto:
-        samtykke: |
+    samtykke: |
             Når du melder deg på UKM kan det tas bilder og video av deg.
             Hvis du ikke kan bli tatt bilde av må du gi beskjed til lokalkontakten.
-
 indexAction:
     hei: Hei %name!
     ledetekst: |
