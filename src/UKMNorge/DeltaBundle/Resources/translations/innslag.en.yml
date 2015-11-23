@@ -8,6 +8,8 @@ whoAction:
 geoAction:
     overskrift: Hvor skal du melde deg på?
     topptekst: Velg hvor du vil delta på UKM.
+    vi_tror: Vi tror dette er ditt nærmeste UKM
+    tok_vi_feil: Tok vi feil? Søk opp din mønstring i listen nedenfor
     filterLabel: Skriv her for å filtrere listen...
     fellesmonstringLabel: Hvilken kommune/bydel representerer du?
 

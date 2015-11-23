@@ -14,73 +14,41 @@
 	
 	<p>&nbsp;</p>
 	
-	<p class="lead center">
-		{{ 'geoAction.topptekst'|trans }}
-	</p>
+	{# VI TROR VI VET DET!!! #}
+	{% if lokal_monstring %}
+		<h3 class="center">{{ 'geoAction.vi_tror'|trans }}</h3>
+		<ul class="list-unstyled">
+			<li class="list-group-item click">
+				{% if lokal_monstring.fellesmonstring %}
+					{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': lokal_monstring} %}{% endembed %}
+				{% else %}
+					{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': lokal_monstring} %}{% endembed %}
+				{% endif %}
+			</li>
+		</ul>
+		<h3 class="center">{{ 'geoAction.tok_vi_feil'|trans }}</h3>
+	{% else %}
+		<p class="lead center">
+			{{ 'geoAction.topptekst'|trans }}
+		</p>
+	{% endif %}
+	
 	<!-- Søkefelt her -->
 	<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 	<div id="lokalmonstringer">
-	
 		{% for fylke in monstringsliste %}
 			<h4 id="header_{{ fylke.id }}" class="text-center">{{ fylke.name }}</h4>
 			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 				{% for monstring in fylke.monstringer %}
-						<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
+					<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
-							{# Lag en div som kan utvides ved å trykkes på #}
-							<div class="fellesmonstring">
-								<div class="row fellesmonstring-header">
-									<div class="col-xs-8">
-										<a href="#" onclick="return false;">{{ monstring.name }}</a>
-									</div>
-									<div class="col-xs-4 delta-input-header fellesmonstring-list">
-										{% for kommuner in monstring.kommuner %}
-											<small>{{ kommuner }}</small>
-										{% endfor %}
-									</div>
-									<div class="clearfix"></div>
-								</div>
-								<div class="row fellesmonstring-chooser" style="padding-left: 10px; display:none;">
-									<div class="col-xs-12">
-										<span>{{ 'geoAction.fellesmonstringLabel'|trans }}</span>
-									</div> 
-									<div class="col-xs-12 center">
-										{% for key,kommune in monstring.kommuner %}
-											{% if app.environment == 'test' and fylke.id != 21 %}
-											<a class="btn btn-block btn-primary" href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
-											{% else %}
-											<a class="btn btn-block btn-primary" href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
-											{% endif %}
-												<div class="row">
-													<div class="col-xs-12">
-														{{ kommune }} 
-													</div>
-												</div>
-											</a>
-										{% endfor %}
-									</div>
-								</div>
-							</div> {# .fellesmonstring #}
+							{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': monstring} %}{% endembed %}
 						{% else %}
-							{% if app.environment == 'test' and fylke.id != 21 %}
-							<a href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
-							{% else %}
-							<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
-							{% endif %}
-								<div class="row">
-									<div class="col-md-9 col-xs-9">
-										{{ monstring.name }}
-									</div>
-									<div class="col-md-3 col-xs-3">
-									</div>
-								</div>
-							</a>
+							{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': monstring} %}{% endembed %}
 						{% endif %}
-
 					</li>
 				{% endfor %}
 			</ul>
 		{% endfor %}
-	
 	</div>
 {% endblock %}
