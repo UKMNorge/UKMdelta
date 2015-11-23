@@ -66,7 +66,9 @@ mangler:
     td.lengde: Tekniske behov må være mer enn 5 tegn lang
     kontakt.fornavn: Kontaktperson mangler fornavn
     kontakt.etternavn: Kontaktperson mangler etternavn
-    kontakt.epost: Kontaktperson mangler epostadresse
+    kontakt.epost:
+        mangler: Kontaktperson mangler epostadresse
+        ikkegyldig: Kontaktpersonens epostadresse er ugyldig
     kontakt.telefon: Kontaktperson mangler telefonnummer
     kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
     kontakt.adresse: Kontaktperson mangler adresse
