@@ -4,6 +4,10 @@ ukm_user:
         short: Mobilnummer består av 8 siffer
         long: Mobilnummer består av 8 siffer
         exact: Mobilnummeret må bestå av 8 siffer
+    first_name:
+        short: Fornavnet må være lengre enn en bokstav
+    last_name:
+        short: Etternavnet må være lengre enn en bokstav
 fos_user:
     username:
         already_used: Brukernavnet er allerede i bruk
