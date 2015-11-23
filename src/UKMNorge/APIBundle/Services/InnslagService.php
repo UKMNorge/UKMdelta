@@ -266,6 +266,9 @@ class InnslagService {
 			// Scene
 			$bandtype = $innslag->get('b_kategori');
 		}
+		elseif ($bandtype == 'video') {
+			$bandtype = 'film';
+		}
 
 		if ($bandtype != $type) {
 			#throw new Exception('feilbandtype');
@@ -275,6 +278,7 @@ class InnslagService {
 			$view_data['k_id'] = $this->container->get('request')->get('k_id');
 			$view_data['pl_id'] = $this->container->get('request')->get('pl_id');
 			$view_data['type'] = $bandtype; # Sett korrekt type for innslaget
+
 			$view_data['b_id'] = $b_id;
 			#$view_data['type'] = $this->container->get('request')->get('type');
 			#$view_data['b_id'] = $this->container->get('request')->get('b_id');
