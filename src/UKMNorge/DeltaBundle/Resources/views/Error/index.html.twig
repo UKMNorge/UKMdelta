@@ -2,7 +2,7 @@
 
 {% block content %}	
 	<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'base') : 'feil.overskrift'|trans({}, 'base') }}</h1>
-	<p class="lead center">{{ ledetekst is defined ? ledetekst|trans({}, 'base') : '' }}
+	<p class="lead center">{{ ledetekst is defined ? ledetekst|trans({}, 'base')|nl2br : '' }}
 	</p>
 	<p class="center">{{ tekst is defined ? tekst|trans({}, 'base') : '' }}</p>
 	{% if cheese is defined %}
@@ -19,19 +19,22 @@
 				<div class="panel-body">
 					{{ teknisk.message }}<br>
 					{{ 'feil.teknisk.ifil'|trans({}, 'base') }}
-					{{ teknisk.file }} {{ 'feil.teknisk.linje'|trans({}, 'base') }} {{ teknisk.line }}
-					<br>
-					<br>
-					
+					{{ teknisk.file }} {{ 'feil.teknisk.linje'|trans({}, 'base') }} {{ teknisk.line }}		
 				</div>
 			</div>
 		</div>
+	{% endif %}
+	{% if frist is defined %}
+		<p class="center">
+			{{ 'frist.link'|trans({}, 'base') }}
+			<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
+		</p>
 	{% endif %}
 	<div class="row">
 		<div class="col-xs-12">
 			{{ code is defined ? code : '' }}
 		</div>
 	</div>
-	
+	<p>&nbsp;</p>
 	<a href="{{ path('ukm_delta_homepage') }}" class="btn btn-primary btn-block center">Gå til forsiden</a>
 {% endblock %}

@@ -53,26 +53,55 @@ technicalAction:
 mangler:
     overskrift.person: 'Person "%person" mangler følgende felt:'
     overskrift.tittel: 'Tittel "%tittel" mangler følgende felt:'
+    # Person
     person.fornavn: Fornavn mangler
     person.etternavn: Etternavn mangler
     person.phone: Telefonnummeret består ikke av 8 siffer
     person.rolle: Funksjon/rolle/instrument mangler
+    # Innslag
     innslag.ingendeltakere: Det er ingen deltakere i innslaget
     innslag.navn: Innslaget mangler navn
     innslag.sjanger: Sjanger må være oppgitt
     innslag.beskrivelse: Innslaget mangler beskrivelse
     innslag.beskrivelseLengde: Beskrivelsen må være mer enn 5 tegn lang
+    # Tekniske behov
     td.mangler: Tekniske behov mangler
     td.lengde: Tekniske behov må være mer enn 5 tegn lang
+    # Kontaktperson
     kontakt.fornavn: Kontaktperson mangler fornavn
     kontakt.etternavn: Kontaktperson mangler etternavn
-    kontakt.epost: Kontaktperson mangler epostadresse
+    kontakt.epost:
+        mangler: Kontaktperson mangler epostadresse
+        ikkegyldig: Kontaktpersonens epostadresse er ugyldig
     kontakt.telefon: Kontaktperson mangler telefonnummer
     kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
     kontakt.adresse: Kontaktperson mangler adresse
     kontakt.postnummer: Kontaktperson mangler postnummer
+    # Titler
     tittel.mangler: Innslaget har ingen titler
     tittel.t_time: Tittelen har ingen lengde
+    tittel.t_name: Tittelen har ikke noe navn
+    tittel.t_titleby: Det er ikke oppgitt tekstforfatter
+    tittel.t_musicby: Det er ikke oppgitt komponist/musikk av
+    tittel.t_coreography: Det er ikke oppgitt koreograf
+    tittel.t_instrumental: Det er ikke oppgitt om låta har tekst eller er en t_instrumental
+    tittel.t_selfmade: Det er ikke oppgitt om tittelen er selvskrevet
+    tittel.t_litterature_read: Du har ikke oppgitt om teksten skal leses opp fra scena eller ikke.
+    tittel.t_o_function: Rolle er ikke oppgitt
+    tittel.t_o_experience: Erfaring er ikke oppgitt
+    tittel.t_o_comments: Kommentarer er ikke oppgitt
+    tittel.t_v_made_by: t_v_made_by
+    tittel.t_v_title: Tittel på filmen mangler
+    tittel.t_v_time: Lengde på filmen er ikke oppgitt
+    tittel.t_v_format: Format på filmen er ikke oppgitt
+    tittel.t_v_comments: Kommentarer / info om filmen er ikke oppgitt
+    tittel.t_e_made_by: t_e_made_by
+    tittel.t_e_title: Tittel på kunstverket er ikke oppgitt
+    tittel.t_e_type: Type kunstverk er ikke oppgitt
+    tittel.t_e_technique: Teknikk er ikke oppgitt
+    tittel.t_e_format: Format er ikke oppgitt
+    tittel.t_e_comments: Kommentarer / info om kunstverket er ikke oppgitt
+    
 
 feil:
     overskrift: Oops! Noe gikk galt!
@@ -98,3 +127,20 @@ feil:
         overskrift: "Feilmelding:"
         ifil: i fil
         linje: på linje
+    kategori:
+        topptekst: Feil kategori for innslaget! Vi videresender deg nå.
+        ledetekst: |
+            Denne feilen dukker opp hvis du prøver å se på et innslag, men kategorien i lenken er feil. Dette skal kun kunne skje om et innslag er endret av en administrator, og du prøver å gå inn via en gammel lenke.
+            
+            Vi forsøker å videresende deg til rett side nå. Hvis ingenting skjer på 10 sekunder, kan du prøve å gå til forsiden med å trykke på knappen under.
+    fristute:
+        topptekst: Fristen for å melde på eller endre innslag er gått ut!
+        tekst: |
+            Hvis noe av informasjonen er feil eller du vil endre på noe, ta kontakt med lokalkontakten din.
+frist:
+    overskrift: Påmeldingsfristen har gått ut!
+    ledetekst: 
+        tidligere: Det betyr at du ikke kan endre på innslaget ditt. Om noe av informasjonen er feil eller du vil endre på noe, må du ta kontakt med din lokalkontakt!
+        nytt: Det betyr at du ikke kan melde på nye innslag.
+    link: Informasjon om påmeldte innslag finner du på mønstringens side.
+    hjemknapp: Gå til din side

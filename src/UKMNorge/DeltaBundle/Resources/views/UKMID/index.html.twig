@@ -1,25 +1,24 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
-
+{% trans_default_domain translationDomain %}
+	
 {% block content %}
 	{# CONTENT #}
-	<h1 class="center">Hei {{ user.getFirstName }}!</h1>
+	<h1 class="center">{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
 	
 	<p>&nbsp;</p>
 	
 	<p class="lead center">
-		Du er nå logget inn på din side.
-		<br />
-		Her velger du hva du skal delta med på UKM.
+		{{ 'indexAction.ledetekst'|trans|nl2br }}
 	</p>
 
 	<div class="text-center delta-header">
-  		<h1 class="page-header">Dine påmeldinger</h1>
+  		<h1 class="page-header">{{ 'indexAction.pameldinger.overskrift'|trans }}</h1>
 	</div>
 
 	<div class="delta-input-header"> 
 		<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
 		{% if innslag is defined and innslag is not empty %}
-			<span class="delta-fat">Fullførte påmeldinger</span>
+			<span class="delta-fat">{{ 'indexAction.pameldinger.fullforte'|trans }}</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.get('b_status') == 8 %}
@@ -33,7 +32,7 @@
 										{{ event.get('kategori')|capitalize }}
 									</div>
 									<div class="col-xs-3">
-										rediger 
+										{{ frist[loop.index-1] ? 'indexAction.rediger'|trans : 'indexAction.last'|trans }}
 									</div>
 								</div>
 							</li>
@@ -41,7 +40,7 @@
 					{% endif %}
 				{% endfor %}
 			</ul>
-			<span class="delta-fat">Ikke fullførte påmeldinger</span>
+			<span class="delta-fat">{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</span>
 			<ul class="list list-unstyled list-group">
 				{% for event in innslag %}
 					{% if event.get('b_status') != 8 %}
@@ -55,7 +54,7 @@
 										{{ event.get('kategori')|capitalize }}
 									</div>
 									<div class="col-xs-3">
-										rediger
+										{{ frist[loop.index-1] ? 'indexAction.rediger'|trans : 'indexAction.last'|trans }}
 									</div>
 								</div>
 							</li></a>
@@ -63,14 +62,14 @@
 				{% endfor %}
 			</ul>
 		{% else %}
-			<p>Du har ingen påmeldinger enda.
+			<p>{{ 'indexAction.pameldinger.ingen'|trans }}
 			</p>
 		{% endif %}
 		
 		<div class="row">
 			<div class="col-xs-10 col-xs-offset-1">
 				<form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
-					<button class="btn btn-block btn-success" type="submit" value="Start ny påmelding" style=""/>Start ny påmelding</button>
+					<button class="btn btn-block btn-success" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style=""/>{{ 'indexAction.pameldinger.startny'|trans }}</button>
 				</form>	
 			</div>
 		</div>

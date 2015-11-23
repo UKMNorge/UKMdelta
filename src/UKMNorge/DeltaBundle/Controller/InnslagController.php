@@ -73,6 +73,13 @@ class InnslagController extends Controller
     {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
         require_once('UKM/monstring.class.php');
+
+        $innslagService = $this->get('ukm_api.innslag');
+        // Hvis mønstringen har stengt påmelding
+        if (!$innslagService->sjekkFrist(null, $pl_id)) {
+            throw new Exception('Påmeldingsfristen er ute!');
+        }
+
         // Hent lister om hvilke typer som er tillatt på denne mønstringen.
         $pl = new monstring($pl_id);
         $typeListe = $pl->getAllBandTypesDetailedNew();
@@ -197,6 +204,11 @@ class InnslagController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+
+        // Hvis mønstringen har stengt påmelding
+        if (!$innslagService->sjekkFrist(null, $pl_id)) {
+            throw new Exception('Påmeldingsfristen er ute!');
+        }
 
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
@@ -384,8 +396,11 @@ class InnslagController extends Controller
     public function deleteTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
         require_once('UKM/tittel.class.php');
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id, 't_id' => $t_id);
-        // Gjøre noe validering her?
-
+        
+        // Sjekker tilgangsrettigheter på innslaget, rett band-type og at påmeldingsfristen ikke er ute.
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService->sjekk($b_id, $type);
+        // Trenger ikke sjekke tittelen, fordi SQLdel inkluderer WHERE b_id.
 
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
@@ -439,6 +454,10 @@ class InnslagController extends Controller
         // Hent data om innslaget 
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+
+        // Sjekk tilgang og rett bandtype
+        $innslagService->sjekk($b_id, $type);
+        
         $innslag = $innslagService->hent($b_id);
 
         // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
@@ -600,4 +619,13 @@ class InnslagController extends Controller
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
+
+    public function fristAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'base';
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $view_data['innslag'] = $innslagService->hent($b_id);
+        return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);
+    }
 }

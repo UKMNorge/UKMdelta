@@ -11,6 +11,15 @@ ukm_delta_ukmid_homepage:
     path:     /ukmid/
     defaults: { _controller: UKMDeltaBundle:UKMID:index }
 
+ukm_delta_ukmid_frist:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/frist
+    defaults: { _controller: UKMDeltaBundle:Innslag:frist }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
+              type: ([a-z]+)
+              b_id: ([0-9]{1,11})
+
 ukm_delta_ukmid_checkinfo:
     path:     /ukmid/info/
     defaults: { _controller: UKMDeltaBundle:UKMID:checkInfo }

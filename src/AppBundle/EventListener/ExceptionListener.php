@@ -90,6 +90,7 @@ class ExceptionListener {
         
         // Sjekk hvilken exception det er her
         // TODO: Logg stuff her
+        $view_data = array();
         switch ($code) {
         	case 0:
         		// Egne exceptions uten statuskode dukker opp her!'
@@ -163,9 +164,24 @@ class ExceptionListener {
             $view_data['tekst'] = $key.'tekst';
 
         }
-        // elseif ($message == 'Notice: Undefined index: bt_name') {
-
-        // }
+        elseif ($message == 'Feil kategori for innslaget! Vi videresender deg nå.') {
+            // Her kommer det en redirect, 
+            $key = 'feil.kategori.';
+            $view_data['overskrift'] = $key.'topptekst';
+            $view_data['ledetekst'] = $key.'ledetekst';
+        }
+        elseif ($message == 'Påmeldingsfristen er ute!') {
+            $key = 'frist.';
+            $view_data['frist'] = true;
+            $view_data['overskrift'] = $key.'overskrift';
+            if ($this->container->get('request')->get('b_id')) {
+                $view_data['ledetekst'] = $key.'ledetekst.tidligere';
+            }
+            else {
+                $view_data['ledetekst'] = $key.'ledetekst.nytt';    
+            }
+            $view_data['pl_id'] = $this->container->get('request')->get('pl_id');
+        }
         else {
             $key = 'feil.ukjentfeil.';
             // Humornøkkel
