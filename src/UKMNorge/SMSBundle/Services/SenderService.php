@@ -19,7 +19,8 @@ class SenderService {
 	}
 
 	public function sendSMS( $recipient, $message ) {
-		if( $this->container->getParameter("kernel.environment") == 'test' && $this->container->getParameter('UKM_HOSTNAME') == 'ukm.no' ) {
+		// kun send sms fra UKM.no (unntatt dev-systemet)
+		if( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.no' && $this->container->getParameter("kernel.environment") != 'dev' ) {
 			$this->SMSapi->text($message)->to($recipient)->from($this->sender)->ok();
 		} else {
 			throw new Exception( 'Utviklingsmodus, sms ikke sendt: ('. $recipient.': '. $message .')' );
