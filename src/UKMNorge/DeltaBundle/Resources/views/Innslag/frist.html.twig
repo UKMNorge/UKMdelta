@@ -1,0 +1,20 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<h1 class="center">
+		{{ 'frist.overskrift'|trans({}, 'base') }}
+	</h1>
+	<p class="lead center">{{ 'frist.ledetekst'|trans({}, 'base') }}</p>
+	{% if innslag is defined %}
+		<p class="center">
+
+			{{ 'frist.link'|trans({}, 'base') }}
+			<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
+		</p>
+	{% endif %}
+	<p>&nbsp;</p>
+	<div class="col-xs-12">
+		<a type="button" class="btn btn-block btn-delta btn-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'frist.hjemknapp'|trans({},'base') }}</a>
+	</div>
+{% endblock %} 

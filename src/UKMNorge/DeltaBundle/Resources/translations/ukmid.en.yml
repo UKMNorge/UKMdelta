@@ -15,3 +15,17 @@ checkInfoAction:
     filmfoto:
         samtykke: >
             Ved å delta på UKM samtykker du i at det blir tatt bilder og video av deg som deltar.
+
+indexAction:
+    hei: Hei %name!
+    ledetekst: |
+        Du er nå logget inn på din side.
+        Her velger du hva du skal delta med på UKM.
+    pameldinger:
+        overskrift: Dine påmeldinger
+        fullforte: Fullførte påmeldinger
+        ikkefullforte: Ikke fullførte påmeldinger
+        ingen: Du har ingen påmeldinger enda.
+        startny: Start ny påmelding
+    rediger: rediger
+    last: låst

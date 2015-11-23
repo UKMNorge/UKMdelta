@@ -236,7 +236,9 @@ class InnslagService {
 	# Funksjonen sjekker om personen som prøver å gjøre endringer har tilgang til innslaget.
 	# Hvis ikke kaster den en exception med kode 0 og teksten 'ingentilgang'.
 	###
+	//TODO:  ikke gjør sjekken dersom innslaget ikke finnes??
 	public function sjekkTilgang($b_id) {
+
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 
 		$u_id = $user->getId();
@@ -292,15 +294,42 @@ class InnslagService {
 		$this->sjekkTilgang($b_id);
 		$this->sjekkBandtype($b_id, $type);
 		if (!$this->sjekkFrist($b_id)) {
-			// Kast Exception for alle sider som ikke er Din Side.
+			// Kast Exception for alle sider som ikke bruker sjekkFrist direkte.
 			throw new Exception('Påmeldingsfristen er ute!');
 		}
 	}
 
 	### Sjekk
-	# Funksjonen sjekker om fristen for å melde på innslag til mønstringen er ute
+	# Funksjonen sjekker om fristen for å melde på innslag til mønstringen er ute.
 	# Hvis den er det returnerer den false, hvis ikke true.
-	public function sjekkFrist($b_id) {
+	public function sjekkFrist($b_id = null, $pl_id = null) {
+		$view_data['b_id'] = $this->container->get('request')->get('b_id');
+
+		if (!$b_id && !$pl_id) {
+			// Sjekk frist på tom mønstring, maybe?
+			$b_id = $view_data['b_id'];
+			$innslag = $this->hent($b_id);
+			$pl = $innslag->min_lokalmonstring();
+		}
+		elseif (!$b_id && $pl_id) {
+			// Hvis b_id == null og $pl_id er gitt
+			$pl = new monstring($pl_id);
+		}
+		else {
+			$innslag = $this->hent($b_id);
+			$pl = $innslag->min_lokalmonstring();
+		}
+
+		$frist = $pl->get('pl_deadline');
+
+		if ($this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+			// Denne må stå på i dev, skru kun av for å teste feilmeldingene.
+			return true;
+		}
+		
+		if ($frist < date('U')) {
+			return false;
+		}
 		return true;
 	}
 }

@@ -12,6 +12,7 @@ class UKMIDController extends Controller
     {
         require_once("UKM/innslag.class.php");
 	    $view_data = array();
+        $view_data['translationDomain'] = 'ukmid';
 	    $user = $this->get('ukm_user')->getCurrentUser();
 	    $view_data['user'] = $user;
         $innslagService = $this->get('ukm_api.innslag');
@@ -19,6 +20,7 @@ class UKMIDController extends Controller
         $type = array();
         $pl_id = array();
         $innslagsliste2 = array();
+        $frist = array();
         // List opp påmeldte og ikke fullførte innslag denne brukeren er kontaktperson for
         $contact_id = $user->getPameldUser();
         $innslagsliste = $innslagService->hentInnslagFraKontaktperson($contact_id, $user->getId());
@@ -28,6 +30,7 @@ class UKMIDController extends Controller
             
             $type[] = $innslag[2];
             $innslagsliste2[] = $innslag[0];
+            $frist[] = $innslagService->sjekkFrist(false, $innslag[1]);
         }
 
         // var_dump($pl_id);
@@ -37,6 +40,7 @@ class UKMIDController extends Controller
         $view_data['innslag'] = $innslagsliste2;
         $view_data['type'] = $type;
         $view_data['pl_id'] = $pl_id;
+        $view_data['frist'] = $frist;
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
 

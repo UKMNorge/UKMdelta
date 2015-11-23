@@ -44,6 +44,13 @@ class InnslagController extends Controller
     {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
         require_once('UKM/monstring.class.php');
+
+        $innslagService = $this->get('ukm_api.innslag');
+        // Hvis mønstringen har stengt påmelding
+        if (!$innslagService->sjekkFrist(null, $pl_id)) {
+            throw new Exception('Påmeldingsfristen er ute!');
+        }
+
         // Hent lister om hvilke typer som er tillatt på denne mønstringen.
         $pl = new monstring($pl_id);
         $typeListe = $pl->getAllBandTypesDetailedNew();
@@ -168,6 +175,11 @@ class InnslagController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+
+        // Hvis mønstringen har stengt påmelding
+        if (!$innslagService->sjekkFrist(null, $pl_id)) {
+            throw new Exception('Påmeldingsfristen er ute!');
+        }
 
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
@@ -578,4 +590,13 @@ class InnslagController extends Controller
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
+
+    public function fristAction($k_id, $pl_id, $type, $b_id) {
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'base';
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $view_data['innslag'] = $innslagService->hent($b_id);
+        return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);
+    }
 }

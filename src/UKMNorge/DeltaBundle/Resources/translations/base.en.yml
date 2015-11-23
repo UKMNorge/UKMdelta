@@ -104,4 +104,14 @@ feil:
             Denne feilen dukker opp hvis du prøver å se på et innslag, men kategorien i lenken er feil. Dette skal kun kunne skje om et innslag er endret av en administrator, og du prøver å gå inn via en gammel lenke.
             
             Vi forsøker å videresende deg til rett side nå. Hvis ingenting skjer på 10 sekunder, kan du prøve å gå til forsiden med å trykke på knappen under.
-
+    fristute:
+        topptekst: Fristen for å melde på eller endre innslag er gått ut!
+        tekst: |
+            Hvis noe av informasjonen er feil eller du vil endre på noe, ta kontakt med lokalkontakten din.
+frist:
+    overskrift: Påmeldingsfristen har gått ut!
+    ledetekst: 
+        tidligere: Det betyr at du ikke kan endre på innslaget ditt. Om noe av informasjonen er feil eller du vil endre på noe, må du ta kontakt med din lokalkontakt!
+        nytt: Det betyr at du ikke kan melde på nye innslag.
+    link: Informasjon om påmeldte innslag finner du på mønstringens side.
+    hjemknapp: Gå til din side

@@ -170,6 +170,18 @@ class ExceptionListener {
             $view_data['overskrift'] = $key.'topptekst';
             $view_data['ledetekst'] = $key.'ledetekst';
         }
+        elseif ($message == 'Påmeldingsfristen er ute!') {
+            $key = 'frist.';
+            $view_data['frist'] = true;
+            $view_data['overskrift'] = $key.'overskrift';
+            if ($this->container->get('request')->get('b_id')) {
+                $view_data['ledetekst'] = $key.'ledetekst.tidligere';
+            }
+            else {
+                $view_data['ledetekst'] = $key.'ledetekst.nytt';    
+            }
+            $view_data['pl_id'] = $this->container->get('request')->get('pl_id');
+        }
         else {
             $key = 'feil.ukjentfeil.';
             // Humornøkkel
