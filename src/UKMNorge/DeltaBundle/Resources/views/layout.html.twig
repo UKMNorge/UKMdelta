@@ -2,7 +2,10 @@
 
 {% block css %}
 	{{ parent() }}
-	{% stylesheets '@UKMDeltaBundle/Resources/public/less/*' filter='less' output='css/compiled-main.css' %}
+	{% stylesheets 
+		'@UKMDesignBundle/Resources/public/less/systems/ukmdelta.less'
+		'@UKMDeltaBundle/Resources/public/less/*'
+		 filter='less' output='css/compiled-main.css' %}
 	    <link rel="stylesheet" href="{{ asset_url }}" />
 	{% endstylesheets %}
 {% endblock %}

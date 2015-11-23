@@ -1,0 +1,107 @@
+@feature-portrait-height: 550px;
+@feature-landscape-height: 350px;
+.feature_block {
+	background: @clr-grey-lighter;
+	border-top: 1px solid @clr-grey-light;
+	border-bottom: 1px solid @clr-grey-light;
+	min-height: @feature-portrait-height;
+	margin: 4% 0% 2% 0%;
+	clear: both;
+}
+
+.feature_cover {
+	text-align: right;
+	border-right: 1px solid @clr-grey-light;
+	vertical-align: middle;
+	padding-top: 60px;
+	color: #fff;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position:center center;
+	height: 100%;
+	min-height: @feature-portrait-height;
+}
+.feature_cover_landscape {
+	text-align: right;
+	border-right: 1px solid @clr-grey-light;
+	vertical-align: middle;
+	padding-top: 60px;
+	color: #fff;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position:center center;
+	height: @feature-landscape-height;
+}
+.feature_cover > div.infos,
+.feature_cover_landscape > div.infos {
+	position: absolute;
+	bottom: 8%;
+	right: 0;
+	background: rgba(74, 74, 74,0.9);
+	width: 100%;
+	padding: 10px;
+}
+.feature_cover > div.infos > h2 {
+	font-size: 39px;
+}
+
+.feature_content {
+	padding: 10px 0px;
+}
+
+.feature_block .livenow {
+	text-align: center;
+	width: 100%;
+	background: @clr-ukm-orange;
+	color: #fff;
+	padding: 4px;
+	margin: 10px 0px 0px 0px;
+}
+.feature_block .livenow > a,
+.feature_block .livenow > a:hover,
+.feature_block .livenow > a:visited {
+	color:#fff;
+}
+
+@media (max-width: 1199px) {
+	.feature_cover > div.infos > h2 {
+		font-size: 30px;
+	}
+}
+@media (max-width: 991px) {
+	.feature_block {
+		min-height: @feature-landscape-height;
+	}
+	.feature_cover_landscape {
+		text-align: right;
+		border-right: 1px solid @clr-grey-light;
+		vertical-align: middle;
+		padding-top: 160px;
+		color: #fff;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		min-height: 320px;
+	}
+	.feature_cover_landscape > div.infos {
+		padding: 5px 20px 5px 20px;
+	}
+}
+@media (max-width: 768px) {
+	.feature_cover_landscape {
+		text-align: right;
+		border-right: 1px solid @clr-grey-light;
+		vertical-align: middle;
+		padding-top: 160px;
+		color: #fff;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		min-height: 300px;
+		margin: 0px -5px 0px -5px;
+		width: 104%;
+	}
+	.feature_cover_landscape > div.infos {
+		padding: 5px 20px 5px 20px;
+	}
+}

@@ -25,15 +25,15 @@
 			<h4 id="header_{{ fylke.id }}" class="text-center">{{ fylke.name }}</h4>
 			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 				{% for monstring in fylke.monstringer %}
-						<li class="list-group-item" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
+						<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
 							{# Lag en div som kan utvides ved å trykkes på #}
 							<div class="fellesmonstring">
 								<div class="row fellesmonstring-header">
-									<div class="col-xs-9">
+									<div class="col-xs-8">
 										<a href="#" onclick="return false;">{{ monstring.name }}</a>
 									</div>
-									<div class="col-xs-3 delta-input-header fellesmonstring-list">
+									<div class="col-xs-4 delta-input-header fellesmonstring-list">
 										{% for kommuner in monstring.kommuner %}
 											<small>{{ kommuner }}</small>
 										{% endfor %}

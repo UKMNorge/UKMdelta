@@ -13,5 +13,6 @@ checkInfoAction:
         gammel: Over 25 år
     nesteLabel: Neste
     filmfoto:
-        samtykke: >
-            Ved å delta på UKM samtykker du i at det blir tatt bilder og video av deg som deltar.
+        samtykke: |
+            Når du melder deg på UKM kan det tas bilder og video av deg.
+            Hvis du ikke kan bli tatt bilde av må du gi beskjed til lokalkontakten.
