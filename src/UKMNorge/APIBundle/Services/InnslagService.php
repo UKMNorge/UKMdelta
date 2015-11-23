@@ -66,7 +66,7 @@ class InnslagService {
 		// get kjører en UTF8-encode på alle felt. Så droppe det på vei inn?
 
 		$this->sjekkTilgang($innslagsID);
-		
+
 		return $innslag;		
 	}
 
@@ -126,6 +126,7 @@ class InnslagService {
 
 		$innslag->removePerson($personID);
 		
+	}
 
 	public function lagreInstrument($innslagsID, $personID, $pl_id, $instrument) {
 		$innslag = new innslag($innslagsID, false);

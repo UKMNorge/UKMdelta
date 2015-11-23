@@ -355,7 +355,11 @@ class InnslagController extends Controller
     public function deleteTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
         require_once('UKM/tittel.class.php');
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id, 't_id' => $t_id);
-        // Gjøre noe validering her?
+        
+        // Sjekker tilgangsrettigheter på innslaget, rett band-type og at påmeldingsfristen ikke er ute.
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService->sjekk($b_id, $type);
+        // Trenger ikke sjekke tittelen, fordi SQLdel inkluderer WHERE b_id.
 
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
