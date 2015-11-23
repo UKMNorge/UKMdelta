@@ -50,8 +50,8 @@ overviewAction:
 
 person:
     rolle: 
-        label: Skriv inn hva personen gjør
-        placeholder: Eks kokk, konditor
+        label: Skriv inn hva %person gjør
+        placeholder: F.eks kokk, konditor
         help: " "
         ukjent: ukjent rolle
     ar: år

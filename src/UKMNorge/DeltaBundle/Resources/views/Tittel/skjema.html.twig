@@ -46,11 +46,11 @@
 		
 		{% block form_footer %}
 				<p>&nbsp;</p>
-				<button type="submit" class="btn btn-block btn-delta">{{ 'tittel.lagre'|trans }}</button>
+				<button type="submit" class="btn btn-block btn-default">{{ 'tittel.lagre'|trans }}</button>
 		
 				{% if tittel is defined %}
 					<p>&nbsp;</p>
-					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-delta btn-danger">{{ 'tittel.slett'|trans }}</a>
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-danger">{{ 'tittel.slett'|trans }}</a>
 				{% endif %}
 				<p>&nbsp;</p>
 				<div class="col-xs-12 center">

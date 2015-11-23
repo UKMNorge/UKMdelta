@@ -81,10 +81,10 @@ overviewAction:
 #     person.fjern.label
 person:
     rolle: 
-        label: Rolle / oppgave
-        placeholder: " "
-        help: Skriv inn hva %person gjør (f.eks sjonglør, danser, skuespiller osv)
-        ukjent: ukjent rolle
+        label: Skriv inn hva %person gjør i innslaget
+        placeholder: F.eks sjonglør, danser, skuespiller osv
+        help: " "
+        ukjent: ukjent rolle / funksjon
     fjern:
         label: Fjern %person fra %innslag
 

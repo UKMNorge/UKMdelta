@@ -85,8 +85,8 @@ overviewAction:
 person:
     rolle: 
         label: Instrument
-        placeholder: " "
-        help: Skriv inn hva %person spiller/gjør (f.eks vokal, bass, gitar)
+        placeholder: F.eks vokal, bass, gitar
+        help: Skriv inn hva %person spiller/gjør
         ukjent: ukjent instrument
     ar: år
     rediger: rediger
