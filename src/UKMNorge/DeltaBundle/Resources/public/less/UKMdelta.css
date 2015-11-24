@@ -152,6 +152,12 @@ h1, .h1 {
 	color: @secondary-grey;
 	font-size: 0.9em !important;
 }
+/* PÅMELDINGSIKONER */
+.delta-type {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 35px;
+}
 
 .delta-fat {
 	font-weight: bold;
