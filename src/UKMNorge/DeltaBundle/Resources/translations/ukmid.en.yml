@@ -29,3 +29,24 @@ indexAction:
         startny: Start ny påmelding
     rediger: rediger
     last: låst
+
+contactAction:
+    overskrift: Rediger din bruker
+    topptekst: >
+        Her kan du endre informasjonen vi har registrert på deg.
+    personinfo: Personinfo
+    fornavn: Fornavn
+    etternavn: Etternavn
+    kontaktinfo: Kontaktinfo
+    mobil: Mobilnummer
+    epost: Epost-adresse
+    adresse: Adresse
+    postnummer: Postnummer
+    poststed: Poststed
+    alder: Alder
+    alderVelger:
+        Label: Velg riktig alder
+        aar: år
+        gammel: Over 25 år
+    lagre: Lagre og gå til oversikten
+    avbryt: avbryt
