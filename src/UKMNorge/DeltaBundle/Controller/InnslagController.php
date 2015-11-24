@@ -74,18 +74,15 @@ class InnslagController extends Controller
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
         require_once('UKM/monstring.class.php');
 
-        $innslagService = $this->get('ukm_api.innslag');
-        // Hvis mønstringen har stengt påmelding
-        if (!$innslagService->sjekkFrist(null, $pl_id)) {
-            throw new Exception('Påmeldingsfristen er ute!');
-        }
-
         // Hent lister om hvilke typer som er tillatt på denne mønstringen.
         $pl = new monstring($pl_id);
+        if( !$pl->subscribable() && !$pl->subscribable('pl_deadline2') ) {
+			throw new Exception('Påmeldingsfristen er ute!');		
+		}
         $typeListe = $pl->getAllBandTypesDetailedNew();
         
         $view_data['typer'] = $typeListe;
-    
+		$view_data['pl'] = $pl;
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
 
         return $this->render('UKMDeltaBundle:Innslag:type.html.twig', $view_data);
@@ -198,6 +195,7 @@ class InnslagController extends Controller
 
     public function createAction($k_id, $pl_id, $type, $hvem) {
     	require_once('UKM/innslag.class.php');
+    	require_once('UKM/monstring.class.php');
         $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'hvem' => $hvem);
 
     	$user = $this->get('ukm_user')->getCurrentUser();
@@ -205,8 +203,13 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
 
-        // Hvis mønstringen har stengt påmelding
-        if (!$innslagService->sjekkFrist(null, $pl_id)) {
+		if( in_array($type, array('nettredaksjon','arrangor','konferansier') ) ) {
+			$deadline = 'pl_deadline2';
+		} else {
+			$deadline = 'pl_deadline';
+		}
+		$monstring = new monstring( $pl_id );
+		if( !$monstring->subscribable( $deadline ) ) {
             throw new Exception('Påmeldingsfristen er ute!');
         }
 

@@ -32,6 +32,8 @@ twig:
         resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        UKM_HOSTNAME: %UKM_HOSTNAME%
 
 # Assetic Configuration
 assetic:

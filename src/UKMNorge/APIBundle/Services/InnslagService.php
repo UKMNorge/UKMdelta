@@ -12,6 +12,7 @@ use Exception;
 use Request;
 use SQL;
 use SQLins;
+use stdClass;
 
 require_once('UKM/innslag.class.php');
 
@@ -71,36 +72,48 @@ class InnslagService {
 	}
 
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
-		$innslag = array();
+		$innslag_etter_status = array( 'fullstendig'=>array(), 'ufullstendig'=>array() );
 		$seasonService = $this->container->get('ukm_delta.season');
 		// Søk etter innslag i databasen?
 		if (empty($contact_id)) {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE `b_password` = 'delta_#user_id' AND `b_season` = '#season'", array('user_id' => $user_id, 'season' => $seasonService->getActive()));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`, 
+								   `smartukm_band`.`b_status`,
+								   `smartukm_band`.`bt_id`, 
+								   `smartukm_band`.`b_kategori` 
+							FROM `smartukm_band` 
+							WHERE `b_password` = 'delta_#user_id' 
+							AND `b_season` = '#season'",
+						array('user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 		else {
-			$qry = new SQL("SELECT `smartukm_band`.`b_id`, `smartukm_technical`.`pl_id`, `smartukm_band`.`bt_id`, `smartukm_band`.`b_kategori` FROM `smartukm_band` LEFT JOIN `smartukm_technical` ON `smartukm_band`.`b_id` = `smartukm_technical`.`b_id` WHERE (`b_contact` = '#c_id' OR `b_password` = 'delta_#user_id') AND `b_season` = '#season'", array('c_id' => $contact_id, 'user_id' => $user_id, 'season' => $seasonService->getActive()));
+			$qry = new SQL("SELECT `smartukm_band`.`b_id`,
+								   `smartukm_band`.`b_status`,
+									`smartukm_band`.`bt_id`, 
+									`smartukm_band`.`b_kategori` 
+							FROM `smartukm_band` 
+							WHERE (`b_contact` = '#c_id' OR `b_password` = 'delta_#user_id') 
+							AND `b_season` = '#season'", 
+						array('c_id' => $contact_id, 'user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 
 		$res = $qry->run();
 		while($row = mysql_fetch_assoc($res)) {
-			#$dump[] = $row;
+			$innslag = new stdClass();
 			if ($row['bt_id'] == 1) {
-				$type = $row['b_kategori']; 
+				$innslag->type = $row['b_kategori']; 
 			}
 			else {
-				$type = getBandTypeFromID($row['bt_id']);
+				$innslag->type = getBandTypeFromID($row['bt_id']);
+				// Finpuss for routing
+				if ($innslag->type == 'video') {
+					$innslag->type = 'film';
+				}
 			}
 
-			// Finpuss for routing
-			if ($type == 'video') {
-				$type = 'film';
-			}
-
-			$innslag[] = array(new innslag($row['b_id'], false), $row['pl_id'], $type);
+			$innslag->innslag = new innslag($row['b_id'], false);			
+			$innslag_etter_status[ $row['b_status'] == 8 ? 'fullstendig' : 'ufullstendig' ][] = $innslag;
 		}
-		//var_dump($innslag);
-		//die();
-		return $innslag;
+		return $innslag_etter_status;
 	}
 
 	public function getBandType($b_id) {
@@ -306,35 +319,14 @@ class InnslagService {
 	### Sjekk
 	# Funksjonen sjekker om fristen for å melde på innslag til mønstringen er ute.
 	# Hvis den er det returnerer den false, hvis ikke true.
-	public function sjekkFrist($b_id = null, $pl_id = null) {
-		$view_data['b_id'] = $this->container->get('request')->get('b_id');
-
-		if (!$b_id && !$pl_id) {
-			// Sjekk frist på tom mønstring, maybe?
-			$b_id = $view_data['b_id'];
-			$innslag = $this->hent($b_id);
-			$pl = $innslag->min_lokalmonstring();
-		}
-		elseif (!$b_id && $pl_id) {
-			// Hvis b_id == null og $pl_id er gitt
-			$pl = new monstring($pl_id);
-		}
-		else {
-			$innslag = $this->hent($b_id);
-			$pl = $innslag->min_lokalmonstring();
-		}
-
-		$frist = $pl->get('pl_deadline');
-
-		if ($this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-			// Denne må stå på i dev, skru kun av for å teste feilmeldingene.
-			return true;
-		}
+	public function sjekkFrist($b_id) {
+		$innslag = $this->hent($b_id);
+		$pl = $innslag->min_lokalmonstring();
 		
-		if ($frist < date('U')) {
-			return false;
+		if( $innslag->tittellos() ) {
+			return $pl->subscribable( 'pl_deadline2' );
 		}
-		return true;
+		return $pl->subscribable( 'pl_deadline' );
 	}
 }
 

@@ -1,29 +1,53 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain 'innslag' %}
+
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts 
+		'@UKMDeltaBundle/Resources/public/js/triggerlink.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
 
 {% block content %}
-	<h1 class="center">Hva vil du melde på?</h1>
+	<h1 class="center">{{ 'typeAction.overskrift'|trans }}</h1>
 	<div>
 		{% for type in typer %} 
 			{% if loop.first %}
-				<small><b>Vise frem noe på UKM</b></small>
+				<small><b>{{ 'kategori.vise_frem'|trans({},'base') }}</b></small>
 			{% elseif loop.last %}
-				<small><b>Jobbe på UKM</b></small>
+				<small><b>{{ 'kategori.jobbe_med'|trans({},'base') }}</b></small>
 				<div class="alert alert-danger">Disse kategoriene virker ikke i beta-testen</div>
 			{% endif %}
 
 			<ul class="list list-unstyled list-group">
-			{% for enkelttype in type %}
-				<li class="list-group-item">
+			{% for enkelttype in type %} {#if pl.bandTypeAllowed( enkelttype.bt_id ) %}#}
+				<li class="list-group-item delta-type triggerLink click">
 					<div class="row">
 						<div class="col-md-9 col-xs-9 typeText">
 							<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
 							{ 	k_id: k_id,  
-								pl_id: pl_id }) }}">{{ enkelttype.name|raw }}</a> 
+								pl_id: pl_id }) }}" class="actionLink" id="type_{{ enkelttype.ico }}">{{ enkelttype.name|raw }}
+							</a> 
 						</div>
 						<div class="col-md-3 col-xs-3 center">
-							<img src="http://ico.ukm.no/delta/{{ enkelttype.ico }}.png" height="35" />
+							<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" height="35" />
 						</div>
 					</div>
+					{% if enkelttype.ico == 'nettredaksjon' %}
+						<div class="row">
+							<div class="col-xs-12">
+								<small>{{ 'typeAction.forklaring.nettredaksjon'|trans }}</small>							
+							</div>
+						</div>
+					{% elseif enkelttype.ico == 'arrangor' %}
+						<div class="row">
+							<div class="col-xs-12">
+								<small>{{ 'typeAction.forklaring.arrangor'|trans }}</small>							
+							</div>
+						</div>
+					{% endif %}
 				</li>
 			{% endfor %}
 			</ul> 
