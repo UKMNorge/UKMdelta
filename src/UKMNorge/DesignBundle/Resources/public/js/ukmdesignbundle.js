@@ -1,5 +1,8 @@
-jQuery(document).on('click','#show_kontaktpersoner,#show_main_mobile_menu', function(){
+jQuery(document).on('click','#show_kontaktpersoner, #show_main_mobile_menu', function(){
 	pageFocus( jQuery(this) );
+});
+jQuery(document).on('click','#pageDeFocus',function(){
+	jQuery( '#' + jQuery(this).attr('data-clicker') ).click();
 });
 
 function pageFocus(clicked) {
