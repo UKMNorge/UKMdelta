@@ -24,6 +24,9 @@ person:
 ja: ja
 nei: nei
 
+kategori:
+    vise_frem: Vise frem noe på UKM
+    jobbe_med: Jobbe på UKM
 tittel:
     varighet:
         sek: sek
