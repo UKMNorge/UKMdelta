@@ -319,35 +319,14 @@ class InnslagService {
 	### Sjekk
 	# Funksjonen sjekker om fristen for å melde på innslag til mønstringen er ute.
 	# Hvis den er det returnerer den false, hvis ikke true.
-	public function sjekkFrist($b_id = null, $pl_id = null) {
-		$view_data['b_id'] = $this->container->get('request')->get('b_id');
-
-		if (!$b_id && !$pl_id) {
-			// Sjekk frist på tom mønstring, maybe?
-			$b_id = $view_data['b_id'];
-			$innslag = $this->hent($b_id);
-			$pl = $innslag->min_lokalmonstring();
-		}
-		elseif (!$b_id && $pl_id) {
-			// Hvis b_id == null og $pl_id er gitt
-			$pl = new monstring($pl_id);
-		}
-		else {
-			$innslag = $this->hent($b_id);
-			$pl = $innslag->min_lokalmonstring();
-		}
-
-		$frist = $pl->get('pl_deadline');
-
-		if ($this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-			// Denne må stå på i dev, skru kun av for å teste feilmeldingene.
-			return true;
-		}
+	public function sjekkFrist($b_id) {
+		$innslag = $this->hent($b_id);
+		$pl = $innslag->min_lokalmonstring();
 		
-		if ($frist < date('U')) {
-			return false;
+		if( $innslag->tittellos() ) {
+			return $pl->subscribable( 'pl_deadline2' );
 		}
-		return true;
+		return $pl->subscribable( 'pl_deadline' );
 	}
 }
 
