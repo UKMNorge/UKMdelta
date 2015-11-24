@@ -1,0 +1,103 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+	
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts 
+		'@UKMDeltaBundle/Resources/public/js/poststed.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+	{# CONTENT #}
+	<h1 class="center">{{ 'contactAction.overskrift'|trans }}</h1>
+
+	<p class="lead center">
+		{{ 'contactAction.topptekst'|trans|nl2br }}
+	</p>
+	<form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
+		<div class="col-xs-12"><span>{{ 'contactAction.personinfo'|trans }}</span></div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.fornavn'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.etternavn'|trans }}</small>
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.alder'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<select name="age" required class="form-control">
+				<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'contactAction.alderVelger.Label'|trans }}</option> 
+				{% for i in 10..25 %}
+					<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'contactAction.alderVelger.aar'|trans }}</option> 
+				{% endfor %}
+					<option value="0" {{ (age is defined) and (age > 25) ? 'selected' : '0' }}>{{ 'contactAction.alderVelger.gammel'|trans }}</option>
+			</select>
+		</div>
+		<div class="col-xs-12"><span>{{ 'contactAction.kontaktinfo'|trans }}</span></div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.mobil'|trans }}</small>
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<input name="mobil" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.epost'|trans }}</small>
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<input name="epost" required type="text" class="form-control" value="{{ epost is defined ? epost : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.adresse'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.postnummer'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<input name="postnummer" required id="postNumber" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.poststed'|trans }}</small>
+		</div>
+		<div class="col-xs-12">
+			<input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}">
+		</div>
+
+		<p>&nbsp;</p>
+		{# <div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.gammeltPassord'|trans }}</small>	
+		</div>
+		<div class="col-xs-12">
+			<input name="oldPassword" type="password" class="form-control" value="">
+		</div>
+		<div class="col-xs-12">
+			<small>{{ }}</small>
+		</div>
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.nyttPassord'|trans }}</small>	
+		</div>
+
+		<div class="col-xs-12 delta-input-header">
+			<small>{{ 'contactAction.gjentaPassord'|trans }}</small>	
+		</div> #}
+		<div class="col-xs-12">
+			<button class="btn btn-block btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style=""/>{{ 'contactAction.lagre'|trans }}</button>
+		</div>
+		<p>&nbsp;</p>
+		<div class="col-xs-12 center">
+			<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
+		</div>
+	</form>
+
+{% endblock %}
