@@ -13,6 +13,12 @@ geoAction:
     filterLabel: Skriv her for å filtrere listen...
     fellesmonstringLabel: Hvilken kommune/bydel representerer du?
 
+typeAction:
+    overskrift: Hva vil du melde på?
+    forklaring:
+        nettredaksjon: Journalist, fotograf, flerkamera, videoreportasjer, PR
+        arrangor: Vertskap, lyd, lys, arrangør osv
+
 statusAction:
     obs-topptekst: "OBS: Du er ikke meldt på UKM enda!"
     infotekst: Denne informasjonen mangler før innslaget er påmeldt:
