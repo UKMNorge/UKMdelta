@@ -118,7 +118,7 @@ h1, .h1 {
 	padding-bottom: 0px;
 }
 
-.delta-input-header small {
+.delta-input-header > small {
 	color: @primary-green;
 	font-weight: bold;
 }

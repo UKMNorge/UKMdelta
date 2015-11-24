@@ -28,4 +28,6 @@ indexAction:
         ingen: Du har ingen påmeldinger enda.
         startny: Start ny påmelding
     rediger: rediger
-    last: låst
+    last: |
+        påmeldingen
+        er stengt
