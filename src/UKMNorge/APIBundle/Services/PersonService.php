@@ -51,7 +51,7 @@ class PersonService {
 
 	public function adresse($person, $adresse, $postnummer, $poststed, $pl_id) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
-
+		
 		if (!get_class($person) == 'person') {
 			throw new Exception ('Kunne ikke oppdatere adresse - feil objekt mottatt. Ventet person, fikk ' . get_class($person));
 		}
@@ -69,6 +69,15 @@ class PersonService {
 
 	public function hent($id, $b_id=false) {
 		$person = new person($id, $b_id);
+		$innslagService = $this->container->get('ukm_api.innslag');
+
+		// Hvis vi har innslaget kan vi vite om vedkommende har tilgang
+		if( false != $b_id ) {
+			$innslag = $innslagService->hent( $b_id );
+			if( !$innslag->harPerson( $id ) ) {
+				throw new Exception('Du har ikke tilgang til denne personen',20001);
+			}
+		}
 
 		if (!is_numeric($person->get('p_id'))) {
 			throw new Exception('Fant ikke person med id ' . $id);
