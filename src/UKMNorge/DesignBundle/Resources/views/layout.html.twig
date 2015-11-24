@@ -67,7 +67,14 @@
 				{% block navbar_logo %}
 					{# Din Side-knapp #}
 				<div class="pull-right delta-home">
-					<a href="{{ path('ukm_delta_homepage') }}">Hjem</a>
+					<a href="{{ path('ukm_delta_ukmid_contact') }}">
+						{{ user.getFirstName() is defined ? user.getFirstName() : '' }}
+						{% if UKM_HOSTNAME == 'ukm.dev' %}
+							<img src="http://ico.ukm.no/toy-ninja-32.png" class="img img-circle">
+						{% else %}
+							<img src="http://ico.ukm.no/toy-blue-32.png" class="img img-circle">
+						{% endif %}
+					</a>
 				</div>
 				<div class="navbar-header">
 					<a href="/" class="navbar-brand">
@@ -85,13 +92,13 @@
 						{% endfor %}
 #}					</ul>
 					{% endblock %}
-					{% block navbar_english %}
+					{# {% block navbar_english %}
 						<div class="pull-right hidden-xs hidden-sm">
 							<a href="//ukm.no/about/">
 								<img src="http://ico.ukm.no/flagg/uk-16.png" class="img img-circle" id="ico_international" />
 							</a>
 						</div>
-					{% endblock %}
+					{% endblock %} #}
 					{% block navbar_right %}
 					<ul class="nav navbar-nav navbar-right hidden-xs hidden-sm">
 {#

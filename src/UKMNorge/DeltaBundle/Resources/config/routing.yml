@@ -30,6 +30,16 @@ ukm_delta_ukmid_verifyInfo:
     defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
     methods:  [POST]
 
+ukm_delta_ukmid_contact:
+    path:     /ukmid/kontaktperson/
+    defaults: { _controller: UKMDeltaBundle:UKMID:editContact }
+    methods:  [GET]
+
+ukm_delta_ukmid_contact_save:
+    path:     /ukmid/kontaktperson/
+    defaults: { _controller: UKMDeltaBundle:UKMID:saveContact }
+    methods:  [POST]
+
 ### INNSLAG
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
