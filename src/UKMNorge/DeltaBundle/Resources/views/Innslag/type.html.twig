@@ -12,8 +12,8 @@
 			{% endif %}
 
 			<ul class="list list-unstyled list-group">
-			{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
-				<li class="list-group-item">
+			{% for enkelttype in type %} {#if pl.bandTypeAllowed( enkelttype.bt_id ) %}#}
+				<li class="list-group-item delta-type">
 					<div class="row">
 						<div class="col-md-9 col-xs-9 typeText">
 							<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
@@ -21,7 +21,7 @@
 								pl_id: pl_id }) }}">{{ enkelttype.name|raw }}</a> 
 						</div>
 						<div class="col-md-3 col-xs-3 center">
-							<img src="http://ico.ukm.no/delta/{{ enkelttype.ico }}.png" height="35" />
+							<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" height="35" />
 						</div>
 					</div>
 				</li>
