@@ -90,6 +90,7 @@ class UKMIDController extends Controller
             // Tilsvarer UNIX Timestamp = 0. Kunne også lagra som en int.
             $birthYear = 1970;
         }
+
         $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
         $dato->setTimestamp($birthdate);
         // Legg til verdier i user-bundle
