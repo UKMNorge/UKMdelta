@@ -1,0 +1,59 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts 
+		'@UKMDeltaBundle/Resources/public/js/innslag.js'
+		'@UKMDeltaBundle/Resources/public/js/triggerlink.js'
+		'@UKMDeltaBundle/Resources/public/js/videresend.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+	<form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<h1 class="xs-center">{{ 'overviewAction.type'|trans }} {{ innslag.get('b_name') }}</h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>{{ ('overviewAction.beskrivelse.label')|trans }}</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.placeholder')|trans }}" required>{{ innslag.get('b_description') }}</textarea>				
+			</div>
+		</div>
+		
+		{% if funksjoner is defined %}
+			<div class="row">
+				<div class="col-xs-12 delta-input-header">
+					<small>{{ ('funksjon.label')|trans }}</small>
+					<br />
+					<p class="delta-subtext left">{{ 'funksjon.forklaring'|trans }}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+				{% for funksjon in funksjoner %}
+					<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" /> {{ ('funksjon.'~funksjon)|trans }}
+					<br />
+				{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col-xs-12">
+				<button type="submit" class="btn btn-block btn-success">{{ 'overviewAction.lagre'|trans }}</button>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}

@@ -30,6 +30,16 @@ ukm_delta_ukmid_verifyInfo:
     defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
     methods:  [POST]
 
+ukm_delta_ukmid_contact:
+    path:     /ukmid/kontaktperson/
+    defaults: { _controller: UKMDeltaBundle:UKMID:editContact }
+    methods:  [GET]
+
+ukm_delta_ukmid_contact_save:
+    path:     /ukmid/kontaktperson/
+    defaults: { _controller: UKMDeltaBundle:UKMID:saveContact }
+    methods:  [POST]
+
 ### INNSLAG
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
@@ -308,34 +318,26 @@ ukm_delta_ukmid_pamelding_matkultur_opprett:
               pl_id: ([0-9]{1,5})
               hvem: ([a-z]+)
 
-### NETTREDAKSJON
-ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/nettredaksjon/
-    defaults: { _controller: UKMDeltaBundle:Nettredaksjon:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
-
 ### KONFERANSIER
 ukm_delta_ukmid_pamelding_konferansier_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/konferansier/
-    defaults: { _controller: UKMDeltaBundle:Konferansier:who }
+    defaults: { _controller: UKMDeltaBundle:Konferansier:create }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
 
+### UKM MEDIA
+ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/nettredaksjon/
+    defaults: { _controller: UKMDeltaBundle:Nettredaksjon:create }
+    requirements:
+              k_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,4})
+              
 ### ARRANGØR
 ukm_delta_ukmid_pamelding_arrangor_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/arrangor/
-    defaults: { _controller: UKMDeltaBundle:Arrangor:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
-
-### SCENETEKNIKK
-ukm_delta_ukmid_pamelding_sceneteknikk_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/sceneteknikk/
-    defaults: { _controller: UKMDeltaBundle:Sceneteknikk:who }
+    defaults: { _controller: UKMDeltaBundle:Arrangor:create }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})

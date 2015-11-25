@@ -17,53 +17,26 @@
 
 	<div class="delta-input-header"> 
 		<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
-		{% if innslag is defined and innslag is not empty %}
+		{% if alle_innslag.fullstendig is not empty %}
 			<span class="delta-fat">{{ 'indexAction.pameldinger.fullforte'|trans }}</span>
-			<ul class="list list-unstyled list-group">
-				{% for event in innslag %}
-					{% if event.get('b_status') == 8 %}
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.get('b_kommune'), pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.get('b_id') }) }}">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-6">
-										{{ event.get('b_name') }}
-									</div>
-									<div class="col-xs-3 text-right">
-										{{ event.get('kategori')|capitalize }}
-									</div>
-									<div class="col-xs-3">
-										{{ frist[loop.index-1] ? 'indexAction.rediger'|trans : 'indexAction.last'|trans }}
-									</div>
-								</div>
-							</li>
-						</a>
-					{% endif %}
+			<ul class="list list-group">
+				{% for status, innslag in alle_innslag.fullstendig %}
+					{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
 				{% endfor %}
 			</ul>
+		{% endif %}
+
+		{% if alle_innslag.ufullstendig is not empty %}
 			<span class="delta-fat">{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</span>
-			<ul class="list list-unstyled list-group">
-				{% for event in innslag %}
-					{% if event.get('b_status') != 8 %}
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: event.get('b_kommune'), pl_id: pl_id[loop.index-1], type: type[loop.index-1], b_id: event.get('b_id') }) }}">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-6">
-										{{ event.get('b_name') }}
-									</div>
-									<div class="col-xs-3 text-right">
-										{{ event.get('kategori')|capitalize }}
-									</div>
-									<div class="col-xs-3">
-										{{ frist[loop.index-1] ? 'indexAction.rediger'|trans : 'indexAction.last'|trans }}
-									</div>
-								</div>
-							</li></a>
-					{% endif %}
+			<ul class="list list-group">
+				{% for status, innslag in alle_innslag.ufullstendig %}
+					{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
 				{% endfor %}
 			</ul>
-		{% else %}
-			<p>{{ 'indexAction.pameldinger.ingen'|trans }}
-			</p>
+		{% endif %}
+
+		{% if alle_innslag.ufullstendig is empty and alle_innslag.fullstendig is empty %}
+			<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
 		{% endif %}
 		
 		<div class="row">

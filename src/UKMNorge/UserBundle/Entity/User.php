@@ -279,7 +279,6 @@ class User extends BaseUser
         return $this;
     }
 
-
     /**
      * Set sms_validated
      *

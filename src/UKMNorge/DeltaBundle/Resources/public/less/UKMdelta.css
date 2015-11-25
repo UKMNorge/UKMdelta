@@ -23,8 +23,6 @@
 	color: @bootstrap-info !important;
 }
 
-@import "overunder.less";
-
 h1, .h1 {
     font-size: 26px;
     font-weight: 300;
@@ -58,9 +56,9 @@ h1, .h1 {
 
 /*** ***/
 .delta-home {
-	padding-right: 3.5em;
+	padding-right: 7em;
 	/*padding-top: 2em;*/
-	padding-top: 1em;
+	padding-top: 0.2em;
 }
 
 .delta-home a {
@@ -118,7 +116,7 @@ h1, .h1 {
 	padding-bottom: 0px;
 }
 
-.delta-input-header small {
+.delta-input-header > small {
 	color: @primary-green;
 	font-weight: bold;
 }
@@ -154,6 +152,12 @@ h1, .h1 {
 	color: @secondary-grey;
 	font-size: 0.9em !important;
 }
+/* PÅMELDINGSIKONER */
+.delta-type {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 35px;
+}
 
 .delta-fat {
 	font-weight: bold;
@@ -177,4 +181,33 @@ h1, .h1 {
 
 .typeText {
     padding-top: 6px;
+}
+
+/** OVERUNDER **/
+.overunder {
+	.center;
+	text-align: center; 
+	font-weight: bold;
+	color: inherit;
+	text-rendering: optimizelegibility;
+	padding: 4px 0px 4px 0px;
+}
+
+.overunder .over {
+	.center;
+	line-height: 20px;
+	font-size: 30px;
+}
+
+.overunder .over small {
+	font-weight: normal;
+	font-size: 14px;
+	margin: 0px;
+}
+
+.overunder .under {
+	.center;
+	margin-top: 3px;
+	font-size: 11px;
+	line-height: 11px;
 }

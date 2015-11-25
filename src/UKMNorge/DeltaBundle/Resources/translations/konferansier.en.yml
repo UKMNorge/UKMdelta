@@ -1,0 +1,9 @@
+overviewAction:
+    type: Konferansier
+    beskrivelse:
+        label: Beskrivelse av deg og din konferansier-erfaring
+        placeholder: >
+            Eks. Mamma har alltid sagt at jeg snakker mye, og i tiendeklasse hadde jeg en fast standupkveld hver måned for ungdomsskolen.
+            Jeg er flink til å snakke for meg, og synes det er viktig at konferansierer kan underholde mens scenen rigges om,
+            samtidig som det er viktig å være kjapp når scenen er klar.
+    lagre: Lagre
