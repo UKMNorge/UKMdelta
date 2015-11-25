@@ -36,14 +36,23 @@ tittel:
     rediger: rediger
     lagre: Lagre
     info_mangler: Info mangler
-    
+
+overviewAction:
+    meldav: Meld av innslaget "%name"
+    avbryt: avbryt
+
 statusAction:
     videreknapp: Ok, jeg fyller ut senere
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
     obstekst: OBS: du MÅ fylle ut all informasjon før %dag% %dato%. %maned% kl. %time%:%minutt%!
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     
-    
+removeAction:
+    overskrift: Vil du virkelig fjerne innslaget "%name%"?
+    ja: Ja, meld av innslaget
+    nei: Nei, ta meg tilbake til oversikten
+    fjernet: Innslaget "%name" ble fjernet.
+
 technicalAction:
     overskrift: Skriv inn tekniske behov
     forklaring: >

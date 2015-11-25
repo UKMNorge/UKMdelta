@@ -56,16 +56,29 @@
 		{# TITLER #}
 		{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 		<p>&nbsp;</p>
-
 		{% if krev_tekniske %}
 			{# TEKNISKE BEHOV #}
 			{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
 			<p>&nbsp;</p>
 		{% endif %}
+		<p>&nbsp;</p>
 		<div class="row">
 			<div class="col-xs-12">
 				<button type="submit" class="btn btn-block btn-success">{{ 'overviewAction.lagre'|trans }}</button>
 			</div>
+		</div>
+		{# KUN VIS DENNE OM INNSLAGET ER PÅMELDT ELLER PÅ VEI TIL Å BLI PÅMELDT? #}
+		{% if pameldt %}
+			<p>&nbsp;</p>
+			<div class="row">
+				<div class="col-xs-12">
+					<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger">{{ 'overviewAction.meldav'|trans({'%name': innslag.get('b_name')}, 'base') }}</a>
+				</div>
+			</div>
+		{% endif %}
+		<p>&nbsp;</p>
+		<div class="col-xs-12 center">
+			<a href="{{ path('ukm_delta_ukmid_homepage') }}" class="">{{ 'overviewAction.avbryt'|trans({}, 'base') }}</a>
 		</div>
 	</form>
 

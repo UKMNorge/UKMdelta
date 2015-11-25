@@ -1,0 +1,15 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<h1 class="lead center">{{ 'removeAction.overskrift'|trans({'%name%': navn}, 'base') }}</h1>
+	<form action="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" method="POST">
+		<div class="col-xs-12">
+			<button type="submit" class="btn btn-block btn-danger">{{ 'removeAction.ja'|trans({}, 'base') }}</button>
+		</div>
+	</form>
+	<p>&nbsp;</p>
+	<div class="col-xs-12">
+		<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}"><button class="btn btn-block">{{ 'removeAction.nei'|trans({},'base') }}</button></a>
+	</div>
+{% endblock %}
