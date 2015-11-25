@@ -11,6 +11,8 @@ jQuery(document).on("keyup", '#postNumber', function() {
 	// Utfør AJAX mot API
 	$.ajax(api_url).done(function( data ) {
 		if (data.sted != false) {
+			console.log(data);
+			console.log(data.sted);
 			$("#postPlace").val(data.sted);
 		}
 		console.log( "AJAX done.");
