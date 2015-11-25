@@ -10,6 +10,10 @@ overviewAction:
 
 
 funksjon:
+    label: Hva vil du aller helst jobbe med?
+    forklaring: |
+        Kryss gjerne av for flere kategorier. 
+        OBS: det er ikke sikkert at alt er mulig på ditt lokale UKM. Spør lokalkontakten om du vil ha mer info.
     lyd: Lyd
     lys: Lys
     artistvert: Artistvert

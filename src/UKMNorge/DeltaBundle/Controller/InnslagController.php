@@ -506,6 +506,13 @@ class InnslagController extends Controller
 		        break;
 		        case 'nettredaksjon':
 		        	$view_data['funksjoner'] = array('tekst','foto','videoreportasjer','flerkamera_regi','flerkamera_kamera','pr');
+					$tittellos_person = $this->_hent_tittellos_person( $b_id );					
+					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
+		        	break;
+		        case 'arrangor':
+		       		$view_data['funksjoner'] = array('lyd','lys','artistvert','scenearbeider','info','koordinator');
+					$tittellos_person = $this->_hent_tittellos_person( $b_id );					
+					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
 		        	break;
 	        }
 	        return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
@@ -574,15 +581,18 @@ class InnslagController extends Controller
 	        
 	        switch( $type ) {
 		        case 'nettredaksjon':
-					$innslag = $innslagService->hent( $b_id );
-					$personer = $innslag->personer();
-					$p_id = $personer[0]['p_id'];
-					$person = $personService->hent( $p_id, $b_id );
-					
+		        case 'arrangor':
+					$tittellos_person = $this->_hent_tittellos_person( $b_id );
 					$instrument_object = $request->request->get('funksjoner');
-					$instrument = join( ', ', $instrument_object );
+					$funksjon = '';
+					if( is_array( $instrument_object ) ) {
+						foreach( $instrument_object as $current_instrument ) {
+							$funksjon .= $this->get('translator')->trans('funksjon.'.$current_instrument, array(), $type).', ';
+						}
+						$funksjon = rtrim( $funksjon, ', ' );
+					}
 					
-					$innslagService->lagreInstrumentTittellos($b_id, $person->g('p_id'), $pl_id, $instrument, $instrument_object);
+					$innslagService->lagreInstrumentTittellos($b_id, $tittellos_person->g('p_id'), $pl_id, $funksjon, $instrument_object);
 		        break;
 	        }
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
@@ -688,5 +698,13 @@ class InnslagController extends Controller
     
     private function _tittellos( $type ) {
 	    return in_array($type, array('nettredaksjon','arrangor','konferansier'));
+    }
+    private function _hent_tittellos_person( $b_id ) {
+        $innslagService = $this->get('ukm_api.innslag');
+        $personService = $this->get('ukm_api.person');
+		$innslag = $innslagService->hent( $b_id );
+		$personer = $innslag->personer();
+		$p_id = $personer[0]['p_id'];
+		return $personService->hent( $p_id, $b_id );
     }
 }
