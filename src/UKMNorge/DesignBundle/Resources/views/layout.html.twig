@@ -66,21 +66,24 @@
 				{% endblock %}
 				{% block navbar_logo %}
 					{# Din Side-knapp #}
-				<div class="pull-right delta-home">
-					<a href="{{ path('ukm_delta_ukmid_contact') }}">
-						{{ user.getFirstName() is defined ? user.getFirstName() : '' }}
-						{% if UKM_HOSTNAME == 'ukm.dev' %}
-							<img src="http://ico.ukm.no/toy-ninja-32.png" class="img img-circle">
-						{% else %}
-							<img src="http://ico.ukm.no/toy-blue-32.png" class="img img-circle">
-						{% endif %}
-					</a>
-				</div>
-				<div class="navbar-header">
-					<a href="/" class="navbar-brand">
-						<img src="http://grafikk.ukm.no/profil/logo/UKM_logo.png" width="70" />
-					</a>
-				</div>
+					{% if app.user %}{# Kun vis denne om brukeren er innlogget #}
+						<div class="pull-right delta-home">
+							<a href="{{ path('ukm_delta_ukmid_contact') }}">
+								{{ user.getFirstName() is defined ? user.getFirstName() : '' }}
+								{% if UKM_HOSTNAME == 'ukm.dev' %}
+									<img src="http://ico.ukm.no/toy-ninja-32.png" height="19" class="img img-circle">
+								{% else %}
+									<img src="http://ico.ukm.no/toy-blue-32.png" height="19" class="img img-circle">
+								{% endif %}
+							</a>
+							<div class="clearfix"></div>
+						</div>
+					{% endif %}
+					<div class="navbar-header">
+						<a href="/" class="navbar-brand">
+							<img src="http://grafikk.ukm.no/profil/logo/UKM_logo.png" width="70" />
+						</a>
+					</div>
 				
 				{% endblock %}
 				<nav role="navigation">
