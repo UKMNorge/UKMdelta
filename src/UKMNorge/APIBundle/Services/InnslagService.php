@@ -71,6 +71,21 @@ class InnslagService {
 		return $innslag;		
 	}
 
+
+	public function hentInnslagFraType($type, $pl_id, $person_id) {
+		$alle_innslag = $this->hentInnslagFraKontaktperson( $person_id, null );
+		foreach( $alle_innslag as $key => $gruppe ) {
+			foreach( $gruppe as $innslag ) {
+				if( $innslag->type == $type ) {
+					// Viktig at man kan melde seg på samme kategori flere steder, men én gang per sted
+					if( $innslag->innslag->min_lokalmonstring()->get('pl_id') == $pl_id ) {
+						return $this->hent( $innslag->innslag->g('b_id') );
+					}
+				}
+			}
+		}
+		return false;
+	}
 	public function hentInnslagFraKontaktperson($contact_id, $user_id) {
 		$innslag_etter_status = array( 'fullstendig'=>array(), 'ufullstendig'=>array() );
 		$seasonService = $this->container->get('ukm_delta.season');
@@ -144,8 +159,7 @@ class InnslagService {
 	public function lagreInstrument($innslagsID, $personID, $pl_id, $instrument) {
 		$innslag = new innslag($innslagsID, false);
 		$person = new person($personID, $innslagsID);
-
-		#Oppdatert lagre-funksjon: 
+		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$person->set('instrument', $instrument);
 		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
 		$person->lagre('delta', $user->getId(), $pl_id);

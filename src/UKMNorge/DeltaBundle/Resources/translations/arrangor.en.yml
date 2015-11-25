@@ -1,0 +1,8 @@
+overviewAction:
+    type: Arrangør
+    beskrivelse:
+        label: Beskrivelse av deg og din arrangør-erfaring
+        placeholder: >
+            Eks. Med en ekstrem interesse for lyd og lys har jeg jobbet i ungdomsklubben de siste 5 årene.
+            Gleder meg til å kjøre lyd på UKM, og lover en fantastisk opplevelse!
+    lagre: Lagre

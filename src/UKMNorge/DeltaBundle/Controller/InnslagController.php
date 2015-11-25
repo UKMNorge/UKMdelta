@@ -95,9 +95,14 @@ class InnslagController extends Controller
     	$view_data['translationDomain'] = $translationDomain;
         //$view_data['translationDomain'] = 'innslag';
 
-    	return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data );
+    	return $this->render('UKMDeltaBundle:Innslag:who'. ($this->_tittellos( $type ) ? '_tittellos':'') .'.html.twig', $view_data );
     }
-
+    
+/*    public function who_tittellosAction($k_id, $pl_id, $type, $translationDomain)
+    {   
+        return $this->whoAction( $k_id, $pl_id, $type, $translationDomain, true);
+    }
+*/
     /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
@@ -193,6 +198,9 @@ class InnslagController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
+    public function create_tittellosAction($k_id, $pl_id, $type ) {
+		return $this->createAction($k_id, $pl_id, $type, 'alene');
+	}
     public function createAction($k_id, $pl_id, $type, $hvem) {
     	require_once('UKM/innslag.class.php');
     	require_once('UKM/monstring.class.php');
@@ -202,12 +210,9 @@ class InnslagController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+		
+		$deadline = 'pl_deadline'. ($this->_tittellos( $type ) ? '2' : '');
 
-		if( in_array($type, array('nettredaksjon','arrangor','konferansier') ) ) {
-			$deadline = 'pl_deadline2';
-		} else {
-			$deadline = 'pl_deadline';
-		}
 		$monstring = new monstring( $pl_id );
 		if( !$monstring->subscribable( $deadline ) ) {
             throw new Exception('Påmeldingsfristen er ute!');
@@ -236,6 +241,13 @@ class InnslagController extends Controller
             $person = $personService->hent($user->getPameldUser());
         }
 
+		if( $this->_tittellos( $type ) ) {
+			$meldt_pa_som_type = $innslagService->hentInnslagFraType($type, $pl_id, $person->get('p_id'));
+			if( $meldt_pa_som_type ) {
+				$view_data['b_id'] = $meldt_pa_som_type->get('b_id');
+				return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+			}
+		}
         // Opprett et nytt innslag
         $innslag = $innslagService->opprett($k_id, $pl_id, $type, $hvem, $person, $user->getId());        
 
@@ -454,21 +466,14 @@ class InnslagController extends Controller
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
 
         $user = $this->get('ukm_user')->getCurrentUser();
+
         // Hent data om innslaget 
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
 
         // Sjekk tilgang og rett bandtype
-        $innslagService->sjekk($b_id, $type);
-        
+        $innslagService->sjekk($b_id, $type);       
         $innslag = $innslagService->hent($b_id);
-
-        // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
-        $teknisk = $innslag->get('td_demand');
-        if (strlen($teknisk) > 220) {
-            $teknisk = substr_replace($teknisk, '...', 220);
-            // Dette vil ikke påvirke lagret informasjon.
-        }
 
         $personer = $innslag->personer();
         foreach ($personer as &$person) {
@@ -481,6 +486,31 @@ class InnslagController extends Controller
             }
             
         }
+
+		// Hent beskrivelse av innslaget
+        $view_data['beskrivelse'] = $innslag->get('b_description');
+
+        $view_data['translationDomain'] = $type;
+        $view_data['user'] = $user;
+        $view_data['innslag'] = $innslag;
+        $view_data['personer'] = $personer;
+        
+        if( $this->_tittellos( $type ) ) {
+	        switch( $type ) {
+		        case 'konferansier':
+#		        	$innslagService->
+		        break;
+	        }
+	        return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
+        }
+        
+        // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
+        $teknisk = $innslag->get('td_demand');
+        if (strlen($teknisk) > 220) {
+            $teknisk = substr_replace($teknisk, '...', 220);
+            // Dette vil ikke påvirke lagret informasjon.
+        }
+
         $titler = $innslag->titler($pl_id); 
 
         // Hvis hvem-variabelen blir sendt med.
@@ -490,8 +520,6 @@ class InnslagController extends Controller
             $view_data['hvem'] = $hvem;
         }
         
-        $view_data['translationDomain'] = $type;
-        $view_data['user'] = $user;
         if ($innslag->info['b_name'] != 'Innslag uten navn') {
             $view_data['name'] = $innslag->get('b_name');
         }
@@ -500,9 +528,6 @@ class InnslagController extends Controller
         }
         $view_data['sjanger'] = $innslag->get('b_sjanger');
         $view_data['teknisk'] = $teknisk;
-        $view_data['innslag'] = $innslag;
-        $view_data['beskrivelse'] = $innslag->get('b_description');
-        $view_data['personer'] = $personer;
         $view_data['titler'] = $titler;
         
         switch ($type) {
@@ -534,9 +559,22 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $request = Request::createFromGlobals();
 
+        $desc = $request->request->get('beskrivelse');
+		// Håndter tittelløse innslag først
+		if( $this->_tittellos( $type ) ) {
+	        $innslagService->lagreBeskrivelse($b_id, $desc);
+	        
+	        switch( $type ) {
+		        case 'nettredaksjon':
+
+		        break;
+	        }
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
+		}
+
         $path = $request->request->get('path');
         $name = $request->request->get('navn');
-        $desc = $request->request->get('beskrivelse');
+
         
         if(($type == 'musikk') || ($type == 'litteratur') || ($type == 'film') || ($type == 'annet') || ($type == 'dans') || ($type == 'teater')) {
             $genre = $request->request->get('sjanger');
@@ -560,7 +598,7 @@ class InnslagController extends Controller
         require_once('UKM/inc/validate_innslag.inc.php');
         require_once('UKM/monstring.class.php');
 
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $route_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = $type;
 
         $innslagService = $this->get('ukm_api.innslag');
@@ -593,11 +631,11 @@ class InnslagController extends Controller
         // ValidateBand2 tar seg av status-oppdateringen??
         if($view_data['status'] == 8) {
             //$innslagService->lagreStatus($b_id, 8);
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $view_data);
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
         }
         else {
             //$innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
-            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', $view_data);
+            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge( $route_data, $view_data ) );
         }
     }
 
@@ -630,5 +668,9 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $view_data['innslag'] = $innslagService->hent($b_id);
         return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);
+    }
+    
+    private function _tittellos( $type ) {
+	    return in_array($type, array('nettredaksjon','arrangor','konferansier'));
     }
 }
