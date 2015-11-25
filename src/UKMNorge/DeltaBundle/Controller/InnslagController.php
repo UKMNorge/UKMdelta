@@ -498,8 +498,10 @@ class InnslagController extends Controller
         if( $this->_tittellos( $type ) ) {
 	        switch( $type ) {
 		        case 'konferansier':
-#		        	$innslagService->
 		        break;
+		        case 'nettredaksjon':
+		        	$view_data['funksjoner'] = array('tekst','foto','videoreportasjer','flerkamera_regi','flerkamera_kamera','pr');
+		        	break;
 	        }
 	        return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
         }
@@ -563,10 +565,19 @@ class InnslagController extends Controller
 		// Håndter tittelløse innslag først
 		if( $this->_tittellos( $type ) ) {
 	        $innslagService->lagreBeskrivelse($b_id, $desc);
+	        $personService = $this->get('ukm_api.person');
 	        
 	        switch( $type ) {
 		        case 'nettredaksjon':
-
+					$innslag = $innslagService->hent( $b_id );
+					$personer = $innslag->personer();
+					$p_id = $personer[0]['p_id'];
+					$person = $personService->hent( $p_id, $b_id );
+					
+					$instrument_object = $request->request->get('funksjoner');
+					$instrument = join( ', ', $instrument_object );
+					
+					$innslagService->lagreInstrumentTittellos($b_id, $person->g('p_id'), $pl_id, $instrument, $instrument_object);
 		        break;
 	        }
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);

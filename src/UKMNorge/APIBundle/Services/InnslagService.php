@@ -165,6 +165,19 @@ class InnslagService {
 		$person->lagre('delta', $user->getId(), $pl_id);
 	}
 
+
+	public function lagreInstrumentTittellos($innslagsID, $personID, $pl_id, $instrument, $instrument_object) {
+		$innslag = new innslag($innslagsID, false);
+		$person = new person($personID, $innslagsID);
+		
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		
+		$person->set('instrument', $instrument);
+		$person->set('instrument_object', json_encode( $instrument_object ) );
+		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
+		$person->lagre('delta', $user->getId(), $pl_id);
+	}
+	
 	public function lagreBeskrivelse($innslagsID, $beskrivelse) {
 		$innslag = new innslag($innslagsID, false);
 		
