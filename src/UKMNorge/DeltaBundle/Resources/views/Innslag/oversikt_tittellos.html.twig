@@ -42,7 +42,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 				{% for funksjon in funksjoner %}
-					<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" /> {{ ('funksjon.'~funksjon)|trans }}
+					<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {{ funksjon in valgte_funksjoner ? 'checked="checked"':'' }} /> {{ ('funksjon.'~funksjon)|trans }}
 					<br />
 				{% endfor %}
 				</div>
