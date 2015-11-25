@@ -65,7 +65,7 @@
 			<small>{{ 'contactAction.postnummer'|trans }}</small>
 		</div>
 		<div class="col-xs-12">
-			<input name="postnummer" required id="postNumber" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
+			<input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
 		</div>
 		<div class="col-xs-12 delta-input-header">
 			<small>{{ 'contactAction.poststed'|trans }}</small>

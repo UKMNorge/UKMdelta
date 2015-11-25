@@ -82,8 +82,14 @@ class UKMIDController extends Controller
 
         //TODO: Sikkerhetssjekk input?
 
-        // Beregn birthdate basert på age?
-        $birthYear = (int)date('Y') - $age;
+        // Beregn birthdate basert på alder
+        if ($age != 0) {
+            $birthYear = (int)date('Y') - $age;
+        }
+        else {
+            // Tilsvarer UNIX Timestamp = 0. Kunne også lagra som en int.
+            $birthYear = 1970;
+        }
         $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
         $dato->setTimestamp($birthdate);
         // Legg til verdier i user-bundle
@@ -129,7 +135,12 @@ class UKMIDController extends Controller
         $alder = $request->request->get('age');
         
         // Beregn birthdate basert på age?
-        $birthYear = (int)date('Y') - $alder;
+        if ($alder != 0) {
+            $birthYear = (int)date('Y') - $alder;
+        }
+        else {
+            $birthYear = 1970;
+        }
         $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
         $dato = new DateTime('now');
         $dato->setTimestamp($birthdate);

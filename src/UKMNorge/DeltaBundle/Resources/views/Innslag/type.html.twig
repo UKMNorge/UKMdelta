@@ -21,7 +21,7 @@
 			{% endif %}
 
 			<ul class="list list-unstyled list-group">
-			{% for enkelttype in type %} {#if pl.bandTypeAllowed( enkelttype.bt_id ) %}#}
+			{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
 				<li class="list-group-item delta-type triggerLink click">
 					<div class="row">
 						<div class="col-md-9 col-xs-9 typeText">

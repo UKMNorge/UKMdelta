@@ -213,6 +213,11 @@ class InnslagController extends Controller
 		
 		$deadline = 'pl_deadline'. ($this->_tittellos( $type ) ? '2' : '');
 
+		if( in_array($type, array('nettredaksjon','arrangor','konferansier') ) ) {
+			$deadline = 'pl_deadline2';
+		} else {
+			$deadline = 'pl_deadline';
+		}
 		$monstring = new monstring( $pl_id );
 		if( !$monstring->subscribable( $deadline ) ) {
             throw new Exception('Påmeldingsfristen er ute!');
