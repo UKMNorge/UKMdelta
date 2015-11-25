@@ -17,6 +17,8 @@ jQuery(document).on("keyup", '#postNumber', function() {
 		dataType: 'json'}
 		).done(function( data ) {
 		if (data.sted != false) {
+			console.log(data);
+			console.log(data.sted);
 			$("#postPlace").val(data.sted);
 		}
 		else {
