@@ -544,7 +544,14 @@ class InnslagController extends Controller
         $view_data['sjanger'] = $innslag->get('b_sjanger');
         $view_data['teknisk'] = $teknisk;
         $view_data['titler'] = $titler;
-        
+        $view_data['pameldt'] = false;
+        switch ($innslag->get('b_status')) {
+            case 1: $view_data['pameldt'] = false;
+                break;
+            default:
+                $view_data['pameldt'] = true;
+        }
+
         switch ($type) {
             case 'musikk':
             case 'film':
@@ -619,6 +626,28 @@ class InnslagController extends Controller
         }
         return $this->redirect($path);
         // Sjekk om path er en route?
+    }
+
+    public function removeAction($k_id, $pl_id, $type, $b_id) {
+        // Output confirm-vindu
+        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'base';
+        // Sjekk tilgang
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $innslagService->sjekk($b_id, $type);
+        $innslag = $innslagService->hent($b_id);
+        // If post-request, i.e. JA-knapp.
+        if ($this->getRequest()->isMethod('POST')) {
+            //$innslagService->meld_av($b_id);
+            $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', array("%name" => $innslag->get('b_name')), 'base'));
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
+        // Else render
+        
+        $view_data['innslag'] = $innslag;
+        $view_data['navn'] = $innslag->get('b_name');
+        return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
     }
 
     public function statusAction($k_id, $pl_id, $type, $b_id) {

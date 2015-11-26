@@ -41,10 +41,15 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
-				{% for funksjon in funksjoner %}
-					<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {{ funksjon in valgte_funksjoner ? 'checked="checked"':'' }} /> {{ ('funksjon.'~funksjon)|trans }}
-					<br />
-				{% endfor %}
+					<ul class="list-group">
+						{% for funksjon in funksjoner %}
+							<li class="list-group-item triggerClick click">
+								<label>
+									<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {{ funksjon in valgte_funksjoner ? 'checked="checked"':'' }} class="clickMe" id="funksjon_{{ funksjon }}" /> &nbsp; {{ ('funksjon.'~funksjon)|trans }}
+								</label>
+							</li>
+						{% endfor %}
+					</ul>
 				</div>
 			</div>
 		{% endif %}
