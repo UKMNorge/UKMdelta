@@ -108,7 +108,8 @@ class InnslagService {
 								   `smartukm_band`.`b_kategori` 
 							FROM `smartukm_band` 
 							WHERE `b_password` = 'delta_#user_id' 
-							AND `b_season` = '#season'",
+							AND `b_season` = '#season'
+							AND `b_status` < 9",
 						array('user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 		else {
@@ -118,7 +119,8 @@ class InnslagService {
 									`smartukm_band`.`b_kategori` 
 							FROM `smartukm_band` 
 							WHERE (`b_contact` = '#c_id' OR `b_password` = 'delta_#user_id') 
-							AND `b_season` = '#season'", 
+							AND `b_season` = '#season'
+							AND `b_status` < 9", 
 						array('c_id' => $contact_id, 'user_id' => $user_id, 'season' => $seasonService->getActive()));
 		}
 
