@@ -71,6 +71,17 @@ class InnslagService {
 		return $innslag;		
 	}
 
+	public function meldAv($b_id, $pl_id) {
+		// Sjekk rettigheter og frister
+		$this->sjekkFrist($b_id);
+		$this->sjekkTilgang($b_id);
+
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$p_id = $user->getPameldUser();
+
+		$innslag = $this->hent($b_id);
+		$innslag->delete('delta', $p_id, $pl_id);
+	}
 
 	public function hentInnslagFraType($type, $pl_id, $person_id) {
 		$alle_innslag = $this->hentInnslagFraKontaktperson( $person_id, null );

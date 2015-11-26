@@ -27,6 +27,7 @@ class InnslagController extends Controller
     public function geoAction()
     {
         require_once('UKM/monstringer.class.php');
+        require_once('UKM/monstring.class.php');
         $view_data['translationDomain'] = 'innslag';
         
         $season = $this->container->get('ukm_delta.season')->getActive();
@@ -61,7 +62,9 @@ class InnslagController extends Controller
 				$monstring->fellesmonstring = false;
 			}
 		}
-        
+        $view_data['lokalt_fylke'] = new monstring($monstring->fylke_id);
+        var_dump($view_data['lokalt_fylke']);
+        die();
         $view_data['lokal_monstring'] = $monstring;
         
 
@@ -636,9 +639,10 @@ class InnslagController extends Controller
 
         $innslagService->sjekk($b_id, $type);
         $innslag = $innslagService->hent($b_id);
+        
         // If post-request, i.e. JA-knapp.
         if ($this->getRequest()->isMethod('POST')) {
-            //$innslagService->meld_av($b_id);
+            $innslagService->meldAv($b_id, $pl_id);
             $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', array("%name" => $innslag->get('b_name')), 'base'));
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }

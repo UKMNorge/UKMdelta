@@ -19,7 +19,7 @@
 		</div> 
 		<div class="col-xs-12 center">
 			{% for key,kommune in monstring.kommuner %}
-				{% if app.environment == 'test' and fylke.id != 21 %}
+				{% if app.environment == 'test' and monstring.fylke_id != 21 %}
 				<a class="btn btn-block btn-primary" href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
 				{% else %}
 				<a class="btn btn-block btn-primary" href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
