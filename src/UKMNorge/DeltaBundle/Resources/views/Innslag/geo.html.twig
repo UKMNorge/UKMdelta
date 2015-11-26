@@ -20,9 +20,9 @@
 		<ul class="list-unstyled">
 			<li class="list-group-item click">
 				{% if lokal_monstring.fellesmonstring %}
-					{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': lokal_monstring} %}{% endembed %}
+					{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': lokal_monstring, 'fylke': fylke} %}{% endembed %}
 				{% else %}
-					{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': lokal_monstring} %}{% endembed %}
+					{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': lokal_monstring, 'fylke': fylke} %}{% endembed %}
 				{% endif %}
 			</li>
 		</ul>
