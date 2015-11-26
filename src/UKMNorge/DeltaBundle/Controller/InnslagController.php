@@ -49,6 +49,7 @@ class InnslagController extends Controller
 	        $monstring = new stdClass();
 			$monstring->id = $pl->get('pl_id');
 			$monstring->name = $pl->get('pl_name');
+			$monstring->fylke = $pl->get('fylke_id');
 			$monstring->kommuner = array();
 			foreach( $pl->get('kommuner') as $kommune ) {
 				$monstring->kommuner[ $kommune['id'] ] = $kommune['name'];
