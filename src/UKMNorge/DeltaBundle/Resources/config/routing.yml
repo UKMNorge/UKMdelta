@@ -46,7 +46,7 @@ ukm_delta_ukmid_pamelding:
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
 
 ukm_delta_ukmid_meld_av:
-    path:     /umkid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/fjern/
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/fjern/
     defaults: { _controller: UKMDeltaBundle:Innslag:remove }
     requirements:
               k_id: ([0-9]{1,4})

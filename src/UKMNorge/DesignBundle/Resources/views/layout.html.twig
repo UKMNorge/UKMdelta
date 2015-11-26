@@ -69,7 +69,7 @@
 					{% if app.user %}{# Kun vis denne om brukeren er innlogget #}
 						<div class="pull-right delta-home">
 							<a href="{{ path('ukm_delta_ukmid_contact') }}">
-								{{ user.getFirstName() is defined ? user.getFirstName() : '' }}
+								{{ app.user.getFirstName() is defined ? app.user.getFirstName() : '' }}
 								{% if UKM_HOSTNAME == 'ukm.dev' %}
 									<img src="http://ico.ukm.no/toy-ninja-32.png" height="28" class="img img-circle">
 								{% else %}
