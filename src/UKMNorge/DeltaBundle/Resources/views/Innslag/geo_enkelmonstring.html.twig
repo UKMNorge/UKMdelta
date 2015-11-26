@@ -1,6 +1,6 @@
 {% trans_default_domain translationDomain %}
 
-{% if app.environment == 'test' and fylke.id != 21 %}
+{% if app.environment == 'test' and fylke_id != 21 %}
 <a href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
 {% else %}
 <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 

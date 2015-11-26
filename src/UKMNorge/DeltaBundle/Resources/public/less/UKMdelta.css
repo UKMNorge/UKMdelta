@@ -223,3 +223,7 @@ h1, .h1 {
 	font-size: 11px;
 	line-height: 11px;
 }
+
+label {
+	font-weight: normal;
+}
