@@ -19,11 +19,7 @@
 		<h3 class="center">{{ 'geoAction.vi_tror'|trans }}</h3>
 		<ul class="list-unstyled">
 			<li class="list-group-item click">
-				{% if lokal_monstring.fellesmonstring %}
-					{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': lokal_monstring, 'fylke': fylke} %}{% endembed %}
-				{% else %}
-					{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': lokal_monstring, 'fylke': fylke} %}{% endembed %}
-				{% endif %}
+				{% embed "UKMDeltaBundle:Innslag:geo_" ~ ( lokal_monstring.fellesmonstring ? 'felles' : 'enkel' ) ~ "monstring.html.twig" with {'monstring': lokal_monstring, 'fylke_id': lokal_monstring.fylke} %}{% endembed %}
 			</li>
 		</ul>
 		<h3 class="center">{{ 'geoAction.tok_vi_feil'|trans }}</h3>
@@ -41,11 +37,7 @@
 			<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 				{% for monstring in fylke.monstringer %}
 					<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
-						{% if monstring.fellesmonstring %}
-							{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': monstring, 'fylke': fylke} %}{% endembed %}
-						{% else %}
-							{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': monstring, 'fylke': fylke} %}{% endembed %}
-						{% endif %}
+						{% embed "UKMDeltaBundle:Innslag:geo_" ~ ( monstring.fellesmonstring ? 'felles' : 'enkel' ) ~ "monstring.html.twig" with {'monstring': monstring, 'fylke_id': fylke.id} %}{% endembed %}
 					</li>
 				{% endfor %}
 			</ul>
