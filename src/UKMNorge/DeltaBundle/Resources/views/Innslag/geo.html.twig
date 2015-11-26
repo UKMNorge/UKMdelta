@@ -42,9 +42,9 @@
 				{% for monstring in fylke.monstringer %}
 					<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
 						{% if monstring.fellesmonstring %}
-							{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': monstring} %}{% endembed %}
+							{% embed "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'monstring': monstring, 'fylke': fylke} %}{% endembed %}
 						{% else %}
-							{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': monstring} %}{% endembed %}
+							{% embed "UKMDeltaBundle:Innslag:geo_enkelmonstring.html.twig" with {'monstring': monstring, 'fylke': fylke} %}{% endembed %}
 						{% endif %}
 					</li>
 				{% endfor %}
