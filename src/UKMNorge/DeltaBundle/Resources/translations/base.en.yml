@@ -23,6 +23,10 @@ person:
 
 ja: ja
 nei: nei
+filmfoto:
+    samtykke: |
+        UKM er et offentlig arrangement, og det tas ofte bilder og video av deltakerne. 
+        Gi beskjed til lokalkontakten hvis dette er et problem.
 
 kategori:
     vise_frem: Vise frem noe på UKM
