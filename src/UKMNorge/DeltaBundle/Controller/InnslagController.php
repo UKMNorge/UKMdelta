@@ -127,6 +127,10 @@ class InnslagController extends Controller
         $innslag = $innslagService->hent($b_id);
         $person = $personService->hent($p_id, $b_id);
 
+        // var_dump($p_id);
+        // var_dump($b_id);
+        // var_dump($person);
+
         $view_data['user'] = $user;
         $view_data['person'] = $person;
         $view_data['innslag'] = $innslag;

@@ -161,11 +161,12 @@ class InnslagService {
 
 	public function fjernPerson($innslagsID, $personID) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 		$innslag = new innslag($innslagsID, false);
 
 		$this->sjekkTilgang($innslagsID);
 
-		$innslag->removePerson($personID);
+		$innslag->removePerson($personID, 'delta', $user->getPameldUser(), $pl_id);
 		
 	}
 
@@ -188,16 +189,18 @@ class InnslagService {
 		$person->set('instrument', $instrument);
 		$person->set('instrument_object', json_encode( $instrument_object ) );
 		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
-		$person->lagre('delta', $user->getId(), $pl_id);
+		$person->lagre('delta', $user->getPameldUser(), $pl_id);
 	}
 	
 	public function lagreBeskrivelse($innslagsID, $beskrivelse) {
 		$innslag = new innslag($innslagsID, false);
-		
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
+
 		if ( $innslag->get('b_description') != utf8_encode($beskrivelse)) {
 	        $innslag->set('b_description', $beskrivelse);
 	        $innslag->set('td_konferansier', $beskrivelse); // Hvorfor lagrer ikke denne?
-	    	$innslag->lagre();
+	    	$innslag->lagre('delta', $user->getPameldUser(), $pl_id);
 	    }
 	}	
 
@@ -205,10 +208,12 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 		
 		$this->sjekkTilgang($innslagsID);
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 
 		if ( $innslag->get('b_name') != utf8_encode($artistnavn)) {
 	        $innslag->set('b_name', $artistnavn);
-	    	$innslag->lagre();
+	    	$innslag->lagre('delta', $user->getPameldUser(), $pl_id);
 	    }
 	}	
 
@@ -216,20 +221,25 @@ class InnslagService {
 		$innslag = new innslag($innslagsID, false);
 
 		$this->sjekkTilgang($innslagsID);
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 
 		if ( $innslag->get('b_status') != $b_status) {
 			$innslag->set('b_status', $b_status);
-			$innslag->lagre();
+			$innslag->lagre('delta', $user->getPameldUser(), $pl_id);
 		}
 	}
 
 	public function lagreSjanger($innslagsID, $sjanger) {
 		$innslag = new innslag($innslagsID, false);
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->info['pl_id'];
+		//var_dump($pl_id);
 		// var_dump($teknisk);
 		
 		$this->sjekkTilgang($innslagsID);
 		$innslag->set('b_sjanger', $sjanger);
-	   	$innslag->lagre();
+	   	$innslag->lagre('delta', $user->getPameldUser(), $pl_id);
 	}
 
 	public function lagreTekniskeBehov($innslagsID, $teknisk) {
@@ -237,8 +247,11 @@ class InnslagService {
 		// var_dump($teknisk);
 		$this->sjekkTilgang($innslagsID);
 
+		$user = $this->container->get('ukm_user')->getCurrentUser();
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
+
 		$innslag->set('td_demand', $teknisk);
-	   	$innslag->lagre();
+	   	$innslag->lagre('delta', $user->getPameldUser(), $pl_id);
 	}
 
 	public function hentAdvarsler($innslagsID, $pl_id) {
