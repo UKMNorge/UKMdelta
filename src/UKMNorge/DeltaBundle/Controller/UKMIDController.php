@@ -119,6 +119,9 @@ class UKMIDController extends Controller
             $person = $personService->hent($user->getPameldUser());
             $view_data['person'] = $person; 
             $view_data['age'] = $personService->alder($person);
+            if ($view_data['age'] == '25+') {
+                $view_data['age'] = 0;
+            }
             $view_data['epost'] = $person->get('p_email');
         }
         

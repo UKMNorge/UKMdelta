@@ -40,7 +40,7 @@
 					{% for i in 10..25 %}
 						<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'contactAction.alderVelger.aar'|trans }}</option> 
 					{% endfor %}
-						<option value="0" {{ (age is defined) and (age > 25) ? 'selected' : '0' }}>{{ 'contactAction.alderVelger.gammel'|trans }}</option>
+						<option value="0" {{ (age is defined) and (age == 0 or age > 25) ? 'selected' : '0' }}>{{ 'contactAction.alderVelger.gammel'|trans }}</option>
 				</select>
 			</div>
 		{% endif %}
