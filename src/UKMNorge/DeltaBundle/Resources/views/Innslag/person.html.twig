@@ -38,11 +38,11 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<select name="alder" required class="form-control delta-select">
-						<option value="" {{ (person.get('age') is defined) and (person.get('age') < 25) and (person.get('age') > 9) and (person.get('age') != '25+') ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option> 
+						<option value="" {{ age is defined and (age < 25) and (age > 9) and (age != '25+') ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option> 
 						{% for i in 10..25 %}
-							<option value="{{ i }}" {{ (person.get('age') is defined) and (person.get('age') == i) ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({}, 'base') }}</option> 
+							<option value="{{ i }}" {{ age is defined and age == i ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({}, 'base') }}</option> 
 						{% endfor %}
-							<option value="0"{{ (person.get('age') is defined) and person.get('age') == '25+' ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
+							<option value="0"{{ age is defined and (age == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
 					</select>
 					<span class="caret delta-caret"></span>
 				</div>

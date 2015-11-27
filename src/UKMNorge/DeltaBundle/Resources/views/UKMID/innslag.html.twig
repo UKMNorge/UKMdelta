@@ -1,27 +1,36 @@
 {% trans_default_domain translationDomain %}
-{% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
+{% set isOkay = 
+( not (innslag.type is empty)) and 
+( not innslag.innslag.get('b_kommune') is empty) and 
+( not innslag.innslag.get('b_id') is empty) and 
+( not innslag.monstring.get('pl_id') is empty) %}
 
-<li class="list-group-item {% if innslag.pamelding_apen %}triggerLink click{% endif %}">
-	<div class="row">
-		<div class="col-xs-3 pull-right text-right">
-			{% if innslag.pamelding_apen %}
-				<a href="{{ link_target }}" class="btn btn-xs btn-success actionLink">{{ 'indexAction.rediger'|trans }}</a>
-			{% else %}
-				<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
-			{% endif %}
+{## SKJUL PÅMELDINGER SOM IKKE KAN VISES PGA FEIL I DATABASE ##}
+{% if isOkay %}
+	{% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
+
+	<li class="list-group-item {% if innslag.pamelding_apen %}triggerLink click{% endif %}">
+		<div class="row">
+			<div class="col-xs-3 pull-right text-right">
+				{% if innslag.pamelding_apen %}
+					<a href="{{ link_target }}" class="btn btn-xs btn-success actionLink">{{ 'indexAction.rediger'|trans }}</a>
+				{% else %}
+					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
+				{% endif %}
+			</div>
+			<div class="col-xs-9">
+				{% if innslag.pamelding_apen %}
+					<a href="{{ link_target }}">{{ innslag.innslag.get('b_name') }}</a>
+				{% else %}
+					{{ innslag.innslag.get('b_name') }}
+				{% endif %}
+				<br />
+				<small>
+					{{ innslag.innslag.get('kategori')|capitalize }} 
+					| 
+					{{ innslag.monstring.get('pl_name')|capitalize }}
+				</small>
+			</div>
 		</div>
-		<div class="col-xs-9">
-			{% if innslag.pamelding_apen %}
-				<a href="{{ link_target }}">{{ innslag.innslag.get('b_name') }}</a>
-			{% else %}
-				{{ innslag.innslag.get('b_name') }}
-			{% endif %}
-			<br />
-			<small>
-				{{ innslag.innslag.get('kategori')|capitalize }} 
-				| 
-				{{ innslag.monstring.get('pl_name')|capitalize }}
-			</small>
-		</div>
-	</div>
-</li>
+	</li>
+{% endif %}

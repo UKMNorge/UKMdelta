@@ -85,13 +85,13 @@ class UKMIDController extends Controller
         // Beregn birthdate basert på alder
         if ($age != 0) {
             $birthYear = (int)date('Y') - $age;
+            $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
+            $dato->setTimestamp($birthdate);
         }
         else {
             // Tilsvarer UNIX Timestamp = 0. Kunne også lagra som en int.
-            $birthYear = 1970;
+            $dato->setTimestamp(0);
         }
-        $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
-        $dato->setTimestamp($birthdate);
         // Legg til verdier i user-bundle
         $user->setAddress($address);
         $user->setPostNumber($postNumber);
@@ -104,71 +104,99 @@ class UKMIDController extends Controller
     }
 
     public function editContactAction() {
-        require_once('UKM/person.class.php');
-        $user = $this->get('ukm_user')->getCurrentUser();
         $view_data = array();
+        require_once('UKM/person.class.php');
+        $personService = $this->get('ukm_api.person');
+        $user = $this->get('ukm_user')->getCurrentUser();
 
+        if ($user->getPameldUser() == null) {
+           
+            // Hent alder fra UserBundle
+            $view_data['epost'] = $user->getEmail();
+            //$view_data['age'] = null;
+        }
+        else {
+            $person = $personService->hent($user->getPameldUser());
+            $view_data['person'] = $person; 
+            $view_data['age'] = $personService->alder($person);
+            $view_data['epost'] = $person->get('p_email');
+        }
+        
+       
         $view_data['translationDomain'] = 'ukmid';
-        $view_data['user'] = $user;
-        $person = new person($user->getPameldUser());
-        $view_data['epost'] = $person->get('p_email');
-        $view_data['age'] = $person->alder();
+        $view_data['user'] = $user;        
+        // $person = new person($user->getPameldUser());
         return $this->render('UKMDeltaBundle:UKMID:contact.html.twig', $view_data);
     }
 
     public function saveContactAction() {
         require_once('UKM/person.class.php');
         $user = $this->get('ukm_user')->getCurrentUser();
-        $person = new person($user->getPameldUser());
         $userManager = $this->container->get('fos_user.user_manager');
         
         // Ta i mot post-variabler
         $request = Request::createFromGlobals();
 
+        // Dette vet vi alltid
         $fornavn = $request->request->get('fornavn');
         $etternavn = $request->request->get('etternavn');
         $mobil = $request->request->get('mobil');
         $epost = $request->request->get('epost');
-        $adresse = $request->request->get('adresse');
-        $postnummer = $request->request->get('postnummer');
-        $poststed = $request->request->get('poststed');
-        $alder = $request->request->get('age');
-        
-        // Beregn birthdate basert på age?
-        if ($alder != 0) {
-            $birthYear = (int)date('Y') - $alder;
-        }
-        else {
-            $birthYear = 1970;
-        }
-        $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
-        $dato = new DateTime('now');
-        $dato->setTimestamp($birthdate);
 
+        // Dette vet vi kun om personen har meldt på et innslag!
+        if ($user->getPameldUser() != null) {
+            $person = new person($user->getPameldUser());
+
+            // Alder
+                        $alder = $request->request->get('age');
+            // Beregn birthdate basert på age?
+            if ($alder != 0) {
+                $birthYear = (int)date('Y') - $alder;
+            }
+            else {
+                $birthYear = 1970;
+            }
+            $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
+            $dato = new DateTime('now');
+            $dato->setTimestamp($birthdate);
+            $user->setBirthdate($dato);
+            $person->set('p_dob', $dato->getTimestamp());
+            
+            // Adresse
+            $adresse = $request->request->get('adresse');
+            $user->setAddress($adresse);
+            $person->set('p_adress', $adresse);
+
+            $postnummer = $request->request->get('postnummer');
+            $user->setPostNumber($postnummer); 
+            $person->set('p_postnumber', $postnummer);
+            
+            // Poststed
+            $poststed = $request->request->get('poststed'); 
+            $user->setPostPlace($poststed);
+            $person->set('p_postplace', $poststed);
+            
+
+            // Lagre til databasen
+            $person->set('p_firstname', $fornavn);
+            $person->set('p_lastname', $etternavn);
+            $person->set('p_email', $epost);
+            $person->set('p_phone', $mobil);
+            
+            $person->lagre('delta', $user->getPameldUser());
+        }
+        
+
+        
         // Lagre til UserBundle
         $user->setFirstName($fornavn);
         $user->setLastName($etternavn);
         $user->setPhone($mobil);
         $user->setEmail($epost);
-        $user->setAddress($adresse);
-        $user->setPostNumber($postnummer);
-        $user->setPostPlace($poststed);
-        $user->setBirthdate($dato);
+    
         // Lagre user
         $userManager->updateUser($user);
 
-        // Lagre til databasen
-        $person->set('p_firstname', $fornavn);
-        $person->set('p_lastname', $etternavn);
-        $person->set('p_dob', $dato->getTimestamp());
-        $person->set('p_email', $epost);
-        $person->set('p_phone', $mobil);
-        #$person->set('p_kommune', '');
-        $person->set('p_postnumber', $postnummer);
-        $person->set('p_postplace', $poststed);
-        $person->set('p_adress', $adresse);
-
-        $person->lagre('delta', $user->getPameldUser());
         // Legg til info om det gikk bra
         $this->addFlash('success', 'Endringene ble lagret!');
         return $this->redirectToRoute('ukm_delta_ukmid_homepage');

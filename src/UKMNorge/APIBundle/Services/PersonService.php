@@ -98,7 +98,7 @@ class PersonService {
 			$age = $birthdate->diff($now)->y;
 		}
 
-        $person->set('age', $age);
+        // $person->set('age', $age);
         return $age;
 	}
 

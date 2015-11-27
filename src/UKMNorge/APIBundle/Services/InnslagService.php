@@ -129,6 +129,7 @@ class InnslagService {
 			$innslag = new stdClass();
 			if ($row['bt_id'] == 1) {
 				$innslag->type = $row['b_kategori']; 
+				$innslag->id = $row['b_id'];
 			}
 			else {
 				$innslag->type = getBandTypeFromID($row['bt_id']);
@@ -141,6 +142,7 @@ class InnslagService {
 			$innslag->innslag = new innslag($row['b_id'], false);			
 			$innslag_etter_status[ $row['b_status'] == 8 ? 'fullstendig' : 'ufullstendig' ][] = $innslag;
 		}
+		// var_dump($innslag_etter_status);
 		return $innslag_etter_status;
 	}
 
