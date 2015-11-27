@@ -42,7 +42,7 @@ window.onbeforeunload = function() {
 };
 
 
-$(document).on('touchend click', "a.btn:not(.isClicked)", function(e) {
+$(document).on('touchend click', "a.btn:not(.isClicked, .this-is-js)", function(e) {
 	e.preventDefault();
     $(this).addClass('isClicked').val('Vennligst vent...').html('Vennligst vent...');
 	window.location.href = $(this).attr('href');

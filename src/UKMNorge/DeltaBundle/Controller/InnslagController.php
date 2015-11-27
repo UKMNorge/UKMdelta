@@ -693,7 +693,6 @@ class InnslagController extends Controller
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??
         if($view_data['status'] == 8) {
-        	$this->addFlash('success', 'Gratulerer! Du er den første påmeldte i UKM 2016!');
             //$innslagService->lagreStatus($b_id, 8);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
         }
