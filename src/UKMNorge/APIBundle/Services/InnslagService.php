@@ -312,7 +312,7 @@ class InnslagService {
 
 		$innslag = new innslag($b_id, false);
 
-		if (($innslag->get('b_password') != 'delta_'.$u_id) || ($innslag->get('b_contact') != $p_id) ) {
+		if (($innslag->get('b_password') != 'delta_'.$u_id) && ($innslag->get('b_contact') != $p_id) ) {
 			throw new Exception('Du har ikke tilgang til dette innslaget!');
 		}
 
