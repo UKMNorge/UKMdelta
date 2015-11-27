@@ -368,7 +368,11 @@ class User extends BaseUser
      */
     public function getPostNumber()
     {
-        return $this->post_number;
+        (string)$postnummer = $this->post_number;
+        while (strlen($postnummer) < 4) {
+            $postnummer = '0' . $postnummer;
+        }
+        return $postnummer;
     }
 
     /**

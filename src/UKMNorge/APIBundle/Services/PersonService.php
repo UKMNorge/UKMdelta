@@ -83,6 +83,12 @@ class PersonService {
 			throw new Exception('Fant ikke person med id ' . $id);
 		}
 
+		$postnummer = $person->get('p_postnumber');
+		while (strlen($postnummer) < 4) {
+			$postnummer = '0'.$postnummer;
+		}
+		// Fiks for visning.
+		$person->set('p_postnumber', $postnummer);
 		return $person;
 	}
 
