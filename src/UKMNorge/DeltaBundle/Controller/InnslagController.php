@@ -63,9 +63,8 @@ class InnslagController extends Controller
 				$monstring->fellesmonstring = false;
 			}
 		}
-        $view_data['lokalt_fylke'] = new monstring($monstring->fylke_id);
-        var_dump($view_data['lokalt_fylke']);
-        die();
+
+        $view_data['lokalt_fylke'] = new monstring($monstring->fylke);
         $view_data['lokal_monstring'] = $monstring;
         
 
