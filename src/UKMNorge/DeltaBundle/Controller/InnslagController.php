@@ -518,7 +518,7 @@ class InnslagController extends Controller
 					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
 		        	break;
 		        case 'arrangor':
-		       		$view_data['funksjoner'] = array('lyd','lys','artistvert','scenearbeider','info','koordinator');
+		       		$view_data['funksjoner'] = array('lyd','lys','scenearbeider','artistvert','info','koordinator');
 					$tittellos_person = $this->_hent_tittellos_person( $b_id );					
 					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
 		        	break;
