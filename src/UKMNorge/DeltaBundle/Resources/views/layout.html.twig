@@ -10,6 +10,32 @@
 	{% endstylesheets %}
 {% endblock %}
 
+{% block navbar_button %}
+	{# Din Side-knapp #}
+	{% if app.user %}{# Kun vis denne om brukeren er innlogget #}
+		<div class="pull-right delta-home">
+			<button {# class="navbar-toggle"  #}data-action="show"{#  data-toggle="#ukm_mobile_nav" #} data-toggletitle="Hovedmeny" data-toggleclose="Lukk meny" data-showJumboUKM="true" id="show_main_mobile_menu">
+			{# <a href="{{ path('ukm_delta_ukmid_contact') }}"> #}
+				{{ app.user.getFirstName() is defined ? app.user.getFirstName() : '' }}
+				{% if UKM_HOSTNAME == 'ukm.dev' %}
+					<img src="http://ico.ukm.no/toy-ninja-32.png" height="28" class="img img-circle">
+				{% else %}
+					<img src="http://ico.ukm.no/toy-blue-32.png" height="28" class="img img-circle">
+				{% endif %}
+			</button>
+			<div class="clearfix"></div>
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block xs_menu_content %}
+	{% if not (dinside is defined) %}<a href="{{ path('ukm_delta_ukmid_homepage') }}" id="" class="btn btn-block btn-default this-is-js">{{ 'meny.dinside'|trans({}, 'base') }}</a>{% endif %}
+	<a href="{{ path('ukm_delta_ukmid_contact') }}" id="" class="btn btn-block btn-default this-is-js">{{ 'meny.rediger'|trans({}, 'base') }}</a>
+	<a href="{{ path('fos_user_change_password') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.passord'|trans({}, 'base') }}</a>
+	<a href="{{ path('ukm_delta_ukmid_support') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.support'|trans({}, 'base') }}</a>
+	<a href="{{ path('fos_user_security_logout') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.loggut'|trans({}, 'base') }}</a>
+{% endblock %}
+
 {% block content_pre %}
 	{# DENNE TAR KUN ERRORS #}
 	{#{% embed "UKMDesignBundle:FlashBag:list.html.twig" %}{% endembed %}} #}
