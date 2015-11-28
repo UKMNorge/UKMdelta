@@ -64,7 +64,7 @@ removeAction:
     overskrift: Vil du virkelig melde av innslaget "%name%"?
     ja: Ja, meld av innslaget
     nei: Nei, ta meg tilbake til oversikten
-    fjernet: Innslaget "%name" ble fjernet.
+    fjernet: Innslaget "%name" ble meldt av.
 
 technicalAction:
     overskrift: Skriv inn tekniske behov
