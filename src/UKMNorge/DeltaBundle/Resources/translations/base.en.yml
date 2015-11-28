@@ -61,7 +61,7 @@ statusAction:
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     
 removeAction:
-    overskrift: Vil du virkelig fjerne innslaget "%name%"?
+    overskrift: Vil du virkelig melde av innslaget "%name%"?
     ja: Ja, meld av innslaget
     nei: Nei, ta meg tilbake til oversikten
     fjernet: Innslaget "%name" ble fjernet.
