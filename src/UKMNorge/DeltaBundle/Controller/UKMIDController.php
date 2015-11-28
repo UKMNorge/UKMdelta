@@ -137,6 +137,7 @@ class UKMIDController extends Controller
         require_once('UKM/person.class.php');
         $user = $this->get('ukm_user')->getCurrentUser();
         $userManager = $this->container->get('fos_user.user_manager');
+        $innslagService = $this->container->get('ukm_api.innslag');
         
         // Ta i mot post-variabler
         $request = Request::createFromGlobals();
@@ -150,9 +151,8 @@ class UKMIDController extends Controller
         // Dette vet vi kun om personen har meldt på et innslag!
         if ($user->getPameldUser() != null) {
             $person = new person($user->getPameldUser());
-
             // Alder
-                        $alder = $request->request->get('age');
+            $alder = $request->request->get('age');
             // Beregn birthdate basert på age?
             if ($alder != 0) {
                 $birthYear = (int)date('Y') - $alder;
@@ -179,7 +179,6 @@ class UKMIDController extends Controller
             $poststed = $request->request->get('poststed'); 
             $user->setPostPlace($poststed);
             $person->set('p_postplace', $poststed);
-            
 
             // Lagre til databasen
             $person->set('p_firstname', $fornavn);
@@ -188,6 +187,23 @@ class UKMIDController extends Controller
             $person->set('p_phone', $mobil);
             
             $person->lagre('delta', $user->getPameldUser());
+
+            // Har personen et eller flere tittelløse innslag?
+            // I så fall, oppdater navn på disse
+            $innslagsliste = $innslagService->hentInnslagFraKontaktperson($user->getPameldUser(), $user->getId());
+            //var_dump($innslagsliste);
+            foreach ($innslagsliste['fullstendig'] as $innslag) {
+                if ($innslag->innslag->tittellos()) {
+                    // Innslaget er et tittelløst innslag
+                    $innslagService->lagreArtistnavn($innslag->innslag->get('b_id'), $fornavn . ' '. $etternavn);
+                }
+            }
+            foreach ($innslagsliste['ufullstendig'] as $innslag) {
+                if ($innslag->innslag->tittellos()) {
+                    // Innslaget er et tittelløst innslag
+                    $innslagService->lagreArtistnavn($innslag->innslag->get('b_id'), $fornavn . ' '. $etternavn);
+                }
+            }
         }
         
 
