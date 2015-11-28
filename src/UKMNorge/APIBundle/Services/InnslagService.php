@@ -163,8 +163,9 @@ class InnslagService {
 
 	public function fjernPerson($innslagsID, $personID) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
-		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 		$innslag = new innslag($innslagsID, false);
+		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
+		
 
 		$this->sjekkTilgang($innslagsID);
 
