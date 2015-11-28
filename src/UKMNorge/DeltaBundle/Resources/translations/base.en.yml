@@ -25,6 +25,13 @@ ja: ja
 nei: nei
 avbryt: avbryt
 
+meny:
+    dinside: Gå til Din side
+    rediger: Rediger din informasjon
+    passord: Endre passord
+    support: Kontakt support
+    loggut: Logg ut
+
 filmfoto:
     samtykke: |
         UKM er et offentlig arrangement, og det tas ofte bilder og video av deltakerne. 

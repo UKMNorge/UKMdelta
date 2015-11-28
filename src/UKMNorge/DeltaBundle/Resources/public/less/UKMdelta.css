@@ -62,10 +62,10 @@ h1, .h1 {
 	margin-right: 0.2em;
 }
 
-.delta-home a {
+.delta-home button {
 	display: block;
 	position: absolute;
-
+	background-color: white;
 	padding-top: 3px;
     padding-left: 0.6em;
     padding-right: 0em;
