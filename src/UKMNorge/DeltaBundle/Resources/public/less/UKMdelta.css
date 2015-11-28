@@ -153,6 +153,10 @@ h1, .h1 {
 
 }
 
+.delta-list span.label-danger {
+	color: white;
+}
+
 .summaryDetailsList > .details,
 .inactiveSummaryDetailsList > .details {
 	display: none;
