@@ -11,9 +11,11 @@
 					{{ loop.first ? '' : ', ' }}
 						{{ person.p_firstname is defined ? person.p_firstname : '' }} 
 						{{ person.p_lastname is defined ? person.p_lastname : '' }} 
-						<small>({{ person.age is defined ? person.age~', ' : ''}}
+						<small>({{ person.age is defined ? person.age : ''}}
 						{% if (person.instrument is defined) and not ( person.instrument is empty) %}
-							{{ person.instrument }}{% else %}<span class="text-danger">{{ 'person.rolle.ukjent'|trans }}</span>{% endif %})</small>
+							{{ ', ' }} {{ person.instrument }})
+						{% else %})<span class="label label-danger">{{ 'person.rolle.ukjent'|trans }}</span>
+						{% endif %}</small>
 							{% else %}
 					{{ 'overviewAction.personer.ingen'|trans }}
 				{% endfor %}
