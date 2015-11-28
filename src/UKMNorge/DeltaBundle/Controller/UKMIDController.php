@@ -205,4 +205,9 @@ class UKMIDController extends Controller
         $this->addFlash('success', 'Endringene ble lagret!');
         return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
+
+    public function supportAction() {
+        $view_data['translationDomain'] = 'ukmid';
+        return $this->render('UKMDeltaBundle:UKMID:support.html.twig', $view_data);
+    }
 }

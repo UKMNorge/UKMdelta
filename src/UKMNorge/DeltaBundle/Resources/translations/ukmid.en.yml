@@ -49,3 +49,13 @@ contactAction:
         gammel: Over 25 år
     lagre: Lagre og gå til oversikten
     avbryt: avbryt
+
+supportAction:
+    overskrift: Trenger du hjelp?
+    topptekst: |
+        De fleste spørsmål er det lokalkontakten som kan svare på.
+        Hvis du har tekniske spørsmål kan du kontakte support.
+    support: |
+        Support kan nås på epost: support@ukm.no
+        Eller telefon 464 21 625.
+    hjem: Gå til Din Side

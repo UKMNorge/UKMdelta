@@ -40,6 +40,10 @@ ukm_delta_ukmid_contact_save:
     defaults: { _controller: UKMDeltaBundle:UKMID:saveContact }
     methods:  [POST]
 
+ukm_delta_ukmid_support:
+    path:     /ukmid/support/
+    defaults: { _controller: UKMDeltaBundle:UKMID:support }
+
 ### INNSLAG
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
