@@ -33,6 +33,7 @@ class UKMIDController extends Controller
 		        $innslag->pamelding_apen = $innslag->monstring->subscribable( 'pl_deadline'. ($innslag->tittellos ? '2':'') );
 	        }
         }
+        $view_data['dinside'] = true;
         $view_data['alle_innslag'] = $innslagsliste;
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
