@@ -3,7 +3,8 @@ overviewAction:
     beskrivelse:
         label: Beskrivelse av deg og din erfaring
         placeholder: >
-            Eks. Jeg har siden jeg var 8 år tatt bilder, og har de siste 4 årene jobbet med videoreportasjer. YouTube-kanalen min har mer enn 10 000 subscribers, som jeg er meget godt fornøyd med. Her legger jeg ut mine filmer.
+            Eks. Jeg har siden jeg var 8 år tatt bilder, og har de siste 4 årene jobbet med videoreportasjer. 
+            YouTube-kanalen min har mer enn 10 000 subscribers, som jeg er meget godt fornøyd med. Her legger jeg ut mine filmer.
     lagre: Lagre
 
 
@@ -15,7 +16,6 @@ funksjon:
     tekst: Journalist
     foto: Fotograf
     videoreportasjer: Videoreportasjer
+    pr: PR og pressekontakt
     flerkamera_regi: Flerkamera, regi
     flerkamera_kamera: Flerkamera, kamera
-    pr: PR
-    
