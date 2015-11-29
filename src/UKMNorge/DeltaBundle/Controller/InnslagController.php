@@ -691,6 +691,7 @@ class InnslagController extends Controller
         $view_data['innslag'] = $innslag;
         $view_data['status_real'] = $status;
 
+        var_dump($view_data['grunner']);
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??
         if($view_data['status'] == 8) {

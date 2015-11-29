@@ -48,6 +48,10 @@
 							</ul>
 						{% endfor %}
 					{% endif %}
+				{% elseif kategori == 'kontakt' %}
+					{% for arsak in grunner_i_kategori %}
+						<li><a href="{{ path('ukm_delta_ukmid_contact') }}">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</a></li>
+					{% endfor %}
 				{% else %}
 					{% for arsak in grunner_i_kategori %}
 						<li>{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</li>
