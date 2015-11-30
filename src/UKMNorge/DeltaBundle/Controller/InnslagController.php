@@ -688,18 +688,23 @@ class InnslagController extends Controller
         // die();
         $view_data['grunner'] = $validering[1];
         $personService = $this->get('ukm_api.person');
-        foreach($validering[1]['personer'] as $pers) {
-            $view_data['pers'][$pers[0]] = $personService->hent($pers[0]);
+        if (array_key_exists('personer', $validering[1]) && is_array($validering[1]['personer'])) {
+            foreach($validering[1]['personer'] as $pers) {
+                $view_data['pers'][$pers[0]] = $personService->hent($pers[0]);
+            }    
         }
         
-        switch( $type ) {
-            case 'film':        $form = 'smartukm_titles_video';        break;
-            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
-            default:            $form = 'smartukm_titles_scene';        break;
+        if (array_key_exists('titler', $validering[1]) && is_array($validering[1]['titler'])) {
+            switch( $type ) {
+                case 'film':        $form = 'smartukm_titles_video';        break;
+                case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+                default:            $form = 'smartukm_titles_scene';        break;
+            }
+            foreach($validering[1]['titler'] as $tittel) {
+                $view_data['t'][$tittel[0]] = $tittel = new tittel($tittel[0], $form);
+            }
         }
-        foreach($validering[1]['titler'] as $tittel) {
-            $view_data['t'][$tittel[0]] = $tittel = new tittel($tittel[0], $form);
-        }
+
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
