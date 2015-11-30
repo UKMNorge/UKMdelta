@@ -661,6 +661,7 @@ class InnslagController extends Controller
     public function statusAction($k_id, $pl_id, $type, $b_id) {
         require_once('UKM/inc/validate_innslag.inc.php');
         require_once('UKM/monstring.class.php');
+        require_once('UKM/tittel.class.php');
 
         $route_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = $type;
@@ -686,12 +687,26 @@ class InnslagController extends Controller
         // var_dump($innslag);
         // die();
         $view_data['grunner'] = $validering[1];
+        $personService = $this->get('ukm_api.person');
+        foreach($validering[1]['personer'] as $pers) {
+            $view_data['pers'][$pers[0]] = $personService->hent($pers[0]);
+        }
+        
+        switch( $type ) {
+            case 'film':        $form = 'smartukm_titles_video';        break;
+            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            default:            $form = 'smartukm_titles_scene';        break;
+        }
+        foreach($validering[1]['titler'] as $tittel) {
+            $view_data['t'][$tittel[0]] = $tittel = new tittel($tittel[0], $form);
+        }
         //var_dump($view_data['grunner']);
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
         $view_data['status_real'] = $status;
 
-        var_dump($view_data['grunner']);
+        // var_dump($view_data['grunner']);
+        // var_dump($view_data['t']);
         // Oppdater status på innslaget! 
         // ValidateBand2 tar seg av status-oppdateringen??
         if($view_data['status'] == 8) {

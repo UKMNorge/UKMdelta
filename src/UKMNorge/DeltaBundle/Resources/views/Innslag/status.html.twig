@@ -20,41 +20,53 @@
 	<div class="col-xs-12 delta-fat">
 		<span class="">{{ 'statusAction.infotekst'|trans }}</span>
 	
-		<ul class="col-xs-12 list-unstyled">
+		<ul class="col-xs-12 list-group">
 			{# {% for tekst in grunner %}
 				<li>- {{ ('statusAction.'~tekst)|trans }}</li>
 			{% endfor %} #}
 			{% for kategori, grunner_i_kategori in grunner %}
 				{% if kategori == 'personer' %}
 					{% for person in grunner_i_kategori %}
-						{{ 'mangler.overskrift.person'|trans({'%person': person[0]}, 'base') }}
-						<ul>
-							{% for arsak_person in person[1] %}
-								<li>{{ ( 'mangler.' ~ arsak_person )|trans({}, 'base') }}</li>
-							{% endfor %}
-						</ul>
+						<li class="list-group-item">
+							<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person[0] } ) }}">{{ 'mangler.overskrift.person'|trans({'%person': pers[person[0]].get('name') }, 'base') }}</a>
+							<ul>
+								{% for arsak_person in person[1] %}
+									<li>{{ ( 'mangler.' ~ arsak_person )|trans({}, 'base') }}</li>
+								{% endfor %}
+							</ul>
+						</li>
 					{% endfor %}
 				{% elseif kategori == 'titler' %}
 					{% if grunner_i_kategori[0] == 'tittel.mangler' %} 
 						{# Hvis det ikke finnes noen titler #}
-						{{ 'mangler.tittel.mangler'|trans({}, 'base') }} 
+						<li class="list-group-item"><a href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" >{{ 'mangler.tittel.mangler'|trans({}, 'base') }}</a></li>
 					{% else %} {# Hvis det finnes titler i arrayet #}
 						{% for tittel in grunner_i_kategori %} {# For hver tittel som mangler noe #}
-							{{ 'mangler.overskrift.tittel'|trans({'%tittel': tittel[0]}, 'base') }}
+						<li class="list-group-item">
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel[0] }) }}">{{ 'mangler.overskrift.tittel'|trans({'%tittel': t[tittel[0]].get('tittel')}, 'base') }}</a>
 							<ul>
 								{% for arsak_tittel in tittel[1] %}{# For hver feil i hver tittel #}
 									<li>{{ ( 'mangler.' ~ arsak_tittel )|trans({}, 'base') }}</li>
 								{% endfor %}
 							</ul>
+						</li>
 						{% endfor %}
 					{% endif %}
+				{% elseif kategori == 'innslag' %}
+					{% for arsak in grunner_i_kategori %}
+						<li class="list-group-item"><a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</a></li>
+					{% endfor %}
 				{% elseif kategori == 'kontakt' %}
 					{% for arsak in grunner_i_kategori %}
-						<li><a href="{{ path('ukm_delta_ukmid_contact') }}">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</a></li>
+						<li class="list-group-item"><a href="{{ path('ukm_delta_ukmid_contact') }}">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</a></li>
+					{% endfor %}
+				{% elseif kategori == 'teknisk' %}
+					{% for arsak in grunner_i_kategori %}
+						<li class="list-group-item"><a href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</a></li>
 					{% endfor %}
 				{% else %}
 					{% for arsak in grunner_i_kategori %}
-						<li>{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</li>
+						<li class="list-group-item">{{ ( 'mangler.' ~ arsak )|trans({}, 'base' ) }}</li>
 					{% endfor %}
 				{% endif %}
 			{% endfor %}
