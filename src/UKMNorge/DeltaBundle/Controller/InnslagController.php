@@ -735,6 +735,11 @@ class InnslagController extends Controller
         $start->setTimestamp($monstring->get('pl_start'));
 
         $name = $monstring->get('pl_name');
+
+
+        // Tekst som deles på facebook!
+        $view_data['fb_share_caption'] = $this->get('translator')->trans('fb_share', array('%monstring' => $name), 'base');
+
         $view_data['pl_navn'] = $name;
 
         $pl_start['dag'] = $start->format("d");

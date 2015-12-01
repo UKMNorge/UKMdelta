@@ -1,6 +1,47 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
+{% block scripts %}
+	{{ parent() }}
+
+	<script>
+		window.fbAsyncInit = function() {
+		FB.init({
+		  appId      : '141016739323676',
+		  xfbml      : true,
+		  version    : 'v2.5'
+		});
+		};
+
+		(function(d, s, id){
+		 var js, fjs = d.getElementsByTagName(s)[0];
+		 if (d.getElementById(id)) {return;}
+		 js = d.createElement(s); js.id = id;
+		 js.src = "//connect.facebook.net/en_US/sdk.js";
+		 fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+
+		$(document).on("click", "#share", function() {
+			FB.ui({
+	  			method: 'share',
+	  			href: 'http://delta.ukm.no',
+	  			caption: '{{ fb_share_caption }}',
+	  			picture: 'http://grafikk.ukm.no/pamelding/startpamelding.png',
+			}, function(response){});
+		});
+
+		// jQuery(document).ready( function() {
+		// 	setTimeout(function() {
+		// 		FB.ui({
+		//   			method: 'share',
+		//   			href: 'http://delta.ukm.no',
+		// 		}, function(response){});
+		// 	}, 2000);
+		// });
+	</script>
+{% endblock %}
+
 {% block content %}
 	{# CONTENT #}
 	<h1 class="center">
@@ -40,6 +81,12 @@
 		<div class="col-xs-10 col-xs-offset-1">
 			<a type="button" class="btn btn-block btn-default" href="http://www.ukm.no/pl{{ pl_id }}#kontaktpersoner" target="_lokalside">{{ 'attendingAction.viskontakt'|trans }}</a>
 		</div>	
+	</div>
+	<p>&nbsp;</p>
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+			<button class="btn btn-block btn-default" id="share">{{ 'fb_share_button'|trans({}, 'base') }}</button>
+		</div>
 	</div>
 	<p>&nbsp;</p>
 	<div class="row">
