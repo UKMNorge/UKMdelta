@@ -15,6 +15,7 @@ namespace UKMNorge\UserBundle\Controller;
 /* E.O FROM PARENT */
 
 use UKMNorge\UserBundle\UKMUserEvents;
+use UKMNorge\UserBundle\Entity\SMSValidation;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
@@ -110,12 +111,15 @@ class RegistrationController extends BaseController
 		return $this->render('UKMUserBundle:Registration:phoneExists.html.twig', $view_data );
 	}
 	
-	
 	public function checkSMSAction(Request $request) {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
         $sent_before = $request->query->get('sent_before');
+        $userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserByEmail($email);
+		$phone = $user->getPhone();
+		// var_dump($user);
 
-        $view_data = array( 'email' => $email, 'sent_before' => $sent_before );
+        $view_data = array( 'email' => $email, 'sent_before' => $sent_before, 'phone' => $phone );
         return $this->render('UKMUserBundle:Registration:check-sms.html.twig', $view_data);
 	}
 	
@@ -150,6 +154,67 @@ class RegistrationController extends BaseController
 		return $this->redirect( $url );
 	}
 	
+	# Reverse SMS Validation 
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Funksjonen setter informasjon i SMSValidation-tabellen og
+	# rendrer et view som sier at personen skal sende SMS til oss.
+	public function noSMSAction($phone) {
+		$view_data['translationDomain'] = 'messages';
+		$view_data['nummer'] = $phone;
+
+		$userProvider = $this->get('ukm_user.user_provider');
+		// $userManager = $this->get('ukm_user')
+		// Kaster exception if not?
+		$user = $userProvider->findUserByPhoneOrEmail($phone);
+
+		// Registrer i SMSValidation-tabellen
+		$em = $this->getDoctrine()->getManager();
+		$smsval = new SMSValidation();
+		// Sett verdier
+		$smsval->setUserId($user->getId());
+		$smsval->setPhone($phone);
+		$smsval->setValidated(false);
+		
+		$em->persist($smsval);
+		$em->flush();
+
+		$view_data['kode'] = 'V' . $user->getId();
+		// var_dump($user);
+		return $this->render('UKMUserBundle:Registration:no-sms.html.twig', $view_data);
+	}
+	
+	# Reverse SMS Validaton
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Sjekker om SMS er mottatt, 
+	# og rendrer et view som viser at vi fortsatt leter,
+	# inkl. AJAX-kall hvis ikke.
+	public function waitSMSAction($phone) {
+		$view_data = array('phone' => $phone);
+		if (checkSMSValidation($phone)) {
+			// Alt er ok, vi har mottatt SMS!
+			return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
+		}
+
+
+		return $this->render('UKMUserBundle:Registration:sms-wait.html.twig', $view_data);
+		// S
+	}
+
+	# Reverse SMS Validation
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Tar inn tlf. nummer og ser etter innkommende SMS
+	# Hvis meldingen er mottatt, fiks tabellene og returner true.
+	# Hvis meldingen ikke er mottatt, returner false.
+	public function checkSMSValidation($phone) {
+
+
+	}
     /**
      * Tell the user his account is now confirmed
      */

@@ -15,15 +15,17 @@
 		{% endif %}
 		
 		<p class="lead center">
-			Vi har sendt en SMS-kode til <span class="bold">din mobil</span>
+			Vi har sendt en SMS-kode til <span class="bold">din mobil.</span>
 			<br />
 			Skriv inn denne i feltet nedenfor.
 		</p>
+		
 		<div class="form-group">
 			<label for="name">SMS-kode</label>
 			<input value="" type="text" class="form-control" id="smscode" name="smscode" placeholder="Skriv inn koden..." />
 		</div>
-		
+
+		<small class="right"><a href="{{ path('ukm_user_registration_no_sms', { phone: phone }) }}">Ikke fått SMS? Klikk her</a></small>
 		<button type="submit" class="btn btn-success btn-block center forcePageLoader" name="submit">Neste</button>
 	</form>
 {% endblock %}
