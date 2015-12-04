@@ -5,13 +5,15 @@ namespace UKMNorge\UserBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * SMSValidation
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UKMNorge\UserBundle\Entity\SMSValidationRepository")
+ * @ORM\Entity(repositoryClass="UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository")
  * 
  * @UniqueEntity("phone")
  * @UniqueEntity("user_id")

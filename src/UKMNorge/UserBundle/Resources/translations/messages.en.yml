@@ -13,3 +13,10 @@ nosms:
     videre: Når du har gjort dette kan du gå videre til neste side
     videreknapp: Jeg har sendt SMS
 
+waitsms:
+    header: Venter på SMS
+    top: |
+        Vi venter på SMS fra deg.
+        Det kan ta litt tid før den kommer frem,
+        men vi forteller deg så fort vi får den!
+    sub: Sjekker om vi har mottatt SMS...

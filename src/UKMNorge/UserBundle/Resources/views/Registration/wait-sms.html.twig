@@ -1,0 +1,18 @@
+{% extends "UKMUserBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+<h1 class="center">{{ 'waitsms.header'|trans }}</h1>
+<p>&nbsp;</p>
+<p class="center">{{ 'waitsms.top'|trans|nl2br }}</p>
+<p>&nbsp;</p>
+<div class="row">
+	<div class="col-xs-10 col-xs-offset-1 center">
+		<img src="http://ico.ukm.no/loading.gif">
+	</div>
+</div>
+<div class="col-xs-10 col-xs-offset-1 center">
+	<small class="center">{{ 'waitsms.sub'|trans }}</small>
+</div>
+
+{% endblock %}

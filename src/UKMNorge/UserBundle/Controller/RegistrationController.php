@@ -16,6 +16,8 @@ namespace UKMNorge\UserBundle\Controller;
 
 use UKMNorge\UserBundle\UKMUserEvents;
 use UKMNorge\UserBundle\Entity\SMSValidation;
+use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
+
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
@@ -194,13 +196,14 @@ class RegistrationController extends BaseController
 	# inkl. AJAX-kall hvis ikke.
 	public function waitSMSAction($phone) {
 		$view_data = array('phone' => $phone);
-		if (checkSMSValidation($phone)) {
+		$view_data['translationDomain'] = 'messages';
+		if ($this->checkSMSValidation($phone)) {
 			// Alt er ok, vi har mottatt SMS!
 			return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
 		}
 
 
-		return $this->render('UKMUserBundle:Registration:sms-wait.html.twig', $view_data);
+		return $this->render('UKMUserBundle:Registration:wait-sms.html.twig', $view_data);
 		// S
 	}
 
@@ -212,8 +215,13 @@ class RegistrationController extends BaseController
 	# Hvis meldingen er mottatt, fiks tabellene og returner true.
 	# Hvis meldingen ikke er mottatt, returner false.
 	public function checkSMSValidation($phone) {
-
-
+		$em = $this->getDoctrine()->getManager();
+		$r = $this->getDoctrine()->getRepository('UKMNorge\UserBundle\Entity\SMSValidation');
+		$smsVal = $r->findBy(array('phone' => $phone));
+		// $smsVal = $em->find('UKMNorge\UserBundle\Entity\SMSValidation', array('phone' => $phone));
+		
+		var_dump($smsVal);
+		return 0;
 	}
     /**
      * Tell the user his account is now confirmed
