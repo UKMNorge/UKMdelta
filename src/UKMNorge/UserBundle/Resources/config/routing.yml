@@ -2,6 +2,12 @@ ukm_user_registration_check_sms:
     path:     /register/check-sms
     defaults: { _controller: UKMUserBundle:Registration:checkSMS }
 
+ukm_user_registration_check_sms_ajax:
+    path:     /register/checkSMS-ajax/{phone}
+    defaults: { _controller: UKMUserBundle:Registration:SMSAjax }
+    requirements:
+        phone: ([0-9]{8})
+
 ukm_user_registration_validate_sms:
     path:     /register/validate-sms
     defaults: { _controller: UKMUserBundle:Registration:validateSMS }

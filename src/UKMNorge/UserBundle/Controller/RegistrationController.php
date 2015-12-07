@@ -17,6 +17,7 @@ namespace UKMNorge\UserBundle\Controller;
 use UKMNorge\UserBundle\UKMUserEvents;
 use UKMNorge\UserBundle\Entity\SMSValidation;
 use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
@@ -197,11 +198,13 @@ class RegistrationController extends BaseController
 	public function waitSMSAction($phone) {
 		$view_data = array('phone' => $phone);
 		$view_data['translationDomain'] = 'messages';
+		$view_data['ajax_url'] = $this->generateUrl('ukm_user_registration_check_sms_ajax', array(
+			'phone' => $phone));
 		if ($this->checkSMSValidation($phone)) {
-			// Alt er ok, vi har mottatt SMS!
-			return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
+			// Alt er ok, vi har mottatt SMS og skrudd på brukeren!
+			return $this->confirmedAction();			
+			#return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
 		}
-
 
 		return $this->render('UKMUserBundle:Registration:wait-sms.html.twig', $view_data);
 		// S
@@ -219,10 +222,53 @@ class RegistrationController extends BaseController
 		$r = $this->getDoctrine()->getRepository('UKMNorge\UserBundle\Entity\SMSValidation');
 		$smsVal = $r->findBy(array('phone' => $phone));
 		// $smsVal = $em->find('UKMNorge\UserBundle\Entity\SMSValidation', array('phone' => $phone));
-		
-		var_dump($smsVal);
+		if(count($smsVal) > 1) {
+			die('Flere enn én med samme tlfnummer!');
+		}
+		elseif(count($smsVal) < 1) {
+			die('Ingen med det telefonnummeret!');
+		}
+		else {
+			$smsVal = $smsVal[0];
+		}
+		#var_dump($smsVal);
+		if ($smsVal->getValidated() == true) {	
+			$userProvider = $this->get('ukm_user.user_provider');
+			$userManager = $this->get('fos_user.user_manager');
+			// $userManager = $this->get('ukm_user')
+			// Kaster exception if not?
+			$user = $userProvider->findUserByPhoneOrEmail($phone);
+			
+			/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        	$dispatcher = $this->get('event_dispatcher');
+
+        	$user->setConfirmationToken(null);
+        	$user->setEnabled(true);			
+			
+        	$userManager->updateUser($user);
+
+        	// Log in user
+        	$request = Request::createFromGlobals();
+        	$response = new Response();
+        	#$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+        	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+			return 1;
+		}
+		// var_dump($smsVal);
 		return 0;
 	}
+
+	public function SMSAjaxAction($phone) {
+		
+		$resp[] = array('validated' => $this->checkSMSValidation($phone));
+		$response = new Response();
+		$response->setContent(json_encode($resp));
+		
+		header('Content-Type: application/json; charset=utf-8');
+		
+		return $response;
+	}
+
     /**
      * Tell the user his account is now confirmed
      */
