@@ -28,6 +28,10 @@ ukm_user_registration_existing_phone:
     path:     /register/phone-exists-{phone}
     defaults: { _controller: UKMUserBundle:Registration:phoneExists }
 
-# ukm_user_login:
-#     path:     /login
-#     defaults: { _controller: UKMUserBundle:UKMSecurity:login }
+ukm_user_login:
+    path:     /login
+    defaults: { _controller: UKMUserBundle:UKMSecurity:login }
+
+ukm_dip_entry:
+    path:     /dip/token
+    defaults: { _controller: UKMUserBundle:UKMDip:token }
