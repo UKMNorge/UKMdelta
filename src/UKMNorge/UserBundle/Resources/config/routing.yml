@@ -27,3 +27,7 @@ ukm_user_registration_waiting_for_sms:
 ukm_user_registration_existing_phone:
     path:     /register/phone-exists-{phone}
     defaults: { _controller: UKMUserBundle:Registration:phoneExists }
+
+# ukm_user_login:
+#     path:     /login
+#     defaults: { _controller: UKMUserBundle:UKMSecurity:login }

@@ -28,7 +28,13 @@
 	{% endif %}
 
 </div>
-
+{% if rdirurl is defined and rdirurl == 'ambassador' %}
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2">
+			<p class="lead center">Etter innlogging blir du sendt tilbake til Ambassadør-siden</p>
+		</div>
+	</div>
+{% endif %}
 <div class="row">
 	<div class="hidden-xs col-sm-4">
 		<img src="http://ico.ukm.no/logginn-256.png" />
