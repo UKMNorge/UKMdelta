@@ -5,10 +5,7 @@ imports:
 framework:
     test: ~
     session:
-#        storage_id: session.storage.mock_file
-        cookie_domain: "delta.%UKM_HOSTNAME%"
-        save_path: "%kernel.cache_dir%/sessions"
-
+        storage_id: session.storage.mock_file
     profiler:
         collect: false
 
