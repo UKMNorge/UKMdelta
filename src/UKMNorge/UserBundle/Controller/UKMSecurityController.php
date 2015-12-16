@@ -57,6 +57,15 @@ class UKMSecurityController extends BaseController {
         // Sjekk om dette er en redirect-forespørsel
         if ($request->query->get('rdirurl') == 'ambassador') {
         	$data['rdirurl'] = 'ambassador';
+        	$data['rdirtoken'] = $request->query->get('token');
+        	
+      //   	// If logged in properly!
+    		// $securityContext = $this->get('security.context');
+    		// $router = $this->get('router');
+
+    		// if ($securityContext->isGranted('ROLE_USER')) {
+    		// 	return new ReirectResponse($ambURL, 302);
+    		// }
         }
         return $this->renderLogin($data);
     }

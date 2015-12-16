@@ -41,6 +41,8 @@
 	</div>
 	<div class="col-xs-12 col-sm-8">
 		<form action="{{ path("fos_user_security_check") }}" method="post">
+			<input type="hidden" name="_rdirurl" value="{{ rdirurl is defined ? rdirurl : '' }}" />
+			<input type="hidden" name="_rdirtoken" value="{{ rdirtoken is defined ? rdirtoken : '' }}" />
 		    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 		
 			<div class="form-group">
