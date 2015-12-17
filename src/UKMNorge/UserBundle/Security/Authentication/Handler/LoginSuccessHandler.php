@@ -83,6 +83,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $json['post_number'] = $user->getPostNumber();
         $json['post_place'] = $user->getPostPlace();
         $json['birthdate'] = $user->getBirthdate();
+        $json['facebook_id'] = $user->getFacebookId();
+        $json['facebook_id_unencrypted'] = $user->getFacebookIdUnencrypted();
+        $json['facebook_access_token'] = $user->getFacebookAccessToken();
+        $json['first_name'] = $user->getFirstName();
+        $json['last_name'] = $user->getLastName();
 
         $json = json_encode($json);
         #var_dump($json);
