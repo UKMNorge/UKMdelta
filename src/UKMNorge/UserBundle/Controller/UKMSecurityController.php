@@ -10,6 +10,11 @@ namespace UKMNorge\UserBundle\Controller;
 	use Symfony\Component\Security\Core\SecurityContextInterface;
 	use Symfony\Component\Security\Core\Exception\AuthenticationException;
 /* E.O FROM PARENT */
+
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 use UKMNorge\UserBundle\UKMUserEvents;
 use UKMNorge\UserBundle\Entity\User;
@@ -61,14 +66,35 @@ class UKMSecurityController extends BaseController {
         	$data['rdirurl'] = 'ambassador';
         	$data['rdirtoken'] = $request->query->get('token');
         	
-      //   	// If logged in properly!
-    		// $securityContext = $this->get('security.context');
-    		// $router = $this->get('router');
+            // If already logged in:
+            $securityContext = $this->get('security.authorization_checker');
+            if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') || $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+                
+                $usertoken = $this->get('security.token_storage')->getToken();    
+                // Get the LoginSuccessHandler, which will redirect as proper
+                $request = Request::createFromGlobals();
+                // $data = array();
+                // $data['_rdirurl'] = 'ambassador';
+                // $request = new Request(array(), $data);
+                #$request->request->set('_rdirurl', 'ambassador');
+                $all = $request->request->all(); 
+                $all['_rdirurl'] = $data['rdirurl']; 
+                $all['_rdirtoken'] = $data['rdirtoken'];
+                $request->request->replace($all);
+                $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+                #var_dump($request);
+
+                $response = $handler->onAuthenticationSuccess($request, $usertoken);
+                var_dump($response);
+                return $response;
+            }
+            // $router = $this->get('router');
 
     		// if ($securityContext->isGranted('ROLE_USER')) {
     		// 	return new ReirectResponse($ambURL, 302);
     		// }
         }
+
         return $this->renderLogin($data);
     }
 
@@ -123,33 +149,47 @@ class UKMSecurityController extends BaseController {
             die();
         }
         var_dump($user);
-
+        
         // Sjekk om brukeren er registrert hos oss fra før
         $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
         //var_dump($repo);
-        $existingUser = $repo->findOneBy(array('facebook_id' => $user->id));
-        if ($existingUser) {
-            // Vi har en bruker med denne IDen, logg han inn og redirect.
-
-            var_dump($existingUser);
-            die();
+        $ukm_user = $repo->findOneBy(array('facebook_id' => $user->id));
+        if ($ukm_user) {
+            // Vi har en bruker med denne IDen, logg han/hun inn.
+            $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
+            $this->get('security.token_storage')->setToken($usertoken);
+            $request = $this->get('request');
+            $event = new InteractiveLoginEvent($request, $usertoken);
+            $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+            // Redirect!
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
+
+        require_once('UKM/inc/password.inc.php');
         // Register user here
         $ukm_user = new User();
         $ukm_user->setFirstName($user->first_name);
         $ukm_user->setLastName($user->last_name);
         $ukm_user->setFacebookId($user->id);
         $ukm_user->setEmail($user->email);
+        $ukm_user->setPassword(UKM_ordpass(true));
         
         $em = $this->getDoctrine()->getManager();
         $em->persist($ukm_user);
         $em->flush();
 
+        // Dispatch registration confirmed event
+
         var_dump($ukm_user);
-        // Logg inn brukeren, men redirect til telefonnummer-spørsmålet
-        
+        // Logg inn brukeren, men redirect til telefonnummer-spørsmålet?
+        $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
+        $this->get('security.token_storage')->setToken($usertoken);
+        $request = $this->get('request');
+        $event = new InteractiveLoginEvent($request, $usertoken);
+        $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+        // Redirect til mer info-side
+
         // Redirect til ukmid om vi har all info
-        die();
         return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
 

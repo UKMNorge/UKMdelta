@@ -31,8 +31,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
         $response = null;
 
+        #var_dump($request);
         // If rdirurl is defined
         $rdirurl = $request->request->get('_rdirurl');
+        // If logged in, or something?
+        #var_dump($this->security->isGranted('ROLE_USER'));
         if ($this->security->isGranted('ROLE_USER'))
         {
             #var_dump($rdirurl);
