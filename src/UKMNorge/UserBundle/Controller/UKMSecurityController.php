@@ -12,6 +12,8 @@ namespace UKMNorge\UserBundle\Controller;
 /* E.O FROM PARENT */
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 use UKMNorge\UserBundle\UKMUserEvents;
+use UKMNorge\UserBundle\Entity\User;
+use UKMCurl;
 
 class UKMSecurityController extends BaseController {
 	
@@ -81,6 +83,74 @@ class UKMSecurityController extends BaseController {
     protected function renderLogin(array $data)
     {
         return $this->render('UKMUserBundle:Security:login.html.twig', $data);
+    }
+
+    public function fbloginAction() {
+        require_once('UKM/curl.class.php');
+        $req = Request::createFromGlobals(); 
+        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/fblogin';
+
+        $code = $req->query->get('code');
+        // Code is received, which means that the user logged in successfully.
+        //var_dump($code);
+
+        // Bytt code for en access-token
+        $curl = new UKMCurl();
+        $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
+        $url .= '?client_id='.$this->getParameter('facebook_client_id');
+        $url .= '&redirect_uri='.$redirectURL;
+        $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
+        $url .= '&code='.$code;
+
+        $result = $curl->process($url);
+        if(isset($result->error)) {        
+            var_dump($result);
+            die();
+        }
+        var_dump($result);
+        $token = $result->access_token;
+
+        // Verify token?
+
+
+        // Hent brukerdata
+        $url = 'https://graph.facebook.com/me';
+        $url .= '?access_token='.$token;
+        $user = $curl->process($url);
+
+        if (isset($user->error)) {
+            var_dump($user);
+            die();
+        }
+        var_dump($user);
+
+        // Sjekk om brukeren er registrert hos oss fra før
+        $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
+        //var_dump($repo);
+        $existingUser = $repo->findOneBy(array('facebook_id' => $user->id));
+        if ($existingUser) {
+            // Vi har en bruker med denne IDen, logg han inn og redirect.
+
+            var_dump($existingUser);
+            die();
+        }
+        // Register user here
+        $ukm_user = new User();
+        $ukm_user->setFirstName($user->first_name);
+        $ukm_user->setLastName($user->last_name);
+        $ukm_user->setFacebookId($user->id);
+        $ukm_user->setEmail($user->email);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($ukm_user);
+        $em->flush();
+
+        var_dump($ukm_user);
+        // Logg inn brukeren, men redirect til telefonnummer-spørsmålet
+        
+        // Redirect til ukmid om vi har all info
+        die();
+        return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
 
 }
