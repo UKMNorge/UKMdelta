@@ -166,6 +166,11 @@ class UKMSecurityController extends BaseController {
         }
 
         require_once('UKM/inc/password.inc.php');
+
+        // TODO: Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
+        // Da må facebook-data i session / view_data
+        // TODO2: Hvis vi har epost eller mobilnummer fra før, men ikke facebook-id, merge brukere. (og logg inn).
+
         // Register user here
         $ukm_user = new User();
         $ukm_user->setFirstName($user->first_name);
