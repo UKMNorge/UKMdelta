@@ -133,7 +133,7 @@ class UKMSecurityController extends BaseController {
             var_dump($result);
             die();
         }
-        var_dump($result);
+        //var_dump($result);
         $token = $result->access_token;
 
         // Verify token?
@@ -148,11 +148,10 @@ class UKMSecurityController extends BaseController {
             var_dump($user);
             die();
         }
-        var_dump($user);
+        //var_dump($user);
         
-        // Sjekk om brukeren er registrert hos oss fra før
+        // Sjekk om brukeren er registrert hos oss fra før med facebook-id
         $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
-        //var_dump($repo);
         $ukm_user = $repo->findOneBy(array('facebook_id' => $user->id));
         if ($ukm_user) {
             // Vi har en bruker med denne IDen, logg han/hun inn.
@@ -165,12 +164,42 @@ class UKMSecurityController extends BaseController {
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
 
+        // Sjekk om brukeren har en konto hos oss med samme e-post-adresse
+        // Hvis vi fikk e-post fra facebook
+        if (isset($user->email)) {
+            $ukm_user = $repo->findOneBy(array('email' => $user->email));
+            // Vi har en bruker med den e-posten
+            if ($ukm_user) {
+                // Slå sammen bruker
+                die('TODO: Slå sammen brukere');
+
+                // Vi har en bruker, logg han/hun inn.
+                $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
+                $this->get('security.token_storage')->setToken($usertoken);
+                $request = $this->get('request');
+                $event = new InteractiveLoginEvent($request, $usertoken);
+                $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+                // Redirect!
+                return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+            }
+        }
         require_once('UKM/inc/password.inc.php');
 
         // TODO: Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
         // Da må facebook-data i session / view_data
-        // TODO2: Hvis vi har epost eller mobilnummer fra før, men ikke facebook-id, merge brukere. (og logg inn).
 
+        if(isset($user->email))
+            $this->get('session')->set('email', $user->email);
+        if(isset($user->first_name))
+            $this->get('session')->set('first_name', $user->first_name);
+        if(isset($user->last_name))
+            $this->get('session')->set('last_name', $user->last_name);
+        if(isset($user->id))
+            $this->get('session')->set('facebook_id', $user->id);
+
+        return $this->redirectToRoute('fos_user_registration_register');
+        
+        #### OLD! ####
         // Register user here
         $ukm_user = new User();
         $ukm_user->setFirstName($user->first_name);
