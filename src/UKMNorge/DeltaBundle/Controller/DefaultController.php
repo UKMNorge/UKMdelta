@@ -15,7 +15,7 @@ class DefaultController extends Controller
 
 	    
 	    $app_id = $this->getParameter('facebook_client_id');
-	    $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/fblogin';
+	    $redirectURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/fblogin';
 	    $view_data = array();
 	    $view_data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
 

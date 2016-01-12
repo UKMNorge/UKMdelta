@@ -37,7 +37,7 @@ class UKMSecurityController extends BaseController {
         }
         
         $app_id = $this->getParameter('facebook_client_id');
-        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/fblogin'.$rdirtoken;
+        $redirectURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/fblogin'.$rdirtoken;
         //die($redirectURL);
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
@@ -132,7 +132,8 @@ class UKMSecurityController extends BaseController {
     public function fbloginAction() {
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
-        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/fblogin';
+        
+        $redirectURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/fblogin';
 
         if ($req->query->get('token')) {
             $rdirtoken = '?token='.$req->query->get('token');
@@ -234,8 +235,24 @@ class UKMSecurityController extends BaseController {
             // Vi har en bruker med den e-posten
             if ($ukm_user) {
                 // Slå sammen bruker
-                throw new Exception('TODO: Slå sammen brukere', 20008);
 
+                $ukm_user->setFacebookId($user->id);
+                $userManager = $this->get('fos_user.user_manager');
+                $userManager->updateUser($ukm_user);
+
+                $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
+                $this->get('security.token_storage')->setToken($usertoken);
+                $request = $this->get('request');
+                $event = new InteractiveLoginEvent($request, $usertoken);
+                $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+            
+                
+                $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+                $response = $handler->onAuthenticationSuccess($request, $usertoken);
+                #var_dump($response);
+                return $response;
+
+                throw new Exception('TODO: Slå sammen brukere', 20008);
                 // Vi har en bruker, logg han/hun inn.
                 $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
                 $this->get('security.token_storage')->setToken($usertoken);
