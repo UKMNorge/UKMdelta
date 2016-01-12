@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 use person;
+use UKMCurl;
 
 class UKMIDController extends Controller
 {
@@ -226,4 +227,78 @@ class UKMIDController extends Controller
         $view_data['translationDomain'] = 'ukmid';
         return $this->render('UKMDeltaBundle:UKMID:support.html.twig', $view_data);
     }
+
+    public function fbconnectAction() {
+        // Sjekk om brukeren er koblet til med facebook allerede, i så fall redirect til ukmid
+        $user = $this->get('ukm_user')->getCurrentUser();
+        if ($user->getFacebookId()) {
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
+        
+        // Hvis ikke, kjør facebook-tilkoblings-kode:
+        require_once('UKM/curl.class.php');
+        $req = Request::createFromGlobals(); 
+        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/ukmid/fbconnect';
+
+        if ($req->query->get('code')) {
+            $code = $req->query->get('code');
+            // This means we are coming from facebook
+            // Bytt code for en access-token
+            $curl = new UKMCurl();
+            $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
+            $url .= '?client_id='.$this->getParameter('facebook_client_id');
+            $url .= '&redirect_uri='.$redirectURL;
+            $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
+            $url .= '&code='.$code;
+            $curl->timeout(50);
+            // var_dump($url);
+            // var_dump($curl);
+            $result = $curl->process($url);
+            if(isset($result->error)) {        
+                var_dump($result);
+                die();
+            }
+
+            $token = $result->access_token;
+            // Hent brukerdata
+            $url = 'https://graph.facebook.com/me';
+            $url .= '?access_token='.$token;
+            $fbUser = $curl->process($url);
+
+            if (isset($fbUser->error)) {
+                var_dump($fbUser);
+                die();
+            }
+
+            // Fyll inn fb-data i brukertabellen
+            $user->setFacebookId($fbUser->id);
+
+            $userManager = $this->container->get('fos_user.user_manager');
+            $userManager->updateUser($user);
+
+            // echo "</body>";
+            // var_dump($req);
+            // die();
+            // Gjennomfør loginsuccess, så man blir redirectet om man skal bli redirectet?
+            $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+            $usertoken = $this->get('security.token_storage')->getToken(); 
+            $response = $handler->onAuthenticationSuccess($req, $usertoken);
+            return $response;
+            // Success!
+            // return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
+
+        $app_id = $this->getParameter('facebook_client_id');
+        $view_data = array();
+        $view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
+        
+        $rdirurl = $this->get('session')->get('rdirurl');
+        if ($rdirurl == 'ambassador') {
+            $view_data['system'] = 'ambassador';
+        }
+        
+
+        return $this->render('UKMDeltaBundle:UKMID:fbconnect.html.twig', $view_data);
+    }
+
 }

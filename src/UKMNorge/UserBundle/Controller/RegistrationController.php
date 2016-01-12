@@ -19,6 +19,8 @@ use UKMNorge\UserBundle\Entity\SMSValidation;
 use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
 use Symfony\Component\HttpFoundation\Response;
 
+
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
@@ -45,6 +47,15 @@ class RegistrationController extends BaseController
 
         $form = $formFactory->createForm();
         $form->setData($user);
+        // Sett data fra facebook i form, om vi har mottatt de.
+        if ($this->get('session')->get('email'))
+        	$form->get('email')->setData($this->get('session')->get('email'));
+        if ($this->get('session')->get('first_name'))
+        	$form->get('first_name')->setData($this->get('session')->get('first_name'));
+        if ($this->get('session')->get('last_name'))
+        	$form->get('last_name')->setData($this->get('session')->get('last_name'));
+        if ($this->get('session')->get('facebook_id'))
+        	$form->add('facebook_id', 'hidden', array('data' => $this->get('session')->get('facebook_id')));
         $form->handleRequest($request);
         
 		// CASE 1: Form submitted, valid and user creation is possible
@@ -314,6 +325,13 @@ class RegistrationController extends BaseController
         }
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+
+        $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+        #var_dump($request);
+        $usertoken = $this->get('security.token_storage')->getToken();   
+        $response = $handler->onAuthenticationSuccess($request, $usertoken);
+        var_dump($response);
+        return $response;
 
 		return $this->confirmedAction();
     }

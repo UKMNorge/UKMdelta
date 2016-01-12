@@ -10,41 +10,80 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use UKMCurl;
+use Exception;
 
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
 
     protected $router;
     protected $security;
-    var $ambURL = 'http://ambassador.ukm.dev/web/app_dev.php/dip/login';
+    var $ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
 
-    public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user)
+    public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
     {
         $this->router = $router;
         $this->security = $security;
         $this->doctrine = $doctrine;
         $this->ukm_user = $ukm_user;
+        $this->container = $container;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
 
         $response = null;
-
+        
+        #var_dump($request);
         // If rdirurl is defined
         $rdirurl = $request->request->get('_rdirurl');
+        $token = $request->request->get('_rdirtoken');
+        // Sjekk også session
+        //$session = $request->getSession();
+        $session = $this->container->get('session');
+        // var_dump((array)$session_two);
+        // var_dump((array)$session);
+        // throw new Exception('Staaahp');
+        if($session) {
+            // die("if(session) works");
+            // var_dump($session->get('rdirurl'));
+            
+            
+            if ($session->get('rdirurl')) {
+                $rdirurl = $session->get('rdirurl');
+                $token = $session->get('rdirtoken');
+
+                // var_dump($rdirurl);
+                // die();
+            }
+        }
+        // throw new Exception('Sjekk session!');
+        // var_dump($request);
+        // die();
+        // If logged in, or something?
+        #var_dump($this->security->isGranted('ROLE_USER'));
         if ($this->security->isGranted('ROLE_USER'))
         {
+            // throw new Exception('Innlogget.');
             #var_dump($rdirurl);
             switch ($rdirurl) {
                 case 'ambassador': 
-                    // Hent token
-                    $token = $request->request->get('_rdirtoken');
+                    
+                    // throw new Exception('ambassador');
+                    // Sjekk at personen har alt som kreves for ambassadør? 
+                    // Altså facebook_id
+                    $user = $this->ukm_user->getCurrentUser();
+                    if (!$user->getFacebookId()) {
+                        // Hvis brukeren ikke har koblet til facebook
+                        // Redirect til facebook-connect m/ redirect?
+                        $r = new RedirectResponse($this->router->generate('ukm_fb_connect'));
+                        return $r;
+                        // throw new Exception('Du må koble til med facebook for å åpne ambassadør-siden!', 20007);
+                    }
                     // Sett token i databasen
                     $this->ambassador($token);
                     // Sett reell redirectURL
                     $rdirurl = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
-
+                    
                     break;
                 default: $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
             }
@@ -52,7 +91,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             #var_dump($request);
             #die();
 
-        
+            // Fjern redirect-session-variabler
+            if($session) {
+                $session->remove('rdirurl');
+                $session->remove('rdirtoken');
+            }
             // Default response er redirect til UKMID
             $response = new RedirectResponse($rdirurl);
             #$response = new RedirectResponse($this->router->generate('frontend'));
@@ -95,7 +138,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $curl = new UKMCurl();
         $curl->post(array('json' => $json));
         $res = $curl->process($ambURL);
-        #var_dump($res);
+        
         #echo 'DB-info: ';
         //var_dump($repo);
         #var_dump($dbToken);
