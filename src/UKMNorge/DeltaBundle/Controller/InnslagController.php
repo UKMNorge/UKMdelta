@@ -52,6 +52,8 @@ class InnslagController extends Controller
 			$monstring->name = $pl->get('pl_name');
 			$monstring->fylke = $pl->get('fylke_id');
 			$monstring->kommuner = array();
+            // $monstring->frist1 = $pl->subscribable('pl_deadline');
+            // $monstring->frist2 = $pl->subscribable('pl_deadline2');
 			foreach( $pl->get('kommuner') as $kommune ) {
 				$monstring->kommuner[ $kommune['id'] ] = $kommune['name'];
 				$monstring->k_id = $kommune['id']; // Sett denne i tilfelle det er lokalmønstring

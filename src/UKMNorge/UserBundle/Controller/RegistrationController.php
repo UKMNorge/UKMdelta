@@ -15,6 +15,10 @@ namespace UKMNorge\UserBundle\Controller;
 /* E.O FROM PARENT */
 
 use UKMNorge\UserBundle\UKMUserEvents;
+use UKMNorge\UserBundle\Entity\SMSValidation;
+use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
+use Symfony\Component\HttpFoundation\Response;
+
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
@@ -110,12 +114,15 @@ class RegistrationController extends BaseController
 		return $this->render('UKMUserBundle:Registration:phoneExists.html.twig', $view_data );
 	}
 	
-	
 	public function checkSMSAction(Request $request) {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
         $sent_before = $request->query->get('sent_before');
+        $userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserByEmail($email);
+		$phone = $user->getPhone();
+		// var_dump($user);
 
-        $view_data = array( 'email' => $email, 'sent_before' => $sent_before );
+        $view_data = array( 'email' => $email, 'sent_before' => $sent_before, 'phone' => $phone );
         return $this->render('UKMUserBundle:Registration:check-sms.html.twig', $view_data);
 	}
 	
@@ -150,6 +157,118 @@ class RegistrationController extends BaseController
 		return $this->redirect( $url );
 	}
 	
+	# Reverse SMS Validation 
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Funksjonen setter informasjon i SMSValidation-tabellen og
+	# rendrer et view som sier at personen skal sende SMS til oss.
+	public function noSMSAction($phone) {
+		$view_data['translationDomain'] = 'messages';
+		$view_data['nummer'] = $phone;
+
+		$userProvider = $this->get('ukm_user.user_provider');
+		// $userManager = $this->get('ukm_user')
+		// Kaster exception if not?
+		$user = $userProvider->findUserByPhoneOrEmail($phone);
+
+		// Registrer i SMSValidation-tabellen
+		$em = $this->getDoctrine()->getManager();
+		$smsval = new SMSValidation();
+		// Sett verdier
+		$smsval->setUserId($user->getId());
+		$smsval->setPhone($phone);
+		$smsval->setValidated(false);
+		
+		$em->persist($smsval);
+		$em->flush();
+
+		$view_data['kode'] = 'V' . $user->getId();
+		// var_dump($user);
+		return $this->render('UKMUserBundle:Registration:no-sms.html.twig', $view_data);
+	}
+	
+	# Reverse SMS Validaton
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Sjekker om SMS er mottatt, 
+	# og rendrer et view som viser at vi fortsatt leter,
+	# inkl. AJAX-kall hvis ikke.
+	public function waitSMSAction($phone) {
+		$view_data = array('phone' => $phone);
+		$view_data['translationDomain'] = 'messages';
+		$view_data['ajax_url'] = $this->generateUrl('ukm_user_registration_check_sms_ajax', array(
+			'phone' => $phone));
+		if ($this->checkSMSValidation($phone)) {
+			// Alt er ok, vi har mottatt SMS og skrudd på brukeren!
+			return $this->confirmedAction();			
+			#return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
+		}
+
+		return $this->render('UKMUserBundle:Registration:wait-sms.html.twig', $view_data);
+		// S
+	}
+
+	# Reverse SMS Validation
+	# Skrevet av Asgeir Hustad
+	# asgeirsh@ukmmedia.no
+	# Høst 2015
+	# Tar inn tlf. nummer og ser etter innkommende SMS
+	# Hvis meldingen er mottatt, fiks tabellene og returner true.
+	# Hvis meldingen ikke er mottatt, returner false.
+	public function checkSMSValidation($phone) {
+		$em = $this->getDoctrine()->getManager();
+		$r = $this->getDoctrine()->getRepository('UKMNorge\UserBundle\Entity\SMSValidation');
+		$smsVal = $r->findBy(array('phone' => $phone));
+		// $smsVal = $em->find('UKMNorge\UserBundle\Entity\SMSValidation', array('phone' => $phone));
+		if(count($smsVal) > 1) {
+			die('Flere enn én med samme tlfnummer!');
+		}
+		elseif(count($smsVal) < 1) {
+			die('Ingen med det telefonnummeret!');
+		}
+		else {
+			$smsVal = $smsVal[0];
+		}
+		#var_dump($smsVal);
+		if ($smsVal->getValidated() == true) {	
+			$userProvider = $this->get('ukm_user.user_provider');
+			$userManager = $this->get('fos_user.user_manager');
+			// $userManager = $this->get('ukm_user')
+			// Kaster exception if not?
+			$user = $userProvider->findUserByPhoneOrEmail($phone);
+			
+			/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+        	$dispatcher = $this->get('event_dispatcher');
+
+        	$user->setConfirmationToken(null);
+        	$user->setEnabled(true);			
+			
+        	$userManager->updateUser($user);
+
+        	// Log in user
+        	$request = Request::createFromGlobals();
+        	$response = new Response();
+        	#$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+        	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+			return 1;
+		}
+		// var_dump($smsVal);
+		return 0;
+	}
+
+	public function SMSAjaxAction($phone) {
+		
+		$resp[] = array('validated' => $this->checkSMSValidation($phone));
+		$response = new Response();
+		$response->setContent(json_encode($resp));
+		
+		header('Content-Type: application/json; charset=utf-8');
+		
+		return $response;
+	}
+
     /**
      * Tell the user his account is now confirmed
      */
