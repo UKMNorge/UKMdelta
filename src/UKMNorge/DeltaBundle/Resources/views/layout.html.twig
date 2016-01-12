@@ -32,6 +32,8 @@
 	{% if not (dinside is defined) %}<a href="{{ path('ukm_delta_ukmid_homepage') }}" id="" class="btn btn-block btn-default this-is-js">{{ 'meny.dinside'|trans({}, 'base') }}</a>{% endif %}
 	<a href="{{ path('ukm_delta_ukmid_contact') }}" id="" class="btn btn-block btn-default this-is-js">{{ 'meny.rediger'|trans({}, 'base') }}</a>
 	<a href="{{ path('fos_user_change_password') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.passord'|trans({}, 'base') }}</a>
+	<a href="{{ path('ukm_fb_connect') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.fbconnect'|trans({}, 'base') }}</a>
+	<a href="http://ambassador.{{ UKM_HOSTNAME }}" class="btn btn-block btn-default this-is-js">{{ 'meny.ambassador'|trans({}, 'base') }}</a>
 	<a href="{{ path('ukm_delta_ukmid_support') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.support'|trans({}, 'base') }}</a>
 	<a href="{{ path('fos_user_security_logout') }}" class="btn btn-block btn-default this-is-js">{{ 'meny.loggut'|trans({}, 'base') }}</a>
 {% endblock %}

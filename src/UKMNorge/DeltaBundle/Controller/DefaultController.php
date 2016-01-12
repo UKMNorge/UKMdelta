@@ -13,6 +13,7 @@ class DefaultController extends Controller
 		    return $this->redirect( $this->get('router')->generate('ukm_delta_ukmid_homepage') );
 	    }
 
+	    
 	    $app_id = $this->getParameter('facebook_client_id');
 	    $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/fblogin';
 	    $view_data = array();

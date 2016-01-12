@@ -326,6 +326,13 @@ class RegistrationController extends BaseController
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
+        $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+        #var_dump($request);
+        $usertoken = $this->get('security.token_storage')->getToken();   
+        $response = $handler->onAuthenticationSuccess($request, $usertoken);
+        var_dump($response);
+        return $response;
+
 		return $this->confirmedAction();
     }
 }

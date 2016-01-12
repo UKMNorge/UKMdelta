@@ -1,0 +1,13 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain 'base' %}
+
+{% block content %}
+<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'fbconnect') : 'fbconnect.overskrift'|trans({}, 'fbconnect') }} {{ system is defined ? ('fbconnect.'~system)|trans({}, 'fbconnect') : '' }}</h1>
+
+<p>&nbsp;</p>
+<a href="{{ fbredirect }}" class="btn btn-block btn-success btn-large">{{ 'fbconnect.knappetekst'|trans({}, 'fbconnect') }}</a>
+<p>&nbsp;</p>
+<div class="center">
+	<a href="{{ path('ukm_delta_ukmid_homepage') }}" class="center">{{ 'avbryt'|trans }}</a>	
+</div>
+{% endblock %} 

@@ -6,6 +6,10 @@ ukm_delta_homepage:
     path:     /
     defaults: { _controller: UKMDeltaBundle:Default:index }
 
+ukm_fb_connect:
+    path:     /ukmid/fbconnect/
+    defaults: { _controller: UKMDeltaBundle:UKMID:fbconnect }
+
 ### UKMID
 ukm_delta_ukmid_homepage:
     path:     /ukmid/
