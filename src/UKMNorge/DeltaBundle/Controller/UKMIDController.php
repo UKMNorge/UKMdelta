@@ -238,7 +238,7 @@ class UKMIDController extends Controller
         // Hvis ikke, kjør facebook-tilkoblings-kode:
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
-        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/ukmid/fbconnect';
+        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/ukmid/fbconnect';
 
         if ($req->query->get('code')) {
             $code = $req->query->get('code');

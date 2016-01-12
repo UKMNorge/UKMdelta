@@ -17,7 +17,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     protected $router;
     protected $security;
-    var $ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+    // var $ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+    var $ambURL = 'http://ambassador.ukm.no/dip/login';
 
     public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
     {
@@ -82,7 +83,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                     // Sett token i databasen
                     $this->ambassador($token);
                     // Sett reell redirectURL
-                    $rdirurl = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+                    $rdirurl = 'http://ambassador.ukm.no/dip/login';
                     
                     break;
                 default: $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
@@ -108,7 +109,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     private function ambassador($token) {
         require_once('UKM/curl.class.php');
-        $ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
+        $ambURL = 'http://ambassador.ukm.no/dip/receive/';
 
         #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
         $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");

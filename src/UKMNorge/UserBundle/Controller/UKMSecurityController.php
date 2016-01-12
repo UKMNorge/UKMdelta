@@ -37,7 +37,7 @@ class UKMSecurityController extends BaseController {
         }
         
         $app_id = $this->getParameter('facebook_client_id');
-        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/fblogin'.$rdirtoken;
+        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/fblogin'.$rdirtoken;
         //die($redirectURL);
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
@@ -132,7 +132,7 @@ class UKMSecurityController extends BaseController {
     public function fbloginAction() {
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
-        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/web/app_dev.php/fblogin';
+        $redirectURL = 'http://delta.'. $this->getParameter('UKM_HOSTNAME') . '/fblogin';
 
         if ($req->query->get('token')) {
             $rdirtoken = '?token='.$req->query->get('token');
@@ -234,7 +234,7 @@ class UKMSecurityController extends BaseController {
             // Vi har en bruker med den e-posten
             if ($ukm_user) {
                 // Slå sammen bruker
-                die('TODO: Slå sammen brukere');
+                throw new Exception('TODO: Slå sammen brukere', 20008);
 
                 // Vi har en bruker, logg han/hun inn.
                 $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
