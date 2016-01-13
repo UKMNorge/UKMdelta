@@ -182,17 +182,15 @@ class UKMSecurityController extends BaseController {
         // var_dump($url);
         // var_dump($curl);
         $result = $curl->process($url);
-        if(isset($result->error)) {        
-            var_dump($result);
-            die();
+        if(isset($result->error)) {   
+            $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
+            return $this->redirectToRoute('ukm_user_login');     
         }
 
         // var_dump($result);
         // die();
         $token = $result->access_token;
-
         // Verify token?
-
 
         // Hent brukerdata
         $url = 'https://graph.facebook.com/me';
@@ -200,8 +198,11 @@ class UKMSecurityController extends BaseController {
         $user = $curl->process($url);
 
         if (isset($user->error)) {
-            var_dump($user);
-            die();
+            //var_dump($user);
+            // Ofte: "This authorization code has been used."
+            $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
+            return $this->redirectToRoute('ukm_user_login');
+
         }
         // var_dump($user);
         // die();
