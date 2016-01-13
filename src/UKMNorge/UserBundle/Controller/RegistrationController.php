@@ -18,7 +18,9 @@ use UKMNorge\UserBundle\UKMUserEvents;
 use UKMNorge\UserBundle\Entity\SMSValidation;
 use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Exception;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
@@ -84,10 +86,61 @@ class RegistrationController extends BaseController
 		    if( isset( $errors['phone'] ) && is_array( $errors['phone'] ) ) {
 			    foreach( $errors['phone'] as $phone_error ) {
 				    if( $phone_error == 'ukm_user.phone.already_used') {
-					    $phone = $form->get('phone')->getData();
+				    	$phone = $form->get('phone')->getData();
+				    	// Sjekk om dette er en som kommer via facebook:
+				    	if($this->get('session')->get('facebook_id')) {
+				    		// Finn brukeren:
+				    		$userRepo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
+				    		$user = $userRepo->findOneBy(array('phone' => $phone));
+				    		$user->setFacebookId($this->get('session')->get('facebook_id'));
+				    		$userManager = $this->get('fos_user.user_manager');
+				    		$userManager->updateUser($user);
+
+				    		// Logg inn brukeren
+				    		$request = $this->get('request');
+				    		$usertoken = new UsernamePasswordToken($user, $user->getPassword(), "ukm_delta_wall", $user->getRoles());
+				            $this->get('security.token_storage')->setToken($usertoken);
+				            $event = new InteractiveLoginEvent($request, $usertoken);
+				            $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+				    		// Redirect etc
+				    		
+                    		$handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+		                    #var_dump($request);
+
+		                    $response = $handler->onAuthenticationSuccess($request, $usertoken);
+		                    #var_dump($response);
+		                    return $response;
+				    	}
+
+
+					    
 					    return $this->redirectToRoute('ukm_user_registration_existing_phone', array('phone' => $phone));
 				    }
 			    }
+		    }
+
+		    if (isset($errors['email']) && is_array($errors['email'])) {
+		    	foreach( $errors['email'] as $email_key => $email_error ) {
+		    		if( $email_error == 'fos_user.email.already_used') {
+		    			$email = $form->get('email')->getData();
+		    			
+		    			// Sjekk om dette er en som kommer via facebook:
+		    			if($this->get('session')->get('facebook_id')) {
+				    		
+				    		$errors['email'][$email_key] = 'fos_user.email.already_used_fb';
+				    		// Redirect til et nytt view!
+
+				    		return $this->redirectToRoute('ukm_user_registration_existing_email', array('email' => $email));
+				    	}
+
+		    		}
+		    	}
+		    	var_dump($errors);
+
+		    	// Redirect til register-form igjen?
+		    	return $this->render('FOSUserBundle:Registration:register.html.twig', 
+									array('form' => $form->createView(), 'phoneAlreadyRegistered'=>false, 'errors' => $errors)
+								);
 		    }
 		    
 		    // CASE 2.2 CSRF-token error
@@ -124,6 +177,12 @@ class RegistrationController extends BaseController
 		$view_data = array('phone' => $phone);
 		return $this->render('UKMUserBundle:Registration:phoneExists.html.twig', $view_data );
 	}
+
+	public function emailExistsAction( $email ) {
+		$view_data = array('email' => $email);
+		return $this->render('UKMUserBundle:Registration:emailExists.html.twig', $view_data);
+	}
+	
 	
 	public function checkSMSAction(Request $request) {
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
@@ -167,7 +226,8 @@ class RegistrationController extends BaseController
 		$url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
 		return $this->redirect( $url );
 	}
-	
+
+
 	# Reverse SMS Validation 
 	# Skrevet av Asgeir Hustad
 	# asgeirsh@ukmmedia.no

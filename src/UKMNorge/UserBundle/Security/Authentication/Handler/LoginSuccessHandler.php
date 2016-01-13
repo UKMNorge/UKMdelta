@@ -17,8 +17,9 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     protected $router;
     protected $security;
-    // var $ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
-    var $ambURL = 'http://ambassador.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/dip/login';
+    private $ambURL;
+    private $ambDipURL;
+    // var $ambURL = 'http://ambassador.ukm.no/dip/login';
 
     public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
     {
@@ -27,6 +28,16 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->doctrine = $doctrine;
         $this->ukm_user = $ukm_user;
         $this->container = $container;
+
+
+        if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
+        } 
+        else {
+            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
+        }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
@@ -83,8 +94,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                     // Sett token i databasen
                     $this->ambassador($token);
                     // Sett reell redirectURL
-                    $rdirurl = 'http://ambassador.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/dip/login';
-                    
+                    $rdirurl = $this->ambURL;             
                     break;
                 default: $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
             }
@@ -109,8 +119,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     private function ambassador($token) {
         require_once('UKM/curl.class.php');
-        $ambURL = 'http://ambassador.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/dip/receive/';
-
+        
         #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
         $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
         $dbToken = $repo->findOneBy(array('token' => $token));
@@ -138,7 +147,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         // Send brukerinfo til ambassadør
         $curl = new UKMCurl();
         $curl->post(array('json' => $json));
-        $res = $curl->process($ambURL);
+        $res = $curl->process($this->ambDipURL);
         
         #echo 'DB-info: ';
         //var_dump($repo);

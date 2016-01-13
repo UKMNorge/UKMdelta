@@ -16,6 +16,7 @@ fos_user:
         long: "[-Inf,Inf]Brukernavnet er for langt"
     email:
         already_used: E-postadressen er allerede i bruk
+        already_used_fb: E-postadressen er allerede i bruk! Logg inn som vanlig og trykk "Koble til facebook" for å kunne bruke innlogging via Facebook.
         blank: Vennligst skriv inn en epostadresse
         short: "[-Inf,Inf]Epostadressen er for kort"
         long: "[-Inf,Inf]Epostadressen er for lang"

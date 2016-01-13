@@ -28,6 +28,10 @@ ukm_user_registration_existing_phone:
     path:     /register/phone-exists-{phone}
     defaults: { _controller: UKMUserBundle:Registration:phoneExists }
 
+ukm_user_registration_existing_email:
+    path:     /register/email-exists-{email}
+    defaults: { _controller: UKMUserBundle:Registration:emailExists }
+
 # FB-login
 ukm_delta_fb_login:
     path:     /fblogin/

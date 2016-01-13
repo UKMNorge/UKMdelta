@@ -21,9 +21,21 @@ use UKMNorge\UserBundle\Entity\User;
 use UKMCurl;
 
 class UKMSecurityController extends BaseController {
-	
+    
 	public function loginAction(Request $request)
     {	
+
+        if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
+            $this->deltaFBLoginURL = 'http://delta.ukm.dev/web/app_dev.php/fblogin';
+        } 
+        else {
+            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
+            $this->deltaFBLoginURL = 'http://delta.ukm.no/fblogin';
+        }
+
         // Er dette en redirect-forespørsel?
         $rdirurl = '';
         $rdirtoken = '';
@@ -37,7 +49,8 @@ class UKMSecurityController extends BaseController {
         }
         
         $app_id = $this->getParameter('facebook_client_id');
-        $redirectURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/fblogin'.$rdirtoken;
+        
+        $redirectURL = $this->deltaFBLoginURL.$rdirtoken;
         //die($redirectURL);
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
@@ -130,10 +143,22 @@ class UKMSecurityController extends BaseController {
     }
 
     public function fbloginAction() {
+
+        if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
+            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
+            $this->deltaFBLoginURL = 'http://delta.ukm.dev/web/app_dev.php/fblogin';
+        } 
+        else {
+            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
+            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
+            $this->deltaFBLoginURL = 'http://delta.ukm.no/fblogin';
+        }
+        
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
         
-        $redirectURL = 'http://delta.'. ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/fblogin';
+        $redirectURL = $this->deltaFBLoginURL;
 
         if ($req->query->get('token')) {
             $rdirtoken = '?token='.$req->query->get('token');
@@ -240,27 +265,28 @@ class UKMSecurityController extends BaseController {
                 $userManager = $this->get('fos_user.user_manager');
                 $userManager->updateUser($ukm_user);
 
+                // Logg inn brukeren
                 $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
                 $this->get('security.token_storage')->setToken($usertoken);
                 $request = $this->get('request');
                 $event = new InteractiveLoginEvent($request, $usertoken);
                 $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
             
-                
+                // Videresend om man skal videresendes
                 $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
                 $response = $handler->onAuthenticationSuccess($request, $usertoken);
                 #var_dump($response);
                 return $response;
 
-                throw new Exception('TODO: Slå sammen brukere', 20008);
-                // Vi har en bruker, logg han/hun inn.
-                $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
-                $this->get('security.token_storage')->setToken($usertoken);
-                $request = $this->get('request');
-                $event = new InteractiveLoginEvent($request, $usertoken);
-                $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
-                // Redirect!
-                return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+                // throw new Exception('TODO: Slå sammen brukere', 20008);
+                // // Vi har en bruker, logg han/hun inn.
+                // $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
+                // $this->get('security.token_storage')->setToken($usertoken);
+                // $request = $this->get('request');
+                // $event = new InteractiveLoginEvent($request, $usertoken);
+                // $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
+                // // Redirect!
+                // return $this->redirectToRoute('ukm_delta_ukmid_homepage');
             }
         }
         require_once('UKM/inc/password.inc.php');
