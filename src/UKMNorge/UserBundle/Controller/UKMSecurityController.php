@@ -114,7 +114,7 @@ class UKMSecurityController extends BaseController {
                 #var_dump($request);
 
                 $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                var_dump($response);
+                #var_dump($response);
                 return $response;
             }
             // $router = $this->get('router');
@@ -321,7 +321,7 @@ class UKMSecurityController extends BaseController {
 
         // Dispatch registration confirmed event
 
-        var_dump($ukm_user);
+        #var_dump($ukm_user);
         // Logg inn brukeren, men redirect til telefonnummer-spørsmålet?
         $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
         $this->get('security.token_storage')->setToken($usertoken);

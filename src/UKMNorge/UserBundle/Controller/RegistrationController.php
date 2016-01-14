@@ -135,7 +135,7 @@ class RegistrationController extends BaseController
 
 		    		}
 		    	}
-		    	var_dump($errors);
+		    	//var_dump($errors);
 
 		    	// Redirect til register-form igjen?
 		    	return $this->render('FOSUserBundle:Registration:register.html.twig', 
@@ -390,7 +390,7 @@ class RegistrationController extends BaseController
         #var_dump($request);
         $usertoken = $this->get('security.token_storage')->getToken();   
         $response = $handler->onAuthenticationSuccess($request, $usertoken);
-        var_dump($response);
+        //var_dump($response);
         return $response;
 
 		return $this->confirmedAction();
