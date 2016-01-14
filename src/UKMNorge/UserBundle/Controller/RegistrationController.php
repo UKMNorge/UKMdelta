@@ -254,7 +254,7 @@ class RegistrationController extends BaseController
 		$em->persist($smsval);
 		$em->flush();
 
-		$view_data['kode'] = 'V' . $user->getId();
+		$view_data['kode'] = 'V ' . $user->getId();
 		// var_dump($user);
 		return $this->render('UKMUserBundle:Registration:no-sms.html.twig', $view_data);
 	}

@@ -1,5 +1,13 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts 
+		'@UKMUserBundle/Resources/public/js/waitAMinute.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
 {% block content %}
 	<form method="post" action="{{ path('ukm_user_registration_validate_sms') }}">
 		<h1 class="center">Skriv inn kode</h1>
@@ -25,7 +33,7 @@
 			<input value="" type="text" class="form-control" id="smscode" name="smscode" placeholder="Skriv inn koden..." />
 		</div>
 
-		<small class="right"><a href="{{ path('ukm_user_registration_no_sms', { phone: phone }) }}">Ikke fått SMS? Klikk her</a></small>
+		<small class="right"><a id ="no_sms_link" href="{{ path('ukm_user_registration_no_sms', { phone: phone }) }}">Ikke fått SMS? Klikk her. <span id="no_sms_all_text"> (Linken aktiveres om <span id="no_sms_text"></span> sekunder.)</span></a></small>
 		<button type="submit" class="btn btn-success btn-block center forcePageLoader" name="submit">Neste</button>
 	</form>
 {% endblock %}
