@@ -19,6 +19,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     protected $security;
     private $ambURL;
     private $ambDipURL;
+    private $rsvpURL;
+    private $rsvpDipURL;
     // var $ambURL = 'http://ambassador.ukm.no/dip/login';
 
     public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
@@ -33,10 +35,14 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
             $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
             $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
+            $this->rsvpURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/login';
+            $this->rsvpDipURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/receive/';
         } 
         else {
             $this->ambURL = 'http://ambassador.ukm.no/dip/login';
             $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
+            $this->rsvpURL = 'http://rsvp.ukm.no/dip/login';
+            $this->rsvpDipURL = 'http://rsvp.ukm.no/dip/receive/';
         }
     }
 
@@ -96,6 +102,20 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                     // Sett reell redirectURL
                     $rdirurl = $this->ambURL;             
                     break;
+                case 'rsvp':
+                    $user = $this->ukm_user->getCurrentUser();
+                    if (!$user->getFacebookId()) {
+                        // Hvis brukeren ikke har koblet til facebook
+                        // Redirect til facebook-connect m/ redirect?
+                        $r = new RedirectResponse($this->router->generate('ukm_fb_connect'));
+                        return $r;
+                        // throw new Exception('Du må koble til med facebook for å åpne ambassadør-siden!', 20007);
+                    }
+                    // Sett token i databasen
+                    $this->rsvp($token);
+                    // Sett reell redirectURL
+                    $rdirurl = $this->rsvpURL;             
+                    break;
                 default: $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
             }
             #var_dump($rdirurl);
@@ -148,12 +168,38 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $curl = new UKMCurl();
         $curl->post(array('json' => $json));
         $res = $curl->process($this->ambDipURL);
-        
-        #echo 'DB-info: ';
-        //var_dump($repo);
-        #var_dump($dbToken);
+    }
 
-        #echo '<br>';
+    private function rsvp($token) {
+        require_once('UKM/curl.class.php');
+        
+        #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
+        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
+        $dbToken = $repo->findOneBy(array('token' => $token));
+
+        $user = $this->ukm_user->getCurrentUser();
+        // Encode brukerdata og token til JSON-objekt
+        $json = array();
+        $json['token'] = $token;
+        $json['delta_id'] = $user->getId();
+        $json['email'] = $user->getEmail();
+        $json['phone'] = $user->getPhone();
+        $json['address'] = $user->getAddress();
+        $json['post_number'] = $user->getPostNumber();
+        $json['post_place'] = $user->getPostPlace();
+        $json['birthdate'] = $user->getBirthdate();
+        $json['facebook_id'] = $user->getFacebookId();
+        $json['facebook_id_unencrypted'] = $user->getFacebookIdUnencrypted();
+        $json['facebook_access_token'] = $user->getFacebookAccessToken();
+        $json['first_name'] = $user->getFirstName();
+        $json['last_name'] = $user->getLastName();
+
+        $json = json_encode($json);
+        #var_dump($json);
+        // Send brukerinfo til ambassadør
+        $curl = new UKMCurl();
+        $curl->post(array('json' => $json));
+        $res = $curl->process($this->rsvpDipURL);
     }
 
 }

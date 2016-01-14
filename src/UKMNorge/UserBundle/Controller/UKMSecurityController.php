@@ -89,12 +89,11 @@ class UKMSecurityController extends BaseController {
             'error' => $error,
             'csrf_token' => $csrfToken,
         );
+        // Gjøres tidligere
+        $data['rdirurl'] = $rdirurl;
+        $data['rdirtoken'] = $rdirtoken;
         // Sjekk om dette er en redirect-forespørsel
-        if ($request->query->get('rdirurl') == 'ambassador') {
-            // Gjøres tidligere
-        	$data['rdirurl'] = 'ambassador';
-        	$data['rdirtoken'] = $request->query->get('token');
-        	
+        if ($rdirurl) {
             // If already logged in:
             $securityContext = $this->get('security.authorization_checker');
             if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') || $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
