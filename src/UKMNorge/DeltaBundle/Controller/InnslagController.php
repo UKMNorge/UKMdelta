@@ -569,7 +569,11 @@ class InnslagController extends Controller
             case 'teater':
             case 'annet':
                 $view_data['krev_sjanger'] = true;
+                $view_data['krev_titler'] = true;
                 break;
+            case 'matkultur':
+                $view_data['krev_sjanger'] = false;
+                $view_data['krev_titler'] = false;
             default:
                 $view_data['krev_sjanger'] = false;  
         }

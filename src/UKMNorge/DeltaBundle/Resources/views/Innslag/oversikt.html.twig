@@ -54,8 +54,10 @@
 		<p>&nbsp;</p>
 		
 		{# TITLER #}
-		{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
-		<p>&nbsp;</p>
+		{% if krev_titler %}
+			{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
+			<p>&nbsp;</p>
+		{% endif %}
 		{% if krev_tekniske %}
 			{# TEKNISKE BEHOV #}
 			{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
