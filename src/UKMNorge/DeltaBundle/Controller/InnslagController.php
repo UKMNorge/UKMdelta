@@ -287,6 +287,7 @@ class InnslagController extends Controller
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
             case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            case 'matkultur':   $form = 'smartukm_titles_other';        break;
             default:            $form = 'smartukm_titles_scene';        break;
         }
 
@@ -301,6 +302,7 @@ class InnslagController extends Controller
             case 'film':  		return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
             case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
             case 'utstilling':  return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
+            case 'matkultur' :  return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
             default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
         }
     }
@@ -313,6 +315,7 @@ class InnslagController extends Controller
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
             case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            case 'matkultur':   $form = 'smartukm_titles_other';        break;
             default:            $form = 'smartukm_titles_scene';        break;
         }
 
@@ -337,6 +340,12 @@ class InnslagController extends Controller
 		    	return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
 			case 'smartukm_titles_video':
 				return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'smartukm_titles_other':
+                switch ($type) {
+                    case 'matkultur': return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
+                    default: return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
+                }
+                
 		}
     }
 
@@ -350,6 +359,7 @@ class InnslagController extends Controller
 		switch( $type ) {
 			case 'film':		$form = 'smartukm_titles_video';		break;
 			case 'utstilling':	$form = 'smartukm_titles_exhibition';	break;
+            case 'matkultur':   $form = 'smartukm_titles_other';        break;
 			default:			$form = 'smartukm_titles_scene';		break;
 		}
 
@@ -367,8 +377,10 @@ class InnslagController extends Controller
         }
 		
 		// Sett standard-felter
-    	$tittel->set('tittel', $request->request->get('tittel') );		
-    	$tittel->set('season', $seasonService->getActive() );
+        if ($form != 'smartukm_titles_other') {
+            $tittel->set('tittel', $request->request->get('tittel') );		
+            $tittel->set('season', $seasonService->getActive() );
+        }
     	
     	// Switch på de forskjellige tabellene
     	switch( $form ) {
@@ -416,6 +428,11 @@ class InnslagController extends Controller
 			case 'smartukm_titles_video':
 				$tittel->set('varighet', $request->request->get('lengde'));	
 				break;
+            case 'smartukm_titles_other':
+                $tittel->set('tittel', $request->request->get('tittel'));
+                $tittel->set('erfaring', $request->request->get('erfaring'));
+                $tittel->set('kommentar', $request->request->get('kommentar'));
+                break;
     	}
 
 		// Lagre tittel
@@ -435,12 +452,13 @@ class InnslagController extends Controller
         switch( $type ) {
             case 'film':        $form = 'smartukm_titles_video';        break;
             case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
+            case 'matkultur':   $form = 'smartukm_titles_other';        break;
             default:            $form = 'smartukm_titles_scene';        break;
         }
         $tittel = new tittel($t_id, $form);
-       
+        $deleted = $tittel->delete();
         // Slett tittel fra innslaget
-        if ($deleted = $tittel->delete()) {
+        if ($deleted) {
 	        $translated_message = $this->get('translator')->trans('tittel.slettet', array('%tittel'=>$tittel->tittel), $type);
             $this->addFlash('success', $translated_message);
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
@@ -569,11 +587,11 @@ class InnslagController extends Controller
             case 'teater':
             case 'annet':
                 $view_data['krev_sjanger'] = true;
-                $view_data['krev_titler'] = true;
+                // $view_data['krev_titler'] = true;
                 break;
-            case 'matkultur':
-                $view_data['krev_sjanger'] = false;
-                $view_data['krev_titler'] = false;
+            // case 'matkultur':
+            //     $view_data['krev_sjanger'] = false;
+            //     $view_data['krev_titler'] = false;
             default:
                 $view_data['krev_sjanger'] = false;  
         }

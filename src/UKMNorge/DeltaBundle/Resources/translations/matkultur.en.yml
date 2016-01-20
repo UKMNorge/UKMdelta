@@ -5,6 +5,8 @@ whoAction:
     kontakt: Jeg er kun kontaktperson
     forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
 
+tittel.slettet: Tittelen %tittel ble slettet!
+
 overviewAction:
     artistnavn:
         alene:

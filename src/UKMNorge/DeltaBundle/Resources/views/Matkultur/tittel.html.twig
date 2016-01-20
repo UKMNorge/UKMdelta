@@ -1,0 +1,83 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block scripts %}
+	{{ parent() }}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/tittel.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+
+	
+{% block content %}
+
+	{# CONTENT #}
+	{% if tittel.tittel is defined %}
+		<h1 class="center">Endre tittel</h1>
+	{% else %}
+		<h1 class="center">Legg til tittel</h1>
+	{% endif %}
+	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
+		<input type="hidden" name="t_id" value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('t_id') : 'new' }}">
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Tittel</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Bakekunst, En smak av det franske kjøkken..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('tittel') : '' }}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Erfaring</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="text" required name="erfaring" class="form-control" placeholder="Eks. Jeg har lekt meg på kjøkkenet så lenge jeg kan huske..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('erfaring') : '' }}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Kommentar</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="text" required name="kommentar" class="form-control" placeholder="Eks. Jeg skal vise fram noe av det mest fantastiske bakverket jeg vet om, nemlig ferske, franske croissants..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('kommentar') : '' }}">
+			</div>
+		</div>
+		{# 
+		<div class="row">
+			<div class="col-xs-12 delta-input-header">
+				<small>Lengde</small>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+				{# <small class="delta-subtext left">{{ 'tittel.varighet.help'|trans }}</small> #}
+			</div>
+		</div> #}
+		<p>&nbsp;</p>
+		<div class="col-xs-10 col-xs-offset-1 center">
+			<button type="submit" class="btn btn-block btn-default">Lagre</button>
+		</div>
+		<div class="clearfix"></div>
+		{% if (tittel is defined) and (tittel.get('t_id') > 0) %}
+			<p>&nbsp;</p>
+			<div class="col-xs-10 col-xs-offset-1 center">
+				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-danger">Slett tittel</a>
+			</div>
+		<div class="clearfix"></div>
+		{% endif %}
+		<p>&nbsp;</p>
+		<div class="col-xs-12 center">
+				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">avbryt</a>
+		</div>
+	</form>
+
+{% endblock %}
