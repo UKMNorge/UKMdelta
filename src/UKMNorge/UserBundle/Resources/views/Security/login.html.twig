@@ -1,11 +1,20 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
+{% block css %}
+	{{ parent() }}
+	<style>
+.no-border-bottom-radius {
+	border-bottom-left-radius:0;
+	border-bottom-right-radius:0;
+}
+.no-border-top-radius {
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+}
+</style>
+{% endblock %}
 {% block content %}
 <div class="row">
-	<div class="col-xs-12">
-		<h2>Logg inn</h2>
-	</div>
-	
 	{% if error and error.messageKey == 'Invalid credentials.' %}
 		<div class="alert alert-danger">
 			<h4>Feil mobilnummer / passord</h4>
@@ -28,7 +37,7 @@
 	{% endif %}
 
 </div>
-{% if (rdirurl is defined) and (rdirurl == 'ambassador') %}
+{% if false %} {#(rdirurl is defined) and (rdirurl == 'ambassador') %}#}
 	<div class="row">
 		<div class="col-xs-8 col-xs-offset-2">
 			<p class="lead center">Etter innlogging blir du sendt tilbake til Ambassadør-siden</p>
@@ -39,36 +48,73 @@
 	<div class="hidden-xs col-sm-4">
 		<img src="http://ico.ukm.no/logginn-256.png" />
 	</div>
-	<div class="col-xs-12 col-sm-8">
+	<div class="col-xs-12 col-sm-8 pull-right">
+		<h1 class="center">UKMid <small>logg inn</small></h1>
 		<form action="{{ path("fos_user_security_check") }}" method="post">
 			<input type="hidden" name="_rdirurl" value="{{ rdirurl is defined ? rdirurl : '' }}" />
 			<input type="hidden" name="_rdirtoken" value="{{ rdirtoken is defined ? rdirtoken : '' }}" />
 		    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-		
+				
+			<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook" type="button">Logg inn med facebook</a>
+			<div class="text-hr"><span>eller</span></div>
+
 			<div class="form-group">
-			    <label for="username">Mobilnummer</label>
-			    <input class="form-control input-sm" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-			</div>	
-			
-			<div class="form-group">
-			    <label for="password">Passord</label>
-			    <input class="form-control input-sm" type="password" id="password" name="_password" required="required" />
+				<div class="input-group">
+					<span class="input-group-addon no-border-bottom-radius" style="border-bottom:none;"><i class="glyphicon glyphicon-phone"></i></span>
+				    <input class="form-control input-lg no-border-bottom-radius" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Mobilnummer" required="required" style="border-bottom: 0px;" />
+				</div>
+				<div class="input-group">    
+					<span class="input-group-addon no-border-top-radius"><i class="glyphicon glyphicon-lock"></i></span>
+				    <input class="form-control input-lg no-border-top-radius" type="password" id="password" name="_password" placeholder="Passord" required="required" />
+				</div>
 			</div>
 			
-			<div class="form-group">		
+{#			<div class="form-group">		
 			    <label for="remember_me">
 			    	<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
 					Husk meg
 				</label>
-			</div>		
+			</div>
+#}
 		    <input class="btn btn-block btn-success" type="submit" id="_submit" name="_submit" value="Logg inn" />
 		</form>
 		<p>&nbsp;</p>
-		<a href="{{ facebookLoginURL }}" class="btn btn-block btn-success" type="button">Logg inn eller registrer deg med facebook</a>
-		<p>&nbsp;</p>
-		<p class="xs-center">
-			<a href="{{ path('fos_user_resetting_request') }}">Glemt passord?</a>
-		</p>
+		<div class="clearfix"></div>
+	</div>	
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="hidden-xs">
+			<div class="clearfix"></div>
+			<div class="text-hr"></div>
+			<div class="clearfix"></div>
+		</div>
+		<h1 class="center">UKMid <small>opprett bruker</small></h1>
+		
+		{# MOBILE #}
+		<div class="visible-xs">
+			<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook col-xs-12 col-sm-6" type="button">Registrer deg med facebook</a>
+			<a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-success col-xs-12 col-sm-6" type="button">Registrer deg uten facebook</a>
+			
+			<p>&nbsp;</p>
+			<a href="{{ path('fos_user_resetting_request') }}" class="btn btn-block btn-warning" type="button">Glemt passord?</a>
+		</div>
+		{# SMALL AND UP #}
+		<div class="hidden-xs">
+			<div class="col-sm-6">
+				<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook" type="button">Registrer deg med facebook</a>
+			</div>
+			<div class="col-sm-6">
+				<a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-success col-xs-12 col-sm-6" type="button">Registrer deg uten facebook</a>
+			</div>
+
+			<p>&nbsp;</p>			
+			<div class="col-sm-12">
+				<a href="{{ path('fos_user_resetting_request') }}" class="btn btn-block btn-warning" type="button">Glemt passord?</a>
+			</div>
+		</div>
+
+
 
 		<p>&nbsp;</p>
 		<p class="xs-center">
@@ -76,6 +122,5 @@
 		</p>
 
 	</div>
-	
 </div>
 {% endblock %}

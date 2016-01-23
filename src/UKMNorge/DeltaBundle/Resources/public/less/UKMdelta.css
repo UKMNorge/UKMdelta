@@ -23,6 +23,62 @@
 	color: @bootstrap-info !important;
 }
 
+/* KOPIERT FRA UKMDesignBundle:Resources:public:css:UKMresponsive.css */
+.btn-default,
+button.btn-default {
+  background: #dbf0f1 !important;
+}
+.btn-success {
+  background: #6dc6c1 !important;
+}
+.btn-default a,
+.btn-default a:visited,
+a.btn-default,
+a.btn-default:visited,
+button.btn-default,
+.btn-success a,
+.btn-success a:visited,
+a.btn-success,
+a.btn-success:visited,
+button.btn-success {
+  font-weight: bold !important;
+  color: #1a1919 !important;
+}
+.btn-warning a,
+.btn-warning a:visited,
+a.btn-warning,
+a.btn-warning:visited,
+button.btn-warning {
+	color: #fff;
+	border-color: #d58512;
+}
+
+.btn-facebook {
+	background-color: #336699;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn.btn-block + .btn.btn-block {
+    margin-top: 12px;
+}
+
+.text-hr {
+    width: 90%;
+    height: 14px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    margin: 12px 0px 20px 5%;
+}
+
+.text-hr > span {
+	background-color: #fff;
+    color: #aaa;
+    padding: 0 10px;
+    font-style: italic;
+}
+/* END OF KOPIERT FRA UKMDesignBundle:Resources:public:css:UKMresponsive.css */
+
 h1, .h1 {
     font-size: 26px;
     font-weight: 300;
