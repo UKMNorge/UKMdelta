@@ -67,7 +67,8 @@ statusAction:
 removeAction:
     overskrift: Vil du virkelig melde av innslaget "%name%"?
     ja: Ja, meld av innslaget
-    nei: Nei, ta meg tilbake til oversikten
+    nei: Nei, ta meg tilbake til innslaget
+    hjem: Nei, gå til Din Side
     fjernet: Innslaget "%name" ble meldt av.
 
 technicalAction:

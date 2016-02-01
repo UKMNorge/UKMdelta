@@ -53,6 +53,12 @@ button.btn-warning {
 	border-color: #d58512;
 }
 
+.btn-danger a,
+a.btn-danger {
+  color: #1a1919 !important;
+   
+}
+
 .btn-facebook {
 	background-color: #336699;
 	color: #fff;

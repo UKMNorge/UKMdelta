@@ -28,6 +28,7 @@ indexAction:
     last: |
         påmeldingen
         er stengt
+    avmeld: meld av
 
 contactAction:
     overskrift: Rediger din bruker
