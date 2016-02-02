@@ -157,6 +157,14 @@ class UKMSecurityController extends BaseController {
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
         
+        // If mottatt error fra facebook
+        #var_dump($req->query);
+        $error = $req->query->get('error');
+        if ($error == 'access_denied') {
+            $this->addFlash('danger', 'Du må godkjenne UKM-appen for å logge inn med Facebook. Vi lover å ikke poste noe på veggen din.');
+            return $this->redirectToRoute('ukm_user_login');
+        }
+
         $redirectURL = $this->deltaFBLoginURL;
 
         if ($req->query->get('token')) {
@@ -199,7 +207,7 @@ class UKMSecurityController extends BaseController {
         if (isset($user->error)) {
             //var_dump($user);
             // Ofte: "This authorization code has been used."
-            $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
+            $this->addFlash('danger', 'Facebook-innloggingen feilet, prøv igjen.');
             return $this->redirectToRoute('ukm_user_login');
 
         }
