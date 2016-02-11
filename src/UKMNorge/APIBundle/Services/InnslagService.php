@@ -25,9 +25,22 @@ class InnslagService {
 	public function opprett($k_id, $pl_id, $type, $hvem, $person, $userID) {
     	$bandtypeid = getBandtypeId($type);
 		$seasonService = $this->container->get('ukm_delta.season');
+		$userManager = $this->container->get('ukm_user');
+		$user = $userManager->getCurrentUser();
 
 		// Opprett en innslagsID for typen, sesongen, mønstringsid, kommuneid og send med personobjektet som er kontaktperson
    		$innslagsID = create_innslag($bandtypeid, $seasonService->getActive(), $pl_id, $k_id, $person);
+ 
+   		// LOGG HER
+		$log = new SQLins('log_log');
+		$log->add('log_action', '312'); // Opprettet
+		$log->add('log_u_id', 'delta_'.$user->GetId());
+		$log->add('log_object', '3'); // Innslag
+		$log->add('log_the_object_id', $innslagsID);
+		$log->add('log_pl_id', $pl_id);
+		$log->add('log_system_id', 'UKMdelta');
+		$log->run();
+
     	$innslag = new innslag($innslagsID, false);
 
     	// Sett variabler i innslagsobjektet
