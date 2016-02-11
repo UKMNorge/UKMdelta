@@ -34,7 +34,7 @@ class InnslagService {
    		// LOGG HER
 		$log = new SQLins('log_log');
 		$log->add('log_action', '312'); // Opprettet
-		$log->add('log_u_id', 'delta_'.$user->GetId());
+		$log->add('log_u_id', $user->GetId());
 		$log->add('log_object', '3'); // Innslag
 		$log->add('log_the_object_id', $innslagsID);
 		$log->add('log_pl_id', $pl_id);
