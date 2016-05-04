@@ -10,6 +10,19 @@ ukm_fb_connect:
     path:     /ukmid/fbconnect/
     defaults: { _controller: UKMDeltaBundle:UKMID:fbconnect }
 
+# UKM_SJEKK
+ukm_sjekk_homepage:
+    path:     /sjekk/{mobile}/{hash}
+    defaults: { _controller: UKMDeltaBundle:Sjekk:index }
+
+ukm_sjekk_logged_in:
+    path:     /sjekk/
+    defaults: { _controller: UKMDeltaBundle:Sjekk:loggedIn }
+
+ukm_sjekk_create:
+    path:     /ukmid/sjekk/
+    defaults: { _controller: UKMDeltaBundle:Sjekk:createSjekk }
+
 ### UKMID
 ukm_delta_ukmid_homepage:
     path:     /ukmid/

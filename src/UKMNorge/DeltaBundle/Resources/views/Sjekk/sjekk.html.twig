@@ -1,0 +1,58 @@
+{% extends 'UKMDeltaBundle::layout.html.twig' %}
+
+{% block scripts %}
+{% endblock %}
+
+	
+{% block content %}
+
+	<div class="col-xs-12 col-md-10 col-md-offset-1">
+		<h2 class="center">Sjekk hvilken informasjon vi har om deg</h2>
+		{# <div class="well well-sm" style="background-opacity:0.5;"> #}
+			{# <h4>Personlig informasjon</h4> #}
+			<div class="col-xs-12 col-sm-12">
+				<p><b>Ser du noe feil? Ta kontakt med din fylkeskontakt, som kan hjelpe deg med å rette opp i informasjonen.</b></p>
+				<div class="">
+					Vi har registrert følgende personer på dette mobilnummeret:
+					<table class="table">
+						<tr>
+							<th>#</th><th>Navn</th><th>E-post</th><th>Alder</th><th>Telefon</th><th>Adresse</th><th>Postnummer</th>
+							{# <th>Poststed</th> #}
+						</tr>
+					{% for person in personer %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							<td>{{ person.get('p_firstname') }} {{ person.get('p_lastname') }}</td>
+							<td>{{ person.get('p_email') }}</td>
+							<td>{{ person.alder() }}</td>
+							<td>{{ person.get('p_phone') }}</td>
+							<td>{{ person.get('p_adress') }}</td>
+							<td>{{ person.get('p_postnumber') }}</td>
+							{# <td>{{ person.get('p_postplace') }}</td> #}{# Apparently SELECTer vi ikke postplace #}
+						</tr>
+					{% endfor %}
+				</table>
+				</div>
+			</div>
+			<div class="col-xs-12">
+				{% if innslag is defined %}
+					<h3>Du deltar i følgende videresendte innslag:</h3>
+					{% for inn in innslag %}
+						<h4>{{ inn.info.b_name }}</h4>
+						<div>
+							<div><span>Kategori: </span><span>{{ inn.info.bt_name|capitalize }}</span></div>
+							<div><span>Kommune: </span><span>{{ inn.info.kommune_utf8 }}</span></div>
+							<div><span>Fylke: </span><span>{{ inn.info.fylke_utf8 }}</span></div>	
+							{% if not inn.tittellos() %}
+								{% for tittel in inn.titler(pl_id) %}
+									<div><span>Tittel: </span><span>{{ tittel.g('tittel') }}</span></div>
+									<div><span>Lengde: </span><span>{{ (tittel.g('varighet')/60)|round(0, 'floor') ~ "min, " ~ (tittel.g('varighet')%60) ~ "s." }}</span></div>
+								{% endfor %}
+							{% endif %}
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{# </div> #}
+	</div>
+{% endblock %}
