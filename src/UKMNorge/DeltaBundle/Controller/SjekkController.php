@@ -114,7 +114,7 @@ class SjekkController extends Controller {
 			# Generer hash
 			$data = $NUMBER + time();
 			$hash = hash("sha256", $data);
-
+			$hash = substr($hash, 32, 8);
 			## Lagre mobilnummer og hash i databasen
 			$qry = new SQLins("ukm_sjekk");
 			$qry->add('phone', $NUMBER);
