@@ -51,8 +51,7 @@ class UKMSecurityController extends BaseController {
         $app_id = $this->getParameter('facebook_client_id');
         
         $redirectURL = $this->deltaFBLoginURL.$rdirtoken;
-        //die($redirectURL);
-        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+        
         $session = $request->getSession();
         if (class_exists('\Symfony\Component\Security\Core\Security')) {
             $authErrorKey = Security::AUTHENTICATION_ERROR;
@@ -116,11 +115,6 @@ class UKMSecurityController extends BaseController {
                 #var_dump($response);
                 return $response;
             }
-            // $router = $this->get('router');
-
-    		// if ($securityContext->isGranted('ROLE_USER')) {
-    		// 	return new ReirectResponse($ambURL, 302);
-    		// }
         }
 
         $data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
@@ -194,10 +188,7 @@ class UKMSecurityController extends BaseController {
             return $this->redirectToRoute('ukm_user_login');     
         }
 
-        // var_dump($result);
-        // die();
         $token = $result->access_token;
-        // Verify token?
 
         // Hent brukerdata
         $url = 'https://graph.facebook.com/me';
@@ -211,8 +202,7 @@ class UKMSecurityController extends BaseController {
             return $this->redirectToRoute('ukm_user_login');
 
         }
-        // var_dump($user);
-        // die();
+        
         // Sjekk om brukeren er registrert hos oss fra før med facebook-id
         $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
         $ukm_user = $repo->findOneBy(array('facebook_id' => $user->id));
@@ -234,30 +224,12 @@ class UKMSecurityController extends BaseController {
                     $all['_rdirtoken'] = $rdirtoken;
                     $request->request->replace($all);
                     $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-                    #var_dump($request);
 
                     $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                    #var_dump($response);
                     return $response;
                 }
             }
             
-            
-
-            // Burde vi ikke redirectes av onAuthenticationSuccess her??
-
-            
-            //     $data['rdirtoken'] = $request->query->get('token');
-
-            //     $all = $request->request->all(); 
-            //     $all['_rdirurl'] = $data['rdirurl']; 
-            //     $all['_rdirtoken'] = $data['rdirtoken'];
-            //     $request->request->replace($all);
-            //     $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-            //     $response = $handler->onAuthenticationSuccess($request, $usertoken);
-            // var_dump($response);
-            // return $response;
-            // Redirect!
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
 
@@ -268,7 +240,6 @@ class UKMSecurityController extends BaseController {
             // Vi har en bruker med den e-posten
             if ($ukm_user) {
                 // Slå sammen bruker
-
                 $ukm_user->setFacebookId($user->id);
                 $userManager = $this->get('fos_user.user_manager');
                 $userManager->updateUser($ukm_user);
@@ -283,18 +254,8 @@ class UKMSecurityController extends BaseController {
                 // Videresend om man skal videresendes
                 $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
                 $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                #var_dump($response);
+                
                 return $response;
-
-                // throw new Exception('TODO: Slå sammen brukere', 20008);
-                // // Vi har en bruker, logg han/hun inn.
-                // $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
-                // $this->get('security.token_storage')->setToken($usertoken);
-                // $request = $this->get('request');
-                // $event = new InteractiveLoginEvent($request, $usertoken);
-                // $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
-                // // Redirect!
-                // return $this->redirectToRoute('ukm_delta_ukmid_homepage');
             }
         }
         require_once('UKM/inc/password.inc.php');
@@ -328,7 +289,6 @@ class UKMSecurityController extends BaseController {
 
         // Dispatch registration confirmed event
 
-        #var_dump($ukm_user);
         // Logg inn brukeren, men redirect til telefonnummer-spørsmålet?
         $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
         $this->get('security.token_storage')->setToken($usertoken);
