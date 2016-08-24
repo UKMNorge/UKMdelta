@@ -30,6 +30,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->doctrine = $doctrine;
         $this->ukm_user = $ukm_user;
         $this->container = $container;
+        $this->logger = $container->get('logger');
 
 
         if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
@@ -37,6 +38,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
             $this->rsvpURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/login';
             $this->rsvpDipURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/receive/';
+            $this->testURL = 'http://test.ukm.dev/app_dev.php/login/';
+            $this->testDipURL = 'http://test.ukm.dev/app_dev.php/receive/';
         } 
         else {
             $this->ambURL = 'http://ambassador.ukm.no/dip/login';
@@ -51,6 +54,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
         $response = null;
         
+        $this->logger->info('DIPBundle: Authenticated successfully.');
         #var_dump($request);
         // If rdirurl is defined
         $rdirurl = $request->request->get('_rdirurl');
@@ -64,14 +68,22 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         if($session) {
             // die("if(session) works");
             // var_dump($session->get('rdirurl'));
-            
-            
             if ($session->get('rdirurl')) {
                 $rdirurl = $session->get('rdirurl');
                 $token = $session->get('rdirtoken');
-
                 // var_dump($rdirurl);
                 // die();
+            }
+        }
+
+        $key = null;
+        if($rdirurl) {
+            $keyRepo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
+            $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
+            if(!$key) {
+                $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$key.').';
+                $this->logger->error($errorMsg);
+                die($errorMsg);
             }
         }
         // throw new Exception('Sjekk session!');
@@ -81,11 +93,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         #var_dump($this->security->isGranted('ROLE_USER'));
         if ($this->security->isGranted('ROLE_USER'))
         {
-            // throw new Exception('Innlogget.');
-            #var_dump($rdirurl);
             switch ($rdirurl) {
                 case 'ambassador': 
-                    
                     // throw new Exception('ambassador');
                     // Sjekk at personen har alt som kreves for ambassadør? 
                     // Altså facebook_id
@@ -116,7 +125,28 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                     // Sett reell redirectURL
                     $rdirurl = $this->rsvpURL;             
                     break;
-                default: $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
+                case 'test':
+                    $user = $this->ukm_user->getCurrentUser();
+                    if (!$user->getFacebookId()) {
+                        // Hvis brukeren ikke har koblet til facebook
+                        // Redirect til facebook-connect m/ redirect?
+                        $r = new RedirectResponse($this->router->generate('ukm_fb_connect'));
+                        return $r;
+                        // throw new Exception('Du må koble til med facebook for å åpne ambassadør-siden!', 20007);
+                    }
+                    // Sett token i databasen
+                    $this->test($token);
+                    // Sett reell redirectURL
+                    $rdirurl = $this->testURL;             
+                    break;
+                default: 
+                    if($key) {
+                        $this->defaultPoster($token, $key);
+                        $rdirurl = $key->getApiReturnURL();
+                    }
+                    else 
+                        $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
+
             }
             #var_dump($rdirurl);
             #var_dump($request);
@@ -140,6 +170,8 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     private function ambassador($token) {
         require_once('UKM/curl.class.php');
         
+        $this->logger->info('DIPBundle: ambassador');
+
         #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
         $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
         $dbToken = $repo->findOneBy(array('token' => $token));
@@ -173,6 +205,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     private function rsvp($token) {
         require_once('UKM/curl.class.php');
         
+        $this->logger->info('DIPBundle: rsvp');
         #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
         $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
         $dbToken = $repo->findOneBy(array('token' => $token));
@@ -200,6 +233,75 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $curl = new UKMCurl();
         $curl->post(array('json' => $json));
         $res = $curl->process($this->rsvpDipURL);
+    }
+
+    private function test($token) {
+        require_once('UKM/curl.class.php');
+        
+        $this->logger->info('DIPBundle: test');
+        #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
+        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
+        $dbToken = $repo->findOneBy(array('token' => $token));
+
+        $user = $this->ukm_user->getCurrentUser();
+        // Encode brukerdata og token til JSON-objekt
+        $json = array();
+        $json['token'] = $token;
+        $json['delta_id'] = $user->getId();
+        $json['email'] = $user->getEmail();
+        $json['phone'] = $user->getPhone();
+        $json['address'] = $user->getAddress();
+        $json['post_number'] = $user->getPostNumber();
+        $json['post_place'] = $user->getPostPlace();
+        $json['birthdate'] = $user->getBirthdate();
+        $json['facebook_id'] = $user->getFacebookId();
+        $json['facebook_id_unencrypted'] = $user->getFacebookIdUnencrypted();
+        $json['facebook_access_token'] = $user->getFacebookAccessToken();
+        $json['first_name'] = $user->getFirstName();
+        $json['last_name'] = $user->getLastName();
+
+        $json = json_encode($json);
+        #var_dump($json);
+        // Send brukerinfo til ambassadør
+        $curl = new UKMCurl();
+        $curl->post(array('json' => $json));
+        $res = $curl->process($this->testDipURL);
+        $this->logger->info('DIPBundle: Curl-respons: '.$res);
+    }
+
+    private function defaultPoster($token, $api_key) {
+        require_once('UKM/curl.class.php');
+        
+        $this->logger->info('DIPBundle: Selecting user-data to POST.');
+        #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
+        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
+        $dbToken = $repo->findOneBy(array('token' => $token));
+
+        $user = $this->ukm_user->getCurrentUser();
+
+        // Encode brukerdata og token til JSON-objekt
+        $json = array();
+        $json['token'] = $token;
+        $json['delta_id'] = $user->getId();
+        $json['email'] = $user->getEmail();
+        $json['phone'] = $user->getPhone();
+        $json['address'] = $user->getAddress();
+        $json['post_number'] = $user->getPostNumber();
+        $json['post_place'] = $user->getPostPlace();
+        $json['birthdate'] = $user->getBirthdate();
+        $json['facebook_id'] = $user->getFacebookId();
+        $json['facebook_id_unencrypted'] = $user->getFacebookIdUnencrypted();
+        $json['facebook_access_token'] = $user->getFacebookAccessToken();
+        $json['first_name'] = $user->getFirstName();
+        $json['last_name'] = $user->getLastName();
+
+        $json = json_encode($json);
+        #var_dump($json);
+        // Send brukerinfo til gitt sted
+        $curl = new UKMCurl();
+        $curl->post(array('json' => $json));
+        $res = $curl->process($api_key->getApiTokenURL());
+        $this->logger->info('DIPBundle: Curl-respons: '.$res);
     }
 
 }
