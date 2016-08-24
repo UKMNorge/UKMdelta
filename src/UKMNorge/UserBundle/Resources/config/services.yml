@@ -34,6 +34,9 @@ services:
     ukm_user.security.authentication.handler.login_success_handler:
         class: 'UKMNorge\UserBundle\Security\Authentication\Handler\LoginSuccessHandler'
         arguments:  ["@router", "@security.context", "@doctrine", "@ukm_user", "@service_container"]
+    UKM.urlsigner:
+        class: 'UKMNorge\UserBundle\Services\URLSignerService'
+        arguments: ["@doctrine"]
 #    ukm_user.example:
 #        class: UKMNorge\UserBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
