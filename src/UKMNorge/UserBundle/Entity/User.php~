@@ -279,7 +279,6 @@ class User extends BaseUser
         return $this;
     }
 
-
     /**
      * Set sms_validated
      *
@@ -369,7 +368,11 @@ class User extends BaseUser
      */
     public function getPostNumber()
     {
-        return $this->post_number;
+        (string)$postnummer = $this->post_number;
+        while (strlen($postnummer) < 4) {
+            $postnummer = '0' . $postnummer;
+        }
+        return $postnummer;
     }
 
     /**
@@ -416,5 +419,28 @@ class User extends BaseUser
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+
+    /**
+     * Set pameld_user
+     *
+     * @param integer $pameldUser
+     * @return User
+     */
+    public function setPameldUser($pameldUser)
+    {
+        $this->pameld_user = $pameldUser;
+
+        return $this;
+    }
+
+    /**
+     * Get pameld_user
+     *
+     * @return integer 
+     */
+    public function getPameldUser()
+    {
+        return $this->pameld_user;
     }
 }
