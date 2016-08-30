@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use UKMCurl;
 use Exception;
+use DateTime;
 
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
@@ -81,7 +82,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             $keyRepo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
             $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
             if(!$key) {
-                $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$key.').';
+                $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$rdirurl.').';
                 $this->logger->error($errorMsg);
                 die($errorMsg);
             }
@@ -273,11 +274,17 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         require_once('UKM/curl.class.php');
         
         $this->logger->info('DIPBundle: Selecting user-data to POST.');
-        #$repo = $this->getDoctrine()->getRepository('UKMDipBundle:Token');
-        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
-        $dbToken = $repo->findOneBy(array('token' => $token));
 
         $user = $this->ukm_user->getCurrentUser();
+
+        // Set more token-info
+        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
+        $dbToken = $repo->findOneBy(array('token' => $token));
+        $dbToken->setTimeUsed(new DateTime());
+        $dbToken->setUserId($user->getId());
+
+        $this->doctrine->getManager()->persist($dbToken);
+        $this->doctrine->getManager()->flush();
 
         // Encode brukerdata og token til JSON-objekt
         $json = array();
@@ -298,10 +305,25 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $json = json_encode($json);
         #var_dump($json);
         // Send brukerinfo til gitt sted
+
+        $this->logger->info('DIPBundle: Curling user-data to '. $api_key->getApiKey() . ' ('.$api_key->getApiTokenURL() .')');
         $curl = new UKMCurl();
         $curl->post(array('json' => $json));
+        // Res skal være et JSON-objekt.
         $res = $curl->process($api_key->getApiTokenURL());
-        $this->logger->info('DIPBundle: Curl-respons: '.$res);
+        $this->logger->info('DIPBundle: Curl-respons: '.var_export($res, true));
+        if(!is_object($res)) {
+            // TODO: Error
+            $this->logger->error('DIPBundle: Tjenesten '.$api_key->getApiKey() .' svarte ikke med en godkjent status!');
+            $errorMsg = 'Tjenesten du prøvde å logge inn på klarte ikke å ta i mot brukerinformasjonen din. Dette er en systemfeil, ta kontakt med UKM Support hvis feilen fortsetter.';
+            throw new Exception($errorMsg);
+        }
+        if(!$res->success) {
+            // TODO: Error
+            $this->logger->error('DIPBundle: Tjenesten '.$api_key->getApiKey() .' svarte med success == false!');
+            $errorMsg = 'Tjenesten du prøvde å logge inn på klarte ikke å ta i mot brukerinformasjonen din. Dette er en systemfeil, ta kontakt med UKM Support hvis feilen fortsetter.';
+            throw new Exception($errorMsg);
+        }
     }
 
 }

@@ -112,7 +112,7 @@ class APIKeys
      */
     public function setApiReturnURL($apiReturnurl)
     {
-        $this->apiReturnurl = $apiReturnurl;
+        $this->apiReturnURL = $apiReturnurl;
 
         return $this;
     }
@@ -124,6 +124,29 @@ class APIKeys
      */
     public function getApiReturnURL()
     {
-        return $this->apiReturnurl;
+        return $this->apiReturnURL;
+    }
+
+    /**
+     * Set apiTokenURL
+     *
+     * @param string $apiTokenURL
+     * @return APIKeys
+     */
+    public function setApiTokenURL($apiTokenURL)
+    {
+        $this->apiTokenURL = $apiTokenURL;
+
+        return $this;
+    }
+
+    /**
+     * Get apiTokenURL
+     *
+     * @return string 
+     */
+    public function getApiTokenURL()
+    {
+        return $this->apiTokenURL;
     }
 }

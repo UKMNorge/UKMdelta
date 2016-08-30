@@ -46,6 +46,18 @@ class DipToken
      */
     private $timeCreated;
 
+    /**
+     *
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     */
+    private $userId = null;
+
+    /**
+     *
+     * @ORM\Column(name="time_used", type="datetime", nullable=true)
+     */
+    private $timeUsed;
 
     /**
      * Get id
@@ -124,5 +136,51 @@ class DipToken
     public function getTimeCreated()
     {
         return $this->timeCreated;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param integer $userId
+     * @return DipToken
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set timeUsed
+     *
+     * @param \DateTime $timeUsed
+     * @return DipToken
+     */
+    public function setTimeUsed($timeUsed)
+    {
+        $this->timeUsed = $timeUsed;
+
+        return $this;
+    }
+
+    /**
+     * Get timeUsed
+     *
+     * @return \DateTime 
+     */
+    public function getTimeUsed()
+    {
+        return $this->timeUsed;
     }
 }

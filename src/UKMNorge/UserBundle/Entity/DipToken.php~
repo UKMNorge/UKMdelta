@@ -46,6 +46,18 @@ class DipToken
      */
     private $timeCreated;
 
+    /**
+     *
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     */
+    private $userId = null;
+
+    /**
+     *
+     * @ORM\Column(name="time_used", type="datetime", nullable=true)
+     */
+    private $timeUsed;
 
     /**
      * Get id
