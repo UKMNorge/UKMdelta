@@ -5,6 +5,7 @@ namespace UKMNorge\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use UKMNorge\UserBundle\Entity\DipToken;
 
@@ -67,7 +68,7 @@ class UKMDipController extends Controller {
 				$signedURL = $signer->getSignedUrl($request->getMethod(), $params);
 				if ( $sign != $signedURL) {
 					$this->get('logger')->error('DIPBundle: Signert URL ('.$signedURL.') stemmer ikke med signering fra klient ('.$_SERVER['QUERY_STRING'].')');
-					die('COULT NOT GRANT ACCESS');
+					die('COULD NOT GRANT ACCESS');
 				}
 
 			}
@@ -88,11 +89,16 @@ class UKMDipController extends Controller {
 	    	$em->flush();
 			// Return an HTTP OK response
 			$this->get('logger')->info('DIPBundle: Token stored OK.');
-			$response = new Response('Token stored OK.');
+			#$response = new Response('Token stored OK.');
+			$data = array();
+			$data['statustext'] = 'Token stored OK.';
+			$responseData = array('success' => true, 'data' => $data);
+			$response = new JsonResponse($responseData);
 		}
 		catch (Exception $e) {
-			$this->get('logger')->error('DIPBundle: En uventet feil skjedde. '.$e->getMessage());
-			die('DIPBundle: En uventet feil skjedde. '.$e->getMessage());
+			$errorMsg = 'DIPBundle: En uventet feil skjedde. '.$e->getMessage();
+			$this->get('logger')->error($errorMsg);
+			$response = new JsonResponse(array('success' => false, 'data' => array('statustext' => $errorMsg)));
 		}
 		return $response;
 	}
