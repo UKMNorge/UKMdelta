@@ -291,18 +291,9 @@ class RegistrationController extends BaseController
 	public function checkSMSValidation($phone) {
 		$em = $this->getDoctrine()->getManager();
 		$r = $this->getDoctrine()->getRepository('UKMNorge\UserBundle\Entity\SMSValidation');
-		$smsVal = $r->findBy(array('phone' => $phone));
-		// $smsVal = $em->find('UKMNorge\UserBundle\Entity\SMSValidation', array('phone' => $phone));
-		if(count($smsVal) > 1) {
-			die('Flere enn én med samme tlfnummer!');
-		}
-		elseif(count($smsVal) < 1) {
-			die('Ingen med det telefonnummeret!');
-		}
-		else {
-			$smsVal = $smsVal[0];
-		}
-		#var_dump($smsVal);
+		
+		$smsVal = $r->findMostRecentByPhone($phone);
+		
 		if ($smsVal->getValidated() == true) {	
 			$userProvider = $this->get('ukm_user.user_provider');
 			$userManager = $this->get('fos_user.user_manager');

@@ -50,6 +50,17 @@ class SMSValidation
      */
     private $validated;
 
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
     /**
      * Get id
@@ -128,5 +139,29 @@ class SMSValidation
     public function getValidated()
     {
         return $this->validated;
+    }
+
+    /**
+     * Get created.
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Sets created.
+     *
+     * @param \DateTime
+     *
+     * @return self
+     */
+    public function setCreated(\DateTime $created)
+    {
+        $this->created = $created;
+
+        return $this;
     }
 }
