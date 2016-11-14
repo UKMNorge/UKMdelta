@@ -78,7 +78,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         }
 
         $key = null;
-        if($rdirurl && $rdirurl != 'ambassador' && $rdirurl != 'rsvp') {
+        if($rdirurl && $rdirurl != 'ambassador') {
             $keyRepo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
             $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
             if(!$key) {
