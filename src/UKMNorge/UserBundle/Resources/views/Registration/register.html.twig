@@ -2,6 +2,13 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
+{% form_theme form _self %}
+
+{% block tel_widget %}
+	{% set type = 'tel' %}
+    {{ block('form_widget_simple') }}
+{% endblock %}
+
 {% block content %}
 	{% if phoneAlreadyRegistered is defined and phoneAlreadyRegistered == true %}
 		<div class="alert alert-danger">
