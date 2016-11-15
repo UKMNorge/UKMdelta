@@ -31,7 +31,8 @@
 		</div>
 	</div>
 	
-	<div class="row">
+	{# FJERNET 15.11.2016 i forbindelse med forenkling av påmeldingen ref. aprilsamlingen av fylkeskontakter. #}
+	{# <div class="row">
 		<div class="col-xs-12 delta-input-header">
 			<small>{{ 'tittel.beskrivelse.label'|trans }}</small>
 		</div>
@@ -40,7 +41,7 @@
 		<div class="col-xs-12">
 			<textarea required name="beskrivelse" class="form-control" placeholder="{{ 'tittel.beskrivelse.placeholder'|trans }}">{{ tittel is defined ? tittel.get('beskrivelse') : '' }}</textarea>
 		</div>
-	</div>
+	</div> #}
 	
 	
 {% endblock form_body %}
