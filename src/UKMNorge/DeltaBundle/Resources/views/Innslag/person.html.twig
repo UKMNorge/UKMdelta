@@ -40,7 +40,7 @@
 					<select name="alder" required class="form-control delta-select">
 						<option value="" {{ age is defined and (age < 25) and (age > 9) and (age != '25+') ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option> 
 						{% for i in 10..25 %}
-							<option value="{{ i }}" {{ age is defined and age == i ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({}, 'base') }}</option> 
+							<option value="{{ i }}" {{ age is defined and age == i ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option> 
 						{% endfor %}
 							<option value="0"{{ age is defined and (age == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
 					</select>

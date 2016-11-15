@@ -9,7 +9,7 @@ checkInfoAction:
     alder: Alder
     alderVelger:
         Label: Velg riktig alder
-        aar: år
+        aar: år (født i year)
         gammel: Over 25 år
     nesteLabel: Neste
 
@@ -46,7 +46,7 @@ contactAction:
     alder: Alder
     alderVelger:
         Label: Velg riktig alder
-        aar: år
+        aar: år (født i year)
         gammel: Over 25 år
     lagre: Lagre og gå til oversikten
     avbryt: avbryt

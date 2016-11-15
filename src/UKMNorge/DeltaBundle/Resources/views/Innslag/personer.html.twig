@@ -30,7 +30,7 @@
 						<div class="col-xs-2">
 							<div class="overunder">
 								<div class="over">{{ person.age is defined ? person.age : '?' }}</div>
-								<div class="under">{{ 'person.alder.ar'|trans({}, 'base') }}</div>
+								<div class="under">{{ person.age is defined ? 'person.alder.ar'|trans({ "year": "now"|date("Y") - person.age }, 'base') : 'år' }}</div>
 							</div>
 						</div>
 						<div class="col-xs-7">

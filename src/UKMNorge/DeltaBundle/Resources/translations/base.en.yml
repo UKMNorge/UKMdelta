@@ -12,7 +12,7 @@ person:
     alder:
         label: Alder
         listDefault: Velg riktig alder
-        ar: år
+        ar: år (født i year)
         over25: Over 25 år
     avbryt: avbryt
     rediger: rediger

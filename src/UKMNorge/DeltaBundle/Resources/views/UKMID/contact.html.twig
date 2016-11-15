@@ -38,7 +38,7 @@
 				<select name="age" required class="form-control">
 					<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'contactAction.alderVelger.Label'|trans }}</option> 
 					{% for i in 10..25 %}
-						<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'contactAction.alderVelger.aar'|trans }}</option> 
+						<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'contactAction.alderVelger.aar'|trans({ "year": "now"|date("Y") - i }) }}</option> 
 					{% endfor %}
 						<option value="0" {{ (age is defined) and (age == 0 or age > 25) ? 'selected' : '0' }}>{{ 'contactAction.alderVelger.gammel'|trans }}</option>
 				</select>
