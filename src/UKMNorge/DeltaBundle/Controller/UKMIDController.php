@@ -47,21 +47,21 @@ class UKMIDController extends Controller
         $user = $this->get('ukm_user')->getCurrentUser();
         
         // Har vi all data lagret om denne brukeren?
-        if ($user->getAddress() != null && $user->getPostNumber() != null && $user->getPostPlace() != null && $user->getBirthdate() != null) {
+        // Fjernet adresse og poststed 15.11.2016 pga forenkling i påmeldingen, ref. arbeidsseminar i mai.
+        /*if ($user->getAddress() != null && $user->getPostNumber() != null && $user->getPostPlace() != null && $user->getBirthdate() != null) {*/
+        if ( $user->getPostNumber() != null && $user->getBirthdate() != null) {
             // Gå videre til geovalg
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
         }
 
         // Beregn alder fra fødselsår
-        if ($birthdate = $user->getBirthdate()) {
+        if( $user->getBirthdate() ) {
             $now = new DateTime('now');
-            $age = $birthdate->diff($now)->y;
+            $age = $user->getBirthdate()->diff($now)->y;
             $view_data['age'] = $age;
         }
         
         $view_data['user'] = $user;
-        //var_dump($view_data['user']);
-        // Legg til data som vi allerede har lagret, i tilfelle valideringsfeil
 
         // Rendre fyll-inn-visningen.
         return $this->render('UKMDeltaBundle:UKMID:info.html.twig', $view_data );
@@ -77,9 +77,9 @@ class UKMIDController extends Controller
         // Ta imot post-variabler
         $request = Request::createFromGlobals();
 
-        $address = $request->request->get('address');
+        #$address = $request->request->get('address');
         $postNumber = $request->request->get('postNumber');
-        $postPlace = $request->request->get('postplace');
+        #$postPlace = $request->request->get('postplace');
         $age = $request->request->get('age');
 
         //TODO: Sikkerhetssjekk input?
@@ -95,9 +95,9 @@ class UKMIDController extends Controller
             $dato->setTimestamp(0);
         }
         // Legg til verdier i user-bundle
-        $user->setAddress($address);
+        #$user->setAddress($address);
         $user->setPostNumber($postNumber);
-        $user->setPostPlace($postPlace);
+        #$user->setPostPlace($postPlace);
         $user->setBirthdate($dato);
 
         $userManager->updateUser($user);

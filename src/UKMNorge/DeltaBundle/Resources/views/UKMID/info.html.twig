@@ -15,7 +15,8 @@
 	</p>
 	<form class="" method="POST" action="{{ path('ukm_delta_ukmid_verifyInfo') }}">
 		<div class="form-group">
-			<div class="row">
+			{# FJERNET 15.11.2016 for å forenkle påmeldingsprosessen, ref. arbeidsseminar mai 2016. #}
+			{# <div class="row">
 				<div class="col-xs-12 delta-input-header">
 					<small>{{ 'checkInfoAction.adresse'|trans }}</small>
 				</div>
@@ -24,7 +25,7 @@
 				<div class="col-xs-12">
 					<input type="text" required name="address" class="form-control" placeholder="" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}">
 				</div>
-			</div>
+			</div> #}
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
 					<small>{{ 'checkInfoAction.postnummer'|trans }}</small>
@@ -35,7 +36,8 @@
 					<input type="text" required id="postNumber" name="postNumber" class="form-control" placeholder="" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
 				</div>
 			</div>
-			<div class="row">
+			{# FJERNET 15.11.2016 for å forenkle påmeldingsprosessen, ref. arbeidsseminar mai 2016. #}
+			{# <div class="row">
 				<div class="col-xs-12 delta-input-header">
 					<small>{{ 'checkInfoAction.poststed'|trans }}</small>
 				</div>
@@ -44,7 +46,7 @@
 				<div class="col-xs-12">
 					<input type="text" required id="postPlace" name="postplace" class="form-control" placeholder="" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}"> 
 				</div>
-			</div>
+			</div> #}
 			<div class="row">
 				<div class="col-xs-12 delta-input-header">
 					<small>{{ 'checkInfoAction.alder'|trans }}</small>
@@ -55,7 +57,7 @@
 					<select name="age" required class="form-control">
 						<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'checkInfoAction.alderVelger.Label'|trans }}</option> 
 						{% for i in 10..25 %}
-							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans }}</option> 
+							<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans( { "year": "now"|date("Y") - i } ) }}</option> 
 						{% endfor %}
 							<option value="0">{{ 'checkInfoAction.alderVelger.gammel'|trans }}</option>
 					</select>
