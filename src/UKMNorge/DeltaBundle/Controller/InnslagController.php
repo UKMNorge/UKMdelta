@@ -33,8 +33,8 @@ class InnslagController extends Controller
         $season = $this->container->get('ukm_delta.season')->getActive();
 
         $monstringer = new monstringer($season);
-        // Inkluderer testkommunene hvis environment == test
-        $liste = $monstringer->alle_kommuner_med_lokalmonstringer( $this->container->get( 'kernel' )->getEnvironment() == 'test' );
+        // Inkluderer testkommunene hvis environment == test eller dev
+        $liste = $monstringer->alle_kommuner_med_lokalmonstringer( $this->container->get( 'kernel' )->getEnvironment() == 'test' || $this->container->get( 'kernel' )->getEnvironment() == 'dev' );
 
 
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
