@@ -98,6 +98,9 @@ tittel:
     type:
         label: Type og teknikk
         placeholder: Eks. portrettfoto, akvarellmaling, acryl osv...
+        forklaring: >
+            Skriv hva du har laget, sånn at vi kan planlegge utstillingen på best mulig måte.
+            Et fotografi trenger f.eks gjerne en vegg å henges på, mens statuer ofte trenger mer gulvplass.
     beskrivelse:
         label: Beskrivelse av verket / utstillingsobjektet
         placeholder: >

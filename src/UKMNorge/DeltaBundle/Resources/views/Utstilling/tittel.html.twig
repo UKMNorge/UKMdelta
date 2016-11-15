@@ -28,7 +28,9 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('type') : '' }}">
+			<small class="form-text text-muted">{{ 'tittel.type.forklaring'|trans }}</small>
 		</div>
+			
 	</div>
 	
 	{# FJERNET 15.11.2016 i forbindelse med forenkling av påmeldingen ref. aprilsamlingen av fylkeskontakter. #}
