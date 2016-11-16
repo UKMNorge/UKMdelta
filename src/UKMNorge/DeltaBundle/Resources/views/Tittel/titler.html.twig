@@ -44,7 +44,7 @@
 								<small>
 									{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
 										{{ tittel.parentes }}
-									{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and type == 'teater' %}
+									{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur') %}
 									{% else %}
 										<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
 									{% endif %}
