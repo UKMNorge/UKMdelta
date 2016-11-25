@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Exception;
 
 class DefaultController extends Controller
 {
@@ -13,5 +14,12 @@ class DefaultController extends Controller
     public function indexAction()
     {
         return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/exceptionTest/", name="Exception-test")
+     */
+    public function exceptionTestAction() {
+    	throw new Exception("Dette er en test-feil!");
     }
 }

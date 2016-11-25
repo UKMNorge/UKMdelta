@@ -144,7 +144,7 @@ feil:
         tekst: |
             Vi anbefaler at du går til forsiden, men du kan også laste inn siden på nytt om du tror det skal finnes noe her.
     ukjentfeil: 
-        topptekst: Vi aner ikke hva som er feil, så spis litt ost og prøv igjen!
+        topptekst: En ukjent feil oppsto.
     ingentilgang: 
         topptekst: Du har ikke tilgang til dette innslaget!
         ledetekst: >

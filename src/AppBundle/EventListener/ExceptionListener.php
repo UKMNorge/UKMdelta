@@ -30,14 +30,8 @@ class ExceptionListener {
 	// protected $templating;
 
 	public function __construct($container) {
-		// echo 'Constructing... ';
-		//var_dump($container);
 		$this->container = $container;
 	}
-
-	// function __construct($container) {
-	//     $this->container = $container;
-	// }
 
 	 /**
      * Handles a kernel exception and returns a relevant response.
@@ -49,12 +43,6 @@ class ExceptionListener {
      */
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
-        // $response = $this->templateEngine->render(
-        //     'TwigBundle:Exception:error500.html.twig',
-        //     array('status_text' => $event->getException()->getMessage())
-        // );
-
-    	// echo 'Exception caught! ';
         $exception = $event->getException();
         
         $code = -1;
@@ -68,24 +56,6 @@ class ExceptionListener {
             $code = $exception->getCode();
         }
 
-        // if (get_class($exception) == 'Exception') {
-        //     // Don't run getStatusCode()!
-        //     $code = 0;
-        // }
-        // else {    
-        //     try {
-                
-        //     } 
-        //     catch(Exception $e) {
-                
-        //     }
-        // }
-        //var_dump($exception);
-
-        // echo $exception->getCode() . '<br>';
-        // echo $exception->getMessage().'<br>';
-        // die();
-
         $response = new Response();
         
         // Sjekk hvilken exception det er her
@@ -93,8 +63,7 @@ class ExceptionListener {
         $view_data = array();
         switch ($code) {
         	case 0:
-        		// Egne exceptions uten statuskode dukker opp her!'
-        		// echo 'deltaException:<br>';
+        		// Egne exceptions uten statuskode dukker opp her!
         		$view_data = $this->deltaException($event);
         		break;
         	case 404:
@@ -107,37 +76,6 @@ class ExceptionListener {
                 $view_data = $this->unknownErrorException($event);
         		break;
         }
-        ####
-        # Historical reference:
-        # All kode jeg testa som til slutt viste seg å ikke være nødvendig (og som heller ikke funka)
-        # Burde fjernes en gang
-        ####
-        //var_dump($this->container);
-  		// $loader = new FilesystemLoader(__DIR__.'/../../UKMNorge/DeltaBundle/Resources/views/%name%');
-  		// var_dump($loader);
-		// $templating = new PhpEngine(new TemplateNameParser(), $loader);
-		// Lag TwigEngine?
-		// echo '<br>\r\nCreating TwigEngine';
-		// $environment = new Twig_Environment();
-		// //$parser = new TemplateNameParserInterface();
-		// //$locator = new FileLocatorInterface();
-		// //var_dump($environment);
-		// $templating = new TwigEngine($environment, TemplateNameParserInterface, FileLocatorInterface);
-		
-		//$response->setContent($templating->render('Error/index.html.twig', array('message' => 'test')));
-
-        // $message = 'Ooops, feil! Koden sier: ' . $exception->getMessage(); 
-		// var_dump($this->templating);  
-        // $response->setContent($message);
-
-        // HttpExceptionInterface is a special type of exception that
-        // holds status code and header details
-        // if ($exception instanceof HttpExceptionInterface) {
-        //     $response->setStatusCode($exception->getStatusCode());
-        //     $response->headers->replace($exception->getHeaders());
-        // } else {
-        //     $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        // }
         
         // La Twig rendre i vei
         $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
@@ -148,11 +86,12 @@ class ExceptionListener {
         $event->setResponse(new Response());
     }
 
+    /** 
+     * This function is expected to return an array with text for exceptions generated within UKMdelta
+     * May also return any of the keywords used in DeltaBundle:Error:index.html.twig
+     */
     public function deltaException(GetResponseForExceptionEvent $event) {
-    	// This function is expected to return an 
-    	// array with text for exceptions generated within UKMdelta
-        // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
-
+    	
         $message = $event->getException()->getMessage();
 
         if ($message == 'Du har ikke tilgang til dette innslaget!') {
@@ -184,8 +123,6 @@ class ExceptionListener {
         }
         else {
             $key = 'feil.ukjentfeil.';
-            // Humornøkkel
-            $view_data['cheese'] = true;
 
             $view_data['ledetekst'] = $key.'topptekst';
             // $view_data['tekst'] = $key.'tekst';
@@ -208,12 +145,19 @@ class ExceptionListener {
         // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
         $key = 'feil.ukjentfeil.';
 
-        // Humornøkkel
-        $view_data['cheese'] = true;
-
-        $view_data['overskrift'] = $key.'topptekst';
+        $view_data['overskrift'] = 'feil.overskrift';
+        $view_data['ledetekst'] = $key.'topptekst';
         // $view_data['ledetekst'] = $key.'ledetekst';
         // $view_data['tekst'] = $key.'tekst';
+
+
+        $teknisk = array();
+        $teknisk['message'] = $event->getException()->getMessage();
+        $teknisk['file'] = $event->getException()->getFile();
+        $teknisk['line'] = $event->getException()->getLine();
+        $teknisk['trace'] = $event->getException()->getTraceAsString();
+        //$teknisk['exception'] = $event->getException();
+        $view_data['teknisk'] = $teknisk;
 
         return $view_data;
     }
