@@ -70,7 +70,6 @@ class InnslagController extends Controller
         
         $view_data['lokal_monstring'] = $monstring;
         
-
         //var_dump($liste[1]);
         return $this->render('UKMDeltaBundle:Innslag:geo.html.twig', $view_data);
     }
