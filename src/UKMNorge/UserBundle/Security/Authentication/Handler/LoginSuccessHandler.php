@@ -32,29 +32,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->ukm_user = $ukm_user;
         $this->container = $container;
         $this->logger = $container->get('logger');
-
-
-        if ( $this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
-            $this->rsvpURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/login';
-            $this->rsvpDipURL = 'http://rsvp.ukm.dev/web/app_dev.php/dip/receive/';
-            $this->testURL = 'http://test.ukm.dev/app_dev.php/login/';
-            $this->testDipURL = 'http://test.ukm.dev/app_dev.php/receive/';
-        } 
-        else {
-            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
-            $this->rsvpURL = 'http://rsvp.ukm.no/dip/login';
-            $this->rsvpDipURL = 'http://rsvp.ukm.no/dip/receive/';
-        }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-
-        $response = null;
-        
+        $response = null;        
         $this->logger->info('DIPBundle: Authenticated successfully.');
 
         // If rdirurl is defined
@@ -69,90 +51,65 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                 $token = $session->get('rdirtoken');
             }
         }
-
-        $key = null;
-        if($rdirurl && $rdirurl != 'ambassador') {
-            $keyRepo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
-            $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
-            if(!$key) {
-                $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$rdirurl.').';
-                $this->logger->error($errorMsg);
-                die($errorMsg);
-            }
-        }
         
         // If logged in properly.
         if ($this->security->isGranted('ROLE_USER'))
-        {
-            switch ($rdirurl) {
-                case 'ambassador': 
-                    // Sjekk at personen har alt som kreves for ambassadør, altså facebook_id
-                    $user = $this->ukm_user->getCurrentUser();
-                    if (!$user->getFacebookId()) {
-                        // Hvis brukeren ikke har koblet til facebook
-                        // Redirect til facebook-connect m/ redirect?
-                        $r = new RedirectResponse($this->router->generate('ukm_fb_connect'));
-                        return $r;
+        {   
+            // Send godkjenning til tjenesten, om noen.
+            $key = null;
+            if($rdirurl) {
+                $keyRepo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
+                $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
+                if(!$key) {
+                    $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$rdirurl.').';
+                    $this->logger->error($errorMsg);
+                    die($errorMsg);
+                }
+
+                $this->defaultPoster($token, $key);
+
+                // Sjekk om tjenesten har bedt om mer informasjon via scope
+                if( $session->get('scope') ) {
+                    $this->logger->info('UKMUserBundle: Tjenesten har bedt om mer informasjon via scopes.');
+                    $scopes = explode(',', $session->get('scope'));
+                    $information_queue = array();
+                    foreach( $scopes as $scope) {
+                        switch( $scope ) {
+                            case 'kommune': 
+                                // Hvis vi ikke har registrert informasjon om kommune, legg til i køen av skjema.
+                                if (true) {
+                                    $information_queue[] = 'kommune';
+                                }
+                            break;
+                            case 'alder':
+                                if (true) {
+                                    $information_queue[] = 'alder';
+                                }
+                            break;
+                        }
                     }
-                    // Sett token i databasen
-                    $this->ambassador($token);
-                    // Sett reell redirectURL
-                    $rdirurl = $this->ambURL;             
-                break;
-                default: 
-                    if($key) {
-                        $this->defaultPoster($token, $key);
-                        $rdirurl = $key->getApiReturnURL();
+
+                    if( !empty($information_queue) ) {
+                        $this->logger->info('UKMUserBundle: Noe av informasjonen som er bedt om mangler - sender brukeren til infoQueue.');
+                        $session->set('information_queue', $information_queue);
+                        // Send brukeren til skjema-håndtering.
+                        return new RedirectResponse($this->router->generate('ukm_info_queue'));
                     }
                     else {
-                        $rdirurl = $this->router->generate('ukm_delta_ukmid_homepage');
+                        $this->logger->info('UKMUserBundle: Brukeren har registrert all informasjonen som ble bedt om.');
                     }
-                break;
+                }
             }
-            
-            // Fjern redirect-session-variabler
-            if($session) {
-                $session->remove('rdirurl');
-                $session->remove('rdirtoken');
-            }
-            // Default response er redirect til UKMID
-            $response = new RedirectResponse($rdirurl);
+
+            // Gjennomfør redirect til rett tjeneste eller UKMid.
+            $redirecter = $this->container->get('ukm_user.redirect');
+            return $redirecter->doRedirect();
         }
 
-        return $response;
-    }
-
-    private function ambassador($token) {
-        require_once('UKM/curl.class.php');
-        
-        $this->logger->info('DIPBundle: ambassador');
-
-        $repo = $this->doctrine->getRepository("UKMUserBundle:DipToken");
-        $dbToken = $repo->findOneBy(array('token' => $token));
-
-        $user = $this->ukm_user->getCurrentUser();
-        // Encode brukerdata og token til JSON-objekt
-        $json = array();
-        $json['token'] = $token;
-
-        $json['delta_id'] = $user->getId();
-        $json['email'] = $user->getEmail();
-        $json['phone'] = $user->getPhone();
-        $json['address'] = $user->getAddress();
-        $json['post_number'] = $user->getPostNumber();
-        $json['post_place'] = $user->getPostPlace();
-        $json['birthdate'] = $user->getBirthdate();
-        $json['facebook_id'] = $user->getFacebookId();
-        $json['facebook_id_unencrypted'] = $user->getFacebookIdUnencrypted();
-        $json['facebook_access_token'] = $user->getFacebookAccessToken();
-        $json['first_name'] = $user->getFirstName();
-        $json['last_name'] = $user->getLastName();
-
-        $json = json_encode($json);
-        // Send brukerinfo til ambassadør
-        $curl = new UKMCurl();
-        $curl->post(array('json' => $json));
-        $res = $curl->process($this->ambDipURL);
+        // IKKE LOGGET INN - SKJER DETTE NOENSINNE?
+        $this->logger->critical("UKMUserBundle: En bruker har kommet til LoginSuccessHandler uten å ha minimum rollen ROLE_USER - dette er en bug som ikke skal gå an. Stacktrace: ".var_export(debug_backtrace(), true) );
+        mail('support@ukm.no','UKMUserBundle: En bruker har kommet til LoginSuccessHandler uten å ha rollen ROLE_USER', 'Dette skal ikke skje, og er en systemfeil. Stacktrace: '. var_export(debug_backtrace(), true) );
+        throw new Exception("En systemfeil har oppstått - du er logget inn, men ikke autorisert. Kontakt UKM Support.");
     }
 
     private function defaultPoster($token, $api_key) {

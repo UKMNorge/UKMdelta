@@ -1,0 +1,18 @@
+{% extends 'UKMUserBundle::layout.html.twig' %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+	<h1>Velg kommunen din</h1>
+	<form method="post" action="">
+		<input type="hidden" name="infoQueue" value="{{ infoQueue is defined ? infoQueue : '' }}">
+		<input type="hidden" name="skjema" value="kommune" />
+		{% for fylke in fylker %}
+			<h3>{{ fylke.navn }}</h3>
+			{% for kommune in fylke.kommuner %}
+				<button type="submit" class="btn btn-block btn-primary" name="kommune_id" value="{{ kommune.id }}">{{ kommune.navn }}</button>
+			{% endfor %}
+		{% endfor %}
+	</form>
+{% endblock %}
