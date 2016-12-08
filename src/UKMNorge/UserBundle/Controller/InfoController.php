@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Exception;
 use stdClass;
+use UKMCURL;
 
 class InfoController extends Controller {
 
@@ -51,7 +52,11 @@ class InfoController extends Controller {
             case 'alder':
                	return $this->alderSkjema($view_data);
             break;	
+            case 'facebook':
+            	return $this->facebookSkjema($view_data);
+            break;
             default:
+            	// TODO: Prettify denne?
             	throw new Exception("Mangler skjemaet du spør om!");
             break;
         }
@@ -109,4 +114,84 @@ class InfoController extends Controller {
 	private function alderSkjema($view_data) {
 		return $this->render('UKMUserBundle:Info:alder.html.twig', $view_data);
 	}
+
+	/**
+	 * Skal rendre facebook-skjemaet som forklarer hvorfor og viser knappen "Koble til med facebook".
+	 *
+	 */
+	private function facebookSkjema($view_data) {
+		$app_id = $this->getParameter('facebook_client_id');
+		if( $this->getParameter('UKM_HOSTNAME') ) {
+			$redirectURL = 'http://delta.ukm.dev/web/app_dev.php/info';
+		} else {
+			$redirectURL = 'http://delta.ukm.no/info/';
+		}
+        
+        $view_data = array();
+        $view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
+        
+        $rdirurl = $this->get('session')->get('rdirurl');
+        if ($rdirurl == 'ambassador') {
+            $view_data['system'] = 'ambassador';
+        }
+
+        $this->get('session')->set('facebook_return', true);
+
+		return $this->render('UKMUserBundle:Info:facebook.html.twig', $view_data);
+	}
+
+	/**
+	 * Skal håndtere retur fra facebook for lagring av facebook-id etter autorisering.
+	 *
+	 * @param
+	 * @return 
+	 */
+	private function facebookConnect() {
+		$this->get('session')->remove('facebook_return');
+
+        require_once('UKM/curl.class.php');
+        $req = Request::createFromGlobals(); 
+        if( $this->getParameter('UKM_HOSTNAME') ) {
+			$redirectURL = 'http://delta.ukm.dev/web/app_dev.php/info';
+		} else {
+			$redirectURL = 'http://delta.ukm.no/info/';
+		}
+        
+
+        if ($req->query->get('code')) {
+            $code = $req->query->get('code');
+            // This means we are coming from facebook
+            // Bytt code for en access-token
+            $curl = new UKMCurl();
+            $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
+            $url .= '?client_id='.$this->getParameter('facebook_client_id');
+            $url .= '&redirect_uri='.$redirectURL;
+            $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
+            $url .= '&code='.$code;
+            $curl->timeout(50);
+            $result = $curl->process($url);
+            if(isset($result->error)) {        
+                var_dump($result);
+                die();
+            }
+
+            $token = $result->access_token;
+            // Hent brukerdata
+            $url = 'https://graph.facebook.com/me';
+            $url .= '?access_token='.$token;
+            $fbUser = $curl->process($url);
+
+            if (isset($fbUser->error)) {
+                var_dump($fbUser);
+                die();
+            }
+
+            // Fyll inn fb-data i brukertabellen
+            $user = $this->get('ukm_user')->getCurrentUser();
+            $user->setFacebookId($fbUser->id);
+
+            $userManager = $this->container->get('fos_user.user_manager');
+            $userManager->updateUser($user);
+        }
+    }
 }
