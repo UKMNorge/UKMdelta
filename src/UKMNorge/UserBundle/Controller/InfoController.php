@@ -21,28 +21,35 @@ class InfoController extends Controller {
 	public function informationQueueAction(Request $request) {
 		$view_data = array();
 		$session = $this->container->get('session');
+		// Last inn kø-informasjon
+		$completed = $session->get('completed');
+		if( null == $completed ) {
+			$completed = array();
+		}
+
+		// Hvis vi er i retur fra facebook: 
+		if( $session->get('facebook_return') ) {
+			$this->facebookConnect();
+			
+			// Oppdater kø-informasjon
+			$completed[] = 'facebook';
+			$session->set('completed', $completed);
+		}
 
 		// Hvis vi er i retur fra et skjema:
-		if( $request->request->get('infoQueue') ) {
+		if( $request->request->get('skjema') ) {
 			// Håndter respons
 			$this->handleResponse($request);
 
-			// Last inn kø-informasjon
-			$infoQueue = json_decode( $request->request->get('infoQueue') );
-			$infoQueue[] = $request->request->get('skjema');
-			$view_data['infoQueue'] = json_encode($infoQueue);
-
-			// Har vi fullført alle skjema?
-			$resterende = array_diff($session->get('information_queue'), $infoQueue );
-			if( empty( $resterende ) ) {
-				$redirecter = $this->get('ukm_user.redirect');
-				return $redirecter->doRedirect();
-				throw new Exception("All done! Nå må vi bare redirecte til en LoginSuccessHandler eller tilsvarende.");
-			}
+			$completed[] = $request->request->get('skjema');
+			$session->set('completed', $completed);
 		} 
-		else {
-			$view_data['infoQueue'] = json_encode(array());
-			$resterende = $session->get('information_queue');
+
+		// Har vi fullført alle skjema?
+		$resterende = array_diff($session->get('information_queue'), $completed );
+		if( empty( $resterende ) ) {
+			$redirecter = $this->get('ukm_user.redirect');
+			return $redirecter->doRedirect();
 		}
 
 		switch( current($resterende) ) {
