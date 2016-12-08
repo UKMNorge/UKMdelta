@@ -1,6 +1,13 @@
 {% extends 'UKMUserBundle::layout.html.twig' %}
+{% trans_default_domain 'innslag' %}
 
 {% block scripts %}
+	{{ parent() }}
+	{% javascripts
+		'@UKMUserBundle/Resources/public/js/velgkommune.js'
+		'@UKMDeltaBundle/Resources/public/js/fastlivefilter.jquery.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
 {% endblock %}
 
 {% block content %}
@@ -8,11 +15,19 @@
 	<form method="post" action="">
 		<input type="hidden" name="infoQueue" value="{{ infoQueue is defined ? infoQueue : '' }}">
 		<input type="hidden" name="skjema" value="kommune" />
-		{% for fylke in fylker %}
-			<h3>{{ fylke.navn }}</h3>
-			{% for kommune in fylke.kommuner %}
-				<button type="submit" class="btn btn-block btn-primary" name="kommune_id" value="{{ kommune.id }}">{{ kommune.navn }}</button>
+		<!-- Søkefelt her -->
+		<p>Søk etter kommunen din, så slipper du å bla så langt</p>
+		<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
+		<!-- Kommuneliste -->
+		<div id="kommuner">
+			{% for fylke in fylker %}
+				<h3 id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
+				{% for kommune in fylke.getKommuner() %}
+					<ul data-fylke="{{ fylke.id }}">
+						<button type="submit" class="btn btn-block btn-primary" name="kommune_id" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
+					</ul>
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
+		</div>
 	</form>
 {% endblock %}

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Exception;
 use stdClass;
 use UKMCURL;
+use fylker;
 
 class InfoController extends Controller {
 
@@ -79,6 +80,10 @@ class InfoController extends Controller {
 		switch( $request->request->get('skjema') ) {
 			case 'kommune':
 				// TODO: SAVE DATA
+				$user_manager = $this->container->get('ukm_user');
+				$user = $user_manager->getCurrentUser()
+				$user->setKommuneId($request->request->get('kommune_id'););
+				$$userManager->updateUser($user);
 			break;
 			case 'alder':
 				// TODO: SAVE DATA (OR REMOVE!)
@@ -96,20 +101,15 @@ class InfoController extends Controller {
 	private function kommuneSkjema($view_data) {
 		$liste = array();
 
-		$fylke = new stdClass();
-		$fylke->navn = "Fylke";
-		$fylke->id = 1;
-		$fylke->kommuner = array();
+		require_once('UKM/fylker.class.php');
+		$fylker = fylker::getAll();
+		/*foreach( $fylker as $fylke ) {
+			var_dump($fylke->getKommuner());
 
-		$kommune = new stdClass();
-		$kommune->id = 1;
-		$kommune->navn = "Kommunenavn";
-			
-		$fylke->kommuner[] = $kommune;
-		$liste[] = $fylke;
-
+			die();
+		}*/
 		$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        $view_data['fylker'] = $liste;
+        $view_data['fylker'] = $fylker;
 
         return $this->render('UKMUserBundle:Info:kommune.html.twig', $view_data);
 	}
