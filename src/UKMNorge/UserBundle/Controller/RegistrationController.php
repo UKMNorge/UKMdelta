@@ -341,7 +341,7 @@ class RegistrationController extends BaseController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->redirect( $this->get('router')->generate('ukm_delta_ukmid_homepage') );
+        return $this->get('ukm_user.redirect')->doRedirect();
     }
     
     /**
