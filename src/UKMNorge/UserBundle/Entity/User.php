@@ -117,6 +117,14 @@ class User extends BaseUser
     protected $pameld_user;
 
     /**
+     *
+     *
+     * @ORM\Column(name="kommune_id", type="integer", nullable=true)
+     *
+     */
+    protected $kommune_id;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -442,5 +450,28 @@ class User extends BaseUser
     public function getPameldUser()
     {
         return $this->pameld_user;
+    }
+
+    /**
+     * Set kommune_id
+     *
+     * @param integer $kommuneId
+     * @return User
+     */
+    public function setKommuneId($kommuneId)
+    {
+        $this->kommune_id = $kommuneId;
+
+        return $this;
+    }
+
+    /**
+     * Get kommune_id
+     *
+     * @return integer 
+     */
+    public function getKommuneId()
+    {
+        return $this->kommune_id;
     }
 }

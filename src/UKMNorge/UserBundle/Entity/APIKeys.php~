@@ -24,7 +24,7 @@ class APIKeys
     /**
      * @var string
      *
-     * @ORM\Column(name="api_key", type="string", length=255)
+     * @ORM\Column(name="api_key", type="string", length=255, unique=true)
      */
     private $apiKey;
 
