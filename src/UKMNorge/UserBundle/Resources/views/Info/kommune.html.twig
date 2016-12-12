@@ -13,10 +13,9 @@
 {% block content %}
 	<h1>Velg kommunen din</h1>
 	<form method="post" action="">
-		<input type="hidden" name="infoQueue" value="{{ infoQueue is defined ? infoQueue : '' }}">
 		<input type="hidden" name="skjema" value="kommune" />
 		<!-- Søkefelt her -->
-		<p>Søk etter kommunen din, så slipper du å bla så langt</p>
+		<p>Søk etter kommunen din, så slipper du å scrolle så langt</p>
 		<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 		<!-- Kommuneliste -->
 		<div id="kommuner">
