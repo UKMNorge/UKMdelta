@@ -79,7 +79,6 @@ class InfoController extends Controller {
 	private function handleResponse( Request $request ) {
 		switch( $request->request->get('skjema') ) {
 			case 'kommune':
-				// TODO: SAVE DATA
 				$user_manager = $this->container->get('ukm_user');
 				$user = $user_manager->getCurrentUser()
 				$user->setKommuneId($request->request->get('kommune_id'););
@@ -102,14 +101,8 @@ class InfoController extends Controller {
 		$liste = array();
 
 		require_once('UKM/fylker.class.php');
-		$fylker = fylker::getAll();
-		/*foreach( $fylker as $fylke ) {
-			var_dump($fylke->getKommuner());
-
-			die();
-		}*/
 		$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        $view_data['fylker'] = $fylker;
+        $view_data['fylker'] = fylker::getAll();;
 
         return $this->render('UKMUserBundle:Info:kommune.html.twig', $view_data);
 	}
