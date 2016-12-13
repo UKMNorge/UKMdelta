@@ -28,6 +28,9 @@ class URLSignerService {
 	public function getApiKey($api_key) {
 		$repo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
 		$key = $repo->findOneBy(array('apiKey' => $api_key));
+		if( null == $key ) {
+			throw new Exception("Fant ikke API-key: ".$api_key);
+		}
 		return $key->getApiKey();
 	}
 
@@ -35,7 +38,9 @@ class URLSignerService {
 
 		$repo = $this->doctrine->getRepository("UKMUserBundle:APIKeys");
 		$key = $repo->findOneBy(array('apiKey' => $params['api_key']));
-
+		if( null == $key ) {
+			throw new Exception("Fant ikke API-key: ".$api_key);
+		}
 		return $key->getApiSecret();
 	}
 }
