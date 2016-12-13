@@ -25,7 +25,7 @@ class RedirectService {
             if(!$key) {
                 $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$rdirurl.').';
                 $this->container->get('logger')->error($errorMsg);
-                die($errorMsg);
+                throw new Exception($errorMsg);
             }
             $rdirurl = $key->getApiReturnURL();
 
@@ -96,13 +96,11 @@ class RedirectService {
         $res = $curl->process($api_key->getApiTokenURL());
         $this->logger->info('DIPBundle: Curl-respons: '.var_export($res, true));
         if(!is_object($res)) {
-            // TODO: Error
             $this->logger->error('DIPBundle: Tjenesten '.$api_key->getApiKey() .' svarte ikke med en godkjent status!');
             $errorMsg = 'Tjenesten du prøvde å logge inn på klarte ikke å ta i mot brukerinformasjonen din. Dette er en systemfeil, ta kontakt med UKM Support hvis feilen fortsetter.';
             throw new Exception($errorMsg);
         }
         if(!$res->success) {
-            // TODO: Error
             $this->logger->error('DIPBundle: Tjenesten '.$api_key->getApiKey() .' svarte med success == false!');
             $errorMsg = 'Tjenesten du prøvde å logge inn på klarte ikke å ta i mot brukerinformasjonen din. Dette er en systemfeil, ta kontakt med UKM Support hvis feilen fortsetter.';
             throw new Exception($errorMsg);
