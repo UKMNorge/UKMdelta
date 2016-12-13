@@ -39,8 +39,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $response = null;        
         $this->logger->info('DIPBundle: Authenticated successfully.');
 
-        // If rdirurl is defined
-        // TODO: Sjekk om noe bruker _rdirurl og ikke session, hvis ikke kan denne fjernes
+        // If rdirurl is defined - brukes i noen interne ting (login via facebook etc).
         $rdirurl = $request->request->get('_rdirurl');
         $token = $request->request->get('_rdirtoken');
         
