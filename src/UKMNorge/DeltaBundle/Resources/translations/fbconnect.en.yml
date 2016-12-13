@@ -1,4 +1,6 @@
 fbconnect:
     overskrift: Koble til med Facebook
+    # Ambassadør-spesifikt kan ut:
     ambassador: for å logge inn på Ambassadør-systemet!
+    systemet: Systemet du vil logge inn til krever at du er koblet til med facebook.
     knappetekst: Logg inn med Facebook

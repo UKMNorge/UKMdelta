@@ -2,7 +2,8 @@
 {% trans_default_domain 'base' %}
 
 {% block content %}
-<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'fbconnect') : 'fbconnect.overskrift'|trans({}, 'fbconnect') }} {{ system is defined ? ('fbconnect.'~system)|trans({}, 'fbconnect') : '' }}</h1>
+<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'fbconnect') : 'fbconnect.overskrift'|trans({}, 'fbconnect') }}</h1> 
+<p class="lead center">{{ system is defined ? ('fbconnect.systemet')|trans({}, 'fbconnect') : '' }}</p>
 
 <p>&nbsp;</p>
 <a href="{{ fbredirect }}" class="btn btn-block btn-success btn-large">{{ 'fbconnect.knappetekst'|trans({}, 'fbconnect') }}</a>
