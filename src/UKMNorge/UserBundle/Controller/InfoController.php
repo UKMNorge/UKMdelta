@@ -30,11 +30,11 @@ class InfoController extends Controller {
 
 		// Hvis vi er i retur fra facebook: 
 		if( $session->get('facebook_return') ) {
-			$this->facebookConnect();
-			
-			// Oppdater kø-informasjon
-			$completed[] = 'facebook';
-			$session->set('completed', $completed);
+			// Kun hvis facebookConnect funker kan vi sende brukeren videre.
+			if( $this->facebookConnect() ) {
+				// Oppdater kø-informasjon
+				$completed[] = 'facebook';
+			}
 		}
 
 		// Hvis vi er i retur fra et skjema:
