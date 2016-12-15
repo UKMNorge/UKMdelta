@@ -19,14 +19,23 @@
 		<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 		<!-- Kommuneliste -->
 		<div id="kommuner">
+			<input type="hidden" id="kommune_id" name="kommune_id" />
+			</form>
 			{% for fylke in fylker %}
 				<h3 id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
 				{% for kommune in fylke.getKommuner() %}
 					<ul data-fylke="{{ fylke.id }}">
-						<button type="submit" class="btn btn-block btn-primary" name="kommune_id" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
+						<button type="submit" class="btn btn-block btn-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
 					</ul>
 				{% endfor %}
 			{% endfor %}
 		</div>
-	</form>
+
+<script>
+jQuery(document).ready(function() {
+	jQuery(".kommuneKnapp").click(function() {
+		jQuery("#kommune_id").val(jQuery(this).val());
+	});
+});
+</script>
 {% endblock %}
