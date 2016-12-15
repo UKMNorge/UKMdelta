@@ -16,7 +16,7 @@ class InfoController extends Controller {
 	/**
 	 * InformationQueueAction skal kjøres fra LoginSuccessHandler når noe informasjon påkrevd av Scopes mangler.
 	 * Her håndterer vi all informasjonsinnsamling, rendring av skjema, lagring av svar osv.
-	 * Når alle skjema er utfylt og lagret, sendes brukeren tilbake til RedirectHandler (TODO).
+	 * Når alle skjema er utfylt og lagret, sendes brukeren tilbake til RedirectHandler.
 	 *
 	 */
 	public function informationQueueAction(Request $request) {
@@ -41,10 +41,9 @@ class InfoController extends Controller {
 		if( $request->request->get('skjema') ) {
 			// Håndter respons
 			$this->handleResponse($request);
-
-			$completed[] = $request->request->get('skjema');
-			$session->set('completed', $completed);
-		} 
+			$completed[] = $request->request->get('skjema');	
+		}
+		$session->set('completed', $completed);
 
 		// Har vi fullført alle skjema?
 		$resterende = array_diff($session->get('information_queue'), $completed );
@@ -79,14 +78,15 @@ class InfoController extends Controller {
 	private function handleResponse( Request $request ) {
 		switch( $request->request->get('skjema') ) {
 			case 'kommune':
-				$user_manager = $this->container->get('ukm_user');
-				$user = $user_manager->getCurrentUser()
-				$user->setKommuneId($request->request->get('kommune_id'););
-				$$userManager->updateUser($user);
+				$user_service = $this->container->get('ukm_user');
+				$user = $user_service->getCurrentUser();
+				$user->setKommuneId($request->request->get('kommune_id'));
+				$this->container->get('logger')->debug('UKMUserBundle:InfoController:handleResponse: Oppdaterer kommune-id til: '.$request->request->get('kommune_id'));
+				$user_manager = $this->container->get('fos_user.user_manager');
+				$user_manager->updateUser($user);
 			break;
+			// Ikke implementert - kaster likegreit ukjent skjema.
 			case 'alder':
-				// TODO: SAVE DATA (OR REMOVE!)
-			break;
 			default:
 				throw new Exception("Ukjent skjema!");
 			break;
@@ -127,13 +127,13 @@ class InfoController extends Controller {
 			$redirectURL = 'http://delta.ukm.no/info/';
 		}
         
-        $view_data = array();
-        $view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
+		$view_data = array();
+		$view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
         
-        $rdirurl = $this->get('session')->get('rdirurl');
-        if ($rdirurl == 'ambassador') {
-            $view_data['system'] = 'ambassador';
-        }
+        // Forteller templaten hvilken forklaring som skal inn.
+		if ( null != $this->get('session')->get('rdirurl') ) {
+		    $view_data['system'] = $this->get('session')->get('rdirurl');
+		}
 
         $this->get('session')->set('facebook_return', true);
 
@@ -144,20 +144,19 @@ class InfoController extends Controller {
 	 * Skal håndtere retur fra facebook for lagring av facebook-id etter autorisering.
 	 *
 	 * @param
-	 * @return 
+	 * @return true ved suksess, false ved feil
 	 */
 	private function facebookConnect() {
 		$this->get('session')->remove('facebook_return');
 
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
-        if( $this->getParameter('UKM_HOSTNAME') ) {
+        if( 'ukm.dev' == $this->getParameter('UKM_HOSTNAME') ) {
 			$redirectURL = 'http://delta.ukm.dev/web/app_dev.php/info';
 		} else {
 			$redirectURL = 'http://delta.ukm.no/info/';
 		}
         
-
         if ($req->query->get('code')) {
             $code = $req->query->get('code');
             // This means we are coming from facebook
@@ -170,9 +169,10 @@ class InfoController extends Controller {
             $url .= '&code='.$code;
             $curl->timeout(50);
             $result = $curl->process($url);
-            if(isset($result->error)) {        
-                var_dump($result);
-                die();
+
+			if(isset($result->error)) {    
+            	$this->container->get('logger')->error("UKMUserBundle:InfoController:facebookConnect: Klarte ikke å bytte kode for access-token. Resultat: ".var_export($result, true) );
+                return false;
             }
 
             $token = $result->access_token;
@@ -182,8 +182,8 @@ class InfoController extends Controller {
             $fbUser = $curl->process($url);
 
             if (isset($fbUser->error)) {
-                var_dump($fbUser);
-                die();
+                $this->container->get('logger')->error("UKMUserBundle:InfoController:facebookConnect: Klarte ikke å hente brukerdata. Resultat: ".var_export($fbUser, true) );
+                return false;
             }
 
             // Fyll inn fb-data i brukertabellen
@@ -192,6 +192,9 @@ class InfoController extends Controller {
 
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
+
+            return true;
         }
+        return false;
     }
 }
