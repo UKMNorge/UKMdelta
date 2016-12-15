@@ -45,3 +45,6 @@ ukm_dip_entry:
     path:     /dip/token
     defaults: { _controller: UKMUserBundle:UKMDip:token }
 
+ukm_info_queue:
+    path:     /info/
+    defaults: { _controller: UKMUserBundle:Info:informationQueue }

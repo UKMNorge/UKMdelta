@@ -37,6 +37,10 @@ services:
     UKM.urlsigner:
         class: 'UKMNorge\UserBundle\Services\URLSignerService'
         arguments: ["@doctrine"]
+    ukm_user.redirect:
+        class: 'UKMNorge\UserBundle\Services\RedirectService'
+        arguments: 
+            - @service_container
 #    ukm_user.example:
 #        class: UKMNorge\UserBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

@@ -47,6 +47,16 @@ class UKMSecurityController extends BaseController {
             $request->getSession()->set('rdirurl', $rdirurl);
             $request->getSession()->set('rdirtoken', $request->query->get('token'));
         }
+
+        // Ber tjenesten om å få mer informasjon tilbake?
+        if( $request->query->get('scope') ) {
+            $request->getSession()->set('scope', $request->query->get('scope'));
+        } 
+        else {
+            // Vask session for scope dersom det ikke er satt i request.
+            $request->getSession()->remove('scope');
+            $request->getSession()->remove('infoQueue');
+        }
         
         $app_id = $this->getParameter('facebook_client_id');
         
@@ -100,19 +110,12 @@ class UKMSecurityController extends BaseController {
                 $usertoken = $this->get('security.token_storage')->getToken();    
                 // Get the LoginSuccessHandler, which will redirect as proper
                 $request = Request::createFromGlobals();
-                // $data = array();
-                // $data['_rdirurl'] = 'ambassador';
-                // $request = new Request(array(), $data);
-                #$request->request->set('_rdirurl', 'ambassador');
                 $all = $request->request->all(); 
                 $all['_rdirurl'] = $data['rdirurl']; 
                 $all['_rdirtoken'] = $data['rdirtoken'];
-                // $request->request->replace($all);
                 $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-                #var_dump($request);
 
                 $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                #var_dump($response);
                 return $response;
             }
         }
@@ -152,7 +155,6 @@ class UKMSecurityController extends BaseController {
         $req = Request::createFromGlobals(); 
         
         // If mottatt error fra facebook
-        #var_dump($req->query);
         $error = $req->query->get('error');
         if ($error == 'access_denied') {
             $this->addFlash('danger', 'Du må godkjenne UKM-appen for å logge inn med Facebook. Vi lover å ikke poste noe på veggen din.');
@@ -166,12 +168,8 @@ class UKMSecurityController extends BaseController {
             $redirectURL = $redirectURL.$rdirtoken;
         }
 
-        // var_dump($redirectURL);
-        // die();
         $code = $req->query->get('code');
         // Code is received, which means that the user logged in successfully to facebook.
-        //var_dump($code);
-
         // Bytt code for en access-token
         $curl = new UKMCurl();
         $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
@@ -180,8 +178,7 @@ class UKMSecurityController extends BaseController {
         $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
         $url .= '&code='.$code;
         $curl->timeout(50);
-        // var_dump($url);
-        // var_dump($curl);
+    
         $result = $curl->process($url);
         if(isset($result->error)) {   
             $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
@@ -196,7 +193,6 @@ class UKMSecurityController extends BaseController {
         $user = $curl->process($url);
 
         if (isset($user->error)) {
-            //var_dump($user);
             // Ofte: "This authorization code has been used."
             $this->addFlash('danger', 'Facebook-innloggingen feilet, prøv igjen.');
             return $this->redirectToRoute('ukm_user_login');
@@ -262,7 +258,6 @@ class UKMSecurityController extends BaseController {
 
         // TODO: Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
         // Da må facebook-data i session / view_data
-
         if(isset($user->email))
             $this->get('session')->set('email', $user->email);
         if(isset($user->first_name))
@@ -273,32 +268,6 @@ class UKMSecurityController extends BaseController {
             $this->get('session')->set('facebook_id', $user->id);
 
         return $this->redirectToRoute('fos_user_registration_register');
-        
-        #### OLD! ####
-        // Register user here
-        $ukm_user = new User();
-        $ukm_user->setFirstName($user->first_name);
-        $ukm_user->setLastName($user->last_name);
-        $ukm_user->setFacebookId($user->id);
-        $ukm_user->setEmail($user->email);
-        $ukm_user->setPassword(UKM_ordpass(true));
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($ukm_user);
-        $em->flush();
-
-        // Dispatch registration confirmed event
-
-        // Logg inn brukeren, men redirect til telefonnummer-spørsmålet?
-        $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
-        $this->get('security.token_storage')->setToken($usertoken);
-        $request = $this->get('request');
-        $event = new InteractiveLoginEvent($request, $usertoken);
-        $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
-        // Redirect til mer info-side
-
-        // Redirect til ukmid om vi har all info
-        return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
 
   
