@@ -1,4 +1,4 @@
-{% extends "UKMUserBundle::layout.html.twig" %}
+{% extends "UKMUserBundle::layout" ~ (renderWithoutLayout is defined and renderWithoutLayout == true ? '-without' : '') ~ ".html.twig" %}
 
 {% block css %}
 	{{ parent() }}

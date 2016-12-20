@@ -22,7 +22,7 @@ use UKMCurl;
 
 class UKMSecurityController extends BaseController {
     
-	public function loginAction(Request $request)
+	public function loginAction(Request $request, $renderWithoutLayout=false)
     {	
 
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
@@ -121,7 +121,7 @@ class UKMSecurityController extends BaseController {
         }
 
         $data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
-
+		$data['renderWithoutLayout'] = $renderWithoutLayout;
         return $this->renderLogin($data);
     }
 
