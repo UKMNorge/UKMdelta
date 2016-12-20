@@ -254,7 +254,7 @@ class UKMIDController extends Controller
             // var_dump($url);
             // var_dump($curl);
             $result = $curl->process($url);
-            if(isset($result->error)) {        
+            if(isset($result->error)) {
                 var_dump($result);
                 die();
             }
