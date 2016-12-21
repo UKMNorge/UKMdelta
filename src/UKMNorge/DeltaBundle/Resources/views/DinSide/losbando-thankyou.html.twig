@@ -1,0 +1,22 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+	
+{% block content %}
+	<p>&nbsp;</p>
+	<h2>Vi har sendt inn din søknad!</h2>
+
+	<div class="alert alert-danger">
+		<h4>Spørsmål?</h4>
+		<p>
+			Hvis du lurer på noe, må du ta kontakt med <a href="mailto:{{ epost_spm }}">produksjonsselskapet Filmbin</a>, da det er de som følger opp alle søknader.
+		</p>
+	</div>
+
+
+	<h4>Hva skjer videre?</h4>
+	<p>
+		Filmbin vil se gjennom alle innsendte bidrag, og ta kontakt med aktuelle band innen 14.mars.
+		Vi vil også legge ut info om dette på UKM.no, og alle som har meldt interesse vil få en sms med info så fort Filmbin har tatt sin avgjørelse.
+	</p>
+	
+	<a href="{{ url('ukm_delta_ukmid_homepage') }}">Tilbake til Din side</a>
+{% endblock %}
