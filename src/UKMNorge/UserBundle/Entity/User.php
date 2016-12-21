@@ -250,6 +250,16 @@ class User extends BaseUser
     }
 
     /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->getFirstName() .' '. $this->getLastName();
+    }
+
+    /**
      * Set phone
      *
      * @param integer $phone

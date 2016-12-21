@@ -1,0 +1,23 @@
+<h2>{{ navn }} vil være med i kinofilmen "Los Bando"</h2>
+
+<p>
+	<b>Lenker</b>
+	<br />
+	{{ lenker|nl2br }}
+</p>
+
+{% if annet is not empty %}
+	<p>
+		<b>Annen info</b>
+		<br />
+		{{ annet|nl2br }}
+	</p>
+{% endif %}
+
+<p>
+	Hilsen,
+	<br />
+	{{ kontakt }}
+	<br />
+	{{ mobil }} | {{ epost }}
+</p>

@@ -371,3 +371,15 @@ ukm_delta_ukmid_pamelding_arrangor_hvem:
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,4})
+              
+#### KAMPANJER
+## LOS BANDO 2017
+ukm_campaign_2017_los_bando:
+    path: /ukmid/kampanje/losbando/
+    defaults: { _controller: UKMDeltaBundle:DinSide:losBando }
+    methods: [GET]
+
+ukm_campaign_2017_los_bando_send:
+    path: /ukmid/kampanje/losbando/
+    defaults: { _controller: UKMDeltaBundle:DinSide:losBandoSend }
+    methods: [POST]
