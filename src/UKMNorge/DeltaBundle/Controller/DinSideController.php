@@ -25,8 +25,7 @@ class DinSideController extends Controller
 	{
 		$html = '';
 		if( ($this->_season() == (UKM_HOSTNAME == 'ukm.dev' ? 2014 : 2017)) 
-		 && (date('m') < 3 || date('m') == 12) 
-		 && $request->cookies->has('delta-test') )
+		 && (date('m') < 3 || date('m') == 12) )
 		{
 			$html .= $this->_losBandoAction()->getContent();
 		}
@@ -73,7 +72,7 @@ class DinSideController extends Controller
 		$view_data['lenker'] = $request->request->get('lenker');
 		$view_data['annet'] = $request->request->get('annet');
 		
-		$mail = $this->render('UKMDeltaBundle:DinSide:losbando-mail.html.twig', $view_data);
+		$mail = $this->render('UKMDeltaBundle:DinSide:losbando-mail.html.twig', $view_data)->getContent();
 		
 		$epost = new UKMmail();
 		$res1 = $epost->subject('UKM-band til Los Bando ('. $view_data['navn'] .')')
@@ -87,10 +86,6 @@ class DinSideController extends Controller
 			  ->text( '<h1>Dette er din kopi av informasjonen vi har sendt til FilmBin</h1>'. $mail )
 			  ->to( $view_data['epost'] )
 			  ->ok();
-		
-		var_dump( $res1 );
-		var_dump( $res2 );
-		var_dump( $res3 );
 	
 		if( !$this->_hideCampaign('losbando') ) {
 			$em = $this->getDoctrine()->getManager();
