@@ -80,7 +80,7 @@ class DinSideController extends Controller
 			  ->to( $epost_sok )
 			  ->ok();
 		
-		$res2 = $epost->to('marius@ukm.no')->ok();
+		$res2 = $epost->to('support@ukm.no')->ok();
 
 		$res3 = $epost->subject('DIN KOPI: UKM-band til Los Bando ('. $view_data['navn'] .')')
 			  ->text( '<h1>Dette er din kopi av informasjonen vi har sendt til FilmBin</h1>'. $mail )
