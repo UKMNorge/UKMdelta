@@ -59,8 +59,8 @@ class DinSideController extends Controller
 		require_once('UKM/mail.class.php');
 		
 		$epost = $this->_losBandoEpost();
-		$epost_spm = str_replace('@', '+ukmspm@', $epost);
-		$epost_sok = str_replace('@', '+ukm@', $epost);
+		$epost_spm = $epost; #str_replace('@', '+ukmspm@', $epost);
+		$epost_sok = $epost; #str_replace('@', '+ukm@', $epost);
 		
 		$view_data['epost_spm'] = $epost_spm;
 		$view_data['epost_sok'] = $epost_sok;
@@ -117,7 +117,7 @@ class DinSideController extends Controller
 				if( $innslag->type == 'musikk' ) {
 					$view_data['hideCampaign'] = $this->_hideCampaign('losbando');
 					$epost = $this->_losBandoEpost();
-					$view_data['epost_spm'] = str_replace('@', '+ukmspm@', $epost);
+					$view_data['epost_spm'] = $epost;#str_replace('@', '+ukmspm@', $epost);
 					return $this->render('UKMDeltaBundle:DinSide:losbando.html.twig', $view_data );
 				}
 			}
@@ -126,7 +126,7 @@ class DinSideController extends Controller
 	}
 	
 	private function _losBandoEpost() {
-		return 'mariusmandal@gmail.com';
+		return 'losbando@filmbin.no';
 	}
 	
 	private function _hideCampaign( $key ) {
