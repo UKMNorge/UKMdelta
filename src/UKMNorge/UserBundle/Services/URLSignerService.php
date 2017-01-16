@@ -4,6 +4,7 @@ namespace UKMNorge\UserBundle\Services;
 
 
 use UKMNorge\UserBundle\Entity\APIKeysRepository;
+use Exception;
 
 class URLSignerService {
 
