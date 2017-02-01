@@ -17,10 +17,15 @@ class DatoExtension extends \Twig_Extension
 	}
 
 	public function TWIG_date($time, $format) {
-		if( is_string( $time ) && !is_numeric( $time ) ) {
+		if( is_object( $time ) && 'DateTime' == get_class( $time ) ) {
+			$date = $time->format( $format );
+		} elseif( is_string( $time ) && !is_numeric( $time ) ) {
 			$time = strtotime($time);
+			$date = date($format, $time);
+		} else {
+			$date = date($format, $time);
 		}
-		$date = date($format, $time);
+
 		return str_replace(array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday',
 								 'Mon','Tue','Wed','Thu','Fri','Sat','Sun',
 								 'January','February','March','April','May','June',
