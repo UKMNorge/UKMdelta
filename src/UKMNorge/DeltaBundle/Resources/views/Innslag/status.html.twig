@@ -83,6 +83,6 @@
 
 	<div class="">
 		<span class="delta-subtext center">{{ 'statusAction.undertekst'|trans({},'base') }}</span>
-		<span class="delta-subtext center text-danger">{{ 'statusAction.obstekst'|trans({ '%dag%': frist|date('l')|dato('l'), '%dato%': frist|date('d'), '%maned%': frist|date('F')|dato('F'), '%time%': frist|date('h'), '%minutt%': frist|date('i') }, 'base') }}</span> 
+		<span class="delta-subtext center text-danger">{{ 'statusAction.obstekst'|trans({ '%dag%': frist|dato('l'), '%dato%': frist|dato('d'), '%maned%': frist|dato('F'), '%time%': frist|dato('G'), '%minutt%': frist|dato('i') }, 'base') }}</span> 
 	</div>
 {% endblock %} 

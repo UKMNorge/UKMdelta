@@ -53,7 +53,7 @@
 		</div>
 	</div> 
 	<div class="col-xs-12 center">
-		<span class="center">{{ 'attendingAction.monstringstarter'|trans({ '%dag%': pl_start.dag, '%maned%': pl_start.maned|dato("F"), '%time%': pl_start.time, '%minutt%': pl_start.minutt}) }}
+		<span class="center">{{ 'attendingAction.monstringstarter'|trans({ '%dag%': pl_start|dato('l') ~' '~ pl_start|dato('j'), '%maned%': pl_start|dato('F'), '%time%': pl_start|dato('G'), '%minutt%': pl_start|dato('i')}) }}
 	</div>
 	{#
 	<div class="col-xs-12 center delta-fat">

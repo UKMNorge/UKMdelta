@@ -764,12 +764,7 @@ class InnslagController extends Controller
         $view_data['fb_share_caption'] = $this->get('translator')->trans('fb_share', array('%monstring' => $name), 'base');
 
         $view_data['pl_navn'] = $name;
-
-        $pl_start['dag'] = $start->format("d");
-        $pl_start['maned'] = $start->format("F");
-        $pl_start['time'] = $start->format("G");
-        $pl_start['minutt'] = $start->format("i");
-        $view_data['pl_start'] = $pl_start;
+        $view_data['pl_start'] = $start;
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
