@@ -15,7 +15,7 @@ ukm_delta:
     prefix:   /
 
 ukm_design:
-    resource: "@UKMDesignBundle/Resources/config/routing.yml"
+    resource: "@UKMDeltaDesignBundle/Resources/config/routing.yml"
     prefix:   /
 
 app:

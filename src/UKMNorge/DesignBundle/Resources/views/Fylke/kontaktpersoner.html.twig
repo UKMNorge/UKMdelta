@@ -1,0 +1,17 @@
+{% extends "UKMDesignBundle:Layout:_base.html.twig"|UKMpath %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<h3>Kontaktpersoner for {{ fylke.getNavn() }}</h3>
+				<p>Lurer du på noe om UKM i din {{ fylke.getFylke().getId() == 3 ? 'bydel' : 'kommune' }}, må du ta kontakt med lokalkontakten din. Kontaktinformasjon finner du ved å velge din {{ fylke.getFylke().getId() == 3 ? 'bydel' : 'kommune' }} på <a href="{{ fylke.getLink() }}">fylkessiden</a>.
+			</div>
+			{% for kontakt in fylke.getKontaktpersoner().getAll() %}
+				<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+					{% embed "UKMDesignBundle:Kontaktpersoner:grid.html.twig"|UKMpath %}{% endembed %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

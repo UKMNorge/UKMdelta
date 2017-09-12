@@ -1,0 +1,30 @@
+pamelding:
+    starter: 01.10.YYYY
+    startdato: 1. oktober
+standardbilder:
+    person: http://grafikk.ukm.no/placeholder/person.jpg
+hvaerukm:
+    slogan: Der vi møtes, inspirerer, utfordrer og skaper sammen
+    kort: >
+        Målet med Ung Kultur Møtes (UKM) er å ha det gøy, møte nye mennesker
+        og bli inspirert til nye samarbeid og videre utvikling.
+        Du får verdifull erfaring, uansett om du er proff eller fersk;
+        UKM er for alle.
+    lesmer: //ukm.no/hva-er/
+facebook:
+    app_id: 141016739323676
+    admins: 597605662
+google:
+    site_verification: 'dD8sAwp7X8mpu2PN1iu4C3VWEDS8sMxYUavoVBrmnek'
+SEOdefaults:
+    author: UKM
+    site_name: UKM.no
+    title: Ung Kultur Møtes
+    image:
+        url: http://grafikk.ukm.no/festivalen/2017/festival_pre_lg.jpg
+        type: image/jpeg
+        width: 1500
+        height: 628
+firenullfire:
+    title: Siden finnes ikke!
+    text: Siden du søker har enten blitt flyttet eller aldri eksistert (spooky)

@@ -1,0 +1,24 @@
+{% extends 'UKMDesignBundle:Layout:_base.html.twig' %}
+
+{% block css %}
+	
+{% endblock %}
+
+{% block javascripts %}
+	{% block additional_js %}{% endblock %}
+    {% javascripts 
+        '@UKMDeltaDesignBundle/Resources/public/js/ukmdesignbundle.js'
+        '@UKMDeltaDesignBundle/Resources/public/js/h5validate.jquery.js'
+        '@UKMDeltaDesignBundle/Resources/public/js/autogrow.jquery.js'
+         %}
+        <script src="{{ asset_url }}"></script> 
+    {% endjavascripts %}
+{% endblock %}
+
+{% block UKMDesign_content %}
+	<div id="UKMDesign_content">
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+{% endblock %}

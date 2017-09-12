@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\DesignBundle\Tests\Controller;
+namespace UKMNorge\DeltaDesignBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

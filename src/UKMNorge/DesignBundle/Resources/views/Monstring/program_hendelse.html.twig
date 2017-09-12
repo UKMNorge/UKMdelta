@@ -1,0 +1,19 @@
+{% extends "Layout/_"~ (singleMode is defined and singleMode ? 'singleMode' : 'layout' ) ~".html.twig"|UKMpath %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-10 col-lg-8">
+				<h3>{{ hendelse.getNavn() }}</h3>
+				<p>{{ hendelse.getStart()|dato('l j.M H:i')|capitalize }}, {{ hendelse.getSted() }}</p>
+				
+				<p>Rammeprogram ikke tilgjengelig enda</p>
+
+				<p class="my-4">
+					<a href="?">Tilbake til rammeprogrammet</a>
+				</p>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

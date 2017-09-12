@@ -8,7 +8,7 @@
 		<link rel="shortcut icon" href="http://grafikk.ukm.no/favicon.ico" />
 		
 		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700,300' type='text/css'>		
-		{% stylesheets '@UKMDesignBundle/Resources/public/css/bootstrap.css' %}
+		{% stylesheets '@UKMDeltaDesignBundle/Resources/public/css/bootstrap.css' %}
 		    <link rel="stylesheet" href="{{ asset_url }}" />
 		{% endstylesheets %}
 		{% block css %}{% endblock %}
@@ -26,9 +26,9 @@
 		<script type="text/javascript">{% block additional_js %}{% endblock %}</script>
 		{% block scripts %}
 			{% javascripts 
-				'@UKMDesignBundle/Resources/public/js/ukmdesignbundle.js'
-				'@UKMDesignBundle/Resources/public/js/h5validate.jquery.js'
-				'@UKMDesignBundle/Resources/public/js/autogrow.jquery.js'
+				'@UKMDeltaDesignBundle/Resources/public/js/ukmdesignbundle.js'
+				'@UKMDeltaDesignBundle/Resources/public/js/h5validate.jquery.js'
+				'@UKMDeltaDesignBundle/Resources/public/js/autogrow.jquery.js'
 				 %}
 		    	<script src="{{ asset_url }}"></script> 
 			{% endjavascripts %}
@@ -100,7 +100,7 @@
 		
 	<div class="row">
 		{% block jumbo %}
-			{% embed "UKMDesignBundle::no_jumbo.html.twig" %}{% endembed %}
+			{% embed "UKMDeltaDesignBundle::no_jumbo.html.twig" %}{% endembed %}
 		{% endblock %}
 	</div>
 

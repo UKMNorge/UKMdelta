@@ -1,0 +1,7 @@
+<div class="alert alert-{{ level }} my-3">
+	<div class="float-left mt-1 mb-0 mr-3" style="width: 2em;">
+		<label class="icon-{{ icon }} mb-0" style="font-size: 2em;"></label>
+	</div>
+	<div class="float-left my-0" style="width: calc(100% - 3em);">{% block content %}{% endblock %}</div>
+	<div class="clearfix"></div>
+</div>

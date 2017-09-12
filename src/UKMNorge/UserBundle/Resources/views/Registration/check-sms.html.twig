@@ -12,7 +12,7 @@
 	<form method="post" action="{{ path('ukm_user_registration_validate_sms') }}">
 		<h1 class="center">Skriv inn kode</h1>
 		
-		{% embed "UKMDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+		{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
 		
 		{% if sent_before %}
 		<div class="alert alert-info">

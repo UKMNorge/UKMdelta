@@ -1,0 +1,18 @@
+{% extends "UKMDesignBundle:Layout:_base.html.twig"|UKMpath %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row-flex">
+			<div class="col-12">
+				<h1>
+					Alle saker fra {{ fylke.getNavn() }}. Side {{ posts.getPage() }}
+				</h1>
+				<p class="my-3">
+					<a href="{{ blog_url }}" class="btn btn-outline-primary">Tilbake til forsiden</a>
+				</p>
+			</div>
+		</div>
+		{% set singleMode = true %}
+		{% embed "UKMDesignBundle:Category:list.html.twig"|UKMpath with {posts: posts.getAll(), hideNoneFound: true} %}{% endembed %}
+	</div>
+{% endblock %}

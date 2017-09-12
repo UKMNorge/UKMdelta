@@ -1,0 +1,63 @@
+{% extends "Layout/_layout.html.twig"|UKMpath %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg-3 float-right">
+				<h2>Velg fra listen</h2>
+				<div class="row">
+					<ol class="col-6 col-lg-12 list-unstyled my-0">
+						<li><a href="/akershus/">Akershus</a></li>
+						<li><a href="/aust-agder/">Aust-Agder</a></li>
+						<li><a href="/buskerud/">Buskerud</a></li>
+						<li><a href="/finnmark/">Finnmark</a></li>
+						<li><a href="/hedmark/">Hedmark</a></li>
+						<li><a href="/hordaland/">Hordaland</a></li>
+						<li><a href="/moreogromsdal/">Møre og Romsdal</a></li>
+						<li><a href="/nord-trondelag/">Nord-Trøndelag</a></li>
+						<li><a href="/nordland/">Nordland</a></li>
+					</ol>
+					<ol class="col-6 col-lg-12 list-unstyled my-0">
+						<li><a href="/oppland/">Oppland</a></li>
+						<li><a href="/oslo/">Oslo</a></li>
+						<li><a href="/rogaland/">Rogaland</a></li>
+						<li><a href="/sognogfjordane/">Sogn og Fjordane</a></li>
+						<li><a href="/sor-trondelag/">Sør-Trøndelag</a></li>
+						<li><a href="/telemark/">Telemark</a></li>
+						<li><a href="/troms/">Troms</a></li>
+						<li><a href="/vest-agder/">Vest-Agder</a></li>
+						<li><a href="/vestfold/">Vestfold</a></li>
+						<li><a href="/ostfold/">Østfold</a></li>
+					</ol>
+				</div>
+			</div>
+			<div class="col-9 d-none d-sm-block float-left">
+				<h2>eller fra kartet</h2>
+				<img alt="" src="http://ukm.no/wp-content/themes/UKMresponsive/img/norgeskart.png" style="max-width: none !important;" usemap="#kartet" />
+				<map name="kartet" id="kartet">
+				    <area alt="" title="" href="/finnmark/" shape="rect" coords="443,74,520,90" />
+				    <area alt="" title="" href="/troms/" shape="rect" coords="408,99,343,116" />
+				    <area alt="" title="" href="/finnmark/" shape="rect" coords="112,45,33,26" />
+				    <area alt="" title="" href="/nordland/" shape="rect" coords="293,174,377,195" />
+				    <area alt="" title="" href="/nord-trondelag/" shape="rect" coords="233,271,358,293" />
+				    <area alt="" title="" href="/sor-trondelag/" shape="rect" coords="203,323,320,341" />
+				    <area alt="" title="" href="/moreogromsdal/" shape="rect" coords="44,322,177,344" />
+				    <area alt="" title="" href="/sognogfjordane/" shape="rect" coords="7,358,143,376" />
+				    <area alt="" title="" href="/oppland/" shape="rect" coords="145,374,220,390" />
+				    <area alt="" title="" href="/hedmark/" shape="rect" coords="209,396,287,414" />
+				    <area alt="" title="" href="/buskerud/" shape="rect" coords="118,406,199,425" />
+				    <area alt="" title="" href="/hordaland/" shape="rect" coords="113,402,22,420" />
+				    <area alt="" title="" href="/telemark/" shape="rect" coords="154,441,71,458" />
+				    <area alt="" title="" href="/rogaland/" shape="rect" coords="97,467,16,486" />
+				    <area alt="" title="" href="/vest-agder/" shape="rect" coords="21,493,113,511" />
+				    <area alt="" title="" href="/vestfold/" shape="rect" coords="115,473,193,491" />
+				    <area alt="" title="" href="/aust-agder/" shape="rect" coords="122,504,213,520" />
+				    <area alt="" title="" href="/oslo/" shape="rect" coords="169,430,217,445" />
+				    <area alt="" title="" href="/akershus/" shape="rect" coords="178,452,264,471" />
+				    <area alt="" title="" href="/ostfold/" shape="rect" coords="200,479,278,497" />
+				</map>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

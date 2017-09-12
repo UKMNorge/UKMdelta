@@ -23,7 +23,7 @@
 	color: @bootstrap-info !important;
 }
 
-/* KOPIERT FRA UKMDesignBundle:Resources:public:css:UKMresponsive.css */
+/* KOPIERT FRA UKMDeltaDesignBundle:Resources:public:css:UKMresponsive.css */
 .btn-default,
 button.btn-default {
   background: #dbf0f1 !important;

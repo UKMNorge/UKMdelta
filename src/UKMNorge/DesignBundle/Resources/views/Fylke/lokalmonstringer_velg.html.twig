@@ -1,0 +1,13 @@
+<div class="d-block d-md-none">
+	<button class="btn btn-outline-primary btn-block UKMtoggleShow UKMtoggleLokal" data-target="UKMtoggleLokal">Velg din {{ fylke.erOslo() ? 'bydel' : 'kommune' }}</button>
+	<button class="btn btn-outline-primary btn-block UKMtoggleHide UKMtoggleLokal mt-0" data-target="UKMtoggleLokal" style="display:none">Lukk listen</button>
+</div>
+<a id="liste_lokalmonstringer"></a>
+<div class="UKMtoggleContent" id="UKMtoggleLokal" style="min-height: 20vh; width: calc(100% + 30px)">
+	<div class="row" style="width:100%">
+		{% embed "UKMDesignBundle:Fylke:lokalmonstringer_liste.html.twig"|UKMpath %}{% endembed %}
+		<div class="col-12">
+			<button class="btn btn-outline-primary btn-block UKMtoggleHide UKMtoggleLokal" data-target="UKMtoggleLokal" style="display:none">Lukk listen</button>
+		</div>
+	</div>
+</div>

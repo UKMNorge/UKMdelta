@@ -1,0 +1,49 @@
+{% extends "Layout/_"~ (singleMode is defined and singleMode ? 'singleMode' : 'layout' ) ~".html.twig"|UKMpath %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-10 col-lg-8">
+				<h3>Program for {{ monstring.getNavn() }}</h3>
+			</div>
+		</div>
+		
+		<div class="row vertical-align-center program">
+			{% for dag in monstring.getProgram().sorterPerDag( monstring.getProgram().getAll() ) %}
+				<div class="col mt-4 dag">
+					<h4>{{ dag.date|dato('l j.M')|capitalize }}</h4>
+					{% for hendelse in dag.forestillinger %}
+						<div class="hendelse">
+							<div class="time">
+								{% if hendelse.harSynligDetaljprogram() %}
+									<a href="?id={{ hendelse.getId() }}">{{ hendelse.getStart()|date('H:i') }}</a>
+								{% else %}
+									{{ hendelse.getStart()|date('H:i') }}
+								{% endif %}
+							</div>
+							<div class="data">
+								<div class="tittel">
+									{% if hendelse.harSynligDetaljprogram() %}
+										<a href="?id={{ hendelse.getId() }}">{{ hendelse.getNavn() }}</a>
+									{% else %}
+										{{ hendelse.getNavn() }}
+									{% endif %}
+								</div>
+								<div class="sted">
+									{{ hendelse.getSted() }}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% else %}
+				<p>
+					Det er ikke satt opp noe program enda.
+				</p>
+				<p>
+					<a href="{{ section.url }}">Tilbake til {{ section.title }}</a>
+				</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

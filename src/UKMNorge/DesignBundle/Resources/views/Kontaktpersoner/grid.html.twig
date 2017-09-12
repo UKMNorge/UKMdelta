@@ -1,0 +1,14 @@
+<div class="card">
+	<div class="card-img-top kontaktperson-bilde" style="background-image: url('{{ kontakt.getBilde() is empty ? THEME_CONFIG('standardbilder').person : kontakt.getBilde() }}');"></div>
+	<div class="card-body px-2 pt-0">
+		<p class="card-title my-1 bold">{{ kontakt.getNavn() }}</p>
+		<p class="card-text mt-0">{{ kontakt.getTittel() }}</p>
+		<a href="tel:{{ kontakt.getTelefon() }}" class="btn btn-sm btn-outline-primary btn-block">{{ kontakt.getTelefon()|telefon }}</a>
+		<a href="mailto:{{ kontakt.getEpost() }}" class="btn btn-sm btn-outline-primary btn-block" style="line-height: 1.5em;">
+			<div class="autoshrink">{{ kontakt.getEpost() }}</div>
+		</a>
+		{% if kontakt.getFacebook() is not empty %}
+			<a href="{{ kontakt.getFacebook() }}" class="btn btn-sm btn-outline-primary btn-block">på facebook</a>
+		{% endif %}
+	</div>
+</div>

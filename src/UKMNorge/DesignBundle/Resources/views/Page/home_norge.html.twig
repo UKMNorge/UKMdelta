@@ -1,0 +1,61 @@
+{% extends "Layout/_layout.html.twig"|UKMpath %}
+
+{% set showSlogan = true %}
+
+{% block content %}
+	<div class="container-fluid">
+		<div class="row" style="margin-bottom: 1em">
+			<div class="col right">
+				<a href="//delta.ukm.no" class="mx-1 btn btn-primary">Meld deg på</a>
+				<a href="/derdubor/" class="mx-1 btn btn-outline-primary">Finn nærmeste UKM</a>
+			</div>
+		</div>
+	
+		{# ===== KUN SYNLIG XS ===== #}
+		<div class="row d-flex d-md-none">
+			<div class="col-12">
+				<h4>{{ page.getPage().title|raw }}</h4>
+				<p class="lead">
+					{{ page.getPage().lead|raw }}
+					<br />
+					<a href="#" class="UKMtoggleShow phoneReadMoreUKM" data-target="phoneReadMoreUKM">Les mer om UKM</a>
+				</p>
+			</div>
+
+			<div class="clearfix my-3"></div>
+			<div class="col-12 UKMtoggleContent" style="display:none" id="phoneReadMoreUKM">
+				{{ page.getPage().content_wo_lead|raw }}
+				<a href="#" class="mx-1 btn btn-outline-primary UKMtoggleHide phoneReadMoreUKM" data-target="phoneReadMoreUKM">Lukk</a>
+			</div>
+		</div>
+		<div class="row d-flex d-md-none">
+			{% for post in posts.getAll() %}
+				<div class="col-6">
+					{% embed "Post:grid-default.html.twig"|UKMpath with { post: post } %}{% endembed %}
+				</div>
+			{% endfor %}
+		</div>
+
+		{# ==== KUN SYNLIG SM-UP ==== #}
+		<div class="row d-none d-md-flex">
+			<div class="col-6 col-xl-5">
+				<h4>{{ page.getPage().title|raw }}</h4>
+				<p class="lead">
+					{{ page.getPage().lead|raw }}
+				</p>
+				{{ page.getPage().content_wo_lead|raw }}
+			</div>
+			<div class="col-6 col-xl-7">
+				<div class="row">
+					{% for post in posts.getAll() %}
+						<div class="col-12 col-lg-6">
+							{% embed "Post:grid-pretty.html.twig"|UKMpath %}{% endembed %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{% embed "Category:next_prev_links.html.twig"|UKMpath %}{% endembed %}
+	</div>
+{% endblock %}

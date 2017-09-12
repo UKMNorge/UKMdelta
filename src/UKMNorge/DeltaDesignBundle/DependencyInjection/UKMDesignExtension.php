@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\DesignBundle\DependencyInjection;
+namespace UKMNorge\DeltaDesignBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

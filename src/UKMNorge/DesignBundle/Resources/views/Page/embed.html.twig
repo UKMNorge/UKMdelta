@@ -1,0 +1,6 @@
+{% extends "Layout/_singleMode.html.twig"|UKMpath %}
+
+{% block content %}
+	<h1>{{ page.getPage().title|raw }}</h1>
+	{{ page.getPage().content|raw }}
+{% endblock %}

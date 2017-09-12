@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\DesignBundle\DependencyInjection;
+namespace UKMNorge\DeltaDesignBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

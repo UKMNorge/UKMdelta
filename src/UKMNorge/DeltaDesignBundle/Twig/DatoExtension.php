@@ -1,7 +1,7 @@
 <?php
 
 // src/UKMNorge/DesignBundle/Twig/DatoExtension.php
-namespace UKMNorge\DesignBundle\Twig;
+namespace UKMNorge\DeltaDesignBundle\Twig;
 
 class DatoExtension extends \Twig_Extension
 {

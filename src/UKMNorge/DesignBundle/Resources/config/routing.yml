@@ -1,3 +1,0 @@
-ukm_design_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: UKMDesignBundle:Default:index }
