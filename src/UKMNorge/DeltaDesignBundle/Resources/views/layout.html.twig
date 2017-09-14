@@ -1,7 +1,9 @@
 {% extends 'UKMDesignBundle:Layout:_base.html.twig' %}
 
 {% block css %}
-	
+	{% stylesheets '@UKMDeltaDesignBundle/Resources/public/css/UKMresponsive.css' %}
+		    <link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
 {% endblock %}
 
 {% block javascripts %}
@@ -13,12 +15,4 @@
          %}
         <script src="{{ asset_url }}"></script> 
     {% endjavascripts %}
-{% endblock %}
-
-{% block UKMDesign_content %}
-	<div id="UKMDesign_content">
-		<div class="container">
-			{% block content %}{% endblock %}
-		</div>
-	</div>
 {% endblock %}

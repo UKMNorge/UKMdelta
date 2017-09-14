@@ -8,34 +8,39 @@
 		'@UKMDeltaBundle/Resources/public/js/fastlivefilter.jquery.js' %}
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
+		<script>
+		jQuery(document).ready(function() {
+			jQuery(".kommuneKnapp").click(function() {
+				jQuery("#kommune_id").val(jQuery(this).val());
+			});
+		});
+		</script>
 {% endblock %}
 
 {% block content %}
-	<h1>Velg kommunen din</h1>
-	<form method="post" action="">
-		<input type="hidden" name="skjema" value="kommune" />
-		<!-- Søkefelt her -->
-		<p>Søk etter kommunen din, så slipper du å scrolle så langt</p>
-		<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
-		<!-- Kommuneliste -->
-		<div id="kommuner">
-			<input type="hidden" id="kommune_id" name="kommune_id" />
-			</form>
-			{% for fylke in fylker %}
-				<h3 id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
-				{% for kommune in fylke.getKommuner() %}
-					<ul data-fylke="{{ fylke.id }}">
-						<button type="submit" class="btn btn-block btn-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
-					</ul>
-				{% endfor %}
-			{% endfor %}
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h1>Velg kommunen din</h1>
+				<form method="post" action="">
+					<input type="hidden" name="skjema" value="kommune" />
+					<!-- Søkefelt her -->
+					<p>Søk etter kommunen din, så slipper du å scrolle så langt</p>
+					<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
+					<!-- Kommuneliste -->
+					<input type="hidden" id="kommune_id" name="kommune_id" />
+				</form>
+				<div id="kommuner">
+					{% for fylke in fylker %}
+						<h3 id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
+						{% for kommune in fylke.getKommuner() %}
+							<ul data-fylke="{{ fylke.id }}">
+								<button type="submit" class="btn btn-block btn-outline-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
+							</ul>
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</div>
 		</div>
-
-<script>
-jQuery(document).ready(function() {
-	jQuery(".kommuneKnapp").click(function() {
-		jQuery("#kommune_id").val(jQuery(this).val());
-	});
-});
-</script>
+	</div>
 {% endblock %}

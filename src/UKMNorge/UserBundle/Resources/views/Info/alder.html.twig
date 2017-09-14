@@ -4,9 +4,15 @@
 {% endblock %}
 
 {% block content %}
-	<h1>Hvor gammel er du?</h1>
-	<form method="post" action="">
-		<input type="hidden" name="skjema" value="alder" />
-		<button type="submit" class="btn btn-block btn-primary" name="alder" value="24">Blæ</button>
-	</form>
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h1>Hvor gammel er du?</h1>
+				<form method="post" action="">
+					<input type="hidden" name="skjema" value="alder" />
+					<button type="submit" class="btn btn-block btn-outline-primary" name="alder" value="24">Blæ</button>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -2,23 +2,29 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="lead center">{{ 'nosms.header'|trans }}</h1>
-	<p class="center">{{ 'nosms.top'|trans|nl2br }}</p>
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1 center">
-			<span class="alert alert-warning">{{ 'nosms.varsel'|trans({'%id': kode}) }}</span>
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h1 class="lead center">{{ 'nosms.header'|trans }}</h1>
+				<p class="center">{{ 'nosms.top'|trans|nl2br }}</p>
+				<p>&nbsp;</p>
+				<div class="row">
+					<div class="col-10 ml-auto center">
+						<span class="alert alert-warning">{{ 'nosms.varsel'|trans({'%id': kode}) }}</span>
+					</div>
+				</div>
+				<p>&nbsp;</p>
+				<div class="row">
+					<div class="col-10 ml-auto center">
+						<small class="center"><i>{{ 'nosms.obs'|trans({'%nr': nummer}) }}</i></small>
+					</div>
+				</div>
+			{# 	<p>&nbsp;</p> #}
+				<p class="center">{{ 'nosms.videre'|trans }}</p>
+				<div class="col-10 ml-auto center">
+					<a href="{{ path ('ukm_user_registration_waiting_for_sms', { phone: nummer }) }}" class="btn btn-block btn-outline-primary">{{ 'nosms.videreknapp'|trans }}</a>
+				</div>
+			</div>
 		</div>
-	</div>
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1 center">
-			<small class="center"><i>{{ 'nosms.obs'|trans({'%nr': nummer}) }}</i></small>
-		</div>
-	</div>
-{# 	<p>&nbsp;</p> #}
-	<p class="center">{{ 'nosms.videre'|trans }}</p>
-	<div class="col-xs-10 col-xs-offset-1 center">
-		<a href="{{ path ('ukm_user_registration_waiting_for_sms', { phone: nummer }) }}" class="btn btn-block btn-default btn-success">{{ 'nosms.videreknapp'|trans }}</a>
 	</div>
 {% endblock %}

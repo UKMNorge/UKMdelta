@@ -118,7 +118,7 @@ ukm_delta_ukmid_pamelding_hva:
     defaults: { _controller: UKMDeltaBundle:Innslag:type }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_ny_person:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/ny-person/ 
@@ -274,7 +274,7 @@ ukm_delta_ukmid_pamelding_film_hvem:
     defaults: { _controller: UKMDeltaBundle:Film:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_film_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/film/opprett/{hvem}/
@@ -290,7 +290,7 @@ ukm_delta_ukmid_pamelding_utstilling_hvem:
     defaults: { _controller: UKMDeltaBundle:Utstilling:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_utstilling_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/opprett/{hvem}/
@@ -306,7 +306,7 @@ ukm_delta_ukmid_pamelding_litteratur_hvem:
     defaults: { _controller: UKMDeltaBundle:Litteratur:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_litteratur_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/opprett/{hvem}/
@@ -322,7 +322,7 @@ ukm_delta_ukmid_pamelding_annet_hvem:
     defaults: { _controller: UKMDeltaBundle:Annet:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_annet_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/opprett/{hvem}/
@@ -338,7 +338,7 @@ ukm_delta_ukmid_pamelding_matkultur_hvem:
     defaults: { _controller: UKMDeltaBundle:Matkultur:who }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ukm_delta_ukmid_pamelding_matkultur_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/opprett/{hvem}/
@@ -354,7 +354,7 @@ ukm_delta_ukmid_pamelding_konferansier_hvem:
     defaults: { _controller: UKMDeltaBundle:Konferansier:create }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
 
 ### UKM MEDIA
 ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
@@ -362,7 +362,7 @@ ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
     defaults: { _controller: UKMDeltaBundle:Nettredaksjon:create }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
               
 ### ARRANGØR
 ukm_delta_ukmid_pamelding_arrangor_hvem:
@@ -370,7 +370,7 @@ ukm_delta_ukmid_pamelding_arrangor_hvem:
     defaults: { _controller: UKMDeltaBundle:Arrangor:create }
     requirements:
               k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,4})
+              pl_id: ([0-9]{1,5})
               
 #### KAMPANJER
 ## LOS BANDO 2017

@@ -3,29 +3,39 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="center">{{ 'whoAction.sporsmal'|trans }}</h1>
-	<p>&nbsp;</p>
-	<div class="col-xs-12">
-		<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-primary btn-block">{{ 'whoAction.alene'|trans }}</a>
-	</div>
-	<p>&nbsp;</p>
-	<div class="col-xs-12">
-		<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-primary btn-block">{{ 'whoAction.sammen'|trans }}</a>
-	</div>
-		<p>&nbsp;</p>
-	<div class="col-xs-12">
-		<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-primary btn-block">{{ 'whoAction.kontakt'|trans }}</a>
-	</div>
-	<div class="row">
-		<div class="col-xs-1"></div>
-		<div class="col-xs-10">
-			<p class="delta-subtext center">
-				<small>
-					{{ 'whoAction.forklaring'|trans }}
-				</small>
-			</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="center">{{ 'whoAction.sporsmal'|trans }}</h1>
+	
+				<p class="my-4">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-outline-primary btn-block">
+						{{ 'whoAction.alene'|trans }}
+					</a>
+				</p>
+	
+				<p class="my-4">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-outline-primary btn-block">
+						{{ 'whoAction.sammen'|trans }}
+					</a>
+				</p>
+				
+				<p class="my-4">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
+						{{ 'whoAction.kontakt'|trans }}
+					</a>
+				</p>
+			</div>
+			
+			<div class="row">
+				<div class="col-10 ml-auto">
+					<p class="delta-subtext center">
+						<small>
+							{{ 'whoAction.forklaring'|trans }}
+						</small>
+					</p>
+				</div>
+			</div>
 		</div>
-		<div class="col-xs-1"></div>
 	</div>
-
 {% endblock %}

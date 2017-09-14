@@ -9,20 +9,27 @@
 {% endblock %}
 
 {% block content %}
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h1 class="center">{{ 'waitsms.header'|trans }}</h1>
 
-<h1 class="center">{{ 'waitsms.header'|trans }}</h1>
-<p>&nbsp;</p>
-<p class="center">{{ 'waitsms.top'|trans|nl2br }}</p>
-<p>&nbsp;</p>
-<input type="hidden" id="url" value="{{ ajax_url }}">
-<input type="hidden" id="phone" value="{{ phone }}">
-<div class="row">
-	<div class="col-xs-10 col-xs-offset-1 center">
-		<img src="http://ico.ukm.no/loading.gif">
+				<p>&nbsp;</p>
+
+				<p class="center">{{ 'waitsms.top'|trans|nl2br }}</p>
+
+				<p>&nbsp;</p>
+
+				<input type="hidden" id="url" value="{{ ajax_url }}" />
+				<input type="hidden" id="phone" value="{{ phone }}" />
+
+				<div class="center">
+					<img src="http://ico.ukm.no/loading.gif" />
+				</div>
+				<div class="center">
+					<small>{{ 'waitsms.sub'|trans }}</small>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="col-xs-10 col-xs-offset-1 center">
-	<small class="center">{{ 'waitsms.sub'|trans }}</small>
-</div>
-
 {% endblock %}

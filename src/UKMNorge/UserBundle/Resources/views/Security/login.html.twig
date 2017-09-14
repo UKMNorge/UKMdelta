@@ -39,23 +39,23 @@
 </div>
 {% if false %} {#(rdirurl is defined) and (rdirurl == 'ambassador') %}#}
 	<div class="row">
-		<div class="col-xs-8 col-xs-offset-2">
+		<div class="col-8 ml-auto">
 			<p class="lead center">Etter innlogging blir du sendt tilbake til Ambassadør-siden</p>
 		</div>
 	</div>
 {% endif %}
 <div class="row">
-	<div class="hidden-xs col-sm-4">
+	<div class="hidden-xs col-sm-4 center">
 		<img src="http://ico.ukm.no/logginn-256.png" />
 	</div>
-	<div class="col-xs-12 col-sm-8 pull-right">
+	<div class="col-12 col-sm-8 float-right">
 		<h1 class="center">UKMid <small>logg inn</small></h1>
 		<form action="{{ path("fos_user_security_check") }}" method="post">
 			<input type="hidden" name="_rdirurl" value="{{ rdirurl is defined ? rdirurl : '' }}" />
 			<input type="hidden" name="_rdirtoken" value="{{ rdirtoken is defined ? rdirtoken : '' }}" />
 		    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 				
-			<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook" type="button">Logg inn med facebook</a>
+			<a href="{{ facebookLoginURL }}" class="btn btn-block btn-outline-primary">Logg inn med facebook</a>
 			<div class="text-hr"><span>eller</span></div>
 
 			<div class="form-group">
@@ -76,48 +76,42 @@
 				</label>
 			</div>
 #}
-		    <input class="btn btn-block btn-success" type="submit" id="_submit" name="_submit" value="Logg inn" />
+		    <input class="btn btn-block btn-outline-primary" type="submit" id="_submit" name="_submit" value="Logg inn" />
 		</form>
 
 
 		<p>&nbsp;</p>
 		<p align="right">
-			<small><a href="{{ path('fos_user_resetting_request') }}" class="" type="button">Glemt passord?</a></small>
+			<small><a href="{{ path('fos_user_resetting_request') }}" class="">Glemt passord?</a></small>
 		</p>
 		<div class="clearfix"></div>
 	</div>	
 </div>
 <div class="row">
-	<div class="col-xs-12">
-		<div class="hidden-xs">
+	<div class="col-12">
+		<div class="d-none d-sm-block">
 			<div class="clearfix"></div>
 			<div class="text-hr"></div>
 			<div class="clearfix"></div>
 		</div>
 		<h1 class="center">UKMid <small>opprett bruker</small></h1>
-		
-		{# MOBILE #}
-		<div class="visible-xs">
-			<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook col-xs-12 col-sm-6" type="button">Registrer deg med facebook</a>
-			<a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-success col-xs-12 col-sm-6" type="button">Registrer deg uten facebook</a>
-		</div>
-		{# SMALL AND UP #}
-		<div class="hidden-xs">
-			<div class="col-sm-6">
-				<a href="{{ facebookLoginURL }}" class="btn btn-block btn-facebook" type="button">Registrer deg med facebook</a>
-			</div>
-			<div class="col-sm-6">
-				<a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-success col-xs-12 col-sm-6" type="button">Registrer deg uten facebook</a>
-			</div>
-		</div>
+	</div>
+	{# MOBILE #}
+	<div class="col-12 col-sm-6">
+		<a href="{{ facebookLoginURL }}" class="btn btn-block btn-outline-primary">Registrer deg <b>med</b> facebook</a>
+	</div>
+	
+	<div class="col-12 d-block d-sm-none my-2"></div>
+	
+	<div class="col-12 col-sm-6">
+		<a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-outline-secondary">Registrer deg <b>uten</b> facebook</a>
+	</div>
 
-
-
+	<div class="col-12">
 		<p>&nbsp;</p>
-		<p class="xs-center">
+		<p class="center">
 			<a href="//{{ UKM_HOSTNAME }}">Avbryt, tilbake til {{ UKM_HOSTNAME }}</a>
 		</p>
-
 	</div>
 </div>
 {% endblock %}

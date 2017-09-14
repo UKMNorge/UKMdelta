@@ -1,15 +1,15 @@
 {% trans_default_domain translationDomain %}
 
 {% if app.environment == 'test' and fylke_id != 21 %}
-<a href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
+	<a href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
 {% else %}
-<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
+	<a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: monstring.k_id, pl_id: monstring.id }) }}"> 
 {% endif %}
 	<div class="row">
-		<div class="col-md-9 col-xs-9">
+		<div class="col-9">
 			{{ monstring.name }}
 		</div>
-		<div class="col-md-3 col-xs-3">
+		<div class="col-3">
 		</div>
 	</div>
 </a>
