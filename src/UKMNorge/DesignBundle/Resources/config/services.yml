@@ -1,6 +1,0 @@
-services:
-    app.twig_extension:
-        class: UKMNorge\DesignBundle\Twig\DesignBundleExtension
-        public: false
-        tags:
-            - { name: twig.extension }

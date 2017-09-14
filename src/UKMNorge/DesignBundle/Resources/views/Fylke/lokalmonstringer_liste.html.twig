@@ -1,9 +1,0 @@
-{% for lokalmonstring in lokalt %}
-	<div class="col-6 col-sm-4 col-md-6 col-lg-4 col-xl-3 my-1">
-		<a href="{{ lokalmonstring.getLink() }}" class="btn btn-block btn-outline-primary mx-0" style="line-height: 1.25em;">
-			<div class="autoshrink">
-				{{ lokalmonstring.getNavn() }}
-			</div>
-		</a>
-	</div>
-{% endfor %}
