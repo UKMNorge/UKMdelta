@@ -36,6 +36,8 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         UKM_HOSTNAME: %UKM_HOSTNAME%
+        SEO: "@ukmdesign.seo"
+        Sitemap: "@ukmdesign.sitemap"
 
 # Assetic Configuration
 assetic:
