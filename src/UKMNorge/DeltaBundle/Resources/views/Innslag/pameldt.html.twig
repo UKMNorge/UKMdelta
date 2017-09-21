@@ -1,106 +1,71 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
-
 	<script>
-		window.fbAsyncInit = function() {
-		FB.init({
-		  appId      : '141016739323676',
-		  xfbml      : true,
-		  version    : 'v2.5'
-		});
-		};
-
-		(function(d, s, id){
-		 var js, fjs = d.getElementsByTagName(s)[0];
-		 if (d.getElementById(id)) {return;}
-		 js = d.createElement(s); js.id = id;
-		 js.src = "//connect.facebook.net/en_US/sdk.js";
-		 fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-
-
 		$(document).on("click", "#share", function() {
 			FB.ui({
-	  			method: 'share',
-	  			href: 'http://delta.ukm.no',
-	  			caption: '{{ fb_share_caption }}',
-	  			picture: 'http://grafikk.ukm.no/pamelding/startpamelding.png',
+					method: 'share',
+					href: 'http://delta.ukm.no',
+					caption: '{{ fb_share_caption }}',
+					picture: 'http://grafikk.ukm.no/pamelding/startpamelding.png',
 			}, function(response){});
 		});
-
-		// jQuery(document).ready( function() {
-		// 	setTimeout(function() {
-		// 		FB.ui({
-		//   			method: 'share',
-		//   			href: 'http://delta.ukm.no',
-		// 		}, function(response){});
-		// 	}, 2000);
-		// });
 	</script>
 {% endblock %}
 
 {% block content %}
-	{# CONTENT #}
-	<h1 class="center">
-		{{ 'attendingAction.overskrift'|trans }}
-	</h1>
-	<div class="row"> 
-		<div class="col-xs-12 center">
-			<span class="delta-fat">UKM {{ pl_navn }}</span>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="mt-0">
+					{{ 'attendingAction.overskrift'|trans }}
+				</h1>
+				<p>
+					UKM {{ pl_navn }}
+					{{ 'attendingAction.monstringstarter'|trans({ '%dag%': pl_start|dato('l') ~' '~ pl_start|dato('j'), '%maned%': pl_start|dato('F'), '%time%': pl_start|dato('G'), '%minutt%': pl_start|dato('i')}) }}
+				</p>
+			</div>
+
+
+			<div class="col-6">
+				<a class="btn btn-block btn-outline-primary this-is-js" href="//{{ UKM_HOSTNAME }}/{{ pl_link }}/program/" target="_lokalside">
+					{{ 'attendingAction.visprogram'|trans }}
+				</a>
+			</div>
+			<div class="col-6">
+				<a class="btn btn-block btn-outline-primary this-is-js" href="//{{ UKM_HOSTNAME }}/{{ pl_link }}/pameldte/" target="_lokalside">
+					{{ 'attendingAction.vispameldte'|trans }}
+				</a>
+			</div>
+			
+
+			<div class="col-12 my-3">
+				<div class="alert alert-warning">
+					{{ 'filmfoto.samtykke'|trans({'%lokalkontakten%': '<a class="this-is-js" href="//'~ UKM_HOSTNAME ~'/'~ pl_link ~'/kontaktpersoner/" target="_lokalside">lokalkontakten</a>'|raw }, 'base')|raw|nl2br }}
+				</div> 
+				
+				<p>
+					<button class="btn btn-block btn-outline-primary" id="share">
+						{{ 'fb_share_button'|trans({}, 'base') }}
+					</button>
+				</p>
+
+				<p>
+					{{ 'attendingAction.flertekst'|trans }} {{ 'attendingAction.meldtekst'|trans }}
+				</p>
+			</div>
+
+
+			<div class="col-6">
+				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+					{{ 'attendingAction.rediger'|trans }}
+				</a>
+			</div>
+			<div class="col-6">
+				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
+			</div>
 		</div>
-	</div> 
-	<div class="col-xs-12 center">
-		<span class="center">{{ 'attendingAction.monstringstarter'|trans({ '%dag%': pl_start|dato('l') ~' '~ pl_start|dato('j'), '%maned%': pl_start|dato('F'), '%time%': pl_start|dato('G'), '%minutt%': pl_start|dato('i')}) }}
-	</div>
-	{#
-	<div class="col-xs-12 center delta-fat">
-		<span class="center">{{ 'attendingAction.viktigbeskjed.label'|trans }}</span>
-	</div>
-	<div class="col-xs-12 center">
-		<span class="center">{{ 'attendingAction.viktigbeskjed.placeholder'|trans }}
-	</div>
-	#}
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="col-xs-5 col-xs-offset-1">
-			<a type="button" class="btn btn-block btn-default this-is-js" href="http://www.ukm.no/pl{{ pl_id }}/program" target="_lokalside">{{ 'attendingAction.visprogram'|trans }}</a>
-		</div>
-		<div class="col-xs-5"> 
-			<a type="button" class="btn btn-block btn-default this-is-js" href="http://www.ukm.no/pl{{ pl_id }}/pameldte" target="_lokalside">{{ 'attendingAction.vispameldte'|trans }}</a>
-		</div>	
-	</div>
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="alert alert-warning center col-xs-10 col-xs-offset-1">
-		{{ 'filmfoto.samtykke'|trans({}, 'base')|nl2br }}</div> 
-	</div>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1">
-			<a type="button" class="btn btn-block btn-default" href="http://www.ukm.no/pl{{ pl_id }}#kontaktpersoner" target="_lokalside">{{ 'attendingAction.viskontakt'|trans }}</a>
-		</div>	
-	</div>
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1">
-			<button class="btn btn-block btn-default" id="share">{{ 'fb_share_button'|trans({}, 'base') }}</button>
-		</div>
-	</div>
-	<p>&nbsp;</p>
-	<div class="row">
-		<div class="col-xs-12 center"> 
-			<span>{{ 'attendingAction.flertekst'|trans }} {{ 'attendingAction.meldtekst'|trans }}</span>
-		</div>
-	</div>
-	<p>&nbsp;</p> 
-	<div class="row">
-		<div class="col-xs-5 col-xs-offset-1">
-			<a type="button" class="btn btn-block btn-success" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'attendingAction.rediger'|trans }}</a>
-		</div>	
-		<div class="col-xs-5">
-			<a type="button" class="btn btn-block btn-success" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
-		</div>	
 	</div>
 {% endblock %}

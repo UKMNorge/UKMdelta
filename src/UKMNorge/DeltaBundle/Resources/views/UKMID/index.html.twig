@@ -1,46 +1,31 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
-	
-{% block css %}
-	{{parent()}}
-	<style>
-	.delta-header.page-separator {
-	    padding: 8px 0px;
-	    margin: 20px 0px 25px 0px;
-	    border-bottom: 7px solid #b89dcc;
-	    color: #000;
-	    background: none;
-	}
-	.delta-header.page-separator h1 {
-	    margin: 0px;
-	    padding: 0px;
-	    border: none;
-	}
-	</style>
-{% endblock %}
+
 {% block content %}
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
 				{# CONTENT #}
-				<h1 class="center">{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
+				<h1 class="mt-0">{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
 					
-				<p class="lead center">
+				<p class="lead">
 					{{ 'indexAction.ledetekst'|trans|nl2br }}
 				</p>
 			</div>
 		</div>
 		
 		<div class="row">
+	  		<h2 class="header-line uppercase pl-3" style="width: 100%;">{{ 'indexAction.pameldinger.overskrift'|trans }}</h2>
+		</div>
+
+		<div class="row">
 			<div class="col-12">
-				<div class="text-center delta-header page-separator">
-			  		<h1 class="page-header">{{ 'indexAction.pameldinger.overskrift'|trans }}</h1>
-				</div>
-			
+
 				<div class="delta-input-header"> 
 					<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
 					{% if alle_innslag.fullstendig is not empty %}
-						<span class="delta-fat">{{ 'indexAction.pameldinger.fullforte'|trans }}</span>
+						<h3>{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
+						
 						<ul class="list list-group">
 							{% for status, innslag in alle_innslag.fullstendig %}
 								{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
@@ -49,7 +34,7 @@
 					{% endif %}
 			
 					{% if alle_innslag.ufullstendig is not empty %}
-						<span class="delta-fat">{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</span>
+						<h3>{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
 						<ul class="list list-group">
 							{% for status, innslag in alle_innslag.ufullstendig %}
 								{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
@@ -61,22 +46,16 @@
 						<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
 					{% endif %}
 				</div>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-12">
+
+
 				<form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
-					<button class="btn btn-block btn-outline-primary" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style="">{{ 'indexAction.pameldinger.startny'|trans }}</button>
+					<button class="btn btn-block btn-outline-primary my-3" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style="">{{ 'indexAction.pameldinger.startny'|trans }}</button>
 				</form>	
 			</div>
 
 			<div class="col-12">
 				{{ render( controller('UKMDeltaBundle:DinSide:Extras') ) }}
 			</div>
-				
-			<p>&nbsp;</p>
-			<p>&nbsp;</p>
 		</div>
 	</div>
 {% endblock %}

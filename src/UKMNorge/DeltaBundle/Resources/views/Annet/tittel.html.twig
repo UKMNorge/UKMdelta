@@ -1,6 +1,7 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts '@UKMDeltaBundle/Resources/public/js/tittel.js' %}
     	<script src="{{ asset_url }}"></script> 
@@ -9,86 +10,49 @@
 
 	
 {% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				{% if tittel is defined %}
+					<h1 class="mt-0">{{ 'tittel.overskrift.rediger'|trans( {'%tittel': tittel.tittel} ) }}</h1>
+				{% else %}
+					<h1 class="mt-0">{{ 'tittel.overskrift.legg_til'|trans }}</h1>
+				{% endif %}	
+				
+				<form method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+					<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}" />
+					<input type="hidden" name="t_id" value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('t_id') : 'new' }}" />
 
-	{# CONTENT #}
-	{% if tittel.tittel is defined %}
-		<h1 class="center">Endre tittel</h1>
-	{% else %}
-		<h1 class="center">Legg til tittel</h1>
-	{% endif %}
-	<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-		<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
-		<input type="hidden" name="t_id" value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('t_id') : 'new' }}">
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>Tittel</small>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('tittel') : '' }}">
-			</div>
-		</div>
+					<div class="form-group">
+						<label>{{ 'tittel.tittel.label'|trans }}</label>
+						<input type="text" required name="tittel" class="form-control" placeholder="Eks. Skyfall, I will survive..." value="{{ (tittel is defined) and (tittel.get('t_id') > 0) ? tittel.get('tittel') : '' }}" />
+					</div>
+			
+					<div class="form-group">
+						<label>{{ 'tittel.varighet.label'|trans }}</label>
+						{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+					</div>
+			
+					<div class="form-group my-4">
+						<button type="submit" class="btn btn-block btn-outline-primary btn-success">{{ 'tittel.lagre'|trans }}</button>
+					</div>
+					
+					{% if (tittel is defined) and (tittel.get('t_id') > 0) %}
+						<p class="my-4">
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" class="btn btn-block btn-danger">
+								{{ 'tittel.slett'|trans({'%tittel': tittel.get('tittel')}) }}
+							</a>
+						</p>
+					{% endif %}
 
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>Lengde</small>
+					<p class="my-3 center">
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+							{{ 'tittel.avbryt'|trans }}
+						</a>
+					</p>
+					
+				</form>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-xs-12">
-				{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
-				{# <small class="delta-subtext left">{{ 'tittel.varighet.help'|trans }}</small> #}
-			</div>
-		</div>
-		{# <div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>Har låta tekst, eller er det en instrumental?</small>
-			</div>
-		</div>
-		<div class="col-xs-12" id="tekst-valg">
-			<label class="radio-inline"><input type="radio" name="sangtype" value="sang" checked>Tekst</label>
-			<label class="radio-inline"><input type="radio" name="sangtype" value="instrumental">Instrumental</label>
-		</div>
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>Har du/dere laget låta selv?</small>
-			</div>
-		</div>
-		<div class="col-xs-12"  id="melodi-valg" >
-			<label class="radio-inline"><input type="radio" name="selvlaget" value="1">Ja</label>
-			<label class="radio-inline"><input type="radio" name="selvlaget" value="0" checked>Nei</label>
-		</div>
-		<div class="row" id="tekst-rad">
-			<div class="col-xs-12 delta-input-header">
-				<small>Tekst av</small>
-			</div>
-			<div class="col-xs-12">
-				<input type="text" required name="tekstforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}">
-			</div>
-		</div>
-		<div class="row" id="melodi-rad">
-			<div class="col-xs-12 delta-input-header">
-				<small>Melodi av</small>
-			</div>
-			<div class="col-xs-12">
-				<input type="text" required name="melodiforfatter" class="form-control" placeholder="" value="{{ tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}">
-			</div>
-		</div>
-		#}
-		<p>&nbsp;</p>
-		<div class="col-xs-10 col-sm-10">
-			<button type="submit" class="btn btn-block btn-default">Lagre</button>
-		</div>
-		{% if (tittel is defined) and (tittel.get('t_id') > 0) %}
-			<p>&nbsp;</p>
-			<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" type="button" class="btn btn-block btn-danger">Slett tittel</a>
-		{% endif %}
-		<p>&nbsp;</p>
-		<div class="col-xs-12 center">
-				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">avbryt</a>
-		</div>
-	</form>
-
+	</div>
 {% endblock %}

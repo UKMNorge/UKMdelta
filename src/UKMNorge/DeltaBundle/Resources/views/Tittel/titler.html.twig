@@ -1,76 +1,52 @@
 {% trans_default_domain translationDomain %}
+<label>{{ 'overviewAction.titler.overskrift'|trans }}</label>
 
-<div class="row {{ titler|length == 0 ? 'inactiveSummaryDetailsList' : 'summaryDetailsList' }}">
-	<div class="trigger click">
-		<div class="col-xs-12 delta-input-header">
-			<span>{{ 'overviewAction.titler.overskrift'|trans }}</span>{% if titler|length > 0 %}<small class="right edit">{{ 'overviewAction.titler.endre'|trans }}</small>{% endif %}
-		</div>
-		<hr />
-		<div class="summary col-xs-12 delta-list"> 
-			<span>
-				{% for tittel in titler %}
-					{{ loop.first ? '' : ', ' }}
-					{{ tittel.tittel is defined ? tittel.tittel : '' }} 
-				{% else %}
-					{{ 'overviewAction.titler.ingen'|trans }}
-				{% endfor %}
-			</span>
-		</div>
-	</div>
-	<div class="details col-xs-12">
-		<div id="deltakerliste" class="delta-list">
-			{% for tittel in titler %}
-				<ul class="list-unstyled">
-					<li class="row click triggerLink">
-						{% if translationDomain == 'utstilling' %}
-							<div class="col-xs-9">						
-						{% else %}
-							<div class="col-xs-2">
-								<div class="overunder">
-									{% if tittel.varighet is defined %}
-										<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-										<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
-									{% else %}
-										<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-										<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
-									{% endif %}
-								</div>
-							</div>
-							<div class="col-xs-7">
-						{% endif %}
-							<p style="line-height:1em">
-								{{ tittel.tittel is defined ? tittel.tittel : '' }}
-								<br />
-								<small>
-									{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
-										{{ tittel.parentes }}
-									{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur') %}
-									{% else %}
-										<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
-									{% endif %}
-								</small>
-							</p>
+<ul class="list-group">
+	{% for tittel in titler %}
+		<li class="list-group-item click triggerLink">
+			<div class="row">
+				{% if translationDomain != 'utstilling' %}
+					<div class="col-2 px-0">
+						<div class="overunder">
+							{% if tittel.varighet is defined %}
+								<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+								<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+							{% else %}
+								<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+								<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+							{% endif %}
 						</div>
-						<div class="col-xs-3">
-							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="actionLink" id="editT{{ tittel.t_id }}">{{ 'tittel.rediger'|trans({}, 'base') }}</a>
-						</div>
-					</li>
-				</ul>
-			{% endfor %}
-			<div class="clearfix"></div>
-			<p>&nbsp;</p>
-			<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-default" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
+					</div>
+				{% endif %}
+				<div class="col-{{ translationDomain == 'utstilling' ? '9' : '7' }}">
+					<p style="line-height:1em">
+						{{ tittel.tittel is defined ? tittel.tittel : '' }}
+						<br />
+						<small>
+							{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
+								{{ tittel.parentes }}
+							{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur' or type == 'film' or type == 'annet') %}
+							{% else %}
+								<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
+							{% endif %}
+						</small>
+					</p>
+				</div>
+				<div class="col-3">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="btn btn-sm btn-outline-primary actionLink" id="editT{{ tittel.t_id }}">
+						{{ 'tittel.rediger'|trans({}, 'base') }}
+					</a>
+				</div>
 			</div>
-			<p>&nbsp;</p>
-			<p class="center">
-				<a class="list-close this-is-js" href="#">{{ 'overviewAction.titler.lukk_listen'|trans }}</a>
-			</p>
-		</div>
-	</div>
-	{% if titler|length == 0 %} 
-		<div class="col-xs-12">
-				<a type="button" class="btn btn-block btn-default" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'overviewAction.titler.legg_til'|trans }}</a>
-		</div>
-	{% endif %}
-</div>
+		</li>
+	{% else %}
+		<li class="list-group-item">
+			{{ 'overviewAction.titler.ingen'|trans }}
+		</li>
+	{% endfor %}
+	<li class="list-group-item">
+		<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+			{{ 'overviewAction.titler.legg_til'|trans }}
+		</a>
+	</li>
+</ul>

@@ -46,6 +46,7 @@ overviewAction:
             placeholder: >
                 Her vil vi vite mer om gruppen / artisten.
                 Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
+        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks sjonglering, flammeblåsing...
@@ -63,7 +64,7 @@ overviewAction:
         legg_til: Legg til person
     tekniske:
         overskrift: Tekniske behov / utstyrsbehov
-        endre: endre
+        endre: Endre
         ingen: Tekniske behov ikke lagt til.
         legg_til: Legg til tekniske behov
     lagre: Lagre

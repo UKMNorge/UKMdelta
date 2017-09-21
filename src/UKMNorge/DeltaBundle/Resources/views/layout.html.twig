@@ -1,15 +1,5 @@
 {% extends "UKMDeltaDesignBundle::layout.html.twig" %}
 
-{% block css %}
-	{{ parent() }}
-	{% stylesheets 
-		'@UKMDeltaDesignBundle/Resources/public/less/systems/ukmdelta.less'
-		'@UKMDeltaBundle/Resources/public/less/*'
-		 filter='less' output='css/compiled-main.css' %}
-	    <link rel="stylesheet" href="{{ asset_url }}" />
-	{% endstylesheets %}
-{% endblock %}
-
 {% block navbar_button %}
 	{# Din Side-knapp #}
 	{% if app.user %}{# Kun vis denne om brukeren er innlogget #}

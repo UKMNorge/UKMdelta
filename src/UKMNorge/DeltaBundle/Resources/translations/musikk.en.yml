@@ -48,6 +48,7 @@ overviewAction:
                 Her vil vi vite mer om dere som opptrer.
                 Eks. De er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
                 De spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
+        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks hardrock, visesang...
@@ -65,7 +66,7 @@ overviewAction:
         legg_til: Legg til person
     tekniske:
         overskrift: Tekniske behov / utstyrsbehov
-        endre: endre
+        endre: Endre tekniske behov
         ingen: Tekniske behov ikke lagt til.
         legg_til: Legg til tekniske behov
     lagre: Lagre

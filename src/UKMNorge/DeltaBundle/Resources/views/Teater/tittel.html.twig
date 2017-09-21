@@ -3,21 +3,23 @@
 
 {% block form_body %}
 	{{ parent() }}
-	<div class="row">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.selvlaget.label'|trans }}</small>
-		</div>
+	<div class="form-group">
+		<label>{{ 'tittel.selvlaget.label'|trans }}</label>
 	</div>
-	<div class="col-xs-12"  id="melodi-valg" >
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }}>{{ 'ja'|trans({}, 'base') }}</label>
-		<label class="radio-inline"><input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }}>{{ 'nei'|trans({}, 'base') }}</label>
+	
+	<div class="form-group"  id="melodi-valg">
+		<label class="radio-inline">
+			<input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }} />
+			{{ 'ja'|trans({}, 'base') }}
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }} />
+			{{ 'nei'|trans({}, 'base') }}
+		</label>
 	</div>
-	<div class="row" id="tekst-rad">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.tekst_av.label'|trans }}</small>
-		</div>
-		<div class="col-xs-12">
-			<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}"> 
-		</div>
+	
+	<div class="form-group" id="tekst-rad">
+		<label>{{ 'tittel.tekst_av.label'|trans }}</label>
+		<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}" /> 
 	</div>
 {% endblock %}
