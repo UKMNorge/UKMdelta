@@ -38,6 +38,7 @@ twig:
         UKM_HOSTNAME: %UKM_HOSTNAME%
         SEO: "@ukmdesign.seo"
         Sitemap: "@ukmdesign.sitemap"
+        THEME: "%ukmdesign.theme%"
 
 # Assetic Configuration
 assetic:
