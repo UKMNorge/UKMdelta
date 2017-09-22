@@ -1,28 +1,26 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 	
-{% block scripts %}
-	{{ parent() }}
-	{% javascripts 
-		'@UKMDeltaBundle/Resources/public/js/poststed.js' %}
-    	<script src="{{ asset_url }}"></script> 
-	{% endjavascripts %}
-{% endblock %}
-
 {% block content %}
-	{# CONTENT #}
-	<h1 class="center">{{ 'supportAction.overskrift'|trans }}</h1>
-
-	<p class="lead center">
-		{{ 'supportAction.topptekst'|trans|nl2br }}
-	</p>
-	<div class="row">
-		<div class="col-xs-10 col-xs-offset-1 center">
-			<p>{{ 'supportAction.support'|trans|nl2br }}</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="mt-0">
+					{{ 'supportAction.overskrift'|trans }}
+				</h1>
+			
+				<p class="lead">
+					{{ 'supportAction.topptekst'|trans|nl2br }}
+				</p>
+			
+				<p>
+					{{ 'supportAction.support'|trans|nl2br }}
+				</p>
+				
+				<p class="mt-5 center">
+					<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'supportAction.hjem'|trans }}</a>
+				</p>
+			</div>
 		</div>
-	</div>
-
-	<div class="col-xs-10-col-xs-offset-1 center">
-		<a href="{{ path('ukm_delta_ukmid_homepage') }}" class="btn btn-block btn-default">{{ 'supportAction.hjem'|trans }}</a>
 	</div>
 {% endblock %}

@@ -5,25 +5,23 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1 class="lead center">{{ 'nosms.header'|trans }}</h1>
-				<p class="center">{{ 'nosms.top'|trans|nl2br }}</p>
-				<p>&nbsp;</p>
-				<div class="row">
-					<div class="col-10 ml-auto center">
-						<span class="alert alert-warning">{{ 'nosms.varsel'|trans({'%id': kode}) }}</span>
-					</div>
+				<h1 class="mt-0">{{ 'nosms.header'|trans }}</h1>
+				<p>{{ 'nosms.top'|trans|nl2br }}</p>
+
+
+				<div class="alert alert-warning my-3">
+					{{ 'nosms.varsel'|trans({'%id': kode}) }}
 				</div>
-				<p>&nbsp;</p>
-				<div class="row">
-					<div class="col-10 ml-auto center">
-						<small class="center"><i>{{ 'nosms.obs'|trans({'%nr': nummer}) }}</i></small>
-					</div>
-				</div>
-			{# 	<p>&nbsp;</p> #}
-				<p class="center">{{ 'nosms.videre'|trans }}</p>
-				<div class="col-10 ml-auto center">
-					<a href="{{ path ('ukm_user_registration_waiting_for_sms', { phone: nummer }) }}" class="btn btn-block btn-outline-primary">{{ 'nosms.videreknapp'|trans }}</a>
-				</div>
+
+				<p class="help">{{ 'nosms.obs'|trans({'%nr': nummer}) }}</p>
+				
+				<p class="my-3">{{ 'nosms.videre'|trans }}</p>
+				
+				<p>
+					<a href="{{ path ('ukm_user_registration_waiting_for_sms', { phone: nummer }) }}" class="btn btn-block btn-outline-primary">
+						{{ 'nosms.videreknapp'|trans }}
+					</a>
+				</p>
 			</div>
 		</div>
 	</div>

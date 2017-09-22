@@ -45,6 +45,7 @@ window.onbeforeunload = function() {
 $(document).on('touchend click', "a.btn:not(.isClicked, .this-is-js)", function(e) {
 	e.preventDefault();
     $(this).addClass('isClicked').val('Vennligst vent...').html('Vennligst vent...');
+	$(window).trigger('resize');
 	window.location.href = $(this).attr('href');
 });
 $(document).on('touchend click', "a.isClicked", function(e) {

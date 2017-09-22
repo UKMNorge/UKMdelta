@@ -14,27 +14,27 @@
 <div class="container">
 	<div class="row">
 		<div class="col-12">
-			<h1>{{ 'typeAction.overskrift'|trans }}</h1>
+			<h1 class="mt-0">{{ 'typeAction.overskrift'|trans }}</h1>
 			<div>
 				{% for type in typer %} 
 					{% if loop.first %}
-						<small><b>{{ 'kategori.vise_frem'|trans({},'base') }}</b></small>
+						<p class="small bold mb-1 mt-4">{{ 'kategori.vise_frem'|trans({},'base') }}</p>
 					{% elseif loop.last %}
-						<small><b>{{ 'kategori.jobbe_med'|trans({},'base') }}</b></small>
+						<p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
 					{% endif %}
 		
 					<ul class="list list-unstyled list-group">
 					{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
-						<li class="list-group-item delta-type triggerLink click">
+						<li class="list-group-item delta-type triggerLink click py-1">
 							<div class="row">
-								<div class="col-9 typeText">
+								<div class="col-9 typeText" style="padding-top: .3em;">
 									<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
 									{ 	k_id: k_id,  
 										pl_id: pl_id }) }}" class="actionLink" id="type_{{ enkelttype.ico }}">{{ enkelttype.name|raw }}
 									</a> 
 								</div>
 								<div class="col-3 center">
-									<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" height="35" />
+									<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" width="35" />
 								</div>
 							</div>
 							{% if enkelttype.ico == 'nettredaksjon' %}

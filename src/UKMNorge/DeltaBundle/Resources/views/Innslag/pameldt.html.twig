@@ -29,41 +29,38 @@
 			</div>
 
 
-			<div class="col-6">
+			<div class="col-12">
+				<button class="btn btn-block btn-outline-primary" id="share">
+					{{ 'fb_share_button'|trans({}, 'base') }}
+				</button>
+
+{#
 				<a class="btn btn-block btn-outline-primary this-is-js" href="//{{ UKM_HOSTNAME }}/{{ pl_link }}/program/" target="_lokalside">
 					{{ 'attendingAction.visprogram'|trans }}
 				</a>
-			</div>
-			<div class="col-6">
+#}
 				<a class="btn btn-block btn-outline-primary this-is-js" href="//{{ UKM_HOSTNAME }}/{{ pl_link }}/pameldte/" target="_lokalside">
 					{{ 'attendingAction.vispameldte'|trans }}
 				</a>
 			</div>
 			
 
-			<div class="col-12 my-3">
+			<div class="col-12 mt-3">
 				<div class="alert alert-warning">
 					{{ 'filmfoto.samtykke'|trans({'%lokalkontakten%': '<a class="this-is-js" href="//'~ UKM_HOSTNAME ~'/'~ pl_link ~'/kontaktpersoner/" target="_lokalside">lokalkontakten</a>'|raw }, 'base')|raw|nl2br }}
 				</div> 
 				
-				<p>
-					<button class="btn btn-block btn-outline-primary" id="share">
-						{{ 'fb_share_button'|trans({}, 'base') }}
-					</button>
-				</p>
-
 				<p>
 					{{ 'attendingAction.flertekst'|trans }} {{ 'attendingAction.meldtekst'|trans }}
 				</p>
 			</div>
 
 
-			<div class="col-6">
-				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+			<div class="col-12">
+				<a class="btn btn-block btn-outline-primary my-3" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 					{{ 'attendingAction.rediger'|trans }}
 				</a>
-			</div>
-			<div class="col-6">
+
 				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
 			</div>
 		</div>

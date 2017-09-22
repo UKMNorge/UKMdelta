@@ -21,7 +21,7 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1>Velg kommunen din</h1>
+				<h1 class="mt-0">Velg kommunen din</h1>
 				<form method="post" action="">
 					<input type="hidden" name="skjema" value="kommune" />
 					<!-- Søkefelt her -->
@@ -30,14 +30,17 @@
 					<!-- Kommuneliste -->
 					<input type="hidden" id="kommune_id" name="kommune_id" />
 				</form>
+				
 				<div id="kommuner">
 					{% for fylke in fylker %}
-						<h3 id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
-						{% for kommune in fylke.getKommuner() %}
-							<ul data-fylke="{{ fylke.id }}">
-								<button type="submit" class="btn btn-block btn-outline-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
-							</ul>
-						{% endfor %}
+						<h3 class="my-3"> id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
+						<ul>
+							{% for kommune in fylke.getKommuner() %}
+								<li data-fylke="{{ fylke.id }}">
+									<button type="submit" class="btn btn-block btn-outline-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
+								</li>
+							{% endfor %}
+						</ul>
 					{% endfor %}
 				</div>
 			</div>

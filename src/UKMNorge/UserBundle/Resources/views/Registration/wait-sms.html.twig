@@ -1,6 +1,6 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts 
 		'@UKMUserBundle/Resources/public/js/checkSMS.js' %}
@@ -12,13 +12,9 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1 class="center">{{ 'waitsms.header'|trans }}</h1>
+				<h1 class="mt-0">{{ 'waitsms.header'|trans }}</h1>
 
-				<p>&nbsp;</p>
-
-				<p class="center">{{ 'waitsms.top'|trans|nl2br }}</p>
-
-				<p>&nbsp;</p>
+				<p class="my-3 center">{{ 'waitsms.top'|trans|nl2br }}</p>
 
 				<input type="hidden" id="url" value="{{ ajax_url }}" />
 				<input type="hidden" id="phone" value="{{ phone }}" />
@@ -26,8 +22,8 @@
 				<div class="center">
 					<img src="http://ico.ukm.no/loading.gif" />
 				</div>
-				<div class="center">
-					<small>{{ 'waitsms.sub'|trans }}</small>
+				<div class="center small">
+					{{ 'waitsms.sub'|trans }}
 				</div>
 			</div>
 		</div>

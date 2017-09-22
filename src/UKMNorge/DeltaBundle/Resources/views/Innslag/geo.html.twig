@@ -13,17 +13,18 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1>{{ 'geoAction.overskrift'|trans }}</h1>
+				<h1 class="mt-0">{{ 'geoAction.overskrift'|trans }}</h1>
 				
 				{# VI TROR VI VET DET!!! #}
 				{% if lokal_monstring %}
-					<h3>{{ 'geoAction.vi_tror'|trans }}</h3>
-					<ul class="list-unstyled">
-						<li class="list-group-item click">
-							{% embed "UKMDeltaBundle:Innslag:geo_" ~ ( lokal_monstring.fellesmonstring ? 'felles' : 'enkel' ) ~ "monstring.html.twig" with {'monstring': lokal_monstring, 'fylke_id': lokal_monstring.fylke} %}{% endembed %}
-						</li>
-					</ul>
-					<h3>{{ 'geoAction.tok_vi_feil'|trans }}</h3>
+					<h3 class="mt-4">
+						{{ 'geoAction.vi_tror'|trans }}
+					</h3>
+					<div class="click">
+						{% embed "UKMDeltaBundle:Innslag:geo_" ~ ( lokal_monstring.fellesmonstring ? 'felles' : 'enkel' ) ~ "monstring.html.twig" with {'monstring': lokal_monstring, 'fylke_id': lokal_monstring.fylke} %}{% endembed %}
+					</div>
+					
+					<h3 class="mt-5">{{ 'geoAction.tok_vi_feil'|trans }}</h3>
 				{% else %}
 					<p class="lead">
 						{{ 'geoAction.topptekst'|trans }}
@@ -34,7 +35,7 @@
 				<input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 				<div id="lokalmonstringer">
 					{% for fylke in monstringsliste %}
-						<h4 id="header_{{ fylke.id }}" class="mt-3 mb-2">{{ fylke.name }}</h4>
+						<h4 id="header_{{ fylke.id }}" class="mt-4 mb-2">{{ fylke.name }}</h4>
 						<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
 							{% for monstring in fylke.monstringer %}
 								<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >

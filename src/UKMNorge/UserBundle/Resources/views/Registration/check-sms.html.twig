@@ -1,6 +1,6 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts 
 		'@UKMUserBundle/Resources/public/js/waitAMinute.js' %}
@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-12">
 				<form method="post" action="{{ path('ukm_user_registration_validate_sms') }}">
-					<h1 class="center">Skriv inn kode</h1>
+					<h1 class="mt-0">Skriv inn kode</h1>
 					
 					{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
 					
@@ -25,10 +25,8 @@
 					</div>
 					{% endif %}
 					
-					<p class="lead center">
-						Vi har sendt en SMS-kode til <span class="bold">din mobil.</span>
-						<br />
-						Skriv inn denne i feltet nedenfor.
+					<p>
+						Vi har sendt en SMS-kode til din mobil.	Skriv inn denne i feltet nedenfor.
 					</p>
 					
 					<div class="form-group">
@@ -36,8 +34,13 @@
 						<input value="" type="tel" class="form-control" id="smscode" name="smscode" placeholder="Skriv inn koden..." />
 					</div>
 			
-					<small class="right"><a id ="no_sms_link" href="{{ path('ukm_user_registration_no_sms', { phone: phone }) }}">Ikke fått SMS? Klikk her. <span id="no_sms_all_text"> (Linken aktiveres om <span id="no_sms_text"></span> sekunder.)</span></a></small>
-					<button type="submit" class="btn btn-outline-primary btn-block center forcePageLoader" name="submit">Neste</button>
+					<small class="right">
+						<a id ="no_sms_link" href="{{ path('ukm_user_registration_no_sms', { phone: phone }) }}">
+							Ikke fått SMS? Klikk her.
+							<span id="no_sms_all_text"> (Linken aktiveres om <span id="no_sms_text"></span> sekunder.)</span>
+						</a>
+					</small>
+					<button type="submit" class="btn btn-outline-primary btn-block forcePageLoader" name="submit">Neste</button>
 				</form>
 			</div>
 		</div>

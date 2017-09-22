@@ -4,18 +4,11 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1>Glemt passord</h1>
+				<h1 class="mt-0">Glemt passord</h1>
 	
 				<p>Hvis du har glemt passordet, kan vi sende deg en SMS så du kan lage nytt passord</p>
 				<p class="d-none d-sm-block">&nbsp;</p>
-			</div>
-		</div>
-	</div>
 	
-	
-	<div class="container">	
-		<div class="row">
-			<div class="col-12">
 				<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
 					{% if invalid_username is defined %}
 						<div class="alert alert-danger">
@@ -32,6 +25,10 @@
 						<input class="btn btn-outline-primary btn-block" type="submit" value="Nullstill passord" />
 					</div>
 				</form>
+				
+				<p class="mt-5 center">
+					<a href="{{ path('fos_user_security_login') }}">avbryt</a>
+				</p>
 			</div>
 		</div>
 	</div>

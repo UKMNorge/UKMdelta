@@ -27,8 +27,8 @@
 
 			<div class="col-3 right px-0">
 				{% if innslag.pamelding_apen %}
-					<a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary actionLink">{{ 'indexAction.rediger'|trans }}</a>
-					<a href="{{ delete_target }}" class="btn btn-block btn-sm btn-danger actionLink">{{ 'indexAction.avmeld'|trans }}</a>
+					<a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary actionLink autoshrink">{{ 'indexAction.rediger'|trans }}</a>
+					<a href="{{ delete_target }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
 				{% else %}
 					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
 				{% endif %}
