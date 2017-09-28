@@ -2,19 +2,24 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-	<h1 class="center">
-		{{ 'frist.overskrift'|trans({}, 'base') }}
-	</h1>
-	<p class="lead center">{{ 'frist.ledetekst'|trans({}, 'base') }}</p>
-	{% if innslag is defined %}
-		<p class="center">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>
+					{{ 'frist.overskrift'|trans({}, 'base') }}
+				</h1>
+				<p class="lead">{{ 'frist.ledetekst'|trans({}, 'base') }}</p>
+				{% if innslag is defined %}
+					<p>
+						{{ 'frist.link'|trans({}, 'base') }}
+						<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
+					</p>
+				{% endif %}
 
-			{{ 'frist.link'|trans({}, 'base') }}
-			<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
-		</p>
-	{% endif %}
-	<p>&nbsp;</p>
-	<div class="col-xs-12">
-		<a type="button" class="btn btn-block btn-delta btn-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'frist.hjemknapp'|trans({},'base') }}</a>
+				<div>
+					<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'frist.hjemknapp'|trans({},'base') }}</a>
+				</div>
+			</div>
+		</div>
 	</div>
 {% endblock %} 

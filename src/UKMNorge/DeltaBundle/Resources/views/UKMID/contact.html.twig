@@ -10,97 +10,90 @@
 {% endblock %}
 
 {% block content %}
-	{# CONTENT #}
-	<h1 class="center">{{ 'contactAction.overskrift'|trans }}</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{ 'contactAction.overskrift'|trans }}</h1>
+			
+				<p class="lead">
+					{{ 'contactAction.topptekst'|trans|nl2br }}
+				</p>
+				
+				<form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
+					<h2>
+						{{ 'contactAction.personinfo'|trans }}
+					</h2>
+					
+					
+					<div class="form-group">
+						<label>{{ 'contactAction.fornavn'|trans }}</label>
+						<input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}" />
+					</div>
 
-	<p class="lead center">
-		{{ 'contactAction.topptekst'|trans|nl2br }}
-	</p>
-	<form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
-		<div class="col-xs-12"><span>{{ 'contactAction.personinfo'|trans }}</span></div>
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.fornavn'|trans }}</small>
-		</div>
-		<div class="col-xs-12">
-			<input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}">
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.etternavn'|trans }}</small>
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}">
-		</div>
-		{% if age is defined %}
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'contactAction.alder'|trans }}</small>
-			</div>
-			<div class="col-xs-12">
-				<select name="age" required class="form-control">
-					<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'contactAction.alderVelger.Label'|trans }}</option> 
-					{% for i in 10..25 %}
-						<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'contactAction.alderVelger.aar'|trans({ "year": "now"|date("Y") - i }) }}</option> 
-					{% endfor %}
-						<option value="0" {{ (age is defined) and (age == 0 or age > 25) ? 'selected' : '0' }}>{{ 'contactAction.alderVelger.gammel'|trans }}</option>
-				</select>
-			</div>
-		{% endif %}
-		<div class="col-xs-12"><span>{{ 'contactAction.kontaktinfo'|trans }}</span></div>
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.mobil'|trans }}</small>
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<input name="mobil" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}">
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.epost'|trans }}</small>
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<input name="epost" required type="text" class="form-control" value="{{ epost is defined ? epost : '' }}">
-		</div>
-		{% if person is defined %}
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'contactAction.adresse'|trans }}</small>
-			</div>
-			<div class="col-xs-12">
-				<input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}">
-			</div>
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'contactAction.postnummer'|trans }}</small>
-			</div>
-			<div class="col-xs-12">
-				<input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}">
-			</div>
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ 'contactAction.poststed'|trans }}</small>
-			</div>
-			<div class="col-xs-12">
-				<input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}">
-			</div>
-		{% endif %}
-		<p>&nbsp;</p>
-		{# <div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.gammeltPassord'|trans }}</small>	
-		</div>
-		<div class="col-xs-12">
-			<input name="oldPassword" type="password" class="form-control" value="">
-		</div>
-		<div class="col-xs-12">
-			<small>{{ }}</small>
-		</div>
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.nyttPassord'|trans }}</small>	
-		</div>
+					<div class="form-group">
+						<label>{{ 'contactAction.etternavn'|trans }}</label>
+						<input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}" />
+					</div>
+					
+					{% if age is defined %}
+						<div class="form-group">
+							<label>{{ 'contactAction.alder'|trans }}</label>
+							<select name="age" required class="form-control">
+								<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>
+									{{ 'contactAction.alderVelger.Label'|trans }}
+								</option> 
+								{% for i in 10..25 %}
+									<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>
+										{{ i }} {{ 'contactAction.alderVelger.aar'|trans({ "year": "now"|date("Y") - i }) }}
+									</option> 
+								{% endfor %}
+								<option value="0" {{ (age is defined) and (age == 0 or age > 25) ? 'selected' : '0' }}>
+									{{ 'contactAction.alderVelger.gammel'|trans }}
+								</option>
+							</select>
+						</div>
+					{% endif %}
+					
+					<h2 class="mt-5">{{ 'contactAction.kontaktinfo'|trans }}</h2>
 
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'contactAction.gjentaPassord'|trans }}</small>	
-		</div> #}
-		<div class="col-xs-12">
-			<button class="btn btn-block btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style=""/>{{ 'contactAction.lagre'|trans }}</button>
-		</div>
-		<p>&nbsp;</p>
-		<div class="col-xs-12 center">
-			<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
-		</div>
-	</form>
+					<div class="form-group">
+						<label>{{ 'contactAction.mobil'|trans }}</label>
+						<input name="mobil" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}" />
+					</div>
+					
+					<div class="form-group">
+						<label>{{ 'contactAction.epost'|trans }}</label>
+						<input name="epost" required type="text" class="form-control" value="{{ epost is defined ? epost : '' }}" />
+					</div>
+					
+					{% if person is defined %}
+						<div class="form-group">
+							<label>{{ 'contactAction.adresse'|trans }}</label>
+							<input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}" />
+						</div>
+						
+						<div class="form-group">
+							<label>{{ 'contactAction.postnummer'|trans }}</label>
+							<input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}" />
+						</div>
+						
+						<div class="form-group">
+							<label>{{ 'contactAction.poststed'|trans }}</label>
+							<input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}" />
+						</div>
+					{% endif %}
 
+					<div class="form-group my-5">
+						<button class="btn btn-block btn-outline-primary btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
+							{{ 'contactAction.lagre'|trans }}
+						</button>
+					</div>
+
+					<div class="center my-4">
+						<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

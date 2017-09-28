@@ -5,7 +5,7 @@
 	{% for tittel in titler %}
 		<li class="list-group-item click triggerLink">
 			<div class="row">
-				{% if translationDomain != 'utstilling' %}
+				{% if translationDomain != 'utstilling' and translationDomain != 'matkultur' %}
 					<div class="col-2 px-0">
 						<div class="overunder">
 							{% if tittel.varighet is defined %}
@@ -18,14 +18,14 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ translationDomain == 'utstilling' ? '9' : '7' }}">
+				<div class="col-{{ ( translationDomain == 'utstilling' or translationDomain == 'matkultur' )? '9' : '7' }}">
 					<p style="line-height:1em">
 						{{ tittel.tittel is defined ? tittel.tittel : '' }}
 						<br />
 						<small>
 							{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
 								{{ tittel.parentes }}
-							{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur' or type == 'film' or type == 'annet') %}
+							{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur' or type == 'film' or type == 'annet' or type == 'matkultur') %}
 							{% else %}
 								<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
 							{% endif %}
