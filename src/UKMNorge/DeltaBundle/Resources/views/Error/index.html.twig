@@ -1,40 +1,44 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block content %}	
-	<h1 class="center">{{ overskrift is defined ? overskrift|trans({}, 'base') : 'feil.overskrift'|trans({}, 'base') }}</h1>
-	<p class="lead center">{{ ledetekst is defined ? ledetekst|trans({}, 'base')|nl2br : '' }}
-	</p>
-	<p class="center">{{ tekst is defined ? tekst|trans({}, 'base') : '' }}</p>
-	{% if cheese is defined %}
-		<div class="col-xs-12 center">
-			<img></img>
-			<p>Out of cheese error! Divide by cucumber, reinstall universe and try again.</p>
-		</div>
-	{% endif %}
-	{% if teknisk is defined %}
-		<div class="col-xs-12 center">
-			<p>{{ 'feil.teknisk.body'|trans({}, 'base') }}</p>
-			<div class="panel panel-default">
-				<div class="panel-heading">{{ 'feil.teknisk.overskrift'|trans({}, 'base') }}</div>
-				<div class="panel-body">
-					{{ teknisk.message }}<br>
-					{{ 'feil.teknisk.ifil'|trans({}, 'base') }}
-					{{ teknisk.file }} {{ 'feil.teknisk.linje'|trans({}, 'base') }} {{ teknisk.line }}		
-				</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{ overskrift is defined ? overskrift|trans({}, 'base') : 'feil.overskrift'|trans({}, 'base') }}</h1>
+				<p>
+					{{ ledetekst is defined ? ledetekst|trans({}, 'base')|nl2br : '' }}
+				</p>
+				<p>
+					{{ tekst is defined ? tekst|trans({}, 'base') : '' }}
+				</p>
+				{% if teknisk is defined %}
+					<p>
+						{{ 'feil.teknisk.body'|trans({}, 'base') }}
+					</p>
+					<div class="panel panel-default">
+						<div class="panel-heading">{{ 'feil.teknisk.overskrift'|trans({}, 'base') }}</div>
+						<div class="panel-body">
+							{{ teknisk.message }}
+							<br />
+							{{ 'feil.teknisk.ifil'|trans({}, 'base') }}
+							{{ teknisk.file }} {{ 'feil.teknisk.linje'|trans({}, 'base') }} {{ teknisk.line }}		
+						</div>
+					</div>
+				{% endif %}
+				{# if frist is defined %}
+					<p>
+						{{ 'frist.link'|trans({}, 'base') }}
+						<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
+					</p>
+				{% endif #}
+				<p>
+					{{ code is defined ? code : '' }}
+				</p>
+	
+				<p>&nbsp;</p>
+	
+				<a href="{{ path('ukm_delta_homepage') }}" class="btn btn-primary btn-block center">Gå til forsiden</a>
 			</div>
 		</div>
-	{% endif %}
-	{% if frist is defined %}
-		<p class="center">
-			{{ 'frist.link'|trans({}, 'base') }}
-			<a href="http://www.ukm.no/pl{{ pl_id }}/pameldte/">ukm.no/pl{{ pl_id }}/pameldte/</a> 
-		</p>
-	{% endif %}
-	<div class="row">
-		<div class="col-xs-12">
-			{{ code is defined ? code : '' }}
-		</div>
 	</div>
-	<p>&nbsp;</p>
-	<a href="{{ path('ukm_delta_homepage') }}" class="btn btn-primary btn-block center">Gå til forsiden</a>
 {% endblock %}
