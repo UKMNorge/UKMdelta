@@ -172,7 +172,7 @@ class UKMSecurityController extends BaseController {
         // Code is received, which means that the user logged in successfully to facebook.
         // Bytt code for en access-token
         $curl = new UKMCurl();
-        $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
+        $url = 'https://graph.facebook.com/v2.10/oauth/access_token';
         $url .= '?client_id='.$this->getParameter('facebook_client_id');
         $url .= '&redirect_uri='.$redirectURL;
         $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
@@ -188,10 +188,11 @@ class UKMSecurityController extends BaseController {
         $token = $result->access_token;
 
         // Hent brukerdata
-        $url = 'https://graph.facebook.com/me';
+        $url = 'https://graph.facebook.com/v2.10/me';
         $url .= '?access_token='.$token;
+        $url .= '&fields=id,name,first_name,last_name,email';
         $user = $curl->process($url);
-
+        
         if (isset($user->error)) {
             // Ofte: "This authorization code has been used."
             $this->addFlash('danger', 'Facebook-innloggingen feilet, prøv igjen.');
