@@ -33,4 +33,14 @@ parameters:
     facebook_client_id:
     facebook_client_secret:
 
-    ukmdesign.theme: ''
+    UKMresponsive.theme: ''
+    UKMresponsive.section:
+        title: Delta på UKM
+        url: //delta.ukm.no
+
+    SEOdefaultsApp:
+        title: Delta
+        canonical: //delta.ukm.no
+        description: Meld deg på UKM
+        siteName: UKM Delta
+        section: delta
