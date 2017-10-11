@@ -1,7 +1,7 @@
 {% extends 'UKMUserBundle::layout.html.twig' %}
 {% trans_default_domain 'innslag' %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts
 		'@UKMUserBundle/Resources/public/js/velgkommune.js'
@@ -29,20 +29,20 @@
 					<input type="text" class="form-control input-sm delta-input" name="filtrer" id="filterKommuner" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 					<!-- Kommuneliste -->
 					<input type="hidden" id="kommune_id" name="kommune_id" />
+					
+					<div id="kommuner">
+						{% for fylke in fylker %}
+							<h3 class="my-3" id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
+							<ul class="list-unstyled">
+								{% for kommune in fylke.getKommuner() %}
+									<li data-fylke="{{ fylke.id }}" class="py-2">
+										<button type="submit" class="btn btn-block btn-outline-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
+									</li>
+								{% endfor %}
+							</ul>
+						{% endfor %}
+					</div>
 				</form>
-				
-				<div id="kommuner">
-					{% for fylke in fylker %}
-						<h3 class="my-3"> id="header_{{ fylke.id }}">{{ fylke.navn }}</h3>
-						<ul>
-							{% for kommune in fylke.getKommuner() %}
-								<li data-fylke="{{ fylke.id }}">
-									<button type="submit" class="btn btn-block btn-outline-primary kommuneKnapp" value="{{ kommune.id }}" data-fylke="{{ fylke.id }}">{{ kommune.name }}</button>
-								</li>
-							{% endfor %}
-						</ul>
-					{% endfor %}
-				</div>
 			</div>
 		</div>
 	</div>
