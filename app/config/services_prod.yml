@@ -1,6 +1,6 @@
 # app/config/services.yml
-imports:
-  - { resource: "@UKMDesignBundle\Resources\config\services.yml"}
+#imports:
+#  - { resource: "@UKMDesignBundle\Resources\config\services.yml"}
 services:
     app.exception_listener:
         class: AppBundle\EventListener\ExceptionListener 
