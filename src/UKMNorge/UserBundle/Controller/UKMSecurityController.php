@@ -26,14 +26,14 @@ class UKMSecurityController extends BaseController {
     {	
 
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
-            $this->deltaFBLoginURL = 'http://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->ambURL = 'https://ambassador.ukm.dev/app_dev.php/dip/login';
+            $this->ambDipURL = 'https://ambassador.ukm.dev/app_dev.php/dip/receive/';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
         } 
         else {
-            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
-            $this->deltaFBLoginURL = 'http://delta.ukm.no/fblogin';
+            $this->ambURL = 'https://ambassador.ukm.no/dip/login';
+            $this->ambDipURL = 'https://ambassador.ukm.no/dip/receive/';
+            $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
         }
 
         // Er dette en redirect-forespørsel?
@@ -141,14 +141,14 @@ class UKMSecurityController extends BaseController {
     public function fbloginAction() {
 
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->ambURL = 'http://ambassador.ukm.dev/app_dev.php/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.dev/app_dev.php/dip/receive/';
-            $this->deltaFBLoginURL = 'http://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->ambURL = 'https://ambassador.ukm.dev/app_dev.php/dip/login';
+            $this->ambDipURL = 'https://ambassador.ukm.dev/app_dev.php/dip/receive/';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
         } 
         else {
-            $this->ambURL = 'http://ambassador.ukm.no/dip/login';
-            $this->ambDipURL = 'http://ambassador.ukm.no/dip/receive/';
-            $this->deltaFBLoginURL = 'http://delta.ukm.no/fblogin';
+            $this->ambURL = 'https://ambassador.ukm.no/dip/login';
+            $this->ambDipURL = 'https://ambassador.ukm.no/dip/receive/';
+            $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
         }
         
         require_once('UKM/curl.class.php');
