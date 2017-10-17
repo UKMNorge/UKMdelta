@@ -51,6 +51,7 @@ overviewAction:
                 Her vil vi vite mer om de som har laget filmen.
                 Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
                 De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
+        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks musikkvideo, action, animasjon...
@@ -65,7 +66,7 @@ overviewAction:
         endre: legg til / endre
         ingen: Du må legge til minst én person. Ingen personer er lagt til.
         lukk_listen: lukk listen
-        legg_til: Legg til person
+        legg_til: Legg til en person
     lagre: Lagre
 
 # SUBSTITUERING VARIABLER

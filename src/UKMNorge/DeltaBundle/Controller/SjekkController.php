@@ -24,10 +24,6 @@ class SjekkController extends Controller {
 	public function indexAction($mobile, $hash) {
 		$view_data = array();
 
-		/*if (UKM_HOSTNAME != 'ukm.dev') {
-			return $this->render('UKMDeltaBundle:Sjekk:notready.html.twig', $view_data);
-		}*/
-
 		$sql = new SQL("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $mobile));
 		#echo 'Debug:<br>';
 		#echo $sql->debug();
@@ -87,10 +83,7 @@ class SjekkController extends Controller {
 				$view_data['personer'][] = $person;
 			}
 		}
-		
-		/*var_dump($videresendte_innslag);
-		echo "<br><br><br>";
-		var_dump($view_data['personer']);*/
+
 		if (empty($videresendte_innslag)) {
 			return $this->render('UKMDeltaBundle:Sjekk:notvideresendt.html.twig', $view_data);
 		}

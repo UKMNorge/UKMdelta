@@ -1,12 +1,18 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
 {% block content %}
-	<h2>Gammel lenke!</h2>
-	<p>Denne lenken har allerede blitt brukt for å nullstille passordet.</p>
-	
-	<p>&nbsp;</p>
-	
-	<p>
-		<a href="{{ path('fos_user_resetting_request') }}">Be om nytt passord</a>
-	</p>
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h2>Gammel lenke!</h2>
+				<p>Denne lenken har allerede blitt brukt for å nullstille passordet.</p>
+				
+				<p>&nbsp;</p>
+				
+				<p>
+					<a href="{{ path('fos_user_resetting_request') }}">Be om nytt passord</a>
+				</p>
+			</div>
+		</div>
+	</div>
 {% endblock content %}

@@ -1,10 +1,16 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
 {% block content %}
-<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
-    {{ form_widget(form) }}
-    <div>
-        <input class="btn btn-success btn-block" type="submit" value="Endre passord" />
-    </div>
-</form>
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
+					{{ form_widget(form) }}
+					<div>
+						<input class="btn btn-outline-primary btn-block" type="submit" value="Endre passord" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

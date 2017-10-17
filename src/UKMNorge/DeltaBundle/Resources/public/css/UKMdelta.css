@@ -1,0 +1,168 @@
+@primary-green: #84cdce;
+@primary-grey: #585858;
+@secondary-grey: #9e9e9e;
+@tertiary-grey: #ededed;
+
+@bootstrap-danger: #a94442;
+@bootstrap-warning: #8a6d3b;
+@bootstrap-success: #3c763d;
+@bootstrap-info: #31708f;
+
+@button-color: @primary-green;
+
+.text-danger {
+	color: @bootstrap-danger !important;
+}
+.text-warning {
+	color: @bootstrap-warning !important;
+}
+.text-success {
+	color: @bootstrap-success !important;
+}
+.text-info {
+	color: @bootstrap-info !important;
+}
+
+
+
+
+.delta-form input {
+	.delta-input;
+}
+
+.delta-form select {
+	.delta-input;
+}
+
+.delta-select {
+
+}
+
+.delta-caret {
+	display: block;
+	position: absolute;
+	float: right;
+	top: 16px;
+	right: 30px;
+}
+
+.delta-line {
+	margin-top: 0px;
+	margin-bottom: 0px;
+
+	border-top: 0.12em solid @secondary-grey;
+}
+
+.delta-form hr {
+	.delta-line;	
+}
+
+.delta-form .row {
+	/* Reduser padding etc for å kunne tabulere skikkelig */
+	padding-top: 5px;
+	padding-bottom: 0px;
+}
+
+.delta-input-header > small {
+	color: @primary-green;
+	font-weight: bold;
+}
+
+.delta-input-header span {
+	color: @secondary-grey;
+}
+
+.delta-clean {
+	color: @primary-grey;
+}
+
+.delta-input-header .right {
+	text-align: right;
+	float: right;
+	font-weight: normal;
+}
+
+.delta-list span {
+	color: @primary-grey;
+	font-size: 0.9em !important;
+
+}
+
+.delta-list span.label-danger {
+	color: white;
+}
+
+.summaryDetailsList > .details,
+.inactiveSummaryDetailsList > .details {
+	display: none;
+}
+
+.delta-subtext {
+	display: block;
+	margin-bottom: 15px;
+	color: @secondary-grey;
+	font-size: 0.9em !important;
+}
+/* PÅMELDINGSIKONER */
+.delta-type {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    line-height: 35px;
+}
+
+.delta-fat {
+	font-weight: bold;
+}
+
+.delta-fat li {
+	font-size: 0.9em;
+}
+
+.delta-subtext .center {
+	text-align: center;
+}
+
+.delta-subtext .right {
+	text-align: right;
+}
+
+.delta-subtext .left {
+	text-align: left;
+}
+
+.typeText {
+    padding-top: 6px;
+}
+
+/** OVERUNDER **/
+.overunder {
+	.center;
+	text-align: center; 
+	font-weight: bold;
+	color: inherit;
+	text-rendering: optimizelegibility;
+	padding: 4px 0px 4px 0px;
+}
+
+.overunder .over {
+	.center;
+	line-height: 20px;
+	font-size: 30px;
+}
+
+.overunder .over small {
+	font-weight: normal;
+	font-size: 14px;
+	margin: 0px;
+}
+
+.overunder .under {
+	.center;
+	margin-top: 3px;
+	font-size: 11px;
+	line-height: 11px;
+}
+
+label {
+	font-weight: normal;
+}

@@ -11,51 +11,43 @@
 {% endblock %}
 
 {% block content %}
-	<form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-
+	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<h1 class="xs-center">{{ 'overviewAction.type'|trans }} {{ innslag.get('b_name') }}</h1>
+			<div class="col-12">
+				<h1 class="mt-0">
+					{{ 'overviewAction.type'|trans }} {{ innslag.get('b_name') }}
+				</h1>
+				
+				<form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+					<div class="form-group">
+						<label>{{ ('overviewAction.beskrivelse.label')|trans }}</label>
+						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.placeholder')|trans }}" required>{{ innslag.get('b_description') }}</textarea>
+					</div>
+	
+					{% if funksjoner is defined %}
+						<div class="form-group">
+							<label>{{ ('funksjon.label')|trans }}</label>
+							<p class="help">{{ 'funksjon.forklaring'|trans }}</p>
+						</div>
+	
+						<div class="list-group">
+							{% for funksjon in funksjoner %}
+								<label class="list-group-item click" for="funksjon_{{ funksjon }}">
+									<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {{ funksjon in valgte_funksjoner ? 'checked="checked"':'' }} id="funksjon_{{ funksjon }}" />	
+									&nbsp; {{ ('funksjon.'~funksjon)|trans }}
+								</label>
+							{% endfor %}
+						</div>
+					{% endif %}
+			
+	
+					<div class="form-group my-3">
+						<button type="submit" class="btn btn-block btn-outline-primary btn-success">
+							{{ 'overviewAction.lagre'|trans }}
+						</button>
+					</div>
+				</form>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ ('overviewAction.beskrivelse.label')|trans }}</small>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.placeholder')|trans }}" required>{{ innslag.get('b_description') }}</textarea>				
-			</div>
-		</div>
-		
-		{% if funksjoner is defined %}
-			<div class="row">
-				<div class="col-xs-12 delta-input-header">
-					<small>{{ ('funksjon.label')|trans }}</small>
-					<br />
-					<p class="delta-subtext left">{{ 'funksjon.forklaring'|trans }}</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="list-group">
-						{% for funksjon in funksjoner %}
-							<label class="list-group-item click" for="funksjon_{{ funksjon }}">
-								<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {{ funksjon in valgte_funksjoner ? 'checked="checked"':'' }} id="funksjon_{{ funksjon }}" /> &nbsp; {{ ('funksjon.'~funksjon)|trans }}
-							</label>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		{% endif %}
-
-		<div class="row">
-			<div class="col-xs-12">
-				<button type="submit" class="btn btn-block btn-success">{{ 'overviewAction.lagre'|trans }}</button>
-			</div>
-		</div>
-	</form>
-
+	</div>
 {% endblock %}

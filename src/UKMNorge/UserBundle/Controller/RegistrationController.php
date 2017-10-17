@@ -187,12 +187,20 @@ class RegistrationController extends BaseController
         $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
         $sent_before = $request->query->get('sent_before');
         $userManager = $this->get('fos_user.user_manager');
+		
+		if( empty( $email ) ) {
+			$this->get('session')->getFlashBag()->set('error', 'Beklager, klarte ikke å finne igjen brukeren');
+			return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+		}
+		
 		$user = $userManager->findUserByEmail($email);
-		$phone = $user->getPhone();
-		// var_dump($user);
-
-        $view_data = array( 'email' => $email, 'sent_before' => $sent_before, 'phone' => $phone );
-        return $this->render('UKMUserBundle:Registration:check-sms.html.twig', $view_data);
+		if( is_object( $user ) ) {
+			$phone = $user->getPhone();
+			
+			$view_data = array( 'email' => $email, 'sent_before' => $sent_before, 'phone' => $phone );
+			return $this->render('UKMUserBundle:Registration:check-sms.html.twig', $view_data);
+		}
+		throw new Exception('Beklager, klarte ikke å finne igjen brukeren med mobilnummer '. $email );
 	}
 	
 	public function validateSMSAction(Request $request) {

@@ -3,10 +3,10 @@
 {# Lag en div som kan utvides ved å trykkes på #}
 <div class="fellesmonstring">
 	<div class="row fellesmonstring-header">
-		<div class="col-xs-8">
+		<div class="col-8">
 			<a href="#" onclick="return false;">{{ monstring.name }}</a>
 		</div>
-		<div class="col-xs-4 delta-input-header fellesmonstring-list">
+		<div class="col-4 delta-input-header fellesmonstring-list">
 			{% for kommuner in monstring.kommuner %}
 				<small>{{ kommuner }}</small><br />
 			{% endfor %}
@@ -14,18 +14,18 @@
 		<div class="clearfix"></div>
 	</div>
 	<div class="row fellesmonstring-chooser" style="padding-left: 10px; display:none;">
-		<div class="col-xs-12">
+		<div class="col-12">
 			<span>{{ 'geoAction.fellesmonstringLabel'|trans }}</span>
 		</div> 
-		<div class="col-xs-12 center">
+		<div class="col-12 center">
 			{% for key,kommune in monstring.kommuner %}
 				{% if app.environment == 'test' and fylke_id != 21 %}
-				<a class="btn btn-block btn-primary" href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
+				<a class="btn btn-block btn-outline-primary" href="javascript:alert('Ikke tilgjengelig i testsystemet. Velg testkommune 1, 2 eller 3');">
 				{% else %}
-				<a class="btn btn-block btn-primary" href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
+				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: key, pl_id: monstring.id }) }}"> 
 				{% endif %}
 					<div class="row">
-						<div class="col-xs-12">
+						<div class="col-12">
 							{{ kommune }} 
 						</div>
 					</div>

@@ -1,10 +1,17 @@
 {% extends "UKMUserBundle::layout.html.twig" %}
 
 {% block content %}
-	<h2>Sjekk SMS</h2>
-	<p>Vi har nå sendt deg SMS med en lenke du må trykke på for å nullstille passordet ditt.</p>
-	
-	<p>
-		Hvis du ikke mottar SMS, <a href="mailto:support@ukm.no?subject=Nullstille passord">ta kontakt med support</a>
-	</p>
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				<h2>Sjekk SMS</h2>
+				<p>Vi har nå sendt deg SMS med en lenke du må trykke på for å nullstille passordet ditt.</p>
+				
+				{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+				<p>
+					Hvis du ikke mottar SMS, <a href="mailto:support@ukm.no?subject=Nullstille passord">ta kontakt med support</a>
+				</p>
+			</div>
+		</div>
+	</div>
 {% endblock content %}

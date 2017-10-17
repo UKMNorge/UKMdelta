@@ -11,48 +11,53 @@
 
 
 {% block content %}
-	<h1 class="center">{{ 'typeAction.overskrift'|trans }}</h1>
-	<div>
-		{% for type in typer %} 
-			{% if loop.first %}
-				<small><b>{{ 'kategori.vise_frem'|trans({},'base') }}</b></small>
-			{% elseif loop.last %}
-				<small><b>{{ 'kategori.jobbe_med'|trans({},'base') }}</b></small>
-			{% endif %}
-
-			<ul class="list list-unstyled list-group">
-			{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
-				<li class="list-group-item delta-type triggerLink click">
-					<div class="row">
-						<div class="col-md-9 col-xs-9 typeText">
-							<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
-							{ 	k_id: k_id,  
-								pl_id: pl_id }) }}" class="actionLink" id="type_{{ enkelttype.ico }}">{{ enkelttype.name|raw }}
-							</a> 
-						</div>
-						<div class="col-md-3 col-xs-3 center">
-							<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" height="35" />
-						</div>
-					</div>
-					{% if enkelttype.ico == 'nettredaksjon' %}
-						<div class="row">
-							<div class="col-xs-12">
-								<small>{{ 'typeAction.forklaring.nettredaksjon'|trans }}</small>							
-							</div>
-						</div>
-					{% elseif enkelttype.ico == 'arrangor' %}
-						<div class="row">
-							<div class="col-xs-12">
-								<small>{{ 'typeAction.forklaring.arrangor'|trans }}</small>							
-							</div>
-						</div>
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="mt-0">{{ 'typeAction.overskrift'|trans }}</h1>
+			<div>
+				{% for type in typer %} 
+					{% if loop.first %}
+						<p class="small bold mb-1 mt-4">{{ 'kategori.vise_frem'|trans({},'base') }}</p>
+					{% elseif loop.last %}
+						<p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
 					{% endif %}
-				</li>
-			{% endfor %}
-			</ul> 
-		{% endfor %}
-		<div class="col-xs-10 col-xs-offset-1 center">
-			<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'avbryt'|trans({}, 'base') }}</a>
+		
+					<ul class="list list-unstyled list-group">
+					{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
+						<li class="list-group-item delta-type triggerLink click py-1">
+							<div class="row">
+								<div class="col-9 typeText" style="padding-top: .3em;">
+									<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
+									{ 	k_id: k_id,  
+										pl_id: pl_id }) }}" class="actionLink" id="type_{{ enkelttype.ico }}">{{ enkelttype.name|raw }}
+									</a> 
+								</div>
+								<div class="col-3 center">
+									<img src="http://ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" width="35" />
+								</div>
+							</div>
+							{% if enkelttype.ico == 'nettredaksjon' %}
+								<div class="row">
+									<div class="col-12">
+										<small>{{ 'typeAction.forklaring.nettredaksjon'|trans }}</small>
+									</div>
+								</div>
+							{% elseif enkelttype.ico == 'arrangor' %}
+								<div class="row">
+									<div class="col-12">
+										<small>{{ 'typeAction.forklaring.arrangor'|trans }}</small>
+									</div>
+								</div>
+							{% endif %}
+						</li>
+					{% endfor %}
+					</ul> 
+				{% endfor %}
+				<div class="col-12 center">
+					<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'avbryt'|trans({}, 'base') }}</a>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

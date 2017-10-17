@@ -29,13 +29,17 @@ framework:
 # Twig Configuration
 twig:
     form_themes:
-        - 'UKMDesignBundle:Form:fields.html.twig'
+        - 'UKMDeltaDesignBundle:Form:fields.html.twig'
     form:
         resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
         UKM_HOSTNAME: %UKM_HOSTNAME%
+        SEO: "@ukmdesign.seo"
+        Sitemap: "@ukmdesign.sitemap"
+        THEME: "%UKMresponsive.theme%"
+        section: "%UKMresponsive.section%"
 
 # Assetic Configuration
 assetic:

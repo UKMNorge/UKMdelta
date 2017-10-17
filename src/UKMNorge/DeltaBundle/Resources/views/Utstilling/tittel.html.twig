@@ -3,47 +3,19 @@
 
 
 {% block form_body %}
-	<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}">
-	<input type="hidden" name="t_id" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}">
+	<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}" />
+	<input type="hidden" name="t_id" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}" />
 
 
-	<div class="row">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.tittel.label'|trans }}</small>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-xs-12">
-			<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tittel') : '' }}">
-		</div>
+	<div class="form-group">
+		<label>{{ 'tittel.tittel.label'|trans }}</label>
+		<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tittel') : '' }}" />
 	</div>
 	
 	
-	<div class="row">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.type.label'|trans }}</small>
-		</div>
+	<div class="form-group">
+		<label>{{ 'tittel.type.label'|trans }}</label>
+		<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('type') : '' }}" />
+		<p class="help">{{ 'tittel.type.forklaring'|trans }}</p>
 	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('type') : '' }}">
-			<small class="form-text text-muted">{{ 'tittel.type.forklaring'|trans }}</small>
-		</div>
-			
-	</div>
-	
-	{# FJERNET 15.11.2016 i forbindelse med forenkling av påmeldingen ref. aprilsamlingen av fylkeskontakter. #}
-	{# <div class="row">
-		<div class="col-xs-12 delta-input-header">
-			<small>{{ 'tittel.beskrivelse.label'|trans }}</small>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			<textarea required name="beskrivelse" class="form-control" placeholder="{{ 'tittel.beskrivelse.placeholder'|trans }}">{{ tittel is defined ? tittel.get('beskrivelse') : '' }}</textarea>
-		</div>
-	</div> #}
-	
-	
 {% endblock form_body %}

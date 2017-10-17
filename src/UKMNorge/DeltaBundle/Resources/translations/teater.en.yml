@@ -68,7 +68,7 @@ overviewAction:
         legg_til: Legg til person
     tekniske:
         overskrift: Tekniske behov / utstyrsbehov
-        endre: endre
+        endre: Endre
         ingen: Tekniske behov ikke lagt til.
         legg_til: Legg til tekniske behov
 

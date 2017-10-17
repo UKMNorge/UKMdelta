@@ -1,7 +1,7 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts 
 		'@UKMDeltaBundle/Resources/public/js/innslag.js'
@@ -12,78 +12,65 @@
 {% endblock %}
 
 {% block content %}
-	<form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-		<input type="hidden" name="path" id="deltapath" value="" autocomplete="off">
+	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</small>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ name is defined ? name : '' }}"> 
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12 delta-input-header">
-				<small>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</small>
-				<br /><small style="font-style: italic;">Denne teksten vil vises på nettsiden, i oversikten over påmeldte.</small>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>			
-				
-			</div>
-		</div>
-		{# SJANGER #}
-		{# Kun printe denne om kategori er musikk, film, annet? #}
-		{% if krev_sjanger %}
-			<div class="row">
-				<div class="col-xs-12 delta-input-header">
-					<small>{{ ('overviewAction.sjanger.label')|trans }}</small>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ sjanger is defined ? sjanger : '' }}">
-				</div>
-			</div>
-		{% endif %}
-		<br>
-		{# PERSONER #}
-		{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
-		<p>&nbsp;</p>
-		
-		{# TITLER #}
-		{# {% if krev_titler %} #}
-			{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
-			<p>&nbsp;</p>
-		{# {% endif %} #}
-		{% if krev_tekniske %}
-			{# TEKNISKE BEHOV #}
-			{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
-			<p>&nbsp;</p>
-		{% endif %}
-		<p>&nbsp;</p>
-		<div class="row">
-			<div class="col-xs-12">
-				<button type="submit" class="btn btn-block btn-success">{{ 'overviewAction.lagre'|trans }}</button>
-			</div>
-		</div>
-		{# KUN VIS DENNE OM INNSLAGET ER PÅMELDT ELLER PÅ VEI TIL Å BLI PÅMELDT? #}
-		{% if pameldt %}
-			<p>&nbsp;</p>
-			<div class="row">
-				<div class="col-xs-12">
-					<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger">{{ 'overviewAction.meldav'|trans({'%name': innslag.get('b_name')}, 'base') }}</a>
-				</div>
-			</div>
-		{% endif %}
-		<p>&nbsp;</p>
-		<div class="col-xs-12 center">
-			<a href="{{ path('ukm_delta_ukmid_homepage') }}" class="">{{ 'overviewAction.avbryt'|trans({}, 'base') }}</a>
-		</div>
-	</form>
+			<div class="col-12">
+				<form class="form-group delta-form" id="overview_mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+					<input type="hidden" name="path" id="deltapath" value="" autocomplete="off" />
 
+					<div class="form-group">
+						<label>{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</label>
+						<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ name is defined ? name : '' }}" /> 
+					</div>
+
+					<div class="form-group">
+						<label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
+						<p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans }}</p>
+						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>			
+					</div>
+					
+					{# SJANGER #}
+					{# Kun printe denne om kategori er musikk, film, annet? #}
+					{% if krev_sjanger %}
+						<div class="form-group">
+							<label>{{ ('overviewAction.sjanger.label')|trans }}</label>
+							<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ sjanger is defined ? sjanger : '' }}" />
+						</div>
+					{% endif %}
+					
+					<div class="my-3">
+						{# PERSONER #}
+						{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
+					</div>
+					
+					<div class="my-3">
+						{# TITLER #}
+						{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
+					</div>
+
+					<div class="my-3">
+						{% if krev_tekniske %}
+							{# TEKNISKE BEHOV #}
+							{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
+						{% endif %}
+					</div>
+
+					<div class="my-3 form-group">
+						<button type="submit" class="btn btn-block btn-outline-primary btn-success">{{ 'overviewAction.lagre'|trans }}</button>
+					</div>
+					
+					{# KUN VIS DENNE OM INNSLAGET ER PÅMELDT ELLER PÅ VEI TIL Å BLI PÅMELDT? #}
+					{% if pameldt %}
+						<p class="my-4">
+							<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger btn-sm">{{ 'overviewAction.meldav'|trans({'%name': innslag.get('b_name')}, 'base') }}</a>
+						</p>
+					{% endif %}
+
+					<p class="center">
+						<a href="{{ path('ukm_delta_ukmid_homepage') }}" class="">{{ 'overviewAction.avbryt'|trans({}, 'base') }}</a>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

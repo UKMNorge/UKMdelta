@@ -1,0 +1,12 @@
+{% extends 'UKMDesignBundle:Layout:_base.html.twig' %}
+
+{% block javascripts %}
+	{% block additional_js %}{% endblock %}
+    {% javascripts 
+        '@UKMDeltaDesignBundle/Resources/public/js/ukmdesignbundle.js'
+        '@UKMDeltaDesignBundle/Resources/public/js/h5validate.jquery.js'
+        '@UKMDeltaDesignBundle/Resources/public/js/autogrow.jquery.js'
+         %}
+        <script src="{{ asset_url }}"></script> 
+    {% endjavascripts %}
+{% endblock %}

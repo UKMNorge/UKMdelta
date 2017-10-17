@@ -11,17 +11,7 @@
 	{% set delete_target = path('ukm_delta_ukmid_meld_av', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
 	<li class="list-group-item {% if innslag.pamelding_apen %}triggerLink click{% endif %}">
 		<div class="row">
-			
-			<div class="col-xs-3 pull-right text-right">
-				{% if innslag.pamelding_apen %}
-					<a href="{{ link_target }}" class="btn btn-xs btn-success actionLink">{{ 'indexAction.rediger'|trans }}</a>
-					<a href="{{ delete_target }}" class="btn btn-xs btn-danger actionLink">{{ 'indexAction.avmeld'|trans }}</a>
-				{% else %}
-					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
-				{% endif %}
-			</div>
-			
-			<div class="col-xs-9">
+			<div class="col-9">
 				{% if innslag.pamelding_apen %}
 					<a href="{{ link_target }}">{{ innslag.innslag.get('b_name') }}</a>
 				{% else %}
@@ -33,6 +23,15 @@
 					| 
 					{{ innslag.monstring.get('pl_name')|capitalize }}
 				</small>
+			</div>
+
+			<div class="col-3 right px-0">
+				{% if innslag.pamelding_apen %}
+					<a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary actionLink autoshrink">{{ 'indexAction.rediger'|trans }}</a>
+					<a href="{{ delete_target }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
+				{% else %}
+					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
+				{% endif %}
 			</div>
 
 		</div>

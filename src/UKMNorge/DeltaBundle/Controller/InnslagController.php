@@ -765,6 +765,7 @@ class InnslagController extends Controller
 
         $view_data['pl_navn'] = $name;
         $view_data['pl_start'] = $start;
+        $view_data['pl_link'] = $monstring->get('pl_link');
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
