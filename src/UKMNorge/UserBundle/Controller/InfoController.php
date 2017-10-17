@@ -122,9 +122,9 @@ class InfoController extends Controller {
 	private function facebookSkjema($view_data) {
 		$app_id = $this->getParameter('facebook_client_id');
 		if( $this->getParameter('UKM_HOSTNAME') ) {
-			$redirectURL = 'http://delta.ukm.dev/web/app_dev.php/info';
+			$redirectURL = 'https://delta.ukm.dev/web/app_dev.php/info';
 		} else {
-			$redirectURL = 'http://delta.ukm.no/info/';
+			$redirectURL = 'https://delta.ukm.no/info/';
 		}
         
 		$view_data = array();
@@ -152,9 +152,9 @@ class InfoController extends Controller {
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
         if( 'ukm.dev' == $this->getParameter('UKM_HOSTNAME') ) {
-			$redirectURL = 'http://delta.ukm.dev/web/app_dev.php/info';
+			$redirectURL = 'https://delta.ukm.dev/web/app_dev.php/info';
 		} else {
-			$redirectURL = 'http://delta.ukm.no/info/';
+			$redirectURL = 'https://delta.ukm.no/info/';
 		}
         
         if ($req->query->get('code')) {

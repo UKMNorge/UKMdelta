@@ -2,8 +2,8 @@ jQuery(document).on("keyup", '#postNumber', function() {
 	
 	// Finner poststed ut fra postnummer
 	var postnummer = $("#postNumber").val();
-	var api_url = 'http://delta.ukm.dev/web/app_dev.php/api/poststed/' + postnummer;
-	var api_url2 = 'http://api.ukm.no/post:sted/' + postnummer;
+	var api_url = 'https://delta.ukm.dev/web/app_dev.php/api/poststed/' + postnummer;
+	var api_url2 = 'https://api.ukm.no/post:sted/' + postnummer;
 	// Sjekk om det er 4 characters
 	if (postnummer.length != 4) {
 		// Empty poststed?

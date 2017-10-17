@@ -100,7 +100,7 @@ class SjekkController extends Controller {
 		$qry = new SQL("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $NUMBER));
 		$res = $qry->run('array');
 		if ($res) {
-			#$url = 'http://delta.ukm.no/sjekk/'.$NUMBER.'/'.$res['hash'];
+			#$url = 'https://delta.ukm.no/sjekk/'.$NUMBER.'/'.$res['hash'];
 			$hash = $res['hash'];
 		}
 		else {
@@ -118,7 +118,7 @@ class SjekkController extends Controller {
 				error_log('UKMSJEKK: Klarte ikke å lagre i databasen fra Delta. Nr: '.$NUMBER);
 				die();
 			}
-			#$url = 'http://delta.ukm.no/sjekk/'.$NUMBER.'/'.$hash;
+			#$url = 'https://delta.ukm.no/sjekk/'.$NUMBER.'/'.$hash;
 		}
 			
 		$view_data['mobile'] = $NUMBER;
