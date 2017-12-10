@@ -1,0 +1,44 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>{{ innslag.navn }}</h1>
+				<p>Gjør endringer på feltene under, og trykk på den grønne knappen nederst for å lagre endringene.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h2>Beskrivelse</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h2>Link til sosiale medier</h2>
+			</div>
+			<div class="col-6">
+				<h3>Instagram</h3>
+				<p>Dersom {bandet/du/dere} har en Instagram-profil kan dere koble sammen den med UKM.no, så de siste bildene og videoene deres vil vises på artist-siden deres på UKM.no.</p>
+			</div>
+			<div class="col-6">
+				<h3>Facebook</h3>
+				<p>Dersom {bandet/du/dere} har en Facebook-profil kan dere koble sammen den med UKM.no, så de siste bildene og videoene deres vil vises på artist-siden deres på UKM.no.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h2>Bilder</h2>
+				<p>Har dere bilder av dere som dere vil bruke til å vise dere fram? Legg det inn her, så vil det vises på artist-siden deres på UKM.no!</p>
+				<p>Kunstnere: Legg inn et bilde av deg selv, så vil det vises på UKM.no sammen med bildet av kunstverket ditt!</p> 
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h2>Deltakere - vis kun for innslag med mer enn èn?</h2>
+				<p>Hvem er med i innslaget?</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}

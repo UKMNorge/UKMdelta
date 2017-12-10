@@ -3,6 +3,9 @@ services:
         class: UKMNorge\DeltaBundle\Services\SeasonService
         arguments: [@service_container]
         
+    ukm_delta.editaccess:
+        class: UKMNorge\DeltaBundle\Services\EditAccessService
+        arguments: [@service_container]
 #    ukm_delta.example:
 #        class: UKMNorge\DeltaBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

@@ -226,6 +226,14 @@ ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel:
               b_id: ([0-9]{1,11})
     methods:  [POST]
 
+### Rediger innslag-side for deltakere i innslaget.
+ukm_delta_ukmid_pamelding_innslag_rediger:
+    path:     /ukmid/pamelding/{b_id}/rediger/
+    defaults: { _controller: UKMDeltaBundle:Innslag:edit }
+    requirements: 
+              b_id: ([0-9]{1,11})
+
+
 ### DANS
 ukm_delta_ukmid_pamelding_dans_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/

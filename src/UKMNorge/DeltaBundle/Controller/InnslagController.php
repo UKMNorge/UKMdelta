@@ -13,6 +13,7 @@ use tittel;
 use Exception;
 use DateTime;
 use stdClass;
+use innslag_v2;
 
 class InnslagController extends Controller
 {
@@ -35,7 +36,6 @@ class InnslagController extends Controller
         $monstringer = new monstringer($season);
         // Inkluderer testkommunene hvis environment == test eller dev
         $liste = $monstringer->alle_kommuner_med_lokalmonstringer( $this->container->get( 'kernel' )->getEnvironment() == 'test' || $this->container->get( 'kernel' )->getEnvironment() == 'dev' );
-
 
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
         $view_data['monstringsliste'] = $liste;
@@ -745,6 +745,24 @@ class InnslagController extends Controller
             //$innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
             return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge( $route_data, $view_data ) );
         }
+    }
+
+    // Kontroller for redigering av innslagsinformasjon for deltakere - ikke kontaktperson.
+    public function editAction($b_id) {
+        $view_data = array( 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
+
+        require_once('UKM/innslag.class.php');
+        // Hent innslagsdetaljer
+        // Legg til true hvis vi også skal vise innslag som ikke er ferdig påmeldt.
+        $innslag = new innslag_v2($b_id);
+        $view_data['innslag'] = $innslag;
+        
+        if ( $this->get('ukm_delta.editaccess')->hasEditAccess($b_id) ) {
+            return $this->render('UKMDeltaBundle:Innslag:rediger.html.twig', $view_data);    
+        }
+        // Todo: redirect to "request"-page.
+        return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
 
     public function attendingAction($k_id, $pl_id, $type, $b_id) {
