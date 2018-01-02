@@ -1,0 +1,54 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+			</div>
+		</div>
+	</div>
+
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				{# CONTENT #}
+				<h1 class="mt-0">{{ 'samtykkeVarselAction.overskrift'|trans }}</h1>
+					
+				<p class="lead">
+					{{ 'samtykkeVarselAction.ingress'|trans|nl2br }}
+				</p>
+				
+				<p>
+					{{ 'samtykkeVarselAction.tekst'|trans|nl2br }}
+				</p>
+				
+			</div>
+			
+			<label>{{ 'samtykkeVarselAction.liste.label'|trans|nl2br }}</label>
+			<ol>
+				<li>{{ 'samtykkeVarselAction.liste.element1'|trans|nl2br }}</li>
+				<li>{{ 'samtykkeVarselAction.liste.element2'|trans|nl2br }}</li>
+			</ol>
+		</div>
+		
+		<div class="row">
+			<div class="col-12">
+				<form action="{{ url('ukm_delta_ukmid_checksamtykkevarsel') }}" method="POST" autocomplete="off">
+				
+					<div class="form-group">
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="checkbox" name="varsel" id="varsel-ok" value="varsel-ok" required />
+								{{ 'samtykkeVarselAction.checkbox'|trans }}
+							</label>
+						</div>
+					</div>
+					
+					<button type="submit" class="btn btn-submit btn-outline-primary">{{ 'samtykkeVarselAction.knapp'|trans|nl2br }}</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

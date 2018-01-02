@@ -39,6 +39,65 @@ class UKMIDController extends Controller
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
 
+
+    public function samtykkeAction()
+    {
+		$view_data = [
+			'translationDomain' => 'ukmid',
+		];
+
+		return $this->render('UKMDeltaBundle:UKMID:samtykke.html.twig', $view_data );
+	}
+	
+    public function samtykkeVarselAction()
+    {
+		$view_data = [
+			'translationDomain' => 'ukmid',
+		];
+
+		return $this->render('UKMDeltaBundle:UKMID:samtykkeVarsel.html.twig', $view_data );
+	}
+
+    public function checkSamtykkeAction( Request $request )
+    {
+		if( $request->request->get('samtykke') == 'samtykke-ja' ) {
+			return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
+		}
+		
+		if( $request->request->get('samtykke') == 'samtykke-forbehold') {
+			return $this->redirectToRoute('ukm_delta_ukmid_samtykkevarsel');
+		}
+		
+		$this->addFlash('danger', $this->get('translator')->trans('samtykkeAction.action.required', [], 'ukmid'));
+
+		$view_data = [
+			'translationDomain' => 'ukmid',
+		];
+		return $this->render('UKMDeltaBundle:UKMID:samtykke.html.twig', $view_data );
+	}
+	
+    public function checkSamtykkeVarselAction( Request $request )
+    {
+		if( $request->request->get('varsel') == 'varsel-ok' ) {
+			return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
+		}
+		
+		$varsel = $this->get('translator')->trans(
+			'samtykkeVarselAction.required',
+			[
+				'%godta' => $this->get('translator')->trans('samtykkeVarselAction.checkbox', [], 'ukmid')
+			],
+			'ukmid'
+		);
+		
+		$this->addFlash('danger', $varsel);
+
+		$view_data = [
+			'translationDomain' => 'ukmid',
+		];
+		return $this->render('UKMDeltaBundle:UKMID:samtykkeVarsel.html.twig', $view_data );
+	}
+
     public function checkInfoAction()
     {
         $view_data = array();

@@ -5,6 +5,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use monstring;
+use monstring_v2;
 use monstringer;
 use postnummer_monstring;
 use kommune_monstring;
@@ -765,7 +766,10 @@ class InnslagController extends Controller
 
         $view_data['pl_navn'] = $name;
         $view_data['pl_start'] = $start;
-        $view_data['pl_link'] = $monstring->get('pl_link');
+        //$view_data['pl_link'] = $monstring->get('pl_link');
+        
+		$monstring_v2 = new monstring_v2( $pl_id );
+		$view_data['pl_link'] = $monstring_v2->getLink();
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }   
