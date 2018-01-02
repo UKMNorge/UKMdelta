@@ -37,6 +37,26 @@ ukm_delta_ukmid_frist:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
 
+ukm_delta_ukmid_samtykke:
+    path: /ukmid/samtykke/
+    defaults: { _controller: UKMDeltaBundle:UKMID:samtykke }
+    methods: [GET]
+
+ukm_delta_ukmid_checksamtykke:
+    path: /ukmid/samtykke/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykke }
+    methods: [POST]
+
+ukm_delta_ukmid_samtykkevarsel:
+    path: /ukmid/varsle/
+    defaults: { _controller: UKMDeltaBundle:UKMID:samtykkeVarsel }
+    methods: [GET]
+
+ukm_delta_ukmid_checksamtykkevarsel:
+    path: /ukmid/varsle/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykkeVarsel}
+    methods: [POST]
+    
 ukm_delta_ukmid_checkinfo:
     path:     /ukmid/info/
     defaults: { _controller: UKMDeltaBundle:UKMID:checkInfo }

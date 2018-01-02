@@ -1,0 +1,54 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+			</div>
+		</div>
+	</div>
+
+	<div class="container">	
+		<div class="row">
+			<div class="col-12">
+				{# CONTENT #}
+				<h1 class="mt-0">{{ 'samtykkeAction.overskrift'|trans }}</h1>
+					
+				<p class="lead">
+					{{ 'samtykkeAction.ingress'|trans|nl2br }}
+				</p>
+				
+				<p>
+					{{ 'samtykkeAction.tekst'|trans|nl2br }}
+				</p>
+				
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-12">
+				<form action="{{ url('ukm_delta_ukmid_checksamtykke') }}" method="POST" autocomplete="off">
+				
+					<div class="form-group">
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="radio" name="samtykke" id="samtykke-true" value="samtykke-ja" required />
+								{{ 'samtykkeAction.action.ja'|trans }}
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label">
+								<input class="form-check-input" type="radio" name="samtykke" id="samtykke-false" value="samtykke-forbehold" required />
+								{{ 'samtykkeAction.action.forbehold'|trans }}
+							</label>
+						</div>
+					</div>
+					
+					<button type="submit" class="btn btn-submit btn-outline-primary">{{ 'samtykkeAction.knapp'|trans|nl2br }}</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
