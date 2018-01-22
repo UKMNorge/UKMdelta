@@ -102,6 +102,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             }
 
             // Gjennomfør redirect til rett tjeneste eller UKMid.
+            $this->logger->debug("LoginSuccessHandler: Logged in, redirecting...");
             $redirecter = $this->container->get('ukm_user.redirect');
             return $redirecter->doRedirect();
         }

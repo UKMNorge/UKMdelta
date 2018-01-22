@@ -19,7 +19,15 @@ class RedirectService {
 		$session = $this->container->get('session');
 		$keyRepo = $this->container->get('doctrine')->getRepository("UKMUserBundle:APIKeys");
 
-		if( $session->get('rdirurl') ) {
+        // Lokal redirect
+        if( $session->get('_security.ukm_delta_wall.target_path') ) {
+            $this->logger->info("RedirectService: Redirecting to " . $session->get("_security.ukm_delta_wall.target_path") );
+            $ret = new RedirectResponse( $session->get('_security.ukm_delta_wall.target_path') );
+            $session->remove('_security.ukm_delta_wall.target_path');
+            return $ret;
+        }
+        // Redirect til ekstern tjeneste
+		else if( $session->get('rdirurl') ) {
             $rdirurl = $session->get('rdirurl');
             $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
             if(!$key) {
@@ -37,9 +45,11 @@ class RedirectService {
             $session->remove('rdirurl');
 			$session->remove('rdirtoken');
 
+            $this->logger->info("RedirectService: Redirecting to ".$rdirurl);
 			return new RedirectResponse($rdirurl);
         }
 
+        $this->logger->info("RedirectService: Redirecting to homepage.");
         return new RedirectResponse($this->container->get('router')->generate('ukm_delta_ukmid_homepage'));	
 	}
 

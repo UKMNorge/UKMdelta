@@ -20,8 +20,8 @@ security:
                 success_handler: ukm_user.security.authentication.handler.login_success_handler
                 #default_target_path: /ukmid/
                 provider: ukm_userbundle
+                use_referer: true
                 csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
-                #default_target_path: /ukmid/
             logout:       true
             anonymous:    true
 

@@ -34,4 +34,14 @@ class UserService {
 	public function getLevel( $level ) {
 		return $this->levels[ $level ];
 	}
+
+	/**
+	 * Finn en bruker basert på UKM-ID
+	 *
+	 * 
+	 */
+	public function getByUKMid( $userid ) {	
+		$repo = $this->container->get('doctrine')->getRepository("UKMUserBundle:User");
+		return $repo->findOneBy( array( 'id' => $userid ) );
+	}
 }
