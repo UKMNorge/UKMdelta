@@ -5,6 +5,14 @@
 ( not innslag.innslag.get('b_id') is empty) and 
 ( not innslag.monstring.get('pl_id') is empty) %}
 
+{% if innslag.innslag.get('bt_id') == 4 %}
+	{% set innslag_type = 'konferansier' %}
+{% elseif innslag.innslag.get('bt_id') == 5 %}
+	{% set innslag_type = 'media' %}
+{% elseif innslag.innslag.get('bt_id') == 8 %}
+	{% set innslag_type = 'arrangor' %}
+{% endif %}
+
 {## SKJUL PÅMELDINGER SOM IKKE KAN VISES PGA FEIL I DATABASE ##}
 {% if isOkay %}
 	{% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
@@ -17,12 +25,16 @@
 				{% else %}
 					{{ innslag.innslag.get('b_name') }}
 				{% endif %}
-				<br />
 				<small>
 					{{ innslag.innslag.get('kategori')|capitalize }} 
 					| 
 					{{ innslag.monstring.get('pl_name')|capitalize }}
 				</small>
+				{% if innslag.innslag.getNominasjon( 'land' ).har() %}
+					<br />
+					<label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn</label>
+				{% endif %}
+				
 			</div>
 
 			<div class="col-3 right px-0">
@@ -32,6 +44,7 @@
 				{% else %}
 					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
 				{% endif %}
+				
 			</div>
 
 		</div>

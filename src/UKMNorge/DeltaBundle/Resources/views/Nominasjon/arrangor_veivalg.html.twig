@@ -1,0 +1,103 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}	
+	{% if app.session.flashBag.peekAll()|length > 0 %}
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	<form method="POST" action="{{ url('ukm_nominasjon_arrangor_veivalg_save') }}" id="nominasjonsskjema">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h1>Hva ønsker du å jobbe med?</h1>
+					
+					<p>
+						Under festivalen har unge arrangører ansvar for ulike områder, 
+						og dere deles derfor inn i 2 ulike grupper: teknikere og vertskap. 
+						Som ung arrangør vil du få tildelt en av rollene nedenfor, 
+						som har ulike oppgaver før og under festivalen. 
+						Utenom denne rollen har dere alle et ansvar for å hjelpe hverandre. 
+					</p>
+					<p>
+						Alle unge arrangører vil få opplæring og hjelp av voksne mentorer, både på planleggingshelg og på UKM-festivalen.
+					</p>
+					
+					<h2>
+						Teknikerne og vertskapet sine roller går ut på ulike ting:
+					</h2>
+					
+					<h3>Lystekniker/lydtekniker</h3>
+					<p>
+						Teknikere skal kjøre lyd og lys under åpningsshowet og korslaget. 
+						Under forestillingene i Olavshallen vil de hjelpe til som scenearbeidere. 
+						De skal styre lyd/lys under mindre forestillinger som dukker opp under festivalen, 
+						og eventuelt hjelpe til med andre tekniske oppgaver.
+					</p>
+					
+					<h3>Vertskap/produsent</h3>
+					<p>
+						Vertskapet fungerer som flere roller.
+						De skal være artistverter og ha ansvaret for sekretariat og instrumentoppbevaring i Olavshallen. 
+						I tillegg skal de fungere som observatører på ulike workshop/foredrag. 
+						To av vertskapet vil få et mer overordna ansvar som produsent for åpningsshowet og korslaget.
+						Dette går ut på å forme selve forestillingen og ha oversikt over alle involverte.
+					</p>
+					
+					<h2>Velg hva du vil jobbe med på UKM-festivalen</h2>
+					
+					<div class="form-check">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="lydtekniker" value="true" />
+							Lydtekniker
+						</label>
+					</div>
+
+					<div class="form-check">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="lystekniker" value="true" />
+							Lystekniker
+						</label>
+					</div>
+					
+					<div class="form-check">
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="vertskap" value="true" />
+							Vertskap
+						</label>
+					</div>
+
+					<h2>Fortell oss litt om deg</h2>
+
+					<div class="form-group">
+						<label>På hvilken måte er du god til å samarbeide med andre?</label>
+						<textarea rows="4" name="samarbeid" class="form-control" required="true"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label>Hvordan har du jobba på lokalmønstring/fylkesfestival, og hva kan du innenfor arbeidsområdene du har krysset av for (lyd/lys/vertskap)?</label>
+						<textarea rows="4" name="erfaring" class="form-control" required="true"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label>Hva mener du er viktig blant unge arrangører for at festivalen skal bli best mulig?</label>
+						<textarea rows="4" name="suksesskriterie" class="form-control" required="true"></textarea>
+					</div>
+
+					<div class="form-group">
+						<label>Andre kommentarer? Noen annet du tror er viktig å få fram?</label>
+						<textarea rows="4" name="annet" class="form-control" required="true"></textarea>
+					</div>
+
+
+					<button type="submit" class="btn btn-primary btn-block center" id="saveNominasjon">Lagre</button>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}

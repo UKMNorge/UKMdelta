@@ -1,10 +1,11 @@
 overviewAction:
     type: Arrangør
     beskrivelse:
-        label: Beskrivelse av deg og din arrangør-erfaring
+        label: Skriv litt om deg selv og din arrangør-erfaring (hvis du har gjort det før)
         placeholder: >
-            Eks. Jeg har jobbet med lys og lyd på ungdomsklubben i 5 år, 
-            og vært frivillig på Øya-festivalen tidligere.
+            Eks. Jeg Jeg har jobbet med lys og lyd på ungdomsklubben en gang, 
+            eller jeg har ikke gjort det før, 
+            eller jeg har vært frivillig på Øya-festivalen tidligere.
     lagre: Lagre
 
 
