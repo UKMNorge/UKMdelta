@@ -1,0 +1,18 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}	
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Nominasjon til UKM-festivalen</h1>
+				<p>
+					Velg hvilket nominasjonsskjema du skal fylle ut.
+				</p>
+
+				<a href="{{ path('ukm_nominasjon_arrangor') }}" class="btn btn-primary btn-block center">Arrangør</a>
+				<p>&nbsp;</p>
+				<a href="{{ path('ukm_nominasjon_media') }}" class="btn btn-primary btn-block center">UKM Media</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

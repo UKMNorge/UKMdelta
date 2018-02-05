@@ -1,0 +1,66 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}	
+	<form method="POST" action="{{ url('ukm_nominasjon_media_save') }}" id="nominasjonsskjema">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h1>UKM Media-nominasjon</h1>
+					<p>
+						Velg hva du ønsker å jobbe mest med.
+					</p>
+					
+					{% for key, gruppe in {1: 'Dette kan jeg godt', 2: 'Dette kan jeg', 3: 'Dette kan jeg litt'} %}
+						<div class="form-group">
+							<label>{{ gruppe }}</label>
+							<select name="pri-{{ key }}" class="form-control" required="true">
+								<option value="false" disabled="disabled" selected="selected">Velg et svar</option>
+								{% for value, omrade in omrader %}
+									<option value="{{ value }}">{{ omrade }}</option>
+								{% endfor %}
+								{% if loop.index != 1 %}
+									<option value="ingenting">Jeg vil ikke velge noe her</option>
+								{% endif %}
+							</select>
+						</div>
+					{% endfor %}
+	
+					<p>&nbsp;</p>
+					
+					<div class="form-group">
+						<label>Jeg kan noe som jeg har lyst til å gjøre, men det står ikke i listen.</label>
+						<input type="text" name="annet" class="form-control" />
+					</div>
+	
+					<p>&nbsp;</p>
+					
+					<div class="form-group">
+						<label>
+							Skriv litt om hvorfor du vil jobbe med dette, og hvilken erfaring du har med det fra før. 
+							<br />
+							Dette er ikke et felt med fasit-svar, men hvor vi ønsker at du forteller oss litt om deg selv og hva du kan.
+						</label>
+						<textarea rows="6" name="beskrivelse" class="form-control" required="true"></textarea>
+					</div>
+					
+					<p>&nbsp;</p>
+					
+					<div class="form-check">
+						<p>
+							Dessverre kan du ikke redigere nominasjonen din etter du har sendt den inn. Når du trykker send inn sendes den til UKM Norge
+						</p>
+						<label class="form-check-label">
+							<input class="form-check-input" type="checkbox" name="confirm" value="ok" required />
+							Ok, jeg skjønner
+						</label>
+					</div>
+
+					<p>&nbsp;</p>
+
+	
+					<button type="submit" class="btn btn-primary btn-block center" id="saveNominasjon">Send inn</button>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}
