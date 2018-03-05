@@ -72,6 +72,11 @@ class NominasjonController extends Controller
 		$view_data = [
 			'translationDomain' => 'nominasjon',
 		];
+		
+		if( is_array( $this->get('session')->get('form-data') ) ) {
+			$view_data = array_merge( $view_data, $this->get('session')->get('form-data') );
+			$this->get('session')->remove('form-data');
+		}
 
 		return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
 	}
@@ -94,6 +99,13 @@ class NominasjonController extends Controller
 		}
 		
 		if( sizeof( $step ) == 0 ) {
+			$data = [
+				'form_samarbeid'	=> $request->request->get('samarbeid'),
+				'form_erfaring' 	=> $request->request->get('erfaring'),
+				'form_suksess'		=> $request->request->get('suksesskriterie'),
+				'form_annet'		=> $request->request->get('annet'),
+			];
+			$this->get('session')->set('form-data', $data);
 			$this->get('session')->getFlashBag()->set('danger', 'Du må minst velge én av de tre kategoriene.');
 			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
 		}

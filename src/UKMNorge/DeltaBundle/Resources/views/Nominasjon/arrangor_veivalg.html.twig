@@ -15,83 +15,110 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-					<h1>Hva ønsker du å jobbe med?</h1>
+					<h1>Hva har du mest lyst til å jobbe med?</h1>
 					
-					<p>
-						Under festivalen har unge arrangører ansvar for ulike områder, 
-						og dere deles derfor inn i 2 ulike grupper: teknikere og vertskap. 
-						Som ung arrangør vil du få tildelt en av rollene nedenfor, 
-						som har ulike oppgaver før og under festivalen. 
-						Utenom denne rollen har dere alle et ansvar for å hjelpe hverandre. 
+					<p class="lead">
+						Unge arrangører deles inn i to grupper med ulike oppgaver: teknikere og vertskap.
 					</p>
 					<p>
-						Alle unge arrangører vil få opplæring og hjelp av voksne mentorer, både på planleggingshelg og på UKM-festivalen.
+						Alle får opplæring og hjelp av mentorer, 
+						både på planleggingshelgen og på UKM-festivalen.
+					</p>
+					
+					<p>
+						For å skape en best mulig festival, har vi alle ansvar for å hjelpe hverandre.
 					</p>
 					
 					<h2>
-						Teknikerne og vertskapet sine roller går ut på ulike ting:
+						Hva gjør de to gruppene?
 					</h2>
 					
 					<h3>Lystekniker/lydtekniker</h3>
-					<p>
-						Teknikere skal kjøre lyd og lys under åpningsshowet og korslaget. 
-						Under forestillingene i Olavshallen vil de hjelpe til som scenearbeidere. 
-						De skal styre lyd/lys under mindre forestillinger som dukker opp under festivalen, 
-						og eventuelt hjelpe til med andre tekniske oppgaver.
-					</p>
+					<ol class="list-group">
+						<li class="list-group-item">
+							Kjører lyd og lys under åpningsshowet og korslaget. 
+						</li>
+						<li class="list-group-item">
+							Hjelper til som scenearbeidere i Olavshallen.
+						</li>
+						<li class="list-group-item">
+							Kjører lyd og lys under mindre forestillinger som dukker opp.
+						</li>
+						<li class="list-group-item">
+							Hjelper til med eventuelle andre tekniske oppgaver.
+						</li>
+					</ol>
 					
-					<h3>Vertskap/produsent</h3>
-					<p>
-						Vertskapet fungerer som flere roller.
-						De skal være artistverter og ha ansvaret for sekretariat og instrumentoppbevaring i Olavshallen. 
-						I tillegg skal de fungere som observatører på ulike workshop/foredrag. 
-						To av vertskapet vil få et mer overordna ansvar som produsent for åpningsshowet og korslaget.
-						Dette går ut på å forme selve forestillingen og ha oversikt over alle involverte.
-					</p>
+					<h3>Vertskap</h3>
+					<ol class="list-group">
+						<li class="list-group-item">
+							Er festivalens ansikt utad og informasjonssenter.
+						</li>
+						<li class="list-group-item">
+							Har ansvaret for sekretariat, øvingsrom og instrumentoppbevaring. 
+						</li>
+						<li class="list-group-item">
+							Er artistverter
+						</li>
+						<li class="list-group-item">
+							Evaluerer workshops og foredrag.
+						</li>
+						<li class="list-group-item">
+							Noen velges som produsenter for åpningsshowet og korslaget.
+							<br />
+							<small>(former selve forestillingen og har oversikt over alle involverte)</small>
+						</li>
+					</ol>
 					
 					<h2>Velg hva du vil jobbe med på UKM-festivalen</h2>
 					
-					<div class="form-check">
-						<label class="form-check-label">
-							<input class="form-check-input" type="checkbox" name="lydtekniker" value="true" />
-							Lydtekniker
-						</label>
-					</div>
-
-					<div class="form-check">
-						<label class="form-check-label">
-							<input class="form-check-input" type="checkbox" name="lystekniker" value="true" />
-							Lystekniker
-						</label>
-					</div>
-					
-					<div class="form-check">
-						<label class="form-check-label">
-							<input class="form-check-input" type="checkbox" name="vertskap" value="true" />
-							Vertskap
-						</label>
-					</div>
+					<ol class="list-group">
+						<li class="list-group-item">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="checkbox" name="lydtekniker" value="true" />
+									&nbsp; Lydtekniker
+								</label>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="checkbox" name="lystekniker" value="true" />
+									&nbsp; Lystekniker
+								</label>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="checkbox" name="vertskap" value="true" />
+									&nbsp; Vertskap
+								</label>
+							</div>
+						</li>
+					</ol>
 
 					<h2>Fortell oss litt om deg</h2>
 
 					<div class="form-group">
 						<label>På hvilken måte er du god til å samarbeide med andre?</label>
-						<textarea rows="4" name="samarbeid" class="form-control" required="true"></textarea>
+						<textarea rows="4" name="samarbeid" class="form-control" required="true">{{ form_samarbeid is defined ? form_samarbeid : '' }}</textarea>
 					</div>
 
 					<div class="form-group">
-						<label>Hvordan har du jobba på lokalmønstring/fylkesfestival, og hva kan du innenfor arbeidsområdene du har krysset av for (lyd/lys/vertskap)?</label>
-						<textarea rows="4" name="erfaring" class="form-control" required="true"></textarea>
+						<label>Hvordan har du jobbet på lokalmønstring/fylkesfestival, og hva kan du innenfor områdene du har krysset av for (lyd/lys/vertskap)?</label>
+						<textarea rows="4" name="erfaring" class="form-control" required="true">{{ form_erfaring is defined ? form_erfaring : '' }}</textarea>
 					</div>
 
 					<div class="form-group">
 						<label>Hva mener du er viktig blant unge arrangører for at festivalen skal bli best mulig?</label>
-						<textarea rows="4" name="suksesskriterie" class="form-control" required="true"></textarea>
+						<textarea rows="4" name="suksesskriterie" class="form-control" required="true">{{ form_suksess is defined ? form_suksess : '' }}</textarea>
 					</div>
 
 					<div class="form-group">
 						<label>Andre kommentarer? Noen annet du tror er viktig å få fram?</label>
-						<textarea rows="4" name="annet" class="form-control" required="true"></textarea>
+						<textarea rows="4" name="annet" class="form-control" required="true">{{ form_annet is defined ? form_annet : '' }}</textarea>
 					</div>
 
 
