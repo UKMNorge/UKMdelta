@@ -60,6 +60,20 @@ class NominasjonController extends Controller
 			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
 		}
 		
+		/**
+		 * Lagrer et flagg i sorry-feltet som sier hva brukeren har svart nei til
+		 * Nullstilles ikke av fullstendig nominasjon, men vises da som advarsel til arrangør
+		**/
+		if( $planhelg != 'ja' && $festival != 'ja' ) {
+			$flagg = 'begge';
+		} elseif( $planhelg != 'ja' ) {
+			$flagg = 'planleggingshelg';
+		} else {
+			$flagg = 'festivalen';
+		}
+		$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+		write_nominasjon::saveSorry( $nominasjon, $flagg);
+
 		return $this->render('UKMDeltaBundle:Nominasjon:sorry.html.twig', $view_data);
 	}
 	

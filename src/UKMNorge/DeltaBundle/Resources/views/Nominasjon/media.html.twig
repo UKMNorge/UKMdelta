@@ -7,10 +7,10 @@
 				<div class="col-12">
 					<h1>UKM Media-nominasjon</h1>
 					<p>
-						Velg hva du ønsker å jobbe mest med.
+
 					</p>
 					
-					{% for key, gruppe in {1: 'Dette kan jeg godt', 2: 'Dette kan jeg', 3: 'Dette kan jeg litt'} %}
+					{% for key, gruppe in {1: 'Hva har du mest lyst til å jobbe med?', 2: 'Jeg vil også jobbe med', 3: 'eller '} %}
 						<div class="form-group">
 							<label>{{ gruppe }}</label>
 							<select name="pri-{{ key }}" class="form-control" required="true">
@@ -29,7 +29,7 @@
 					
 					<div class="form-group">
 						<label>Jeg kan noe som jeg har lyst til å gjøre, men det står ikke i listen.</label>
-						<input type="text" name="annet" class="form-control" />
+						<input type="text" name="annet" class="form-control" placeholder="Skriv det her" />
 					</div>
 	
 					<p>&nbsp;</p>
@@ -47,7 +47,7 @@
 					
 					<div class="form-check">
 						<p>
-							Dessverre kan du ikke redigere nominasjonen din etter du har sendt den inn. Når du trykker send inn sendes den til UKM Norge
+							Dessverre kan du ikke redigere nominasjonen din etter du har sendt den inn. Når du trykker send inn sendes den til UKM Norge.
 						</p>
 						<label class="form-check-label">
 							<input class="form-check-input" type="checkbox" name="confirm" value="ok" required />
