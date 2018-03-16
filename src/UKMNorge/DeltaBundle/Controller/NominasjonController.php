@@ -112,7 +112,7 @@ class NominasjonController extends Controller
 			#$step[] = 'vertskap';
 		}
 		
-		if( sizeof( $step ) == 0 ) {
+		if( !$lydtekniker && !$lystekniker && !$vertskap ) {
 			$data = [
 				'form_samarbeid'	=> $request->request->get('samarbeid'),
 				'form_erfaring' 	=> $request->request->get('erfaring'),
