@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Exception;
 
+use person;
+use person_v2;
 use innslag_v2;
 use nominasjon;
 use write_nominasjon;
@@ -234,8 +236,36 @@ class NominasjonController extends Controller
 
 		$user = $this->get('ukm_user')->getCurrentUser();
 		
+		// Hvis brukeren ikke har tilknyttet UKM-person
+		if( null === $user->getPameldUser() ) {
+			$person_objekt = null;
+			try {
+				require_once('UKM/person.class.php');
+				// Sjekk om vi har denne personen i participant-tabellen
+				$person = person_v2::loadFromData( $user->getFirstname(), $user->getLastname(), $user->getPhone() );
+
+				// Oppdater delta-brukeren
+				$userManager = $this->container->get('fos_user.user_manager');
+				$user->setPameldUser( $person->getId() );
+				$userManager->updateUser($user);
+
+				// Last inn V1-bruker da UKMdelta benytter APIv1
+				$person_objekt = new person( $person->getId() );
+			} catch( Exception $e ) {
+				if( $e->getCode() == 109004 ) {
+					$person = null;
+				}
+				throw $e;
+			}
+		}
+		// Hent brukerobjektet dersom det finnes
+		else {
+			$personService = $this->get('ukm_api.person');
+			$person_objekt = $personService->hent( $user->getPameldUser() );
+		}
+
 		$innslagService = $this->get('ukm_api.innslag');
-		$innslagsliste = $innslagService->hentInnslagFraKontaktperson($user->getPameldUser(), $user->getId());
+		$innslagsliste = $innslagService->hentInnslagFraKontaktperson($person_objekt->get('p_id'), $user->getId());
 
 		$nominert = false;
 		$type_compare = $type == 'media' ? 'nettredaksjon' : $type; // korriger for nettredaksjon/media
