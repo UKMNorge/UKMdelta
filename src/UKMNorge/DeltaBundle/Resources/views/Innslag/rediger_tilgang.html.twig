@@ -1,0 +1,37 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Be om tilgang</h1>
+				<p>Dersom du mener noe av informasjonen vi har om innslaget er feil, har endret seg eller mangler kan du be om tilgang til å redigere det, så kontaktpersonen slipper å holde styr på alt.</p>
+				
+			</div>
+			{% if not tilgang.hasRequestedAccess %}
+			<div class="col-12">
+				<p>Denne meldingen blir sendt til kontaktpersonen for innslaget:</p>
+				<h2>{{ innslag.navn }}</h2>
+				<p>{{ user.getName }} vil redigere innslaget {{ innslag.navn }}, som skal delta på {# monstring.navn #}, {# monstring.tidspunkt|dato #}.</p>
+				<form class="form-group" method="POST" action="{{ path( 'ukm_delta_ukmid_pamelding_innslag_rediger_beomtilgang', {b_id: b_id} ) }}">
+					<button type="submit" class="btn btn-large btn-secondary">Be om tilgang til å redigere innslaget</button>
+				</form>
+				<a href="{{ path('ukm_delta_ukmid_homepage' ) }}">Eller gå til Din Side</a>
+			</div>
+			{% else %}
+				<div class="col-12">
+					<h2>{{ innslag.navn }}</h2>
+					<p>Du har bedt om tilgang, og vi venter på svar fra kontaktpersonenen! Du får en melding fra UKM når du har fått lov til å redigere innslaget.</p>
+
+					<a href="{{ path('ukm_delta_ukmid_homepage' ) }}">Gå til Din Side</a>
+				</div>
+			{% endif %}
+		</div>
+		<div class="row">
+			<div class="col-12">
+				
+			</div>
+		</div>
+	</div>
+{% endblock %}

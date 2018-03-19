@@ -136,9 +136,12 @@ class EditAccessService {
 		$em = $this->container->get('doctrine')->getEntityManager();
 		$em->persist($request);
 		$em->flush();
+
+		return true;
 	}
 
 	private function notifyContact($b_id = null) {
+		require_once('UKM/SMS.class.php');
 		if ($b_id != null) {
 			$innslag = new innslag_v2($b_id);
 		}
@@ -146,6 +149,22 @@ class EditAccessService {
 			$innslag = $this->innslag;
 		}
 
-		
+		$recipient = $innslag->getContact();
+		$requester = $this->container->get('ukm_user')->getCurrentUser();
+
+		$link = $this->container->get('router')->generateRoute('ukm_delta_ukmid_pamelding_innslag_rediger_svartilgang', array('b_id' => $b_id) );
+
+		$message = $requester->getName() . ' har bedt om tilgang til å redigere innslaget '.$innslag->getNavn().'. Trykk på linken for å svare på forespørselen. '.$link;
+
+		$sms = $this->container->get('ukmsms');
+		try {
+	        $sms->sendSMS( $recipient->getPhone(), $message );
+	    } catch( Exception $e ) {
+		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende SMS til tlf ('.$recipient->getPhone().'). Kontakt UKM Support');
+		    $this->container->get('logger')->error('EditAccessService: Klarte ikke å sende SMS om redigeringstilgang til tlf '.$recipient->getPhone().'.');
+		    return false;
+	    }
+
+	    return true;
 	}
 }

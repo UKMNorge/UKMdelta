@@ -761,8 +761,62 @@ class InnslagController extends Controller
         if ( $this->get('ukm_delta.editaccess')->hasEditAccess($b_id) ) {
             return $this->render('UKMDeltaBundle:Innslag:rediger.html.twig', $view_data);    
         }
-        // Todo: redirect to "request"-page.
-        return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_rediger_tilgang', $view_data);
+    }
+
+    // Kontroller for "be om tilgang til å redigere innslaget"
+    /**
+     * 
+     *
+     * 
+     */ 
+    public function editAccessAction($b_id) {
+        $view_data = array( 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
+        
+        require_once('UKM/innslag.class.php');
+        $view_data['innslag'] = new innslag_v2($b_id);
+        $view_data['user'] = $this->container->get('ukm_user')->getCurrentUser();
+        $view_data['tilgang'] = $this->container->get('ukm_delta.editaccess');
+        $view_data['tilgang']->hasEditAccess($b_id);
+        #$view_data['monstring'] = $view_data['innslag']->getNesteMonstring();
+
+        return $this->render('UKMDeltaBundle:Innslag:rediger_tilgang.html.twig', $view_data);
+    }
+
+    /**
+     * Tar i mot forespørsler fra tilgangs-skjemaet, legger til en request i databasen og trigger servicer som sender SMS etc.
+     *
+     * Redirecter til request-siden i kvitteringsmodus når alt er OK.
+     */
+    public function requestAccessAction($b_id) {
+        $view_data = array( 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
+        require_once('UKM/innslag.class.php');
+        $access = $this->get('ukm_delta.editaccess');
+        $accessRequestCreated = $access->requestAccess($b_id);
+
+        // Sjekk om forespørselen er ny for å unngå å sende flere SMS til samme kontaktperson for samme band.
+        if( true == $accessRequestCreated ) {
+            $access->notifyContact();
+        }
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_rediger_tilgang', $view_data);
+
+    }
+
+    /**
+     * Rendre ut et form for å gi tilgang til en bruker.
+     *
+     *
+     */
+    public function respondAccessAction($b_id) {
+        $view_data = array( 'b_id' => $b_id);
+        $view_data['translationDomain'] = 'innslag';
+        require_once('UKM/innslag.class.php');
+        $access = $this->get('ukm_delta.editaccess');
+
     }
 
     public function attendingAction($k_id, $pl_id, $type, $b_id) {

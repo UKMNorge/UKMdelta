@@ -233,6 +233,24 @@ ukm_delta_ukmid_pamelding_innslag_rediger:
     requirements: 
               b_id: ([0-9]{1,11})
 
+ukm_delta_ukmid_pamelding_innslag_rediger_tilgang:
+    path:     /ukmid/pamelding/{b_id}/rediger/tilgang/
+    defaults: { _controller: UKMDeltaBundle:Innslag:editAccess }
+    requirements: 
+              b_id: ([0-9]{1,11})
+
+ukm_delta_ukmid_pamelding_innslag_rediger_beomtilgang:
+    path:     /ukmid/pamelding/{b_id}/rediger/tilgang/
+    defaults: { _controller: UKMDeltaBundle:Innslag:requestAccess }
+    requirements: 
+              b_id: ([0-9]{1,11})
+    methods: [POST]
+
+ukm_delta_ukmid_pamelding_innslag_rediger_svartilgang:
+    path:     /ukmid/pamelding/{b_id}/rediger/gitilgang/
+    defaults: { _controller: UKMDeltaBundle:Innslag:giveAccess }
+    requirements: 
+              b_id: ([0-9]{1,11})
 
 ### DANS
 ukm_delta_ukmid_pamelding_dans_hvem:
