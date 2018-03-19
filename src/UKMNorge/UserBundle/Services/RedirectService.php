@@ -48,6 +48,12 @@ class RedirectService {
             $this->logger->info("RedirectService: Redirecting to ".$rdirurl);
 			return new RedirectResponse($rdirurl);
         }
+		
+		$target_path = $session->get('_security.ukm_delta_wall.target_path');
+		$session->remove('_security.ukm_delta_wall.target_path');
+		if( $target_path ) {
+			return new RedirectResponse( $target_path );
+		}
 
         $this->logger->info("RedirectService: Redirecting to homepage.");
         return new RedirectResponse($this->container->get('router')->generate('ukm_delta_ukmid_homepage'));	

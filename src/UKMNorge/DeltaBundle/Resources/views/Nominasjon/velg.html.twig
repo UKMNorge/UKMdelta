@@ -1,0 +1,20 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block content %}	
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>Du er nominert!</h1>
+				<p>
+					Velg hvilket skjema du skal fylle ut. Konferansierer skal ikke fylle ut nominasjonsskjema i år.
+
+				</p>
+
+				<a href="{{ path('ukm_nominasjon_arrangor') }}" class="btn btn-primary btn-block center">Arrangør</a>
+				<p>&nbsp;</p>
+				<a href="{{ path('ukm_nominasjon_media') }}" class="btn btn-primary btn-block center">UKM Media</a>
+			</div>
+			
+		</div>
+	</div>
+{% endblock %}

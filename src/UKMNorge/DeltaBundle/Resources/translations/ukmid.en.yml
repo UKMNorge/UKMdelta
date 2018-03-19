@@ -1,3 +1,31 @@
+samtykkeAction:
+    overskrift: Samtykke om fotografering og filming
+    ingress: |
+        På UKM blir det ofte tatt bilder av deltakerne og video-opptak av de som opptrer.
+        Noen ganger blir dette lagt ut på nettsidene til UKM.
+    tekst: |
+        Du må bekrefte at det er greit at det blir tatt bilde eller gjort opptak av deg.
+        Hvis du under 15 år så må du spørre foreldre / foresatte om det er greit.
+        
+        Dette gjelder for alle du melder på (for eksempel hvis du melder på et band).
+    knapp: Fortsett
+    action:
+        ja: Ja, det er greit at det blir tatt bilder og video av meg/oss
+        forbehold: Nei, dere kan ikke ta bilde og video av meg/oss
+        required: Du må svare på spørsmålet for å delta på UKM.
+
+samtykkeVarselAction:
+    overskrift: Varsle lokalkontakten din
+    ingress: Du må varsle arrangøren av UKM (lokalkontakten) der du skal melde deg på om at det ikke kan tas bilder eller gjøres opptak av deg.
+    tekst: ''
+    liste: 
+        label: Dette gjør du slik:
+        element1: Når du har gjennomført påmeldingen klikker du på "vis kontaktpersoner"
+        element2: Send en e-post til kontaktpersonen og gi beskjed om at de ikke må filme eller ta bilde av deg.
+    checkbox: Ok, jeg forstår!
+    knapp: Fortsett påmeldingen
+    required: Du må krysse av for "%godta" at du skal varsle lokalkontakten din.
+
 checkInfoAction:
     overskrift: Litt mer info
     topptekst: >

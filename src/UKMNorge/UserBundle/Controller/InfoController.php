@@ -121,7 +121,7 @@ class InfoController extends Controller {
 	 */
 	private function facebookSkjema($view_data) {
 		$app_id = $this->getParameter('facebook_client_id');
-		if( $this->getParameter('UKM_HOSTNAME') ) {
+		if( 'ukm.dev' ==  $this->getParameter('UKM_HOSTNAME') ) {
 			$redirectURL = 'https://delta.ukm.dev/web/app_dev.php/info';
 		} else {
 			$redirectURL = 'https://delta.ukm.no/info/';

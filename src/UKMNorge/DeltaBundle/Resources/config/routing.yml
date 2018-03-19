@@ -37,6 +37,26 @@ ukm_delta_ukmid_frist:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
 
+ukm_delta_ukmid_samtykke:
+    path: /ukmid/samtykke/
+    defaults: { _controller: UKMDeltaBundle:UKMID:samtykke }
+    methods: [GET]
+
+ukm_delta_ukmid_checksamtykke:
+    path: /ukmid/samtykke/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykke }
+    methods: [POST]
+
+ukm_delta_ukmid_samtykkevarsel:
+    path: /ukmid/varsle/
+    defaults: { _controller: UKMDeltaBundle:UKMID:samtykkeVarsel }
+    methods: [GET]
+
+ukm_delta_ukmid_checksamtykkevarsel:
+    path: /ukmid/varsle/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykkeVarsel}
+    methods: [POST]
+    
 ukm_delta_ukmid_checkinfo:
     path:     /ukmid/info/
     defaults: { _controller: UKMDeltaBundle:UKMID:checkInfo }
@@ -408,4 +428,62 @@ ukm_campaign_2017_los_bando:
 ukm_campaign_2017_los_bando_send:
     path: /ukmid/kampanje/losbando/
     defaults: { _controller: UKMDeltaBundle:DinSide:losBandoSend }
+    methods: [POST]
+    
+    
+    
+    
+ukm_nominasjon:
+    path: /ukmid/nominasjon/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:velg }
+    methods: [GET]
+
+# ALIAS FOR TING SOM BENYTTER $innslag->getType()->getKey()
+ukm_nominasjon_nettredaksjon:
+    path: /ukmid/nominasjon/media/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:media }
+    methods: [GET]
+
+ukm_nominasjon_media:
+    path: /ukmid/nominasjon/media/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:media }
+    methods: [GET]
+    
+ukm_nominasjon_media_save:
+    path: /ukmid/nominasjon/media/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:mediaSave }
+    methods: [POST]
+    
+ukm_nominasjon_arrangor:
+    path: /ukmid/nominasjon/arrangor/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorInfo }
+    methods: [GET]
+    
+ukm_nominasjon_arrangor_info_save:
+    path: /ukmid/nominasjon/arrangor/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorInfoSave }
+    methods: [POST]
+    
+ukm_nominasjon_arrangor_veivalg:
+    path: /ukmid/nominasjon/arrangor/rolle/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorVeivalg }
+    methods: [GET]
+
+ukm_nominasjon_arrangor_veivalg_save:
+    path: /ukmid/nominasjon/arrangor/rolle/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorVeivalgSave }
+    methods: [POST]
+
+ukm_nominasjon_arrangor_detaljer:
+    path: /ukmid/nominasjon/arrangor/detaljer/{type}/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorDetaljer, type: 'sjekk' }
+    requirements:
+        type: ([a-z]+)
+    methods: [GET]
+
+ukm_nominasjon_arrangor_detaljer_save:
+    path: /ukmid/nominasjon/arrangor/detaljer/{type}/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorDetaljerSave }
+    requirements:
+        type: ([a-z]+)
     methods: [POST]
