@@ -181,7 +181,11 @@ class UKMSecurityController extends BaseController {
     
         $result = $curl->process($url);
         if(isset($result->error)) {   
-            $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
+            $this->addFlash('error', 'Facebook-innloggingen feilet, prøv igjen eller kontakt UKM Support.');
+            $this->get('logger')->error("UKMSecurityController: Facebook-innlogging feilet!", array(
+                'code' => $code,
+                'redirect_uri' => $redirectURL
+                ));
             return $this->redirectToRoute('ukm_user_login');     
         }
 
