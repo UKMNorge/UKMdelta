@@ -13,6 +13,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $this->get('logger')->error("Example logging stuff!");
         return $this->render('default/index.html.twig');
     }
 
@@ -20,6 +21,7 @@ class DefaultController extends Controller
      * @Route("/exceptionTest/", name="Exception-test")
      */
     public function exceptionTestAction() {
+        $this->get('logger')->error("Example logging stuff!");
     	throw new Exception("Dette er en test-feil!");
     }
 }

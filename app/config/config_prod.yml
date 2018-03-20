@@ -22,6 +22,12 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        slacker:
+            type: slackwebhook
+            webhook-url: 'https://hooks.slack.com/services/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'
+            channel: '#systemtest'
+            level: error
+            channels: ['!assetic'] # Ignore assetic errors, as these will cause a burst of error messagess on every cache clear.
         console:
             type:  console
 
