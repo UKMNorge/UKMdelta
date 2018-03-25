@@ -24,7 +24,7 @@ class RedirectService {
             $key = $keyRepo->findOneBy(array('apiKey' => $rdirurl));
             if(!$key) {
                 $errorMsg = 'DIPBundle: Ukjent sted å sende brukerdata til ('.$rdirurl.').';
-                $this->container->get('logger')->error($errorMsg);
+                $this->logger->error($errorMsg);
                 throw new Exception($errorMsg);
             }
             $rdirurl = $key->getApiReturnURL();

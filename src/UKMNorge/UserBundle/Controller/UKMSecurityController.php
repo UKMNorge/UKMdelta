@@ -25,44 +25,51 @@ class UKMSecurityController extends BaseController {
 	public function loginAction(Request $request, $renderWithoutLayout=false)
     {	
 
+        $this->app_id = $this->getParameter('facebook_client_id');
+        $session = $request->getSession();
+
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->ambURL = 'https://ambassador.ukm.dev/app_dev.php/dip/login';
-            $this->ambDipURL = 'https://ambassador.ukm.dev/app_dev.php/dip/receive/';
             $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
         } 
         else {
-            $this->ambURL = 'https://ambassador.ukm.no/dip/login';
-            $this->ambDipURL = 'https://ambassador.ukm.no/dip/receive/';
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
         }
 
-        // Er dette en redirect-forespørsel?
+        // Er dette en redirect-forespørsel? I så fall, lagre i session.
         $rdirurl = '';
         $rdirtoken = '';
         if ($request->query->get('rdirurl')) {
-            $rdirurl = $request->query->get('rdirurl');
-            $rdirtoken = '?token='.$request->query->get('token');
-
-            // Lagre i session også
-            $request->getSession()->set('rdirurl', $rdirurl);
-            $request->getSession()->set('rdirtoken', $request->query->get('token'));
+            $session->set('rdirurl', $request->query->get('rdirurl'));
+            $session->set('rdirtoken', $request->query->get('token'));
         }
 
-        // Ber tjenesten om å få mer informasjon tilbake?
+        // Lagre redirect-url som Facebook skal sende oss til ved retur
+        $redirectURL = $this->deltaFBLoginURL.$rdirtoken;
+
+        // Ber en ekstern tjeneste om å få mer informasjon tilbake?
         if( $request->query->get('scope') ) {
-            $request->getSession()->set('scope', $request->query->get('scope'));
+            $session->set('scope', $request->query->get('scope'));
         } 
         else {
-            // Vask session for scope dersom det ikke er satt i request.
-            $request->getSession()->remove('scope');
-            $request->getSession()->remove('infoQueue');
+            // Vask session for scope dersom det ikke er satt i request. For å unngå feil ved re-innlogging++
+            $session->remove('scope');
+            $session->remove('infoQueue');
         }
-        
-        $app_id = $this->getParameter('facebook_client_id');
-        
-        $redirectURL = $this->deltaFBLoginURL.$rdirtoken;
-        
-        $session = $request->getSession();
+
+        // Hvis brukeren er innlogget, redirect de til rett sted.
+        $securityContext = $this->get('security.authorization_checker');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') || $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            
+            // Get the LoginSuccessHandler, which will redirect as proper
+            $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+            $request == $this->get('request');
+            $usertoken = $this->get('security.token_storage')->getToken();
+
+            $response = $handler->onAuthenticationSuccess($request, $usertoken);
+            return $response;
+        }
+
+        // Fyll inn data på innloggings-siden + CSRF-sjekk
         if (class_exists('\Symfony\Component\Security\Core\Security')) {
             $authErrorKey = Security::AUTHENTICATION_ERROR;
             $lastUsernameKey = Security::LAST_USERNAME;
@@ -93,35 +100,15 @@ class UKMSecurityController extends BaseController {
                 ? $this->get('form.csrf_provider')->generateCsrfToken('authenticate')
                 : null;
         }
+        
         $data = array(
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfToken,
+            'renderWithoutLayout' => $renderWithoutLayout,
+            'redirectURL' => $redirectURL,
         );
-        // Gjøres tidligere
-        $data['rdirurl'] = $rdirurl;
-        $data['rdirtoken'] = $rdirtoken;
-        // Sjekk om dette er en redirect-forespørsel
-        if ($rdirurl) {
-            // If already logged in:
-            $securityContext = $this->get('security.authorization_checker');
-            if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED') || $securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-                
-                $usertoken = $this->get('security.token_storage')->getToken();    
-                // Get the LoginSuccessHandler, which will redirect as proper
-                $request = Request::createFromGlobals();
-                $all = $request->request->all(); 
-                $all['_rdirurl'] = $data['rdirurl']; 
-                $all['_rdirtoken'] = $data['rdirtoken'];
-                $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
 
-                $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                return $response;
-            }
-        }
-
-        $data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
-		$data['renderWithoutLayout'] = $renderWithoutLayout;
         return $this->renderLogin($data);
     }
 
@@ -135,33 +122,37 @@ class UKMSecurityController extends BaseController {
      */
     protected function renderLogin(array $data)
     {
+        $data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$this->app_id.'&redirect_uri='.$data['redirectURL'].'&scope=public_profile,email';
         return $this->render('UKMUserBundle:Security:login.html.twig', $data);
     }
 
+    /**
+     * Retur-URL fra Facebook-innlogging.
+     * Når en bruker logger inn med facebook er det denne funksjonen som håndterer kommunikasjonen med Facebook og deretter
+     * autentisering hos oss (har vi bruker eller må vi opprette ny ++).
+     *
+     */
     public function fbloginAction() {
 
+        // Burde ligge i constructor
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->ambURL = 'https://ambassador.ukm.dev/app_dev.php/dip/login';
-            $this->ambDipURL = 'https://ambassador.ukm.dev/app_dev.php/dip/receive/';
             $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
         } 
         else {
-            $this->ambURL = 'https://ambassador.ukm.no/dip/login';
-            $this->ambDipURL = 'https://ambassador.ukm.no/dip/receive/';
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
         }
         
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
+        $redirectURL = $this->deltaFBLoginURL;
         
         // If mottatt error fra facebook
         $error = $req->query->get('error');
         if ($error == 'access_denied') {
             $this->addFlash('danger', 'Du må godkjenne UKM-appen for å logge inn med Facebook. Vi lover å ikke poste noe på veggen din.');
+            $this->get('logger')->notice("UKMSecurityController::fbloginAction: Fikk access_denied fra Facebook - dette er oftest at brukeren ikke har godkjent UKM-appen.");
             return $this->redirectToRoute('ukm_user_login');
         }
-
-        $redirectURL = $this->deltaFBLoginURL;
 
         if ($req->query->get('token')) {
             $rdirtoken = '?token='.$req->query->get('token');
@@ -180,9 +171,13 @@ class UKMSecurityController extends BaseController {
         $curl->timeout(50);
     
         $result = $curl->process($url);
-        if(isset($result->error)) {   
-            $this->addFlash('Facebook-innloggingen feilet, prøv igjen.');
-            return $this->redirectToRoute('ukm_user_login');     
+        if(isset($result->error)) {
+            $this->addFlash('error', 'Facebook-innloggingen feilet, prøv igjen eller kontakt UKM Support.');
+            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på et uventet sted.", array(
+                'code' => $code,
+                'redirect_uri' => $redirectURL
+                ));
+            return $this->redirectToRoute('ukm_user_login');
         }
 
         $token = $result->access_token;
@@ -196,38 +191,28 @@ class UKMSecurityController extends BaseController {
         if (isset($user->error)) {
             // Ofte: "This authorization code has been used."
             $this->addFlash('danger', 'Facebook-innloggingen feilet, prøv igjen.');
+            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på henting av brukerdata.", array(
+                    'error' => $user->error
+                ));
             return $this->redirectToRoute('ukm_user_login');
-
         }
         
         // Sjekk om brukeren er registrert hos oss fra før med facebook-id
         $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
         $ukm_user = $repo->findOneBy(array('facebook_id' => $user->id));
         if ($ukm_user) {
+
             // Vi har en bruker med denne IDen, logg han/hun inn.
+            $request = $this->get('request');
             $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
             $this->get('security.token_storage')->setToken($usertoken);
-
-            $request = $this->get('request');
             $event = new InteractiveLoginEvent($request, $usertoken);
             $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
-            // Fyll inn rdirtoken og rdirurl om de er satt
-            if ($rdirtoken = $request->query->get('token')) {
-                // Look up token
-                $tokenRepo = $this->getDoctrine()->getRepository('UKMUserBundle:DipToken');
-                $token = $tokenRepo->findOneBy(array('token' => $rdirtoken));
-                if($token) {
-                    $all['_rdirurl'] = $token->getLocation(); 
-                    $all['_rdirtoken'] = $rdirtoken;
-                    $request->request->replace($all);
-                    $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
 
-                    $response = $handler->onAuthenticationSuccess($request, $usertoken);
-                    return $response;
-                }
-            }
-            
-            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+            // Send til rett sted
+            $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
+            $response = $handler->onAuthenticationSuccess($request, $usertoken);
+            return $response;
         }
 
         // Sjekk om brukeren har en konto hos oss med samme e-post-adresse
@@ -255,10 +240,11 @@ class UKMSecurityController extends BaseController {
                 return $response;
             }
         }
+
+        // Ukjent/ny bruker, send de til registreringsskjemaet først
         require_once('UKM/inc/password.inc.php');
 
-        // TODO: Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
-        // Da må facebook-data i session / view_data
+        // Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
         if(isset($user->email))
             $this->get('session')->set('email', $user->email);
         if(isset($user->first_name))
