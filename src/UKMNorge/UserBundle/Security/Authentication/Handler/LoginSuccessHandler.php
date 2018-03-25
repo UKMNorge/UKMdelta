@@ -15,15 +15,9 @@ use DateTime;
 
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
-
     protected $router;
     protected $security;
-    private $ambURL;
-    private $ambDipURL;
-    private $rsvpURL;
-    private $rsvpDipURL;
-    // var $ambURL = 'http://ambassador.ukm.no/dip/login';
-
+    
     public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
     {
         $this->router = $router;
@@ -36,31 +30,21 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-        $response = null;        
-        $this->logger->info('DIPBundle: Authenticated successfully.');
-
-        // If rdirurl is defined - brukes i noen interne ting (login via facebook etc).
-        $rdirurl = $request->request->get('_rdirurl');
-        $token = $request->request->get('_rdirtoken');
-        
-        // Sjekk også session
+        $response = null;
         $session = $this->container->get('session');
-        if($session) {
-            if ($session->get('rdirurl')) {
-                $rdirurl = $session->get('rdirurl');
-                $token = $session->get('rdirtoken');
-            }
-        }
-        
+
+        $this->logger->info('DIPBundle: Authenticated successfully.');
+                
         // If logged in properly.
         if ($this->security->isGranted('ROLE_USER'))
         {       
             $user = $this->ukm_user->getCurrentUser();
-            if($rdirurl) {
+            if( $session->get('rdirurl') ) {
                 // Sjekk om tjenesten har bedt om mer informasjon via scope, og bygg i så fall listen over info vi mangler.
                 if( $session->get('scope') ) {
-                    $this->logger->info('UKMUserBundle: Tjenesten har bedt om mer informasjon via scopes.');
                     $scopes = explode(',', $session->get('scope'));
+                    $this->logger->info('UKMUserBundle::LoginSuccessHandler: Tjenesten har bedt om mer informasjon via scopes.', $scopes);
+
                     $information_queue = array();
                     foreach( $scopes as $scope) {
                         switch( $scope ) {
@@ -73,6 +57,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                                 if (true) {
                                     $information_queue[] = 'alder';
                                 }
+                            break;
                             case 'facebook': {
                                 if( null == $user->getFacebookId() || !is_numeric($user->getFacebookId()) ) {
                                     $information_queue[] = 'facebook';
@@ -83,7 +68,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                             // Stopper prosessen fordi noen tjenester kan kreve informasjonen for å fungere, 
                             // og det er bedre å få vite det ved innloggingen enn ved at systemet ikke funker på en rar måte.
                             default:
-                                $this->logger->error( "UKMUserBundle: Tjenesten du prøvde å logge inn på har bedt om en ukjent tilgang: " . $scope );
+                                $this->logger->critical( "UKMUserBundle: Tjenesten du prøvde å logge inn på har bedt om en ukjent tilgang: " . $scope );
                                 throw new Exception( "UKMUserBundle: Tjenesten du prøvde å logge inn på har bedt om en ukjent tilgang. Dette er en systemfeil, ta kontakt med UKM Support." );
                             break;
                         }
@@ -101,7 +86,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
                 }
             }
 
-            // Gjennomfør redirect til rett tjeneste eller UKMid.
+            // Gjennomfør redirect til rett tjeneste, skjema eller UKMid.
             $redirecter = $this->container->get('ukm_user.redirect');
             return $redirecter->doRedirect();
         }
