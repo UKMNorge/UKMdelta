@@ -160,6 +160,15 @@ class UKMSecurityController extends BaseController {
         }
 
         $code = $req->query->get('code');
+        if ( null == $code ) {
+            // Brukeren har ikke blitt sendt tilbake via facebook
+            $this->addFlash('danger', "Facebook-innloggingen feilet - prøv igjen, eller kontakt UKM Support");
+            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging forsøkt uten å gå via facebook - sannsynligvis bare en bot, men sjekk referrer uansett.", array(
+                    'referrer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'Ikke definert',
+                    'redirect_uri' => $redirectURL
+                ));
+            return $this->redirectToRoute('ukm_user_login');
+        }
         // Code is received, which means that the user logged in successfully to facebook.
         // Bytt code for en access-token
         $curl = new UKMCurl();
