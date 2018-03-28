@@ -164,7 +164,7 @@ class UKMSecurityController extends BaseController {
             // Brukeren har ikke blitt sendt tilbake via facebook
             $this->addFlash('danger', "Facebook-innloggingen feilet - prøv igjen, eller kontakt UKM Support");
             $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging forsøkt uten å gå via facebook - sannsynligvis bare en bot, men sjekk referrer uansett.", array(
-                    'referrer' => $_SERVER['HTTP_REFERER'],
+                    'referrer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'Ikke definert',
                     'redirect_uri' => $redirectURL
                 ));
             return $this->redirectToRoute('ukm_user_login');
