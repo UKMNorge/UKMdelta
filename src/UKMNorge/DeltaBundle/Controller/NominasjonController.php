@@ -14,6 +14,7 @@ use write_nominasjon;
 use nominasjon_media;
 use write_nominasjon_media;
 use monstringer_v2;
+use UKMmail;
 
 use UKMlogger;
 
@@ -214,7 +215,26 @@ class NominasjonController extends Controller
 	
 	public function mediaSaveAction( Request $request ) {
 
-		$nominasjon = $this->_loadOrCreateNominasjon( 'media' );
+		try {
+			$nominasjon = $this->_loadOrCreateNominasjon( 'media' );
+		} catch( Exception $e ) {
+			require_once('UKM/mail.class.php');
+			$user = $this->get('ukm_user')->getCurrentUser();
+
+			$epost = new UKMmail();
+			$epost->text(
+						$user->getName() .
+						' (PID: '. $user->getPameldUser() .') ' .
+						' får ikke fullført nominasjonen sin, da systemet ikke finner en videresendt bruker. Fint om dette kan fikses ASAP.'
+				)
+				->to('support@ukm.no')
+				->subject( 'NOMINASJON-FEIL: '. $user->getName() )
+				->setReplyTo( $user->getEmail(), $user->getName() )
+				->setFrom( $user->getEmail(), $user->getName() )
+			  ->ok();
+
+			return $this->render('UKMDeltaBundle:Nominasjon:ingenbruker.html.twig', [] );
+		}
 		$nominasjon->setPri1( $request->request->get('pri-1') );
 		$nominasjon->setPri2( $request->request->get('pri-2') );
 		$nominasjon->setPri3( $request->request->get('pri-3') );
@@ -277,7 +297,12 @@ class NominasjonController extends Controller
 		}
 		
 		if( !$nominert ) {
-			throw new Exception('Beklager, akkurat nå krever systemet at du har en påmelding på fylkesfestivalen før du kan nomineres. Vi jobber med å rette problemet, men send en epost til support@ukm.no om at du sliter med nominasjonen, så skal vi hjelpe deg' );
+			throw new Exception(
+				'Beklager, akkurat nå krever systemet at du har en påmelding på fylkesfestivalen før du kan nomineres. '.
+				'Vi jobber med å rette problemet, men send en epost til support@ukm.no om at du sliter med nominasjonen, så skal vi hjelpe deg'
+				,
+				1
+			);
 		}
 		
 		$fylke_monstring = monstringer_v2::fylke( $nominert->getKommune()->getFylke(), $this->get('ukm_delta.season')->getActive() );
