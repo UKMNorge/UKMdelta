@@ -60,6 +60,13 @@ class NominasjonController extends Controller
 		$festival = $request->request->get('festival');
 
 		if( $planhelg == 'ja' && $festival == 'ja' ) {
+			// Hvis ikke brukeren er videresendt, stopp allerede her.
+			try {
+				$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+			} catch( Exception $e ) {
+				return $this->_sendMissingUserEmail();
+			}
+			
 			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
 		}
 		
@@ -74,8 +81,15 @@ class NominasjonController extends Controller
 		} else {
 			$flagg = 'festivalen';
 		}
-		$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
-		write_nominasjon::saveSorry( $nominasjon, $flagg);
+		
+		// Hvis brukeren ikke er videresendt til fylket hverken kan eller trenger
+		// vi å flagge vedkommende
+		try {
+			$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+			write_nominasjon::saveSorry( $nominasjon, $flagg);
+		} catch( Exception $e ) {
+			// Do nothing
+		}
 
 		return $this->render('UKMDeltaBundle:Nominasjon:sorry.html.twig', $view_data);
 	}
@@ -171,7 +185,11 @@ class NominasjonController extends Controller
 	}
 	
 	public function arrangorDetaljerSaveAction( Request $request, $type ) {
-		$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+		try {
+			$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+		} catch( Exception $e ) {
+			return $this->_sendMissingUserEmail();
+		}
 
 		switch( $type ) {
 			case 'lydtekniker':
@@ -212,28 +230,12 @@ class NominasjonController extends Controller
 		];
 		return $this->render('UKMDeltaBundle:Nominasjon:media.html.twig', $view_data );
 	}
-	
-	public function mediaSaveAction( Request $request ) {
 
+	public function mediaSaveAction( Request $request ) {
 		try {
 			$nominasjon = $this->_loadOrCreateNominasjon( 'media' );
 		} catch( Exception $e ) {
-			require_once('UKM/mail.class.php');
-			$user = $this->get('ukm_user')->getCurrentUser();
-
-			$epost = new UKMmail();
-			$epost->text(
-						$user->getName() .
-						' (PID: '. $user->getPameldUser() .') ' .
-						' får ikke fullført nominasjonen sin, da systemet ikke finner en videresendt bruker. Fint om dette kan fikses ASAP.'
-				)
-				->to('support@ukm.no')
-				->subject( 'NOMINASJON-FEIL: '. $user->getName() )
-				->setReplyTo( $user->getEmail(), $user->getName() )
-				->setFrom( $user->getEmail(), $user->getName() )
-			  ->ok();
-
-			return $this->render('UKMDeltaBundle:Nominasjon:ingenbruker.html.twig', [] );
+			return $this->_sendMissingUserEmail();
 		}
 		$nominasjon->setPri1( $request->request->get('pri-1') );
 		$nominasjon->setPri2( $request->request->get('pri-2') );
@@ -246,6 +248,26 @@ class NominasjonController extends Controller
 		
 		return $this->redirectToRoute('ukm_delta_ukmid_homepage');
 	}
+	
+	private function _sendMissingUserEmail() {
+		require_once('UKM/mail.class.php');
+		$user = $this->get('ukm_user')->getCurrentUser();
+
+		$epost = new UKMmail();
+		$epost->text(
+					$user->getName() .
+					' (PID: '. $user->getPameldUser() .') ' .
+					' får ikke fullført nominasjonen sin, da systemet ikke finner en videresendt bruker. Fint om dette kan fikses ASAP.'
+			)
+			->to('support@ukm.no')
+			->subject( 'NOMINASJON-FEIL: '. $user->getName() )
+			->setReplyTo( $user->getEmail(), $user->getName() )
+			->setFrom( $user->getEmail(), $user->getName() )
+		  ->ok();
+
+		return $this->render('UKMDeltaBundle:Nominasjon:ingenbruker.html.twig', [] );
+	}
+
 	
 	private function _loadOrCreateNominasjon( $type ) {
 		require_once('UKM/logger.class.php');
