@@ -30,9 +30,9 @@
 					| 
 					{{ innslag.monstring.get('pl_name')|capitalize }}
 				</small>
-				{% if innslag.innslag.getNominasjon( 'land' ).har() %}
+				{% if innslag.innslag.getNominasjon( 'land' ).har() and innslag.innslag.getNominasjon('land').harDeltakerskjema() %}
 					<br />
-					<label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn</label>
+					<label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn (#{{ innslag.innslag.getNominasjon('land').getId() }})</label>
 				{% endif %}
 				
 			</div>
