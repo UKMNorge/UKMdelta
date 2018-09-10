@@ -8,7 +8,9 @@
 				<div class="col-2 px-0">
 					<div class="overunder">
 						<div class="over">{{ person.age is defined ? person.age : '?' }} år</div>
-						<div class="under">{{ person.age is defined ? 'person.alder.ar'|trans({ "year": "now"|date("Y") - person.age }, 'base') : 'år' }}</div>
+						<div class="under">
+							{{ person.age is defined and person.age != "25+" ? 'person.alder.ar'|trans({ "year": "now"|date("Y") - person.age }, 'base') : '' }}
+						</div>
 					</div>
 				</div>
 				<div class="col-7">
