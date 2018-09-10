@@ -138,7 +138,7 @@ class InnslagService {
 		}
 
 		$res = $qry->run();
-		while($row = mysql_fetch_assoc($res)) {
+		while($row = SQL::fetch($res)) {
 			$innslag = new stdClass();
 			if ($row['bt_id'] == 1) {
 				$innslag->type = $row['b_kategori']; 
