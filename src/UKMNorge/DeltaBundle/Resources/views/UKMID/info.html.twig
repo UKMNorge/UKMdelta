@@ -25,7 +25,7 @@
 						<label>{{ 'checkInfoAction.alder'|trans }}</label>
 						<select name="age" required class="form-control">
 							<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'checkInfoAction.alderVelger.Label'|trans }}</option> 
-							{% for i in 10..25 %}
+							{% for i in 10..24 %}
 								<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans( { "year": "now"|date("Y") - i } ) }}</option> 
 							{% endfor %}
 							<option value="0">{{ 'checkInfoAction.alderVelger.gammel'|trans }}</option>
