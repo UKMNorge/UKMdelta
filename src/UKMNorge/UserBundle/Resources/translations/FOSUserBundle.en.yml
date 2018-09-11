@@ -1,4 +1,5 @@
 ukm_user:
+    email: Epost
     first_name: Fornavn
     last_name: Etternavn
     phone: Mobilnummer

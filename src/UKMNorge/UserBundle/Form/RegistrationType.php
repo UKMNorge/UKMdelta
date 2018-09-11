@@ -10,6 +10,11 @@ use UKMNorge\UserBundle\Form\Type\TelType;
 
 class RegistrationType extends AbstractType
 {
+    public function __construct($container) {
+        $this->container = $container;
+        $this->session = $container->get('session');
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 	    parent::buildForm($builder, $options);
@@ -17,8 +22,16 @@ class RegistrationType extends AbstractType
         $builder->remove('username')
         		->remove('plainPassword');
 
-        $builder->add('first_name', 'text', array('label' => 'ukm_user.first_name'))
-        		->add('last_name', 'text', array('label' => 'ukm_user.last_name'))
+
+        $builder->add('email', 'text', array(
+                    'label' => 'ukm_user.email',
+                    'data' => $this->session->get('email')))
+                ->add('first_name', 'text', array(
+                    'label' => 'ukm_user.first_name', 
+                    'data' => $this->session->get('first_name')))
+        		->add('last_name', 'text', array(
+                    'label' => 'ukm_user.last_name',
+                    'data' => $this->session->get('last_name')))
         		->add('phone', new TelType(), array('label' => 'ukm_user.phone'));
     }
 
