@@ -26,6 +26,8 @@ class RegistrationType extends AbstractType
         $builder->add('email', 'text', array(
                     'label' => 'ukm_user.email',
                     'data' => $this->session->get('email')))
+                ->add('facebook_id', 'hidden', array(
+                    'data' => $this->session->get('facebook_id')))
                 ->add('first_name', 'text', array(
                     'label' => 'ukm_user.first_name', 
                     'data' => $this->session->get('first_name')))
