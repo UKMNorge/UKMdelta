@@ -29,7 +29,7 @@ class UKMSecurityController extends BaseController {
         $session = $request->getSession();
 
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/app_dev.php/fblogin';
         } 
         else {
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
@@ -136,7 +136,7 @@ class UKMSecurityController extends BaseController {
 
         // Burde ligge i constructor
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/app_dev.php/fblogin';
         } 
         else {
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
