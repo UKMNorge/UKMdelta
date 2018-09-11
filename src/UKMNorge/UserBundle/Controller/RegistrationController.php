@@ -27,6 +27,11 @@ use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
 {
+
+	public function __construct() {
+
+	}
+	
     public function registerAction(Request $request)
     {
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
@@ -134,7 +139,6 @@ class RegistrationController extends BaseController
 
 		    		}
 		    	}
-		    	//var_dump($errors);
 
 		    	// Redirect til register-form igjen?
 		    	return $this->render('FOSUserBundle:Registration:register.html.twig', 
@@ -226,7 +230,7 @@ class RegistrationController extends BaseController
 		// og brukeren være godkjent allerede før han selv kommer til denne siden
 		if( null == $user->getConfirmationToken() ) {
 			if( $user->isEnabled() ) {
-				die('The Nordboe bug occurred. Please advise');				
+				die('The Nordboe bug occurred. Please advise');
 			}
 		}
 		
@@ -280,7 +284,8 @@ class RegistrationController extends BaseController
 			'phone' => $phone));
 		if ($this->checkSMSValidation($phone)) {
 			// Alt er ok, vi har mottatt SMS og skrudd på brukeren!
-			return $this->confirmedAction();			
+			#return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+			return $this->confirmedAction($this->getRequest());
 			#return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
 		}
 
@@ -316,10 +321,14 @@ class RegistrationController extends BaseController
 			
         	$userManager->updateUser($user);
 
+        	// Let the user know his new password.
+        	$event = new GetResponseUserEvent($user, $this->get('request'));
+        	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
+
         	// Log in user
         	$request = Request::createFromGlobals();
         	$response = new Response();
-        	#$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
+
         	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 			return 1;
 		}
@@ -341,7 +350,7 @@ class RegistrationController extends BaseController
     /**
      * Tell the user his account is now confirmed
      */
-    public function confirmedAction()
+    public function confirmedAction(Request $request)
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
@@ -378,19 +387,17 @@ class RegistrationController extends BaseController
         $userManager->updateUser($user);
 
         if (null === $response = $event->getResponse()) {
-            $url = $this->generateUrl('fos_user_registration_confirmed');
+            $url = $this->generateUrl('ukm_delta_ukmid_homepage');
             $response = new RedirectResponse($url);
         }
 
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 
         $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-        #var_dump($request);
         $usertoken = $this->get('security.token_storage')->getToken();   
         $response = $handler->onAuthenticationSuccess($request, $usertoken);
-        //var_dump($response);
+
         return $response;
 
-		return $this->confirmedAction();
     }
 }
