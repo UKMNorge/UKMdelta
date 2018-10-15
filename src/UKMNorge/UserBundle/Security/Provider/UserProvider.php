@@ -7,9 +7,12 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserProvider implements UserProviderInterface
+use FOS\UserBundle\Security\UserProvider as FosUserBundleProvider;
+
+#class UserProvider implements UserProviderInterface
+class UserProvider extends FosUserBundleProvider
 {
-    private $userManager;
+    protected $userManager;
 
     public function __construct(UserManagerInterface $userManager)
     {
@@ -38,7 +41,7 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-    public function refreshUser(UserInterface $user)
+    /*public function refreshUser(UserInterface $user)
     {
         return $this->userManager->refreshUser($user);
     }
@@ -46,5 +49,5 @@ class UserProvider implements UserProviderInterface
     public function supportsClass($class)
     {
         return $this->userManager->supportsClass($class);
-    }
+    }*/
 }

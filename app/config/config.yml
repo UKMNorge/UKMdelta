@@ -94,6 +94,9 @@ fos_user:
     service:
         mailer: ukm_user.mailer
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    from_email: 
+        address: "support@ukm.no"
+        sender_name: "UKM Support"
     firewall_name: ukm_delta_wall
     user_class: UKMNorge\UserBundle\Entity\User
     registration:

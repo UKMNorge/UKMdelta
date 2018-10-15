@@ -29,7 +29,7 @@ class UKMSecurityController extends BaseController {
         $session = $request->getSession();
 
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/app_dev.php/fblogin';
         } 
         else {
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
@@ -134,9 +134,12 @@ class UKMSecurityController extends BaseController {
      */
     public function fbloginAction() {
 
+        $logger = $this->get('logger');
+        $logger->info('UKMSecurityController: fbloginAction()');
+
         // Burde ligge i constructor
         if ( $this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
-            $this->deltaFBLoginURL = 'https://delta.ukm.dev/web/app_dev.php/fblogin';
+            $this->deltaFBLoginURL = 'https://delta.ukm.dev/app_dev.php/fblogin';
         } 
         else {
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
@@ -150,11 +153,13 @@ class UKMSecurityController extends BaseController {
         $error = $req->query->get('error');
         if ($error == 'access_denied') {
             $this->addFlash('danger', 'Du må godkjenne UKM-appen for å logge inn med Facebook. Vi lover å ikke poste noe på veggen din.');
-            $this->get('logger')->notice("UKMSecurityController::fbloginAction: Fikk access_denied fra Facebook - dette er oftest at brukeren ikke har godkjent UKM-appen.");
+            $logger->notice("UKMSecurityController::fbloginAction: Fikk access_denied fra Facebook - dette er oftest at brukeren ikke har godkjent UKM-appen.");
             return $this->redirectToRoute('ukm_user_login');
         }
 
         if ($req->query->get('token')) {
+            $logger->info('UKMSecurityController: Got token in query - UKM redirect.');
+
             $rdirtoken = '?token='.$req->query->get('token');
             $redirectURL = $redirectURL.$rdirtoken;
         }
@@ -163,13 +168,14 @@ class UKMSecurityController extends BaseController {
         if ( null == $code ) {
             // Brukeren har ikke blitt sendt tilbake via facebook
             $this->addFlash('danger', "Facebook-innloggingen feilet - prøv igjen, eller kontakt UKM Support");
-            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging forsøkt uten å gå via facebook - sannsynligvis bare en bot, men sjekk referrer uansett.", array(
+            $logger->error("UKMSecurityController::fbloginAction: Facebook-innlogging forsøkt uten å gå via facebook - sannsynligvis bare en bot, men sjekk referrer uansett.", array(
                     'referrer' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'Ikke definert',
                     'redirect_uri' => $redirectURL
                 ));
             return $this->redirectToRoute('ukm_user_login');
         }
         // Code is received, which means that the user logged in successfully to facebook.
+        $logger->info('UKMSecurityController: Swapping our received code for an access token...');
         // Bytt code for en access-token
         $curl = new UKMCurl();
         $url = 'https://graph.facebook.com/v2.10/oauth/access_token';
@@ -182,7 +188,7 @@ class UKMSecurityController extends BaseController {
         $result = $curl->process($url);
         if(isset($result->error)) {
             $this->addFlash('error', 'Facebook-innloggingen feilet, prøv igjen eller kontakt UKM Support.');
-            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på et uventet sted.", array(
+            $logger->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på et uventet sted.", array(
                 'code' => $code,
                 'redirect_uri' => $redirectURL
                 ));
@@ -190,6 +196,8 @@ class UKMSecurityController extends BaseController {
         }
 
         $token = $result->access_token;
+
+        $logger->info('UKMSecurityController: Got token from Facebook, fetching user data...');
 
         // Hent brukerdata
         $url = 'https://graph.facebook.com/v2.10/me';
@@ -200,16 +208,18 @@ class UKMSecurityController extends BaseController {
         if (isset($user->error)) {
             // Ofte: "This authorization code has been used."
             $this->addFlash('danger', 'Facebook-innloggingen feilet, prøv igjen.');
-            $this->get('logger')->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på henting av brukerdata.", array(
+            $logger->error("UKMSecurityController::fbloginAction: Facebook-innlogging feilet på henting av brukerdata.", array(
                     'error' => $user->error
                 ));
             return $this->redirectToRoute('ukm_user_login');
         }
-        
+        $logger->debug('UKMSecurityController: No error registered fetching user data.');
+
         // Sjekk om brukeren er registrert hos oss fra før med facebook-id
         $repo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
         $ukm_user = $repo->findOneBy(array('facebook_id' => $user->id));
         if ($ukm_user) {
+            $logger->info('UKMSecurityController: Found user already registered.');
 
             // Vi har en bruker med denne IDen, logg han/hun inn.
             $request = $this->get('request');
@@ -224,17 +234,24 @@ class UKMSecurityController extends BaseController {
             return $response;
         }
 
+        $logger->info('UKMSecurityController: No user with that facebook_id registered');
         // Sjekk om brukeren har en konto hos oss med samme e-post-adresse
         // Hvis vi fikk e-post fra facebook
         if (isset($user->email)) {
             $ukm_user = $repo->findOneBy(array('email' => $user->email));
+            $logger->info('UKMSecurityController: Checking for matching emails.');
+            
             // Vi har en bruker med den e-posten
             if ($ukm_user) {
+
+                $logger->notice('UKMSecurityController: Merging user ata based on matching emails!');    
+
                 // Slå sammen bruker
                 $ukm_user->setFacebookId($user->id);
                 $userManager = $this->get('fos_user.user_manager');
                 $userManager->updateUser($ukm_user);
 
+                $logger->info('UKMSecurityController: Done, logging in user...');
                 // Logg inn brukeren
                 $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
                 $this->get('security.token_storage')->setToken($usertoken);
@@ -252,6 +269,8 @@ class UKMSecurityController extends BaseController {
 
         // Ukjent/ny bruker, send de til registreringsskjemaet først
         require_once('UKM/inc/password.inc.php');
+
+        $logger->notice('UKMSecurityController: No user data found - send user to registration with data from Facebook.');
 
         // Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
         if(isset($user->email))

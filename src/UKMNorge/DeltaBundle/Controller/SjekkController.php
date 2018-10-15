@@ -62,7 +62,7 @@ class SjekkController extends Controller {
 		if(!$res) {
 			throw new Exception('Systemfeil: Noe gikk feil i tilkoblingen til databasen. Prøv igjen, eller kontakt UKM Norge Support.');
 		}
-		while ($r = mysql_fetch_assoc($res)) {
+		while ($r = SQL::fetch($res)) {
 			$persons[] = new person($r['p_id']);
 		}
 		$videresendte_innslag = array();

@@ -38,7 +38,7 @@ checkInfoAction:
     alderVelger:
         Label: Velg riktig alder
         aar: år (født i year)
-        gammel: Over 25 år
+        gammel: 25 år eller eldre
     nesteLabel: Neste
 
 indexAction:

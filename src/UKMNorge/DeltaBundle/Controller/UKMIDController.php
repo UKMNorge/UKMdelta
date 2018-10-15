@@ -297,7 +297,7 @@ class UKMIDController extends Controller
         // Hvis ikke, kjør facebook-tilkoblings-kode:
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
-        $redirectURL = 'https://delta.'.($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/web/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/ukmid/fbconnect';
+        $redirectURL = 'https://delta.'.($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/ukmid/fbconnect';
 
         if ($req->query->get('code')) {
             $code = $req->query->get('code');
@@ -335,9 +335,6 @@ class UKMIDController extends Controller
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
 
-            // echo "</body>";
-            // var_dump($req);
-            // die();
             // Gjennomfør loginsuccess, så man blir redirectet om man skal bli redirectet?
             $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
             $usertoken = $this->get('security.token_storage')->getToken(); 
