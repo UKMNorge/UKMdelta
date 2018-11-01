@@ -9,7 +9,7 @@
 				<p>Hvis du har glemt passordet, kan vi sende deg en SMS så du kan lage nytt passord</p>
 				<p class="d-none d-sm-block">&nbsp;</p>
 	
-				<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+				<form action="{{ path('ukm_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
 					{% if invalid_username is defined %}
 						<div class="alert alert-danger">
 							Klarte ikke å finne en bruker med det mobilnummeret!
