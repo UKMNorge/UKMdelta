@@ -18,6 +18,12 @@ use FOS\UserBundle\Controller\ResettingController as BaseController;
 
 class ResettingController extends BaseController
 {
+
+    /* For new FOS setup (-.-') */
+    public function __construct() {
+
+    }
+
     /**
      * Request reset user password: submit form and send email
      */
