@@ -73,7 +73,7 @@ class RegistrationController extends BaseController
 
 			$response = $event->getResponse();
             if (null === $response) {
-                $url = $this->generateUrl('fos_user_registration_confirmed');
+                $url = $this->generateUrl('ukm_delta_ukmid_homepage');
                 $response = new RedirectResponse($url);
             }
 
@@ -284,13 +284,10 @@ class RegistrationController extends BaseController
 			'phone' => $phone));
 		if ($this->checkSMSValidation($phone)) {
 			// Alt er ok, vi har mottatt SMS og skrudd på brukeren!
-			#return $this->redirectToRoute('ukm_delta_ukmid_homepage');
 			return $this->confirmedAction($this->getRequest());
-			#return $this->render('UKMUserBundle:Registration:sms-okay.html.twig', $view_data);
 		}
 
 		return $this->render('UKMUserBundle:Registration:wait-sms.html.twig', $view_data);
-		// S
 	}
 
 	# Reverse SMS Validation
@@ -332,7 +329,7 @@ class RegistrationController extends BaseController
         	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
 			return 1;
 		}
-		// var_dump($smsVal);
+		
 		return 0;
 	}
 
@@ -372,7 +369,6 @@ class RegistrationController extends BaseController
 
         if (null === $user) {
 	        return $this->render('UKMUserBundle:Resetting:tokenUsed.html.twig');
-//            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
         }
 
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
