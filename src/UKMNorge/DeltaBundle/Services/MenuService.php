@@ -35,11 +35,6 @@ class MenuService {
 			];
 
 			if( is_object( $user ) && $user !== null ) {
-				$menu['pages'][] = [
-					'id' => 'dinside',
-					'url' => $router->generate('ukm_delta_ukmid_homepage'),
-					'title' => 'Din side'
-				];
 
 				if( date('m') < 8 && date('m') > 3 ) {
 					$menu['pages'][] = [
