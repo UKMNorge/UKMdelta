@@ -41,6 +41,7 @@ twig:
         Sitemap: "@ukmdesign.sitemap"
         THEME: "%UKMresponsive.theme%"
         section: "%UKMresponsive.section%"
+        menu: "@ukm_delta.menu"
 
 # Assetic Configuration
 assetic:
