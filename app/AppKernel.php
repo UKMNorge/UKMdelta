@@ -42,11 +42,17 @@ class AppKernel extends Kernel
     
 	public function getCacheDir()
     {
+        if( !isset( $_ENV['HOME'] ) ) {
+            $_ENV['HOME'] = sys_get_temp_dir();
+        }
         return $_ENV['HOME'].'/cache/symfony/ukmdelta/'.$this->getEnvironment();
         #return '/tmp/symfony/ukmdelta/cache';
     }
 	public function getLogDir()
     {
+        if( !isset( $_ENV['HOME'] ) ) {
+            $_ENV['HOME'] = sys_get_temp_dir();
+        }
         return $_ENV['HOME'].'/logs/symfony/ukmdelta/'.$this->getEnvironment();
         #return '/phptmp/symfony/ukmdelta/log';
     }
