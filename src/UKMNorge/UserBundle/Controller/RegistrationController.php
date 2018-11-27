@@ -267,11 +267,11 @@ class RegistrationController extends BaseController
 			to("support@ukm.no")->
 			setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
 			subject('Manuell validering for '.$phone)->
-			message('Deltaker med mobilnummer '.$phone.' har prøvd å registrere seg, men fikk ikke SMS med godkjenningskode og trykte derfor på "Ikke fått SMS"-knappen. Dersom alt er OK vil du få flere e-poster merket med det samme nummeret innen kort tid. Kode som skal sendes inn er satt til '.$user->getId().'.');
+			message('Deltaker med mobilnummer '.$phone.' har prøvd å registrere seg, men fikk ikke SMS med godkjenningskode og trykte derfor på "Ikke fått SMS"-knappen. Dersom alt er OK vil du få flere e-poster merket med det samme nummeret innen kort tid. Kode som skal sendes inn er satt til '.$user->getId().'. Steg 1 av 3.');
 		if('ukm.dev' == UKM_HOSTNAME) {
 			$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
 		} else {
-			$this->get('logger')->notice("UKMdelta: Sending notification email.");
+			$this->get('logger')->notice("UKMdelta: Sending reverse sms notification email.");
 			$mail_result = $mail->ok();	
 		}
 
@@ -315,10 +315,25 @@ class RegistrationController extends BaseController
 		if ($smsVal->getValidated() == true) {	
 			$userProvider = $this->get('ukm_user.user_provider');
 			$userManager = $this->get('fos_user.user_manager');
-			// $userManager = $this->get('ukm_user')
-			// Kaster exception if not?
+			
 			$user = $userProvider->findUserByPhoneOrEmail($phone);
 			
+			// Send e-post til support om at brukeren godkjennes i Deltasystemet.
+			require_once('UKMconfig.inc.php');
+			require_once('UKM/mail.class.php');
+			$mail = new UKMmail();
+			$mail->
+				to("support@ukm.no")->
+				setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
+				subject('Manuell validering for '.$phone)->
+				message('Deltaker med mobilnummer '.$phone.' har fullført registreringen. Brukeren er opprettet og godkjent med ID: '.$user->getId().'. Steg 3 av 3. freshdesk: lukk denne support-saken.');
+			if('ukm.dev' == UKM_HOSTNAME) {
+				$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
+			} else {
+				$this->get('logger')->notice("UKMdelta: Sending reverse sms user approved notification email.");
+				$mail_result = $mail->ok();	
+			}
+
 			/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         	$dispatcher = $this->get('event_dispatcher');
 
