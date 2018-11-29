@@ -14,6 +14,7 @@ namespace UKMNorge\UserBundle\Controller;
 	use FOS\UserBundle\Model\UserInterface;
 /* E.O FROM PARENT */
 
+use UKMmail;
 use UKMNorge\UserBundle\UKMUserEvents;
 use UKMNorge\UserBundle\Entity\SMSValidation;
 use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
@@ -109,10 +110,8 @@ class RegistrationController extends BaseController
 				    		// Redirect etc
 				    		
                     		$handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-		                    #var_dump($request);
 
 		                    $response = $handler->onAuthenticationSuccess($request, $usertoken);
-		                    #var_dump($response);
 		                    return $response;
 				    	}
 
@@ -130,13 +129,10 @@ class RegistrationController extends BaseController
 		    			
 		    			// Sjekk om dette er en som kommer via facebook:
 		    			if($this->get('session')->get('facebook_id')) {
-				    		
 				    		$errors['email'][$email_key] = 'fos_user.email.already_used_fb';
 				    		// Redirect til et nytt view!
-
 				    		return $this->redirectToRoute('ukm_user_registration_existing_email', array('email' => $email));
 				    	}
-
 		    		}
 		    	}
 
@@ -250,8 +246,6 @@ class RegistrationController extends BaseController
 		$view_data['nummer'] = $phone;
 
 		$userProvider = $this->get('ukm_user.user_provider');
-		// $userManager = $this->get('ukm_user')
-		// Kaster exception if not?
 		$user = $userProvider->findUserByPhoneOrEmail($phone);
 
 		// Registrer i SMSValidation-tabellen
@@ -265,8 +259,23 @@ class RegistrationController extends BaseController
 		$em->persist($smsval);
 		$em->flush();
 
+		// Send e-post til support om at Revers-validering er igangsatt for et nummer
+		require_once('UKMconfig.inc.php');
+		require_once('UKM/mail.class.php');
+		$mail = new UKMmail();
+		$mail->
+			to("support@ukm.no")->
+			setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
+			subject('Manuell validering for '.$phone)->
+			message('Deltaker med mobilnummer '.$phone.' har prøvd å registrere seg, men fikk ikke SMS med godkjenningskode og trykte derfor på "Ikke fått SMS"-knappen. Dersom alt er OK vil du få flere e-poster merket med det samme nummeret innen kort tid. Kode som skal sendes inn er satt til '.$user->getId().'. Steg 1 av 3.');
+		if('ukm.dev' == UKM_HOSTNAME) {
+			$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
+		} else {
+			$this->get('logger')->notice("UKMdelta: Sending reverse sms notification email.");
+			$mail_result = $mail->ok();	
+		}
+
 		$view_data['kode'] = 'V ' . $user->getId();
-		// var_dump($user);
 		return $this->render('UKMUserBundle:Registration:no-sms.html.twig', $view_data);
 	}
 	
@@ -306,10 +315,25 @@ class RegistrationController extends BaseController
 		if ($smsVal->getValidated() == true) {	
 			$userProvider = $this->get('ukm_user.user_provider');
 			$userManager = $this->get('fos_user.user_manager');
-			// $userManager = $this->get('ukm_user')
-			// Kaster exception if not?
+			
 			$user = $userProvider->findUserByPhoneOrEmail($phone);
 			
+			// Send e-post til support om at brukeren godkjennes i Deltasystemet.
+			require_once('UKMconfig.inc.php');
+			require_once('UKM/mail.class.php');
+			$mail = new UKMmail();
+			$mail->
+				to("support@ukm.no")->
+				setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
+				subject('Manuell validering for '.$phone)->
+				message('Deltaker med mobilnummer '.$phone.' har fullført registreringen. Brukeren er opprettet og godkjent med ID: '.$user->getId().'. Steg 3 av 3. freshdesk: lukk denne support-saken.');
+			if('ukm.dev' == UKM_HOSTNAME) {
+				$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
+			} else {
+				$this->get('logger')->notice("UKMdelta: Sending reverse sms user approved notification email.");
+				$mail_result = $mail->ok();	
+			}
+
 			/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         	$dispatcher = $this->get('event_dispatcher');
 
