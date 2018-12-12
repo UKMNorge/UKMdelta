@@ -229,9 +229,9 @@ class RegistrationController extends BaseController
 				die('The Nordboe bug occurred. Please advise');
 			}
 		}
-		
-		$url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
-		return $this->redirect( $url );
+
+		// Fordi FOS er teit i nyere versjoner, må vi enten override fos_user_registration_confirm, eller logge inn brukeren direkte.
+		return $this->confirmAction($request, $user->getConfirmationToken());
 	}
 
 
