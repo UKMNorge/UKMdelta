@@ -23,15 +23,13 @@
 				<div class="alert alert-danger">
 					<h4>Feil mobilnummer / passord</h4>
 					<p>
-						Fant ingen bruker med det mobilnummeret og passordet. Har du glemt passordet?
+						Fant ingen bruker med det mobilnummeret og passordet.
 						<br />
-						<a href="{{ path('fos_user_resetting_request') }}">Klikk her for å få nytt passord</a>
+						<a href="{{ path('fos_user_resetting_request') }}">Klikk her hvis du har glemt passordet.</a>
 					</p>
-					<p>&nbsp;</p>
-					<p>
-						Hvis du ikke har en bruker, 
-						<br />
-						<a href="{{ path('fos_user_registration_register') }}">kan du opprette en UKM-bruker</a>
+					<h4>Har du ikke bruker?</h4>
+                    <p>
+                        <a href="{{ path('fos_user_registration_register') }}">Opprett UKMid-bruker.</a>
 					</p>
 				</div>
 			{% elseif error %}
@@ -80,15 +78,14 @@
 		</div>	
 
 		<div class="col-12 col-sm-6 col-md-5">
-			
 			<h2 class="my-2">Opprett bruker</h2>
 		
 			<p class="mt-3">
-                <a href="{{ facebookLoginURL }}" class="btn btn-block btn-outline-primary autoshrink">Registrer deg med facebook</a>
+                <a href="{{ facebookLoginURL }}" class="btn btn-block btn-outline-primary">Registrer deg med facebook</a>
             </p>
 
             <p>
-                <a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-outline-secondary autoshrink">Registrer deg uten facebook</a>
+                <a href="{{ url('fos_user_registration_register') }}" class="btn btn-block btn-outline-secondary">Registrer deg uten facebook</a>
             </p>
         </div>
 	</div>
