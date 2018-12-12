@@ -4,16 +4,12 @@
 	<div class="container">	
 		<div class="row">
 			<div class="col-12">
-				<h1 class="center">Meld deg på UKM</h1>
-					
-				<p class="lead center">
-					Du må ha en bruker for å melde deg på.
-					<br class="d-none d-sm-block" />
-					Dette går fort å opprette.
+				<p class="lead">
+					Hvis du ikke har en bruker kan du opprette en, det går fort.
 				</p>
+            </div>
+        </div>
+    </div>
 				
-				{{ render(controller('UKMUserBundle:UKMSecurity:login', {'renderWithoutLayout':true} )) }}
-			</div>
-		</div>
-	</div>
+    {{ render(controller('UKMUserBundle:UKMSecurity:login', {'renderWithoutLayout':true} )) }}
 {% endblock %}

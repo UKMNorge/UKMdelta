@@ -2720,7 +2720,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMresponsive.git",
-                "reference": "0f633622e68d4c3fa5325701c9a7c88d41080f70"
+                "reference": "705cde7f3daf9eb312abd71ce2c31eaa411adb1f"
             },
             "require": {
                 "mariusmandal/wpoo": "^1.0",
@@ -2746,7 +2746,7 @@
             ],
             "description": "Felles design for UKM.no og undersider",
             "homepage": "http://github.com/UKMNorge/UKMresponsive",
-            "time": "2018-11-06T22:50:46+00:00"
+            "time": "2018-12-12T19:13:54+00:00"
         }
     ],
     "packages-dev": [
