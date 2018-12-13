@@ -14,5 +14,6 @@
 /composer.phar
 /web/js/*
 /web/css/*
-*.DS_Store
+/web/images/*
 /web/error_log
+*.DS_Store
