@@ -37,35 +37,35 @@ ukm_delta_ukmid_frist:
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
 
-ukm_delta_ukmid_samtykke:
-    path: /ukmid/samtykke/
-    defaults: { _controller: UKMDeltaBundle:UKMID:samtykke }
+ukm_delta_ukmid_personvern:
+    path: /ukmid/personvern/
+    defaults: { _controller: UKMDeltaBundle:UKMID:personvern }
     methods: [GET]
 
-ukm_delta_ukmid_checksamtykke:
-    path: /ukmid/samtykke/
-    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykke }
-    methods: [POST]
-
-ukm_delta_ukmid_samtykkevarsel:
-    path: /ukmid/varsle/
-    defaults: { _controller: UKMDeltaBundle:UKMID:samtykkeVarsel }
-    methods: [GET]
-
-ukm_delta_ukmid_checksamtykkevarsel:
-    path: /ukmid/varsle/
-    defaults: { _controller: UKMDeltaBundle:UKMID:checkSamtykkeVarsel}
+ukm_delta_ukmid_checkpersonvern:
+    path: /ukmid/personvern/
+    defaults: { _controller: UKMDeltaBundle:UKMID:checkPersonvern }
     methods: [POST]
     
 ukm_delta_ukmid_checkinfo:
-    path:     /ukmid/info/
+    path:     /ukmid/requisites/
     defaults: { _controller: UKMDeltaBundle:UKMID:checkInfo }
     methods:  [GET]
 
-ukm_delta_ukmid_verifyInfo:
-    path:	/ukmid/info/
-    defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
-    methods:  [POST]
+#ukm_delta_ukmid_verifyInfo:
+#    path:	/ukmid/info/
+#    defaults: { _controller: UKMDeltaBundle:UKMID:verifyInfo }
+#    methods:  [POST]
+
+ukm_delta_ukmid_alder:
+    path: /ukmid/alder/
+    defaults: { _controller: UKMDeltaBundle:UKMID:requestAge }
+    methods: [GET]
+
+ukm_delta_ukmid_alder_save:
+    path: /ukmid/alder/
+    defaults: { _controller: UKMDeltaBundle:UKMID:saveAge }
+    methods: [POST]
 
 ukm_delta_ukmid_contact:
     path:     /ukmid/kontaktperson/

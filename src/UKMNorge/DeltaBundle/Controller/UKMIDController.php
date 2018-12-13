@@ -40,128 +40,107 @@ class UKMIDController extends Controller
     }
 
 
-    public function samtykkeAction()
+    public function personvernAction()
     {
 		$view_data = [
 			'translationDomain' => 'ukmid',
 		];
 
-		return $this->render('UKMDeltaBundle:UKMID:samtykke.html.twig', $view_data );
+		return $this->render('UKMDeltaBundle:UKMID:personvern.html.twig', $view_data );
 	}
 	
-    public function samtykkeVarselAction()
+    /**
+     * checkPersonvern
+     * Kontrollerer brukerens svar på samtykke-spørsmålet
+     */
+    public function checkPersonvernAction( Request $request )
     {
-		$view_data = [
-			'translationDomain' => 'ukmid',
-		];
-
-		return $this->render('UKMDeltaBundle:UKMID:samtykkeVarsel.html.twig', $view_data );
-	}
-
-    public function checkSamtykkeAction( Request $request )
-    {
-		if( $request->request->get('samtykke') == 'samtykke-ja' ) {
-			return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
-		}
-		
-		if( $request->request->get('samtykke') == 'samtykke-forbehold') {
-			return $this->redirectToRoute('ukm_delta_ukmid_samtykkevarsel');
-		}
-		
-		$this->addFlash('danger', $this->get('translator')->trans('samtykkeAction.action.required', [], 'ukmid'));
-
-		$view_data = [
-			'translationDomain' => 'ukmid',
-		];
-		return $this->render('UKMDeltaBundle:UKMID:samtykke.html.twig', $view_data );
-	}
-	
-    public function checkSamtykkeVarselAction( Request $request )
-    {
-		if( $request->request->get('varsel') == 'varsel-ok' ) {
-			return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
-		}
-		
-		$varsel = $this->get('translator')->trans(
-			'samtykkeVarselAction.required',
-			[
-				'%godta' => $this->get('translator')->trans('samtykkeVarselAction.checkbox', [], 'ukmid')
-			],
-			'ukmid'
-		);
-		
-		$this->addFlash('danger', $varsel);
-
-		$view_data = [
-			'translationDomain' => 'ukmid',
-		];
-		return $this->render('UKMDeltaBundle:UKMID:samtykkeVarsel.html.twig', $view_data );
-	}
-
-    public function checkInfoAction()
-    {
-        $view_data = array();
-        $view_data['translationDomain'] = 'ukmid';
-
+        $userManager = $this->container->get('fos_user.user_manager');
         $user = $this->get('ukm_user')->getCurrentUser();
+
+        // Lagre svaret
+        $user->setSamtykke( $request->request->get('personvern') == 'ja' );
+        $userManager->updateUser($user);
         
-        // Har vi all data lagret om denne brukeren?
-        // Fjernet adresse og poststed 15.11.2016 pga forenkling i påmeldingen, ref. arbeidsseminar i mai.
-        /*if ($user->getAddress() != null && $user->getPostNumber() != null && $user->getPostPlace() != null && $user->getBirthdate() != null) {*/
-        if ( $user->getPostNumber() != null && $user->getBirthdate() != null) {
-            // Gå videre til geovalg
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
-        }
+        return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
+	}
+	
+    public function requestAgeAction() {
+        $view_data = [
+            'translationDomain' => 'ukmid'
+        ];
+        
+        $userManager = $this->container->get('fos_user.user_manager');
+        $user = $this->get('ukm_user')->getCurrentUser();
 
         // Beregn alder fra fødselsår
-        if( $user->getBirthdate() ) {
+        if( $user->getBirthdate() !== null ) {
             $now = new DateTime('now');
             $age = $user->getBirthdate()->diff($now)->y;
             $view_data['age'] = $age;
         }
-        
-        $view_data['user'] = $user;
 
-        // Rendre fyll-inn-visningen.
-        return $this->render('UKMDeltaBundle:UKMID:info.html.twig', $view_data );
+        return $this->render('UKMDeltaBundle:UKMID:alder.html.twig', $view_data );
     }
 
-    public function verifyInfoAction()
-    {
+    public function saveAgeAction() {
         $dato = new DateTime('now');
         $userManager = $this->container->get('fos_user.user_manager');
-
         $user = $this->get('ukm_user')->getCurrentUser();
 
         // Ta imot post-variabler
         $request = Request::createFromGlobals();
-
-        #$address = $request->request->get('address');
-        $postNumber = $request->request->get('postNumber');
-        #$postPlace = $request->request->get('postplace');
         $age = $request->request->get('age');
 
-        //TODO: Sikkerhetssjekk input?
-
         // Beregn birthdate basert på alder
-        if ($age != 0) {
+        if ($age == 0) {
+            // Tilsvarer UNIX Timestamp = 0. Kunne også lagra som en int.
+            $dato->setTimestamp(0);
+        } else {
             $birthYear = (int)date('Y') - $age;
             $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
             $dato->setTimestamp($birthdate);
         }
-        else {
-            // Tilsvarer UNIX Timestamp = 0. Kunne også lagra som en int.
-            $dato->setTimestamp(0);
-        }
+        
         // Legg til verdier i user-bundle
-        #$user->setAddress($address);
-        $user->setPostNumber($postNumber);
-        #$user->setPostPlace($postPlace);
         $user->setBirthdate($dato);
 
+        if( $age > 0 && $age < 15 ) {
+            $navn = $request->request->get('foresatt_navn');
+            $mobil = $request->request->get('foresatt_mobil');
+            $user->setForesattNavn( $navn );
+            $user->setForesattMobil( $mobil );
+        }
+
         $userManager->updateUser($user);
-        // Alt lagret ok
+        
+        // Alt lagret ok, gå tilbake og sjekk at vi har alt.
         return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
+    }
+
+    public function checkInfoAction()
+    {
+        $user = $this->get('ukm_user')->getCurrentUser();
+        
+        if( $user->getBirthdate() == null ) {
+            // Gå til spørsmål om alder
+            return $this->redirectToRoute('ukm_delta_ukmid_alder');
+        } else {
+            // Deltakere under 15, som tidligere har oppgitt alder,
+            // men ikke oppgitt foresatte må innom alder og foresatt-siden på nytt
+            $now = new DateTime('now');
+            $age = $user->getBirthdate()->diff($now)->y;
+            
+            if( $age < 15 && $user->getForesattMobil() == null ) {
+                return $this->redirectToRoute('ukm_delta_ukmid_alder');
+            }
+        }
+
+        if( $user->getSamtykke() === null ) {
+            return $this->redirectToRoute('ukm_delta_ukmid_personvern');
+        }
+        
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
     }
 
     public function editContactAction() {
