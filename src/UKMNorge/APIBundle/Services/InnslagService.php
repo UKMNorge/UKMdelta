@@ -4,10 +4,14 @@ namespace UKMNorge\APIBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use UKMNorge\DeltaBundle\seasonService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use UKMNorge\Samtykke;
 use innslag;
+use innslag_v2;
 use person;
 use monstring;
+use monstring_v2;
 use monstringer;
+use monstringer_v2;
 use Exception;
 use Request;
 use SQL;
@@ -93,7 +97,9 @@ class InnslagService {
 		$p_id = $user->getPameldUser();
 
 		$innslag = $this->hent($b_id);
-		$innslag->delete('delta', $p_id, $pl_id);
+        $innslag->delete('delta', $p_id, $pl_id);
+        
+        $this->avbrytSamtykkeRequest( $innslag, $pl_id );
 	}
 
 	public function hentInnslagFraType($type, $pl_id, $person_id) {
@@ -166,45 +172,70 @@ class InnslagService {
 		return getBandTypeFromID($innslag->get('bt_id'));
 	}
 
-	public function leggTilPerson($innslagsID, $personID) {
-		// $innslagsID er b_id. $person er personid eller personobjekt?
-		$innslag = new innslag($innslagsID, false); // False fordi b_status ikke skal trenge å være 8.
+	public function leggTilPerson($innslagId, $personID) {
+        require_once('UKM/monstringer.class.php');
+		// $innslagId er b_id. $person er personid eller personobjekt?
+		$innslag = new innslag($innslagId, false); // False fordi b_status ikke skal trenge å være 8.
 		
-		$this->sjekkTilgang($innslagsID);
-		$innslag->addPerson($personID);		
+		$this->sjekkTilgang($innslagId);
+        $innslag->addPerson($personID);
+
+        if( $innslag->get('b_status') == 8 ) {
+            // Finn aktiv sesong
+            $seasonService = $this->container->get('ukm_delta.season');
+            $season = $seasonService->getActive();
+
+            // Finn mønstring fra innslagets kommune
+            $kommune = $innslag->get('kommuneID');
+            $monstring = monstringer_v2::kommune( $kommune, $season );
+
+            // Hent innslag og person i V2
+            $innslag_v2 = $this->getInnslagV2( $innslagId, $monstring->getId() );
+            $person_v2 = $innslag_v2->getPersoner()->get( $personID );
+            
+            // Oppdater samtykket
+            $samtykke = new Samtykke\Person( $person_v2, $innslag_v2 );
+            $samtykke->leggTilInnslag( $innslagId );
+        }
 	}
 
-	public function fjernPerson($innslagsID, $personID) {
+	public function fjernPerson($innslagId, $personID) {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
-		$innslag = new innslag($innslagsID, false);
+		$innslag = new innslag($innslagId, false);
 		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 		
-
-		$this->sjekkTilgang($innslagsID);
+		$this->sjekkTilgang($innslagId);
 
 		$innslag->removePerson($personID, 'delta', $user->getPameldUser(), $pl_id);
-		
+    
+        // Hent innslag og person i V2
+        $innslag_v2 = $this->getInnslagV2( $innslagId, $pl_id );
+        $person_v2 = $innslag->getPersoner()->get( $personID );
+        
+        // Oppdater samtykke
+        $samtykke = new Samtykke\Person( $person_v2, $innslag_v2 );
+        $samtykke->fjernInnslag( $innslagId );
 	}
 
-	public function lagreInstrument($innslagsID, $personID, $pl_id, $instrument) {
-		$innslag = new innslag($innslagsID, false);
-		$person = new person($personID, $innslagsID);
+	public function lagreInstrument($innslagId, $personID, $pl_id, $instrument) {
+		$innslag = new innslag($innslagId, false);
+		$person = new person($personID, $innslagId);
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$person->set('instrument', $instrument);
-		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
+		$person->set('b_id', $innslagId); // Settes for at instrumentlagring skal funke.
 		$person->lagre('delta', $user->getId(), $pl_id);
 	}
 
 
-	public function lagreInstrumentTittellos($innslagsID, $personID, $pl_id, $instrument, $instrument_object) {
-		$innslag = new innslag($innslagsID, false);
-		$person = new person($personID, $innslagsID);
+	public function lagreInstrumentTittellos($innslagId, $personID, $pl_id, $instrument, $instrument_object) {
+		$innslag = new innslag($innslagId, false);
+		$person = new person($personID, $innslagId);
 		
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		
 		$person->set('instrument', $instrument);
 		$person->set('instrument_object', json_encode( $instrument_object ) );
-		$person->set('b_id', $innslagsID); // Settes for at instrumentlagring skal funke.
+		$person->set('b_id', $innslagId); // Settes for at instrumentlagring skal funke.
 		$person->lagre('delta', $user->getPameldUser(), $pl_id);
 	}
 	
@@ -282,7 +313,49 @@ class InnslagService {
 		// $warnings = $this->_warningToText($warnings);
 
 		return $validate;
-	}
+    }
+    
+    /**
+     * Hent V2-innslag
+     */
+    public function getInnslagV2( $innslagId, $monstringId ) {
+        require_once('UKM/monstring.class.php');
+        require_once('UKM/samtykke/person.class.php');
+
+        $monstring = new monstring_v2( $monstringId );
+        return $monstring->getInnslag()->get( $innslagId, true );
+    }
+
+    /**
+     * Iterer over alle personer og opprett samtykke-request hvis den
+     * ikke allerede eksisterer
+     * 
+     * Default-state er 'ikke_sendt'. Trenger derfor ikke å kjøre setStatus()
+     */
+    public function requestSamtykke( $innslagId, $monstringId ) {
+        $innslag = $this->getInnslagV2( $innslagId, $monstringId );
+
+        // Hvis innslaget ikke er fullstendig påmeldt, ikke send samtykke-sms
+        if( $innslag->getStatus() == 8 ) {
+            foreach( $innslag->getPersoner()->getAll() as $person ) {
+                $samtykke = new Samtykke\Person( $person, $innslag );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Avbryt samtykke-request for alle personer i innslaget
+     */
+    public function avbrytSamtykkeRequest( $innslagId, $monstringId ) {
+        $innslag = $this->getInnslagV2( $innslagId, $monstringId );
+
+        foreach( $innslag->getPersoner()->getAll() as $person ) {
+            $samtykke = new Samtykke\Person( $person, $innslag );
+            $samtykke->fjernInnslag( $innslagId );
+        }
+    }
 
 	private function _warningToText($warnings) {
 		$output = array();
