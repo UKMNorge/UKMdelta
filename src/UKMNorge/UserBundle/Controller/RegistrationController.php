@@ -229,9 +229,9 @@ class RegistrationController extends BaseController
 				die('The Nordboe bug occurred. Please advise');
 			}
 		}
-		
-		$url = $this->get('router')->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
-		return $this->redirect( $url );
+
+		// Fordi FOS er teit i nyere versjoner, må vi enten override fos_user_registration_confirm, eller logge inn brukeren direkte.
+		return $this->confirmAction($request, $user->getConfirmationToken());
 	}
 
 
@@ -325,7 +325,7 @@ class RegistrationController extends BaseController
 			$mail->
 				to("support@ukm.no")->
 				setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
-				subject('Manuell validering for '.$phone)->
+				subject('Re: Manuell validering for '.$phone)->
 				message('Deltaker med mobilnummer '.$phone.' har fullført registreringen. Brukeren er opprettet og godkjent med ID: '.$user->getId().'. Steg 3 av 3. freshdesk: lukk denne support-saken.');
 			if('ukm.dev' == UKM_HOSTNAME) {
 				$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
