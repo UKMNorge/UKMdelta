@@ -58,7 +58,7 @@
 
 					<div class="form-group">
 						<label>{{ 'contactAction.mobil'|trans }}</label>
-						<input name="mobil" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}" />
+						<input name="mobil" maxlength="8" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}" />
 					</div>
 					
 					<div class="form-group">

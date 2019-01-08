@@ -186,6 +186,7 @@ class PersonService {
 		$person = new person($personID);
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 
+        $mobil = preg_replace('/\D/', '', $mobil );
 		if ($person->get('p_phone') != $mobil) {
 			$person->set('p_phone', $mobil);
 			$person->lagre('delta', $user->getId(), $pl_id);

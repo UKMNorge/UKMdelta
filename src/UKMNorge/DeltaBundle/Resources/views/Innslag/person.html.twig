@@ -34,7 +34,7 @@
 					
 					<div class="form-group"> 
 						<label>{{ 'person.mobil.label'|trans({}, 'base') }}</label>
-						<input type="tel" required name="mobil" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}" />
+						<input type="tel" required name="mobil" maxlength="8" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}" />
 					</div>
 					
 					<div class="form-group"> 
