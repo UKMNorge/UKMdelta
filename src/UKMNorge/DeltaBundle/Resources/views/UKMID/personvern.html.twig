@@ -19,22 +19,6 @@
 	</div>
 
 	<div class="container">	
-		<div class="row">
-			<div class="col-12">
-				{# CONTENT #}
-                <h2>{{ 'personvernAction.media.overskrift'|trans }}</h2>
-				<p class="lead">{{ 'personvernAction.media.ingress'|trans }}</p>
-					
-				<p>
-				    <b>{{ 'personvernAction.versjon.kort'|trans }}</b>{{ 'personvernAction.media.kort'|trans|nl2br }}
-				</p>
-				
-				<p class="right">
-					<a href="#" class="btn btn-outline-secondary btn-sm">{{ 'personvernAction.versjon.lang'|trans|nl2br }}</a>
-				</p>
-				
-			</div>
-		</div>
 		
 		<div class="row">
 			<div class="col-12">
@@ -42,20 +26,36 @@
                 <h2>{{ 'personvernAction.datalagring.overskrift'|trans }}</h2>
 				<p class="lead">{{ 'personvernAction.datalagring.ingress'|trans }}</p>					
 				<p>
-				    <b>{{ 'personvernAction.versjon.kort'|trans }}</b>{{ 'personvernAction.datalagring.kort'|trans|nl2br }}
+				    {{ 'personvernAction.datalagring.kort'|trans|nl2br }}
 				</p>
 				
 				<p class="right">
-					<a href="#" class="btn btn-outline-secondary btn-sm">{{ 'personvernAction.versjon.lang'|trans|nl2br }}</a>
+					<a href="//personvern.{{ UKM_HOSTNAME }}/datalagring/" target="_blank" class="btn btn-outline-secondary btn-sm this-is-js">{{ 'personvernAction.versjon.lang'|trans|nl2br }}</a>
 				</p>
 				
 			</div>
 		</div>
-		
+
+		<div class="row">
+			<div class="col-12">
+				{# CONTENT #}
+                <h2>{{ 'personvernAction.media.overskrift'|trans }}</h2>
+				<p class="lead">{{ 'personvernAction.media.ingress'|trans }}</p>
+					
+				<p>
+				    {{ 'personvernAction.media.kort'|trans|nl2br }}
+				</p>
+				
+				<p class="right">
+					<a href="//personvern.{{ UKM_HOSTNAME }}/pamelding/#langversjonPersonvern" target="_blank" class="btn btn-outline-secondary btn-sm this-is-js">{{ 'personvernAction.versjon.lang'|trans|nl2br }}</a>
+				</p>
+				
+			</div>
+		</div>		
 		
         <div class="row">
 			<div class="col-12">
-                <h2>Fortsett påmelding</h2>
+                <h2></h2>
 				<form action="{{ url('ukm_delta_ukmid_checkpersonvern') }}" method="POST" autocomplete="off">
 				
 					<div class="form-group">
@@ -74,16 +74,20 @@
 					</div>
 
                     <div id="forklaring_personvern_nei" class="mt-4" style="display:none;">
-                        <h2>
-                            {{ 'personvernAction.media.nei.overskrift'|trans }}
-                        </h2>
-                        
-                        <p>
-                            <b>{{ 'personvernAction.media.nei.obs'|trans }}</b>{{ 'personvernAction.media.nei.kort'|trans|nl2br }}
-                        </p>
-                        
+                        <div class="alert alert-info">
+                            <p>
+                                <b>{{ 'personvernAction.media.nei.obs'|trans }}</b>
+                            </p>
+                            <p>
+                                {{ 'personvernAction.media.nei.kort'|trans|nl2br }}
+                            </p>
+                            <p>
+                                <a href="//personvern.{{ UKM_HOSTNAME }}/pamelding/#langversjonPersonvern" target="_blank" class="this-is-js">{{ 'personvernAction.versjon.lesmer'|trans|nl2br }}</a>
+                            </p>
+                        </div>
+
                         <p class="right">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">{{ 'personvernAction.versjon.lang'|trans|nl2br }}</a>
+					        
                         </p>
 
                         <div class="clearfix"></div>

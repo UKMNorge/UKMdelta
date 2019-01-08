@@ -2,29 +2,32 @@ personvernAction:
     versjon:
         kort: 'Kort-versjon: '
         lang: Les den lange versjonen
+        lesmer: Les mer
+        ekstremkort: |
+            Du kan bli tatt bilde av og filmet til UKM.no og dette kan legges ut på UKMs sosiale medier de neste to årene. 
+            Vi vil aldri drite deg ut eller legge ut pinlige bilder, og du kan når som helst gi oss beskjed om å slette bilder/filmer av deg.
+            Vi lagrer påmeldingen din.
     datalagring:
         overskrift: Datalagring
-        ingress: Vi lagrer påmeldingen din, og gir aldri informasjonen videre til andre.
+        ingress: Vi lagrer påmeldingen din, men selger aldri informasjonen videre til andre.
         kort: |
-            Hvert år sletter vi informasjon vi ikke trenger, men offentlig informasjon (navn, hva du har deltatt med osv) lagres i arkivet.
-            
-            Vi lagrer også mobilnummeret ditt, slik at du senere kan hente ut all informasjon vi har lagret på deg.
+            Offentlig informasjon (navn, hva du har deltatt med osv) lagrer vi på UKM.no og i arkivet, mens alle andre detaljer slettes hvert år.
+            Vi lagrer også mobilnummeret ditt, slik at du senere kan hente ut alt vi har lagret om deg.
     media:    
         overskrift: Personvern
         ingress: UKM er et offentlig arrangement hvor det blir tatt bilder og film.
         kort: |
-            Bilder og film vi lager legges ut på UKM.no, og kan legges ut på UKMs sosiale medier de neste tre årene. 
-
+            Bilder og film vi lager legges ut på UKM.no, og kan bli lagt ut på UKMs sosiale medier de neste to årene. 
             Vi vil aldri drite deg ut eller legge ut pinlige bilder, og du kan når som helst gi oss beskjed om å slette bilder/filmer av deg.
         nei:
             overskrift: Vi gir lokalkontakten din beskjed
-            obs: 'OBS: '
+            obs: 'UKM har registrert at det ikke skal tas bilder/film av deg.'
             kort: |
                 Fordi UKM er et offentlig arrangement kan andre ta bilder/film av deg, selv om vi ikke gjør det. Hvis noen ønsker å ta et bilde av deg må du selv si nei.
     action:
-        knapp: Fortsett
-        ja: Ja, det er greit at det blir tatt bilder og video av meg.
-        nei: Nei, jeg vil ikke at UKM tar bilder og video av meg.
+        knapp: Fortsett påmelding
+        ja: Det er greit at det blir tatt bilder og video av meg.
+        nei: Jeg ønsker ikke at UKM tar bilder/film av meg.
         required: Du må svare på spørsmålet for å delta på UKM.
 
 checkInfoAction:
