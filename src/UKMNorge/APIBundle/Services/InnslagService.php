@@ -96,11 +96,13 @@ class InnslagService {
 		$user = $this->container->get('ukm_user')->getCurrentUser();
 		$p_id = $user->getPameldUser();
 
-		$innslag = $this->hent($b_id);
-        $innslag->delete('delta', $p_id, $pl_id);
-        
+        $innslag = $this->hent($b_id);
+
+        // Avbryt samtykke før avmelding
         $this->avbrytSamtykkeRequest( $b_id, $pl_id );
-	}
+
+        $innslag->delete('delta', $p_id, $pl_id);
+    }
 
 	public function hentInnslagFraType($type, $pl_id, $person_id) {
 		$alle_innslag = $this->hentInnslagFraKontaktperson( $person_id, null );
