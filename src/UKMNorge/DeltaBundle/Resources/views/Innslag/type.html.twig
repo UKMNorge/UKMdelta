@@ -27,14 +27,11 @@
 					{% for enkelttype in type if pl.bandTypeAllowed( enkelttype.bt_id ) %}
 						<li class="list-group-item delta-type triggerLink click py-1">
 							<div class="row">
-								<div class="col-9 typeText" style="padding-top: .3em;">
+								<div class="col-12 typeText" style="padding-top: .3em;">
 									<a href="{{ path('ukm_delta_ukmid_pamelding_' ~ enkelttype.ico ~ '_hvem', 
 									{ 	k_id: k_id,  
 										pl_id: pl_id }) }}" class="actionLink" id="type_{{ enkelttype.ico }}">{{ enkelttype.name|raw }}
 									</a> 
-								</div>
-								<div class="col-3 center">
-									<img src="//ico.ukm.no/delta/delta-{{ enkelttype.ico }}-64.png" width="35" />
 								</div>
 							</div>
 							{% if enkelttype.ico == 'nettredaksjon' %}
@@ -54,7 +51,7 @@
 					{% endfor %}
 					</ul> 
 				{% endfor %}
-				<div class="col-12 center">
+				<div class="col-12 center mt-4">
 					<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'avbryt'|trans({}, 'base') }}</a>
 				</div>
 			</div>

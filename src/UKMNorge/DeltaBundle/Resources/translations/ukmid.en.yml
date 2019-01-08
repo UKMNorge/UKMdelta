@@ -1,45 +1,52 @@
-samtykkeAction:
-    overskrift: Samtykke om fotografering og filming
-    ingress: |
-        På UKM blir det ofte tatt bilder av deltakerne og video-opptak av de som opptrer.
-        Noen ganger blir dette lagt ut på nettsidene til UKM.
-    tekst: |
-        Du må bekrefte at det er greit at det blir tatt bilde eller gjort opptak av deg.
-        Hvis du under 15 år så må du spørre foreldre / foresatte om det er greit.
-        
-        Dette gjelder for alle du melder på (for eksempel hvis du melder på et band).
-    knapp: Fortsett
+personvernAction:
+    versjon:
+        kort: 'Kort-versjon: '
+        lang: Les den lange versjonen
+        lesmer: Les mer
+        ekstremkort: |
+            Du kan bli tatt bilde av og filmet til UKM.no og dette kan legges ut på UKMs sosiale medier de neste to årene. 
+            Vi vil aldri drite deg ut eller legge ut pinlige bilder, og du kan når som helst gi oss beskjed om å slette bilder/filmer av deg.
+            Vi lagrer påmeldingen din.
+    datalagring:
+        overskrift: Datalagring
+        ingress: Vi lagrer påmeldingen din, men selger aldri informasjonen videre til andre.
+        kort: |
+            Offentlig informasjon (navn, hva du har deltatt med osv) lagrer vi på UKM.no og i arkivet, mens alle andre detaljer slettes hvert år.
+            Vi lagrer også mobilnummeret ditt, slik at du senere kan hente ut alt vi har lagret om deg.
+    media:    
+        overskrift: Personvern
+        ingress: UKM er et offentlig arrangement hvor det blir tatt bilder og film.
+        kort: |
+            Bilder og film vi lager legges ut på UKM.no, og kan bli lagt ut på UKMs sosiale medier de neste to årene. 
+            Vi vil aldri drite deg ut eller legge ut pinlige bilder, og du kan når som helst gi oss beskjed om å slette bilder/filmer av deg.
+        nei:
+            overskrift: Vi gir lokalkontakten din beskjed
+            obs: 'UKM har registrert at det ikke skal tas bilder/film av deg.'
+            kort: |
+                Fordi UKM er et offentlig arrangement kan andre ta bilder/film av deg, selv om vi ikke gjør det. Hvis noen ønsker å ta et bilde av deg må du selv si nei.
     action:
-        ja: Ja, det er greit at det blir tatt bilder og video av meg/oss
-        forbehold: Nei, dere kan ikke ta bilde og video av meg/oss
+        knapp: Fortsett påmelding
+        ja: Det er greit at det blir tatt bilder og video av meg.
+        nei: Jeg ønsker ikke at UKM tar bilder/film av meg.
         required: Du må svare på spørsmålet for å delta på UKM.
-
-samtykkeVarselAction:
-    overskrift: Varsle lokalkontakten din
-    ingress: Du må varsle arrangøren av UKM (lokalkontakten) der du skal melde deg på om at det ikke kan tas bilder eller gjøres opptak av deg.
-    tekst: ''
-    liste: 
-        label: Dette gjør du slik:
-        element1: Når du har gjennomført påmeldingen klikker du på "vis kontaktpersoner"
-        element2: Send en e-post til kontaktpersonen og gi beskjed om at de ikke må filme eller ta bilde av deg.
-    checkbox: Ok, jeg forstår!
-    knapp: Fortsett påmeldingen
-    required: Du må krysse av for "%godta" at du skal varsle lokalkontakten din.
 
 checkInfoAction:
     overskrift: Litt mer info
     topptekst: >
-       Du blir nå registrert som kontaktperson for denne påmeldingen. 
-       Derfor trenger vi litt mer informasjon om deg.
+       Du blir nå registrert som kontaktperson for denne påmeldingen.
     adresse: Adresse
     postnummer: Postnummer
     poststed: Poststed
-    alder: Alder
+    alder: Hvor gammel er du?
     alderVelger:
         Label: Velg riktig alder
         aar: år (født i year)
         gammel: 25 år eller eldre
     nesteLabel: Neste
+    foresatt:
+      forklaring: Fordi du er under 15 trenger vi navn og mobilnummer til en av dine foreldre/foresatte.
+      navn: Navn
+      mobil: Mobilnummer
 
 indexAction:
     hei: Hei %name!

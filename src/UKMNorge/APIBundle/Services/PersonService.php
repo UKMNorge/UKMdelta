@@ -3,8 +3,13 @@ namespace UKMNorge\APIBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use person;
+use person_v2;
 use DateTime;
 use Exception;
+use monstring_v2;
+use innslag_v2;
+
+use UKMNorge\Samtykke;
 
 require_once('UKM/person.class.php');
 use SQL;
@@ -197,8 +202,50 @@ class PersonService {
 		}
 	}
 
+    /**
+     * Oppdater personvern-valg for brukeren
+     * Setter samme innstilling på ss3_participant-objektet som delta-brukeren
+     */
+    public function oppdaterPersonvern( $user, $innslagId, $monstringId ) {
+        /**
+         * Hvis dette skjer er funksjonen kalt på feil sted i koden,
+         * men det kan jo skje.
+         */
+        if ($user->getPameldUser() === null) {
+            return false;
+        }
+        $person = new person_v2( $user->getPameldUser() );
+        
+        require_once('UKM/samtykke/person.class.php');
+        $sesong = $this->container->get('ukm_delta.season')->getActive();
+        $status = $user->getSamtykke() ? 
+            'godkjent' : 
+            'ikke_godkjent';
+        $ip = isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ? 
+            $_SERVER['HTTP_CF_CONNECTING_IP'] :
+            $_SERVER['REMOTE_ADDR'];
 
+        // Hent mønstringen
+        require_once('UKM/monstring.class.php');
+        require_once('UKM/samtykke/person.class.php');
 
+        $monstring = new monstring_v2( $monstringId );
+        $innslag = $monstring->getInnslag()->get( $innslagId, true );
+
+        // Opprett og lagre samtykke
+        $samtykke = new Samtykke\Person( $person, $innslag );
+        $samtykke->setStatus( $status, $ip );
+        $samtykke->persist();
+
+        // Hvis vi har foresatt, lagre dette også
+        if( $user->getForesattMobil() != null ) {
+            $samtykke->setForesatt(
+                $user->getForesattNavn(),
+                $user->getForesattMobil()
+            );
+            $samtykke->persist();
+        }
+        return true;
+    }
 }
-
 ?>

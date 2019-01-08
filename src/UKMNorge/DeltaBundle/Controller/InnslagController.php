@@ -104,11 +104,6 @@ class InnslagController extends Controller
     	return $this->render('UKMDeltaBundle:Innslag:who'. ($this->_tittellos( $type ) ? '_tittellos':'') .'.html.twig', $view_data );
     }
     
-/*    public function who_tittellosAction($k_id, $pl_id, $type, $translationDomain)
-    {   
-        return $this->whoAction( $k_id, $pl_id, $type, $translationDomain, true);
-    }
-*/
     /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
@@ -256,15 +251,24 @@ class InnslagController extends Controller
             $person = $personService->hent($user->getPameldUser());
         }
 
+        /**
+         * Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
+         * i denne _tittelløse_ kategorien, gå til redigering
+         */
 		if( $this->_tittellos( $type ) ) {
 			$meldt_pa_som_type = $innslagService->hentInnslagFraType($type, $pl_id, $person->get('p_id'));
 			if( $meldt_pa_som_type ) {
 				$view_data['b_id'] = $meldt_pa_som_type->get('b_id');
 				return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
 			}
-		}
+        }
+        
         // Opprett et nytt innslag
         $innslag = $innslagService->opprett($k_id, $pl_id, $type, $hvem, $person, $user->getId());        
+        
+        // Flytt personvern-tilbakemelding over på person-objektet
+        $personService->oppdaterPersonvern( $user, $innslag->get('b_id'), $pl_id );
+
 
         $view_data['b_id'] = $innslag->get('b_id');
         //var_dump($hvem);
@@ -733,6 +737,9 @@ class InnslagController extends Controller
         $view_data['frist'] = $frist;
         $view_data['innslag'] = $innslag;
         $view_data['status_real'] = $status;
+
+        // Legg til at vi ønsker samtykke fra alle personer i innslaget
+        $innslagService->requestSamtykke( $b_id, $pl_id );
 
         // var_dump($view_data['grunner']);
         // var_dump($view_data['t']);

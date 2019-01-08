@@ -125,6 +125,29 @@ class User extends BaseUser
     protected $kommune_id;
 
     /**
+     * Samtykker
+     * Samtykker vedkommende til informasjonslagring?
+     * 
+     * @ORM\Column(name="samtykke", type="boolean", nullable=true)
+     */
+    protected $samtykke;
+
+    /**
+     * Navn til eventuell forelder/foresatt
+     * 
+     * @ORM\Column(name="foresatt_navn", type="string", nullable=true)
+     */
+    protected $foresatt_navn;
+
+    
+    /**
+     * Mobilnummer til eventuell forelder/foresatt
+     * 
+     * @ORM\Column(name="foresatt_mobil", type="integer", nullable=true)
+     */
+    protected $foresatt_mobil;
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -483,5 +506,74 @@ class User extends BaseUser
     public function getKommuneId()
     {
         return $this->kommune_id;
+    }
+
+    /**
+     * Set foresatt_navn
+     *
+     * @param string $foresattNavn
+     * @return User
+     */
+    public function setForesattNavn($foresattNavn)
+    {
+        $this->foresatt_navn = $foresattNavn;
+
+        return $this;
+    }
+
+    /**
+     * Get foresatt_navn
+     *
+     * @return string 
+     */
+    public function getForesattNavn()
+    {
+        return $this->foresatt_navn;
+    }
+
+    /**
+     * Set foresatt_mobil
+     *
+     * @param integer $foresattMobil
+     * @return User
+     */
+    public function setForesattMobil($foresattMobil)
+    {
+        $this->foresatt_mobil = $foresattMobil;
+
+        return $this;
+    }
+
+    /**
+     * Get foresatt_mobil
+     *
+     * @return integer 
+     */
+    public function getForesattMobil()
+    {
+        return $this->foresatt_mobil;
+    }
+
+    /**
+     * Set samtykke
+     *
+     * @param boolean $samtykke
+     * @return User
+     */
+    public function setSamtykke($samtykke)
+    {
+        $this->samtykke = $samtykke;
+
+        return $this;
+    }
+
+    /**
+     * Get samtykke
+     *
+     * @return boolean 
+     */
+    public function getSamtykke()
+    {
+        return $this->samtykke;
     }
 }

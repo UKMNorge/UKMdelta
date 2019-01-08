@@ -1,10 +1,10 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
-{% block scripts %}
+{% block javascripts %}
 	{{ parent() }}
 	{% javascripts 
-		'@UKMDeltaBundle/Resources/public/js/poststed.js' %}
+		'@UKMDeltaBundle/Resources/public/js/alder.js' %}
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
 {% endblock %}
@@ -15,15 +15,10 @@
 			<div class="col-12">
 				<p class="lead">{{ 'checkInfoAction.topptekst'|trans }}	</p>
 				
-				<form class="" method="POST" action="{{ path('ukm_delta_ukmid_verifyInfo') }}">
-					<div class="form-group">
-						<label>{{ 'checkInfoAction.postnummer'|trans }}</label>
-						<input type="text" required id="postNumber" name="postNumber" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}" />
-					</div>
-
+				<form class="" method="POST" action="{{ path('ukm_delta_ukmid_alder_save') }}">
 					<div class="form-group">
 						<label>{{ 'checkInfoAction.alder'|trans }}</label>
-						<select name="age" required class="form-control">
+						<select name="age" required class="form-control" id="myageis">
 							<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>{{ 'checkInfoAction.alderVelger.Label'|trans }}</option> 
 							{% for i in 10..24 %}
 								<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>{{ i }} {{ 'checkInfoAction.alderVelger.aar'|trans( { "year": "now"|date("Y") - i } ) }}</option> 
@@ -31,7 +26,23 @@
 							<option value="0">{{ 'checkInfoAction.alderVelger.gammel'|trans }}</option>
 						</select>
 					</div>
-					
+
+                    <div id="foresatt" class="mt-4" style="display:none;">
+                        <p class="lead">
+                            {{ 'checkInfoAction.foresatt.forklaring'|trans }}
+                        </p>
+
+                        <div class="form-group">
+						    <label for="foresatt_navn">{{ 'checkInfoAction.foresatt.navn'|trans }}</label>
+                            <input class="form-control" type="text" name="foresatt_navn" id="foresatt_navn" />
+                        </div>
+
+                        <div class="form-group">
+						    <label for="foresatt_mobil">{{ 'checkInfoAction.foresatt.mobil'|trans }}</label>
+                            <input class="form-control" type="tel" name="foresatt_mobil" id="foresatt_mobil" maxlength="8" />
+                        </div>
+                    </div>
+
 					<div class="form-group my-5">
 						<button type="submit" class="btn btn-outline-primary btn-success btn-block center">{{ 'checkInfoAction.nesteLabel'|trans }}</button>
 					</div>
