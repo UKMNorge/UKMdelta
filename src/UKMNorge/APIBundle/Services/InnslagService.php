@@ -99,7 +99,7 @@ class InnslagService {
 		$innslag = $this->hent($b_id);
         $innslag->delete('delta', $p_id, $pl_id);
         
-        $this->avbrytSamtykkeRequest( $innslag, $pl_id );
+        $this->avbrytSamtykkeRequest( $b_id, $pl_id );
 	}
 
 	public function hentInnslagFraType($type, $pl_id, $person_id) {
