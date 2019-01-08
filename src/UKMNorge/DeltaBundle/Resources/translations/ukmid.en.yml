@@ -1,5 +1,6 @@
 personvernAction:
     versjon:
+        overskrift: Informasjon om personvern
         kort: 'Kort-versjon: '
         lang: Les den lange versjonen
         lesmer: Les mer
@@ -14,7 +15,7 @@ personvernAction:
             Offentlig informasjon (navn, hva du har deltatt med osv) lagrer vi på UKM.no og i arkivet, mens alle andre detaljer slettes hvert år.
             Vi lagrer også mobilnummeret ditt, slik at du senere kan hente ut alt vi har lagret om deg.
     media:    
-        overskrift: Personvern
+        overskrift: Bilder og film
         ingress: UKM er et offentlig arrangement hvor det blir tatt bilder og film.
         kort: |
             Bilder og film vi lager legges ut på UKM.no, og kan bli lagt ut på UKMs sosiale medier de neste to årene. 
