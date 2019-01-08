@@ -245,10 +245,7 @@ class PersonService {
             );
             $samtykke->persist();
         }
-
         return true;
     }
-
 }
-
 ?>
