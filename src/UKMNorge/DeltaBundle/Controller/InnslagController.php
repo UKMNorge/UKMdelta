@@ -14,6 +14,7 @@ use tittel;
 use Exception;
 use DateTime;
 use stdClass;
+use Venner;
 
 class InnslagController extends Controller
 {
@@ -106,9 +107,12 @@ class InnslagController extends Controller
     
     /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
+        require_once('UKM/venner.class.php');
+
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['person'] = false;
         $view_data['translationDomain'] = $type;
+        $view_data['friends'] = Venner::findFriends($this->get('ukm_user')->getCurrentUser()->getPameldUser());
         
         return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
     }
@@ -117,7 +121,6 @@ class InnslagController extends Controller
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id, 'p_id' => $p_id);
 
         // TODO: Hent data fra database (PersonService), ikke UserBundle
-
         $user = $this->get('ukm_user')->getCurrentUser();
         $personService = $this->get('ukm_api.person');
         $innslagService = $this->get('ukm_api.innslag');
@@ -149,13 +152,6 @@ class InnslagController extends Controller
         $alder = $request->request->get('alder');
         $instrument = $request->request->get('instrument');
         $mobil = $request->request->get('mobil');
-
-        //echo '<br>saveNewPersonAction():<br/>';
-        // var_dump($fornavn);
-        // var_dump($etternavn);
-        // var_dump($mobil);
-        // var_dump($alder);
-        // var_dump($instrument);
 
         // Hent personobjekt om deltakeren finnes, opprett en ny en hvis ikke.
         $person = $personService->opprett($fornavn, $etternavn, $mobil, $pl_id);
