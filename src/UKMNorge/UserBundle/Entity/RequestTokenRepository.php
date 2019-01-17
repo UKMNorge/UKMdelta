@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\NativeAppBundle\Entity;
+namespace UKMNorge\UserBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

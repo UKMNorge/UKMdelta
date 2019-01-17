@@ -553,4 +553,27 @@ class User extends BaseUser
     {
         return $this->foresatt_mobil;
     }
+
+    /**
+     * Set samtykke
+     *
+     * @param boolean $samtykke
+     * @return User
+     */
+    public function setSamtykke($samtykke)
+    {
+        $this->samtykke = $samtykke;
+
+        return $this;
+    }
+
+    /**
+     * Get samtykke
+     *
+     * @return boolean 
+     */
+    public function getSamtykke()
+    {
+        return $this->samtykke;
+    }
 }

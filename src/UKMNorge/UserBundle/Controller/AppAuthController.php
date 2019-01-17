@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\NativeAppBundle\Controller;
+namespace UKMNorge\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,10 +10,10 @@ use Psr\Log\LoggerInterface;
 use DateTime;
 use Exception;
 
-use UKMNorge\NativeAppBundle\Entity\RequestToken;
-use UKMNorge\NativeAppBundle\Entity\AccessToken;
+use UKMNorge\UserBundle\Entity\RequestToken;
+use UKMNorge\UserBundle\Entity\DipToken;
 
-class AuthController extends Controller
+class AppAuthController extends Controller
 {
 
     private function log( $error, $e ) {
@@ -32,7 +32,7 @@ class AuthController extends Controller
                 throw new Exception('Missing requestToken', 1);
             }
 
-            $requestToken = $this->getEm()->getRepository('UKMNAppBundle:RequestToken')->findOneByToken( $requestToken );
+            $requestToken = $this->getEm()->getRepository('UKMUserBundle:RequestToken')->findOneByToken( $requestToken );
 
             if($requestToken->getUsed()) {
                 throw new Exception(
@@ -44,16 +44,16 @@ class AuthController extends Controller
             $expires = new DateTime();
             $expires->modify('+1 year');
 
-            $accessToken = new AccessToken();
-            $accessToken->setRequestToken( $requestToken->getId() );
-            $accessToken->setUser( $this->get('ukm_user')->getCurrentUser()->getId() );
+            $accessToken = new DipToken();
+            $accessToken->setLocation('nativeapp');
+            $accessToken->setUUID( $requestToken->getUUID() );
+            $accessToken->setUserId( $this->get('ukm_user')->getCurrentUser()->getId() );
             $accessToken->setActive( true );
             $accessToken->setExpires( $expires );
             $accessToken->setToken( $this->_createToken( 64 ) );
 
             $this->getEM()->persist( $accessToken );
 
-            
             $requestToken->setUsed( true );
             $this->getEM()->persist( $requestToken );
             
@@ -61,9 +61,9 @@ class AuthController extends Controller
 
         } catch( Exception $e ) {
             $this->log( 'createAccessToken', $e );
-            return $this->render('UKMNAppBundle:Auth:sorry.html.twig', ['id' => $e->getCode() ]);
+            return $this->render('UKMUserBundle:AppAuth:sorry.html.twig', ['id' => $e->getCode() ]);
         }
-        return $this->render('UKMNAppBundle:Auth:success.html.twig', ['token' => $accessToken->getToken() ]);
+        return $this->render('UKMUserBundle:AppAuth:success.html.twig', ['token' => $accessToken->getToken() ]);
     }
 
 
@@ -75,7 +75,7 @@ class AuthController extends Controller
                 throw new Exception('Missing UUID', 1);
             }
             $token = new RequestToken();
-            $token->setAppUUID( $request->request->get('UUID') );
+            $token->setUUID( $request->request->get('UUID') );
             $token->setTime( new DateTime() );
             $token->setToken( $this->_createToken( 32 ) );
 

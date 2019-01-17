@@ -1,6 +1,6 @@
 <?php
 
-namespace UKMNorge\NativeAppBundle\Entity;
+namespace UKMNorge\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * RequestToken
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="UKMNorge\NativeAppBundle\Entity\RequestTokenRepository")
+ * @ORM\Entity(repositoryClass="UKMNorge\UserBundle\Entity\RequestTokenRepository")
  */
 class RequestToken
 {
@@ -31,9 +31,9 @@ class RequestToken
     /**
      * @var string
      *
-     * @ORM\Column(name="AppUUID", type="string", length=36)
+     * @ORM\Column(name="UUID", type="string", length=36)
      */
-    private $appUUID;
+    private $UUID;
 
     /**
      * @var string
@@ -173,5 +173,28 @@ class RequestToken
     public function getTime()
     {
         return $this->time;
+    }
+
+    /**
+     * Set UUID
+     *
+     * @param string $uUID
+     * @return RequestToken
+     */
+    public function setUUID($uUID)
+    {
+        $this->UUID = $uUID;
+
+        return $this;
+    }
+
+    /**
+     * Get UUID
+     *
+     * @return string 
+     */
+    public function getUUID()
+    {
+        return $this->UUID;
     }
 }

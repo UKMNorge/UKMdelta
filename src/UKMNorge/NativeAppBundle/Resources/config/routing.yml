@@ -1,8 +1,0 @@
-ukmapp_access_token:
-    path:    /app/requestToken/
-    defaults: { _controller: UKMNAppBundle:Auth:createRequestToken }
-    methods: [POST]
-
-ukmapp_authenticate:
-    path:     /ukmid/app/authenticate/{requestToken}/
-    defaults: { _controller: UKMNAppBundle:Auth:createAccessToken }
