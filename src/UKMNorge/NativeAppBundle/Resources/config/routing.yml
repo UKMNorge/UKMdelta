@@ -1,0 +1,3 @@
+ukmapp_authenticate:
+    path:     /ukmid/app/authenticate/
+    defaults: { _controller: UKMNAppBundle:Auth:index }
