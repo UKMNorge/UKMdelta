@@ -17,3 +17,4 @@
 /web/images/*
 /web/error_log
 *.DS_Store
+**/Entity/*~
