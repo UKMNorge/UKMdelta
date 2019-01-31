@@ -24,6 +24,7 @@ use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateNameParser;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ExceptionListener {
 	
@@ -37,13 +38,14 @@ class ExceptionListener {
      * Handles a kernel exception and returns a relevant response.
      *
      * Aims to deliver content to the user that explains the exception, rather than falling
-     * back on symfony's exception handler which displays a less verbose error message.
+     * back on symfony's exception handler which displays a less verbose error message and nothing in production.
      *
      * @param GetResponseForExceptionEvent $event The exception event
      */
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
         $exception = $event->getException();
+        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event));
         
         $code = -1;
         $view_data = array();
@@ -51,6 +53,9 @@ class ExceptionListener {
         // TODO: Bytt ut denne med != klasser som implementerer HttpExceptionInterface og inverter
         if (in_array('HttpExceptionInterface', class_implements($exception))) {
             $code = $exception->getStatusCode();
+        } 
+        elseif (get_class($exception) == "Symfony\Component\HttpKernel\Exception\NotFoundHttpException") {
+            $code = 404;
         }
         else {
             $code = $exception->getCode();
@@ -77,6 +82,9 @@ class ExceptionListener {
         		break;
         }
         
+        $view_data['code'] = $code;
+        $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
+        $this->container->get('security.token_storage')->setToken($usertoken);
         // La Twig rendre i vei
         $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
         // Send data til nettleseren
