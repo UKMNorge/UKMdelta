@@ -212,7 +212,7 @@ class InnslagService {
     
         // Hent innslag og person i V2
         $innslag_v2 = $this->getInnslagV2( $innslagId, $pl_id );
-        $person_v2 = $innslag->getPersoner()->get( $personID );
+        $person_v2 = $innslag_v2->getPersoner()->get( $personID );
         
         // Oppdater samtykke
         $samtykke = new Samtykke\Person( $person_v2, $innslag_v2 );
