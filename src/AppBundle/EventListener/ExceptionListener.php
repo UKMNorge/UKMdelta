@@ -92,6 +92,20 @@ class ExceptionListener {
 
         // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
         $event->setResponse(new Response());
+            );
+            $event->setResponse( $response );
+        } else {
+            $view_data['code'] = $code;
+            $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
+            $this->container->get('security.token_storage')->setToken($usertoken);
+            // La Twig rendre i vei
+            $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
+            // Send data til nettleseren
+            echo $response;
+            // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
+            $event->setResponse(new Response());
+        }
+
     }
 
     /** 
