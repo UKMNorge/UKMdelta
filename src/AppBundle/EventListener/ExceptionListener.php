@@ -82,12 +82,6 @@ class ExceptionListener {
         		break;
         }
         
-        error_log('HIT EXCEPTION LISTENER. FOLLOWS: E_CODE, E_MESSAGE, STACK_TRACE');
-        error_log(' - CODE: '. $code);
-        error_log(' - MESSAGE: '. $exception->getMessage());
-        error_log(' - TRACE: ');
-        error_log(print_r(debug_backtrace(), true));
-        
         $view_data['code'] = $code;
         $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
         $this->container->get('security.token_storage')->setToken($usertoken);
