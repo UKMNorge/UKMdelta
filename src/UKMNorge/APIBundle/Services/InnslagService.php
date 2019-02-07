@@ -207,8 +207,6 @@ class InnslagService {
 		$pl_id = $innslag->min_lokalmonstring()->get('pl_id');
 		
 		$this->sjekkTilgang($innslagId);
-
-		$innslag->removePerson($personID, 'delta', $user->getPameldUser(), $pl_id);
     
         // Hent innslag og person i V2
         $innslag_v2 = $this->getInnslagV2( $innslagId, $pl_id );
@@ -217,7 +215,10 @@ class InnslagService {
         // Oppdater samtykke
         $samtykke = new Samtykke\Person( $person_v2, $innslag_v2 );
         $samtykke->fjernInnslag( $innslagId );
-	}
+
+        // Faktisk fjern person
+        $innslag->removePerson($personID, 'delta', $user->getPameldUser(), $pl_id);
+    }
 
 	public function lagreInstrument($innslagId, $personID, $pl_id, $instrument) {
 		$innslag = new innslag($innslagId, false);
