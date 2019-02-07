@@ -16,10 +16,15 @@
 						<label>{{ 'person.fornavn.label'|trans({}, 'base') }}</label>
 						<input type="text" required name="fornavn" id="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}" />
 					</div>
-					<div id="venneliste-container" class="card card-body" style="display: none;">
-						<strong>Ser du etter en venn du tidligere har deltatt sammen med?</strong>
-						<br />
-						<ul class="list-group" id="friendsList">
+					<div id="venneliste-container" style="display: none;">
+                        <p>
+						    Legge til noen du har deltatt med tidligere?
+                            <br />
+                            <small>
+                                Trykk på navnet under, eller <a href="#" id="hideFriendsList" style="font-weight: bold;">skjul venne-forslag</a>
+                            </small>
+                        </p>
+						<ul class="list-group mt-2 mb-3" id="friendsList">
 							{% for venn in friends %}
 								<li class="list-group-item personFilter venn" style="cursor: pointer;"
 									data-filter="{{ venn.getFornavn() }}" 
@@ -28,7 +33,7 @@
 									data-mobil="{{ venn.getMobil() }}"
 									data-alder="{{ venn.getAlder(null) }}"
 									data-pameldId="{{ venn.getId() }}"
-									>{{ venn.getFornavn() }}, tlf. {{ venn.getMobil() }}</li>
+									>{{ venn.getNavn() }} <small>({{ venn.getMobil() }})</small></li>
 							{% endfor %}
 						</ul>
 						<input type="hidden" name="pameldId" id="pameldId"/>
@@ -115,13 +120,18 @@
 	});
 
 	// Click-handler for venne-liste
-	jQuery(".venn").click(function() {
+	jQuery(document).on('click', '.venn', function() {
 		// Sett inn data i feltene
 		jQuery("#fornavn").val(jQuery(this).attr('data-fornavn'));
 		jQuery("#etternavn").val(jQuery(this).attr('data-etternavn'));
 		jQuery("#alder").val(jQuery(this).attr('data-alder')).change();
 		jQuery("#mobil").val(jQuery(this).attr('data-mobil'));
 		jQuery("#pameldId").val(jQuery(this).attr('data-pameldId'));
+        jQuery("#venneliste-container").slideUp(300);
 	});
+
+    jQuery(document).on('click', '#hideFriendsList', () => {
+        jQuery("#venneliste-container").slideUp(200);
+    });
 	</script>
 {% endblock %}
