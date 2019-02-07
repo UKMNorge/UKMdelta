@@ -14,19 +14,41 @@
 				{% endif %}
 					<div class="form-group"> 
 						<label>{{ 'person.fornavn.label'|trans({}, 'base') }}</label>
-						<input type="text" required name="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}" />
+						<input type="text" required name="fornavn" id="fornavn" class="form-control" placeholder="" value="{{ person.get('p_firstname') is defined ? person.get('p_firstname') : '' }}" />
+					</div>
+					<div id="venneliste-container" style="display: none;">
+                        <p>
+						    Legge til noen du har deltatt med tidligere?
+                            <br />
+                            <small>
+                                Trykk på navnet under, eller <a href="#" id="hideFriendsList" style="font-weight: bold;">skjul venne-forslag</a>
+                            </small>
+                        </p>
+						<ul class="list-group mt-2 mb-3" id="friendsList">
+							{% for venn in friends %}
+								<li class="list-group-item personFilter venn" style="cursor: pointer;"
+									data-filter="{{ venn.getFornavn() }}" 
+									data-fornavn="{{venn.getFornavn() }}"
+									data-etternavn="{{ venn.getEtternavn() }}"
+									data-mobil="{{ venn.getMobil() }}"
+									data-alder="{{ venn.getAlder(null) }}"
+									data-pameldId="{{ venn.getId() }}"
+									>{{ venn.getNavn() }} <small>({{ venn.getMobil() }})</small></li>
+							{% endfor %}
+						</ul>
+						<input type="hidden" name="pameldId" id="pameldId"/>
 					</div>
 					<div class="form-group"> 
 						<label>{{ 'person.etternavn.label'|trans({}, 'base') }}</label>
-						<input type="text" required name="etternavn" class="form-control" placeholder="" value="{{ person.get('p_lastname') is defined ? person.get('p_lastname') : '' }}" />
+						<input type="text" required name="etternavn" id="etternavn" class="form-control" placeholder="" value="{{ person.get('p_lastname') is defined ? person.get('p_lastname') : '' }}" />
 					</div>
 
 					<div class="form-group"> 
 						<label>{{ 'person.alder.label'|trans({}, 'base') }}</label>
-						<select name="alder" required class="form-control delta-select">
+						<select name="alder" required id="alder" class="form-control delta-select">
 							<option value="" {{ age is defined and (age < 25) and (age > 9) and (age != '25+') ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option> 
 							{% for i in 10..25 %}
-								<option value="{{ i }}" {{ age is defined and age == i ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option> 
+								<option value="{{ i }}" id="{{ i }}" {{ age is defined and age == i ? 'selected' : '' }}>{{ i }} {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option> 
 							{% endfor %}
 								<option value="0"{{ age is defined and (age == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
 						</select>
@@ -34,7 +56,7 @@
 					
 					<div class="form-group"> 
 						<label>{{ 'person.mobil.label'|trans({}, 'base') }}</label>
-						<input type="tel" required name="mobil" maxlength="8" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}" />
+						<input type="tel" required name="mobil" id="mobil" maxlength="8" class="form-control" placeholder="" value="{{ person.get('p_phone') is defined ? person.get('p_phone') : '' }}" />
 					</div>
 					
 					<div class="form-group"> 
@@ -62,4 +84,54 @@
 		</div>
 	</div>
 
+	<script type="text/javascript">
+	jQuery(document).on('keyup', '#fornavn', function() {
+		let containerHide = true;
+		var words = jQuery(this).val().toLowerCase().split(' ');
+		jQuery("#friendsList .personFilter").each(function() {
+			show = true;
+			for (var i = words.length - 1; i >= 0; i--) {
+				if(jQuery(this).attr('data-filter').toLowerCase().indexOf(words[i]) == -1) {
+                    show = false;
+				}
+			}
+			if(show) {
+				jQuery(this).show();
+				containerHide = false;
+			}
+			else {
+				jQuery(this).hide();
+			}
+		});
+
+		if ( jQuery(this).val() == "" ) 
+			containerHide = true;
+
+		if(containerHide) {
+			jQuery("#venneliste-container").hide();
+			// Rydd opp i felt, f.eks ved feiltrykk
+			jQuery("#etternavn").val("");
+			jQuery("#alder").val(null).change();
+			jQuery("#mobil").val("");
+			jQuery("#pameldId").val("");
+		} else {
+			jQuery("#venneliste-container").show();
+		}
+	});
+
+	// Click-handler for venne-liste
+	jQuery(document).on('click', '.venn', function() {
+		// Sett inn data i feltene
+		jQuery("#fornavn").val(jQuery(this).attr('data-fornavn'));
+		jQuery("#etternavn").val(jQuery(this).attr('data-etternavn'));
+		jQuery("#alder").val(jQuery(this).attr('data-alder')).change();
+		jQuery("#mobil").val(jQuery(this).attr('data-mobil'));
+		jQuery("#pameldId").val(jQuery(this).attr('data-pameldId'));
+        jQuery("#venneliste-container").slideUp(300);
+	});
+
+    jQuery(document).on('click', '#hideFriendsList', () => {
+        jQuery("#venneliste-container").slideUp(200);
+    });
+	</script>
 {% endblock %}
