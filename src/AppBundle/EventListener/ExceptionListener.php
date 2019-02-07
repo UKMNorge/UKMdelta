@@ -25,6 +25,7 @@ use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateNameParser;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ExceptionListener {
 	
@@ -82,16 +83,10 @@ class ExceptionListener {
         		break;
         }
         
-        $view_data['code'] = $code;
-        $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
-        $this->container->get('security.token_storage')->setToken($usertoken);
-        // La Twig rendre i vei
-        $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
-        // Send data til nettleseren
-        echo $response;
-
-        // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
-        $event->setResponse(new Response());
+        if( $code == 100 ) {
+            $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
+            $response = new RedirectResponse(
+                $route->getPath()
             );
             $event->setResponse( $response );
         } else {
