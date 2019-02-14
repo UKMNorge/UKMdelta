@@ -343,6 +343,13 @@ class InnslagService {
             foreach( $innslag->getPersoner()->getAll() as $person ) {
                 $samtykke = new Samtykke\Person( $person, $innslag );
             }
+
+            // Varsle kontaktpersonens foresatte
+            $samtykke = new Samtykke\Person( $innslag->getKontaktperson(), $innslag );
+            if( $samtykke->getKategori()->getId() != '15o' && $samtykke->harForesatt() ) {
+                // SendMelding sjekker om den er sendt fra før, og dobbeltsender ikke
+                $res = $samtykke->getKommunikasjon()->sendMelding('samtykke_foresatt');
+            }
         }
 
         return true;
