@@ -108,28 +108,13 @@ class InnslagController extends Controller
     
     /* PERSONER */
     public function newPersonAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/venner.class.php');
         require_once('UKM/monstring.class.php');
 
         $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['person'] = false;
         $view_data['translationDomain'] = $type;
-
-        $monstring = new monstring_v2( $pl_id );
-        $innslag = $monstring->getInnslag()->get( $b_id, true );
-        $venner = Venner::findFriends(
-            $this->get('ukm_user')->getCurrentUser()->getPameldUser(),
-            $b_id
-        );
-        // Ikke foreslå venner som allerede er med
-        if( is_array( $venner ) ) {
-            foreach( $venner as $index => $person ) {
-                if( $innslag->getPersoner()->har( $person ) ) {
-                    unset( $venner[ $index ] );
-                }
-            }
-        }
-        $view_data['friends'] = $venner;
+        $view_data['friends'] = $this->_getVenner( $pl_id, $b_id);
+        
         
         return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
     }
@@ -153,7 +138,29 @@ class InnslagController extends Controller
         $view_data['innslag'] = $innslag;
         $view_data['age'] = $personService->alder($person);
         $view_data['translationDomain'] = $type;
+        $view_data['friends'] = $this->_getVenner( $pl_id, $b_id);
+
         return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+    }
+
+    private function _getVenner( $pl_id, $b_id ) {
+        require_once('UKM/venner.class.php');
+
+        $monstring = new monstring_v2( $pl_id );
+        $innslag = $monstring->getInnslag()->get( $b_id, true );
+        $venner = Venner::findFriends(
+            $this->get('ukm_user')->getCurrentUser()->getPameldUser(),
+            $b_id
+        );
+        // Ikke foreslå venner som allerede er med
+        if( is_array( $venner ) ) {
+            foreach( $venner as $index => $person ) {
+                if( $innslag->getPersoner()->har( $person ) ) {
+                    unset( $venner[ $index ] );
+                }
+            }
+        }
+        $view_data['friends'] = $venner;
     }
 
     public function saveNewPersonAction($k_id, $pl_id, $type, $b_id) {
@@ -752,6 +759,8 @@ class InnslagController extends Controller
         $view_data['status_real'] = $status;
 
         // Legg til at vi ønsker samtykke fra alle personer i innslaget
+        // Innslagservice kontrollerer at samtykke skal etterspørres
+        // (blant annet b_status == 8)
         $innslagService->requestSamtykke( $b_id, $pl_id );
 
         // var_dump($view_data['grunner']);
