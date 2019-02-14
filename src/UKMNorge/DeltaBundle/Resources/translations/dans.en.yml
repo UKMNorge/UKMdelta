@@ -131,6 +131,7 @@ statusAction:
     artistnavn: Gruppenavn / artistnavn
     lat: Du må legge til minst én dans
     ingendeltakere: Du må legge til minst én person
+    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
     
 technicalAction:
     eksempler: >
