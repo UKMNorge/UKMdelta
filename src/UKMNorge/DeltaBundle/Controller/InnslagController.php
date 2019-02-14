@@ -138,7 +138,6 @@ class InnslagController extends Controller
         $view_data['innslag'] = $innslag;
         $view_data['age'] = $personService->alder($person);
         $view_data['translationDomain'] = $type;
-        $view_data['friends'] = $this->_getVenner( $pl_id, $b_id);
 
         return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
     }
@@ -160,7 +159,7 @@ class InnslagController extends Controller
                 }
             }
         }
-        $view_data['friends'] = $venner;
+        return $venner;
     }
 
     public function saveNewPersonAction($k_id, $pl_id, $type, $b_id) {

@@ -24,19 +24,21 @@
                                 Trykk på navnet under, eller <a href="#" id="hideFriendsList" style="font-weight: bold;">skjul venne-forslag</a>
                             </small>
                         </p>
-						<ul class="list-group mt-2 mb-3" id="friendsList">
-							{% for venn in friends %}
-								<li class="list-group-item personFilter venn" style="cursor: pointer;"
-									data-filter="{{ venn.getFornavn() }}" 
-									data-fornavn="{{venn.getFornavn() }}"
-									data-etternavn="{{ venn.getEtternavn() }}"
-									data-mobil="{{ venn.getMobil() }}"
-									data-alder="{{ venn.getAlder(null) }}"
-									data-pameldId="{{ venn.getId() }}"
-									>{{ venn.getNavn() }} <small>({{ venn.getMobil() }})</small></li>
-							{% endfor %}
-						</ul>
-						<input type="hidden" name="pameldId" id="pameldId"/>
+                        {% if friends is defined %}
+                            <ul class="list-group mt-2 mb-3" id="friendsList">
+                                {% for venn in friends %}
+                                    <li class="list-group-item personFilter venn" style="cursor: pointer;"
+                                        data-filter="{{ venn.getFornavn() }}" 
+                                        data-fornavn="{{venn.getFornavn() }}"
+                                        data-etternavn="{{ venn.getEtternavn() }}"
+                                        data-mobil="{{ venn.getMobil() }}"
+                                        data-alder="{{ venn.getAlder(null) }}"
+                                        data-pameldId="{{ venn.getId() }}"
+                                        >{{ venn.getNavn() }} <small>({{ venn.getMobil() }})</small></li>
+                                {% endfor %}
+                            </ul>
+						    <input type="hidden" name="pameldId" id="pameldId"/>
+                        {% endif %}
 					</div>
 					<div class="form-group"> 
 						<label>{{ 'person.etternavn.label'|trans({}, 'base') }}</label>
@@ -84,54 +86,56 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
-	jQuery(document).on('keyup', '#fornavn', function() {
-		let containerHide = true;
-		var words = jQuery(this).val().toLowerCase().split(' ');
-		jQuery("#friendsList .personFilter").each(function() {
-			show = true;
-			for (var i = words.length - 1; i >= 0; i--) {
-				if(jQuery(this).attr('data-filter').toLowerCase().indexOf(words[i]) == -1) {
-                    show = false;
-				}
-			}
-			if(show) {
-				jQuery(this).show();
-				containerHide = false;
-			}
-			else {
-				jQuery(this).hide();
-			}
-		});
+    {% if friends is defined %}
+        <script type="text/javascript">
+        jQuery(document).on('keyup', '#fornavn', function() {
+            let containerHide = true;
+            var words = jQuery(this).val().toLowerCase().split(' ');
+            jQuery("#friendsList .personFilter").each(function() {
+                show = true;
+                for (var i = words.length - 1; i >= 0; i--) {
+                    if(jQuery(this).attr('data-filter').toLowerCase().indexOf(words[i]) == -1) {
+                        show = false;
+                    }
+                }
+                if(show) {
+                    jQuery(this).show();
+                    containerHide = false;
+                }
+                else {
+                    jQuery(this).hide();
+                }
+            });
 
-		if ( jQuery(this).val() == "" ) 
-			containerHide = true;
+            if ( jQuery(this).val() == "" ) 
+                containerHide = true;
 
-		if(containerHide) {
-			jQuery("#venneliste-container").hide();
-			// Rydd opp i felt, f.eks ved feiltrykk
-			jQuery("#etternavn").val("");
-			jQuery("#alder").val(null).change();
-			jQuery("#mobil").val("");
-			jQuery("#pameldId").val("");
-		} else {
-			jQuery("#venneliste-container").show();
-		}
-	});
+            if(containerHide) {
+                jQuery("#venneliste-container").hide();
+                // Rydd opp i felt, f.eks ved feiltrykk
+                jQuery("#etternavn").val("");
+                jQuery("#alder").val(null).change();
+                jQuery("#mobil").val("");
+                jQuery("#pameldId").val("");
+            } else {
+                jQuery("#venneliste-container").show();
+            }
+        });
 
-	// Click-handler for venne-liste
-	jQuery(document).on('click', '.venn', function() {
-		// Sett inn data i feltene
-		jQuery("#fornavn").val(jQuery(this).attr('data-fornavn'));
-		jQuery("#etternavn").val(jQuery(this).attr('data-etternavn'));
-		jQuery("#alder").val(jQuery(this).attr('data-alder')).change();
-		jQuery("#mobil").val(jQuery(this).attr('data-mobil'));
-		jQuery("#pameldId").val(jQuery(this).attr('data-pameldId'));
-        jQuery("#venneliste-container").slideUp(300);
-	});
+        // Click-handler for venne-liste
+        jQuery(document).on('click', '.venn', function() {
+            // Sett inn data i feltene
+            jQuery("#fornavn").val(jQuery(this).attr('data-fornavn'));
+            jQuery("#etternavn").val(jQuery(this).attr('data-etternavn'));
+            jQuery("#alder").val(jQuery(this).attr('data-alder')).change();
+            jQuery("#mobil").val(jQuery(this).attr('data-mobil'));
+            jQuery("#pameldId").val(jQuery(this).attr('data-pameldId'));
+            jQuery("#venneliste-container").slideUp(300);
+        });
 
-    jQuery(document).on('click', '#hideFriendsList', () => {
-        jQuery("#venneliste-container").slideUp(200);
-    });
-	</script>
+        jQuery(document).on('click', '#hideFriendsList', () => {
+            jQuery("#venneliste-container").slideUp(200);
+        });
+        </script>
+    {% endif %}
 {% endblock %}
