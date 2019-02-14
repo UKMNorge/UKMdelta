@@ -21,7 +21,8 @@ typeAction:
 
 statusAction:
     obs-topptekst: "OBS: Du er ikke meldt på UKM enda!"
-    infotekst: Denne informasjonen mangler før innslaget er påmeldt:
+    infotekst: "Denne informasjonen mangler før innslaget er påmeldt:"
+    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
     artistnavn: Artistnavn / gruppenavn
     lat: Du må legge til minst én låt
     teknisk: Du må fylle ut tekniske behov
@@ -30,7 +31,7 @@ statusAction:
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     videreknapp: Ok, jeg fyller ut senere
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
-    obstekst: OBS: du MÅ fylle ut all informasjon før %dag% %dato%.%maned% kl. %time%:%minutt%!
+    obstekst: "OBS: du MÅ fylle ut all informasjon før %dag% %dato%.%maned% kl. %time%:%minutt%!"
 
 technicalAction:
     overskrift: Tekniske behov
@@ -71,9 +72,9 @@ attendingAction:
         alt9: 
             tekst: Vært deltaker før
             value: tidl_deltaker
-    monstringstarter: starter %dag%. %maned%, kl %time%:%minutt%
+    monstringstarter: "starter %dag%. %maned%, kl %time%:%minutt%"
     viktigbeskjed:
-        label: Viktig beskjed fra lokalkontakten:
+        label: "Viktig beskjed fra lokalkontakten:"
         placeholder: Her får lokalkontakten fylle ut informasjon
     visprogram: Vis program
     vispameldte: Vis påmeldte

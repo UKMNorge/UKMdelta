@@ -17,6 +17,8 @@
 				{% endif %}
 
 				<label>{{ 'statusAction.infotekst'|trans }}</label>
+				<br />
+                <span class="text-muted">{{ 'statusAction.helper'|trans  }}</span>
 				<ul class="list-group">
 					{% for kategori, grunner_i_kategori in grunner %}
 						{% if kategori == 'personer' %}
