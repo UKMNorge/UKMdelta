@@ -79,7 +79,7 @@ person:
         label: Skriv inn hvilken rolle %person har, eller hva %person gjør
         placeholder: F.eks maler, tegner, illustratør, skulptør osv..
         help: " "
-        ukjent: ukjent rolle
+        ukjent: Ukjent rolle. Trykk her
     ar: år
     rediger: rediger
     fjern:

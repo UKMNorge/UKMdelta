@@ -85,7 +85,7 @@ person:
         label: Skriv inn hvilken rolle/funksjon %person har i filmene
         placeholder: F.eks kameraoperatør, regi, skuespiller osv
         help:  " "
-        ukjent: ukjent rolle / funksjon
+        ukjent: Ukjent rolle / funksjon. Trykk her
     fjern:
         label: Fjern %person fra %innslag
 

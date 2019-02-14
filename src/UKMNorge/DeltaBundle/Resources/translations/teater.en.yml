@@ -92,7 +92,7 @@ person:
         label: Hva spiller eller gjør %person?
         placeholder: F.eks hovedperson, Operafantomet, skuespiller osv...
         help: ""
-        ukjent: ukjent rolle
+        ukjent: Ukjent rolle. Trykk her
     ar: år
     rediger: rediger
     fjern:

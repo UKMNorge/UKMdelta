@@ -85,7 +85,7 @@ person:
         label: Skriv inn hva %person gjør i innslaget
         placeholder: F.eks sjonglør, danser, skuespiller osv
         help: " "
-        ukjent: ukjent rolle / funksjon
+        ukjent: Ukjent rolle / funksjon. Trykk her
     fjern:
         label: Fjern %person fra %innslag
 

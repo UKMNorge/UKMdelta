@@ -56,7 +56,7 @@ person:
         label: Skriv inn hva %person gjør
         placeholder: F.eks kokk, konditor
         help: " "
-        ukjent: ukjent rolle
+        ukjent: Ukjent rolle. Trykk her
     ar: år
     rediger: rediger
     fjern:

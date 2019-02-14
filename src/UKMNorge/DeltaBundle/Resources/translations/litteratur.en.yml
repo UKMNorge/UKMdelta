@@ -88,7 +88,7 @@ person:
         label: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen
         placeholder: F.eks oppleser, forfatter kapittel 1, korrekturleser
         help: " "
-        ukjent: ukjent rolle / funksjon
+        ukjent: Ukjent rolle / funksjon. Trykk her
     ar: år
     rediger: rediger
     fjern:

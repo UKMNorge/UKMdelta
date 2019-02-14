@@ -65,6 +65,8 @@ statusAction:
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
     obstekst: OBS: du MÅ fylle ut all informasjon før %dag% %dato%. %maned% kl. %time%:%minutt%!
     tilbakeknapp: Gå tilbake for å fylle ut det siste
+    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
+
     
 removeAction:
     overskrift: Vil du virkelig melde av innslaget "%name%"?

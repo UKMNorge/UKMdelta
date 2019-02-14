@@ -88,7 +88,7 @@ person:
         label: Skriv inn hva %person gjør i dansenummeret
         placeholder: F.eks danser, koreograf osv...
         help: " "
-        ukjent: ukjent rolle / funksjon
+        ukjent: Ukjent rolle / funksjon. Trykk her
     fjern:
         label: Fjern %person fra %innslag
 

@@ -88,7 +88,7 @@ person:
         label: Instrument
         placeholder: F.eks vokal, bass, gitar
         help: Skriv inn hva %person spiller/gjør
-        ukjent: ukjent instrument
+        ukjent: Ukjent instrument. Trykk her
     ar: år
     rediger: rediger
     fjern:
