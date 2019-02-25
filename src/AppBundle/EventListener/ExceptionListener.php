@@ -112,6 +112,8 @@ class ExceptionListener {
         $message = $event->getException()->getMessage();
 
         if ($message == 'Du har ikke tilgang til dette innslaget!') {
+            $this->container->get('logger')->error("ExceptionListener: Ikke tilgang til innslag. File: ".$_SERVER['REQUEST_URI']);
+
             ## Tekst
             $key = 'feil.ingentilgang.';
             
@@ -121,12 +123,16 @@ class ExceptionListener {
 
         }
         elseif ($message == 'Feil kategori for innslaget! Vi videresender deg nå.') {
+            $this->container->get('logger')->error("ExceptionListener: Feil kategori. File: ".$_SERVER['REQUEST_URI']);
+
             // Her kommer det en redirect, 
             $key = 'feil.kategori.';
             $view_data['overskrift'] = $key.'topptekst';
             $view_data['ledetekst'] = $key.'ledetekst';
         }
         elseif ($message == 'Påmeldingsfristen er ute!') {
+            $this->container->get('logger')->notice("ExceptionListener: Påmeldingsfrist ute-exception!");
+
             $key = 'frist.';
             $view_data['frist'] = true;
             $view_data['overskrift'] = $key.'overskrift';
@@ -139,18 +145,18 @@ class ExceptionListener {
             $view_data['pl_id'] = $this->container->get('request')->get('pl_id');
         }
         else {
-            $key = 'feil.ukjentfeil.';
+            $this->container->get('logger')->error("ExceptionListener: Totalt ukjent. File: ".$_SERVER['REQUEST_URI']);
 
+            $key = 'feil.ukjentfeil.';
             $view_data['ledetekst'] = $key.'topptekst';
-            // $view_data['tekst'] = $key.'tekst';
+        
             $teknisk = array();
             $teknisk['message'] = $message;
             $teknisk['file'] = $event->getException()->getFile();
             $teknisk['line'] = $event->getException()->getLine();
             $teknisk['trace'] = $event->getException()->getTraceAsString();
-            //$teknisk['exception'] = $event->getException();
+        
             $view_data['teknisk'] = $teknisk;
-
         }
 
     	return $view_data;
@@ -164,9 +170,8 @@ class ExceptionListener {
 
         $view_data['overskrift'] = 'feil.overskrift';
         $view_data['ledetekst'] = $key.'topptekst';
-        // $view_data['ledetekst'] = $key.'ledetekst';
-        // $view_data['tekst'] = $key.'tekst';
-
+        
+        $this->container->get('logger')->error("ExceptionListener: Ukjent. File: ".$_SERVER['REQUEST_URI']);
 
         $teknisk = array();
         $teknisk['message'] = $event->getException()->getMessage();
@@ -184,6 +189,8 @@ class ExceptionListener {
         // The text returned should be a key in translations/base.
         // May also return any of the keywords used in DeltaBundle:Error:index.html.twig
         
+        $this->container->get('logger')->error("ExceptionListener: 404. File: ".$_SERVER['REQUEST_URI']);
+
         $key = 'feil.ikkefunnet.';
 
         $view_data['overskrift'] = $key.'topptekst';
