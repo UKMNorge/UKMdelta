@@ -18,15 +18,18 @@ class UserService {
 	}
 	
 	public function getCurrentUser() {
-        $user = $this->security->getToken()->getUser();
+		return $this->security->getToken()->getUser();
+	}
 
-        if( $user == 'anon' ) {
-            throw new Exception(
-                'User currently not logged in.',
-                100
-            );
-        }
-		return $user;
+
+	public function getCurrentUserAsObject() {
+		$user = $this->getCurrentUser();
+		if(is_object($user))
+			return $user;
+		throw new Exception(
+			'User currently not logged in.',
+			100
+		);
 	}
 	
 	public function gotAccess( $level ) {
