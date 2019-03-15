@@ -116,6 +116,7 @@ class NominasjonController extends Controller
 		$lydtekniker = $request->request->get('lydtekniker') == 'true';
 		$lystekniker = $request->request->get('lystekniker') == 'true';
 		$vertskap = $request->request->get('vertskap') == 'true';
+		$produsent = $request->request->get('produsent') == 'true';
 		
 		$step = [];
 		if( $lydtekniker ) {
@@ -137,7 +138,7 @@ class NominasjonController extends Controller
 				'form_annet'		=> $request->request->get('annet'),
 			];
 			$this->get('session')->set('form-data', $data);
-			$this->get('session')->getFlashBag()->set('danger', 'Du må minst velge én av de tre kategoriene.');
+			$this->get('session')->getFlashBag()->set('danger', 'Du må minst velge én av de fire kategoriene.');
 			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
 		}
 		
@@ -146,6 +147,7 @@ class NominasjonController extends Controller
 		$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
 		$nominasjon->setLydtekniker( $lydtekniker );
 		$nominasjon->setLystekniker( $lystekniker );
+		$nominasjon->setProdusent( $produsent );
 		$nominasjon->setVertskap( $vertskap );
 		
 		$nominasjon->setSamarbeid( $request->request->get('samarbeid') );
