@@ -219,10 +219,11 @@ class NominasjonController extends Controller
 			'tekst' => 'Tekst',
 			'foto' => 'Foto',
 			'film' => 'Film',
-			'snap' => 'Snapchat',
 			'flerkamera-regi' => 'Flerkamera, regi',
 			'flerkamera-kamera' => 'Flerkamera, kameraoperatør',
-			'programmering' => 'Programmering (HTML/JS/CSS/PHP)',
+			'design' => 'Design',
+			'some' => 'Sosiale medier (instagram og facebook)',
+			'programmering' => 'Programmering (HTML/JS/CSS/PHP)'
 #			'annet' => 'Er det noe annet du kan, som du vil gjøre?',
 		];
 		
