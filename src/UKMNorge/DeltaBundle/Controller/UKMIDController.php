@@ -15,7 +15,11 @@ class UKMIDController extends Controller
         require_once("UKM/innslag.class.php");
 	    $view_data = array();
         $view_data['translationDomain'] = 'ukmid';
-	    $user = $this->get('ukm_user')->getCurrentUser();
+        try {
+            $user = $this->get('ukm_user')->getCurrentUserAsObject();
+        } catch( Exception $e ) {
+            return $this->redirectToRoute('fos_user_security_logout');
+        }
 	    $view_data['user'] = $user;
         $innslagService = $this->get('ukm_api.innslag');
         $season = $this->get('ukm_delta.season')->getActive();
