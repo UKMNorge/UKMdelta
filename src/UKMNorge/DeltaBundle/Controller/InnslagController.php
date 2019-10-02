@@ -754,7 +754,7 @@ class InnslagController extends Controller
         $monstring = new monstring($pl_id);
 
         $start = new DateTime();
-        $start->setTimestamp($monstring->get('pl_start'));
+        $start->setTimestamp($monstring->get('old_pl_start'));
 
         $name = $monstring->get('pl_name');
 
