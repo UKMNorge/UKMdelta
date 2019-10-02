@@ -4,6 +4,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 use monstring;
 use monstring_v2;
 use monstringer;
@@ -43,37 +44,6 @@ class InnslagController extends Controller
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
         $view_data['monstringsliste'] = $liste;
         
-        // Hent brukerens nærmeste lokalmønstring basert på postnummer
-        require_once('UKM/monstring_tidligere.class.php');
-        $monstring = false;
-        $postalcode = $view_data['user']->getPostNumber();
-        $pl = new postnummer_monstring( $postalcode, $season );
-        $pl = $pl->monstring_get();
-        if( false != $pl ) {
-	        $monstring = new stdClass();
-			$monstring->id = $pl->get('pl_id');
-			$monstring->name = $pl->get('pl_name');
-			$monstring->fylke = $pl->get('fylke_id');
-			$monstring->kommuner = array();
-            // $monstring->frist1 = $pl->subscribable('pl_deadline');
-            // $monstring->frist2 = $pl->subscribable('pl_deadline2');
-			foreach( $pl->get('kommuner') as $kommune ) {
-				$monstring->kommuner[ $kommune['id'] ] = $kommune['name'];
-				$monstring->k_id = $kommune['id']; // Sett denne i tilfelle det er lokalmønstring
-			}
-			if( sizeof( $monstring->kommuner ) > 1 ) {
-				$monstring->fellesmonstring = true;
-				$monstring->k_id = false;
-			} else {
-				$monstring->fellesmonstring = false;
-			}
-            $view_data['lokalt_fylke'] = new monstring($monstring->fylke);
-		}
-
-        
-        $view_data['lokal_monstring'] = $monstring;
-        
-        //var_dump($liste[1]);
         return $this->render('UKMDeltaBundle:Innslag:geo.html.twig', $view_data);
     }
 
