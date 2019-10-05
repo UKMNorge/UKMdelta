@@ -5,41 +5,32 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
-use person;
 use UKMCurl;
+
+require_once("UKM/Autoloader.php");
+
 
 class UKMIDController extends Controller
 {
     public function indexAction()
     {
-        require_once("UKM/innslag.class.php");
-	    $view_data = array();
-        $view_data['translationDomain'] = 'ukmid';
         try {
             $user = $this->get('ukm_user')->getCurrentUserAsObject();
         } catch( Exception $e ) {
             return $this->redirectToRoute('fos_user_security_logout');
         }
-	    $view_data['user'] = $user;
-        $innslagService = $this->get('ukm_api.innslag');
-        $season = $this->get('ukm_delta.season')->getActive();
-
-        $innslagsliste = array();
-
-        // List opp påmeldte og ikke fullførte innslag denne brukeren er kontaktperson for
-        $contact_id = $user->getPameldUser();
-        $innslagsliste = $innslagService->hentInnslagFraKontaktperson($contact_id, $user->getId());
         
-		// Sjekk opp frist for alle innslagene
-		foreach( $innslagsliste as $gruppe => $alle_innslag ) {
-			foreach( $alle_innslag as $innslag ) {
-		        $innslag->monstring = $innslag->innslag->min_lokalmonstring( $season );
-		        $innslag->tittellos = $innslag->innslag->tittellos();
-		        $innslag->pamelding_apen = $innslag->monstring->subscribable( 'pl_deadline'. ($innslag->tittellos ? '2':'') );
-	        }
-        }
-        $view_data['dinside'] = true;
-        $view_data['alle_innslag'] = $innslagsliste;
+        $view_data = [
+            'translationDomain' => 'ukmid',
+            'user' => $user,
+            'dinside' => true,
+            'alle_innslag' => $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson(
+                $user->getPameldUser(), 
+                $user->getId()
+            )
+        ];
+        $view_data['alle_innslag']->getAll();
+
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
 
@@ -148,6 +139,8 @@ class UKMIDController extends Controller
     }
 
     public function editContactAction() {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         $view_data = array();
         require_once('UKM/person.class.php');
         $personService = $this->get('ukm_api.person');
@@ -177,6 +170,8 @@ class UKMIDController extends Controller
     }
 
     public function saveContactAction() {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         require_once('UKM/person.class.php');
         $user = $this->get('ukm_user')->getCurrentUser();
         $userManager = $this->container->get('fos_user.user_manager');
@@ -266,11 +261,15 @@ class UKMIDController extends Controller
     }
 
     public function supportAction() {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         $view_data['translationDomain'] = 'ukmid';
         return $this->render('UKMDeltaBundle:UKMID:support.html.twig', $view_data);
     }
 
     public function fbconnectAction() {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         // Sjekk om brukeren er koblet til med facebook allerede, i så fall redirect til ukmid
         $user = $this->get('ukm_user')->getCurrentUser();
         if ($user->getFacebookId()) {

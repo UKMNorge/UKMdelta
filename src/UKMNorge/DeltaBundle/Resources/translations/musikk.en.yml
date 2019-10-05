@@ -32,7 +32,7 @@ overviewAction:
             placeholder: Eks. Superbandet, Musikalske villmenn, Ole og %fornavn...
     beskrivelse:
         alene:
-            label: Beskrivelse av artist
+            label: Beskrivelse av deg
             placeholder: >
                 Her vil vi vite mer om deg som opptrer.
                 Eks. Jeg spiller gitar og synger alene på scenen. Jeg har spilt gitar i mange år, men dette er det første året jeg synger også.
@@ -48,7 +48,7 @@ overviewAction:
                 Her vil vi vite mer om dere som opptrer.
                 Eks. De er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
                 De spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks hardrock, visesang...

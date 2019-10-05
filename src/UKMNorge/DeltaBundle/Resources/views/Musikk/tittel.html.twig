@@ -7,36 +7,40 @@
 		<label>{{ 'tittel.tekst.label'|trans }}</label>
 	</div>
 
+    {# SANGTYPE #}
 	<div class="form-group" id="tekst-valg">
 		<label class="radio-inline">
-			<input type="radio" name="sangtype" value="sang" {{ instrumental is defined and (instrumental == 0) ? 'checked' : '' }} required />
+			<input type="radio" name="sangtype" value="sang" {{ tittel is defined and not tittel.erInstrumental() ? 'checked' }} required />
 			{{ 'tittel.tekst.tekst'|trans }}
 		</label>
 		<label class="radio-inline">
-			<input type="radio" name="sangtype" value="instrumental" {{ instrumental is defined and (instrumental == 1) ? 'checked' : '' }} required />
+			<input type="radio" name="sangtype" value="instrumental" {{ tittel is defined and tittel.erInstrumental() ? 'checked' }} required />
 			{{ 'tittel.tekst.instrumental'|trans }}
 		</label>
 	</div>
 
+    {# SELVLAGET #}
 	<div class="form-group">
 		<label>{{ 'tittel.selvlaget.label'|trans }}</label>
 	</div>
 	<div class="form-group" id="melodi-valg">
 		<label class="radio-inline">
-			<input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }} required />{{ 'ja'|trans({}, 'base') }}
+			<input type="radio" name="selvlaget" value="1" {{ tittel is defined and tittel.erSelvlaget() ? 'checked' }} required />{{ 'ja'|trans({}, 'base') }}
 		</label>
 		<label class="radio-inline">
-			<input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }} required />{{ 'nei'|trans({}, 'base') }}
+			<input type="radio" name="selvlaget" value="0" {{ tittel is defined and not tittel.erSelvlaget() ? 'checked' }} required />{{ 'nei'|trans({}, 'base') }}
 		</label>
 	</div>
 	
+    {# TEKST AV #}
 	<div class="form-group" id="tekst-rad">
 		<label>{{ 'tittel.tekst_av.label'|trans }}</label>
-		<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tekst_av') : '' }}" />
+		<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getTekstAv() }}" />
 	</div>
 	
+    {# MELODI AV #}
 	<div class="form-group" id="melodi-rad">
 		<label>{{ 'tittel.melodi_av.label'|trans }}</label>
-		<input type="text" name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('melodi_av') : '' }}" />
+		<input type="text" name="melodiforfatter" class="form-control" placeholder="{{ 'tittel.melodi_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getMelodiAv() }}" />
 	</div>
 {% endblock %}

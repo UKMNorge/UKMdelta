@@ -2,15 +2,15 @@
 <label>{{ 'overviewAction.titler.overskrift'|trans }}</label>
 
 <ul class="list-group">
-	{% for tittel in titler %}
+	{% for tittel in innslag.getTitler().getAll() %}
 		<li class="list-group-item click triggerLink">
 			<div class="row">
-				{% if translationDomain != 'utstilling' and translationDomain != 'matkultur' %}
+				{% if innslag.getType().getKey() not in ['utstilling','matkultur'] %}
 					<div class="col-2 px-0">
 						<div class="overunder">
-							{% if tittel.varighet is defined %}
-								<div class="over">{{ (tittel.varighet / 60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-								<div class="under">{{ tittel.varighet % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+							{% if tittel is defined %}
+								<div class="over">{{ (tittel.getSekunder()/60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+								<div class="under">{{ tittel.getSekunder() % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
 							{% else %}
 								<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
 								<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
@@ -18,14 +18,14 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ ( translationDomain == 'utstilling' or translationDomain == 'matkultur' )? '9' : '7' }}">
+				<div class="col-{{ ( innslag.getType().getKey() not in ['utstilling','matkultur'] )? '9' : '7' }}">
 					<p style="line-height:1em">
-						{{ tittel.tittel is defined ? tittel.tittel : '' }}
+						{{ tittel is defined ? tittel.getTittel() }}
 						<br />
 						<small>
-							{% if (tittel.parentes is defined) and not (tittel.parentes is empty) %}
-								{{ tittel.parentes }}
-							{% elseif (tittel.parentes is defined) and (tittel.parentes is empty) and (type == 'teater' or type == 'litteratur' or type == 'film' or type == 'annet' or type == 'matkultur') %}
+							{% if (tittel is defined) and not tittel.getParentes() is empty %}
+								{{ tittel.getParentes() }}
+							{% elseif tittel is defined and (tittel.getParentes() is empty or tittel.getType() in ['teater','litteratur','film','annet','matkultur']) %}
 							{% else %}
 								<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
 							{% endif %}
@@ -33,7 +33,7 @@
 					</p>
 				</div>
 				<div class="col-3">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.t_id }) }}" class="btn btn-sm btn-outline-primary actionLink autoshrink" id="editT{{ tittel.t_id }}">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-sm btn-outline-primary actionLink autoshrink" id="editT{{ tittel.getId() }}">
 						{{ 'tittel.rediger'|trans({}, 'base') }}
 					</a>
 				</div>
@@ -45,7 +45,7 @@
 		</li>
 	{% endfor %}
 	<li class="list-group-item">
-		<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+		<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}">
 			{{ 'overviewAction.titler.legg_til'|trans }}
 		</a>
 	</li>

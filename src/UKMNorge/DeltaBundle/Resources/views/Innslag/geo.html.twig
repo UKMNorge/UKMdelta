@@ -21,12 +21,18 @@
 				<!-- Søkefelt her -->
 				<input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
 				<div id="lokalmonstringer">
-					{% for fylke in monstringsliste %}
-						<h4 id="header_{{ fylke.id }}" class="mt-4 mb-2">{{ fylke.name }}</h4>
-						<ul data-fylke="{{ fylke.id }}" class="list list-unstyled list-group"> 
-							{% for monstring in fylke.monstringer %}
-								<li class="list-group-item click" data-filter="{{ monstring.name }} {{ monstring.kommuner|join(' ')|replace({ 'ü' : 'u'}) }} {{ fylke.name }}" >
-									{% embed "UKMDeltaBundle:Innslag:geo_" ~ ( monstring.fellesmonstring ? 'felles' : 'enkel' ) ~ "monstring.html.twig" with {'monstring': monstring, 'fylke_id': fylke.id} %}{% endembed %}
+					{% for fylke in fylker %}
+						<h4 id="header_{{ fylke.getId() }}" class="mt-4 mb-2">{{ fylke.getNavn() }}</h4>
+						<ul data-fylke="{{ fylke.getId() }}" class="list list-unstyled list-group"> 
+							{% for kommune in fylke.getKommuner() %}
+								<li class="list-group-item click" data-filter="{{ kommune.getNavn() }} {{ kommune.getFilterNavn() }} {{ fylke.getNavn() }}" >
+									<b>{{ kommune.getNavn() }}{{ kommune.getAttr('index')}}</b>
+                                    <br />
+                                    {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
+                                        {% include "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'arrangement': arrangement, 'fylke_id': fylke.id} %}
+                                    {% else %}
+                                        {{ kommune.getNavn() }} har ingen arrangementer.
+                                    {% endfor %}
 								</li>
 							{% endfor %}
 						</ul>

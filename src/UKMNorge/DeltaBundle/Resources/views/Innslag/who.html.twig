@@ -3,39 +3,38 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<h2 class="mt-0">{{ 'whoAction.sporsmal'|trans }}</h2>
-	
-				<p class="my-4">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'alene' }) }}" class="btn btn-outline-primary btn-block">
-						{{ 'whoAction.alene'|trans }}
-					</a>
-				</p>
-	
-				<p class="my-4">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'sammen' }) }}" class="btn btn-outline-primary btn-block">
-						{{ 'whoAction.sammen'|trans }}
-					</a>
-				</p>
-				
-				<p class="my-4">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_'~type~'_opprett', { k_id: k_id, pl_id: pl_id, hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
-						{{ 'whoAction.kontakt'|trans }}
-					</a>
-				</p>
-			</div>
-			
-			<div class="row">
-				<div class="col-10 ml-auto mr-auto">
-					<p class="delta-subtext center">
-						<small>
-							{{ 'whoAction.forklaring'|trans }}
-						</small>
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mt-0">{{ 'whoAction.sporsmal'|trans }}</h2>
+
+                <p class="my-4">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'alene' }) }}" class="btn btn-outline-primary btn-block">
+                        {{ 'whoAction.alene'|trans }}
+                    </a>
+                </p>
+
+                <p class="my-4">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'sammen' }) }}" class="btn btn-outline-primary btn-block">
+                        {{ 'whoAction.sammen'|trans }}
+                    </a>
+                </p>
+
+                <p class="my-4">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
+                        {{ 'whoAction.kontakt'|trans }}
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p class="delta-subtext center">
+                    <small>
+                        {{ 'whoAction.forklaring'|trans }}
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

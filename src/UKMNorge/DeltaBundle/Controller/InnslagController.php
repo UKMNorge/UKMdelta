@@ -5,663 +5,853 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use monstring;
-use monstring_v2;
-use monstringer;
-use postnummer_monstring;
-use kommune_monstring;
-use innslag;
-use innslag_v2;
-use tittel;
+use UKMNorge\Geografi\Fylker;
+
 use Exception;
 use DateTime;
 use stdClass;
-use Venner;
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Arrangement\Filter;
+use UKMNorge\Arrangement\Load;
+use UKMNorge\Geografi\Kommune;
+use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Personer\Venner;
+use UKMNorge\Innslag\Typer;
+
+require_once('UKM/Autoloader.php');
 
 class InnslagController extends Controller
 {
-    public function pameldingAction()
-    {
-    	$view_data = array();
-
-    	$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-    	return $this->render('UKMDeltaBundle:Innslag:pamelding.html.twig', $view_data);
-    }
-
+    /**
+     * Handler for route <ukmid/pamelding/>
+     * Lar brukeren velge arrangement
+     */
     public function geoAction()
     {
-        require_once('UKM/monstringer.class.php');
-        require_once('UKM/monstring.class.php');
-        $view_data['translationDomain'] = 'innslag';
-        
+        $filter = new Filter();
+        $filter->harPamelding();
+
         $season = $this->container->get('ukm_delta.season')->getActive();
 
-        $monstringer = new monstringer($season);
-        // Inkluderer testkommunene hvis environment == test eller dev
-        $liste = $monstringer->alle_kommuner_med_lokalmonstringer( $this->container->get( 'kernel' )->getEnvironment() == 'test' || $this->container->get( 'kernel' )->getEnvironment() == 'dev' );
+        $view_data['translationDomain'] = 'innslag';
 
-
+        $view_data['fylker'] = Fylker::getAll();
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        $view_data['monstringsliste'] = $liste;
-        
+
+        // Last inn alle arrangementer (med påmelding) per kommune
+        foreach ($view_data['fylker'] as $fylke) {
+            foreach ($fylke->getKommuner()->getAll() as $kommune) {
+                $arrangementer = Load::forKommune(
+                    $season,
+                    $kommune,
+                    $filter
+                );
+
+                $kommune->setAttr(
+                    'arrangementer',
+                    $arrangementer
+                );
+            }
+        }
+
+        $view_data['filter'] = $filter;
+
         return $this->render('UKMDeltaBundle:Innslag:geo.html.twig', $view_data);
     }
 
-    public function typeAction($k_id, $pl_id)
+    /**
+     * Handler for route <ukmid/pamelding/$k_id-$pl_id/>
+     * Velg type innslag du ønsker å melde på.
+     * Både mønstring og kommune er allerede valgt 
+     * 
+     * @param Int KommuneID
+     * @param Int ArrangementID
+     */
+    public function typeAction(Int $k_id, Int $pl_id)
     {
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id);
-        require_once('UKM/monstring.class.php');
+        $arrangement = $this->hentArrangement($pl_id);
 
-        // Hent lister om hvilke typer som er tillatt på denne mønstringen.
-        $pl = new monstring($pl_id);
-        if( !$pl->subscribable() && !$pl->subscribable('pl_deadline2') ) {
-			throw new Exception('Påmeldingsfristen er ute!');		
-		}
-        $typeListe = $pl->getAllBandTypesDetailedNew();
-        
-        $view_data['typer'] = $typeListe;
-		$view_data['pl'] = $pl;
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+        if (!$arrangement->erPameldingApen()) {
+            throw new Excecption('Påmeldingsfristen er ute!');
+        }
 
+        $view_data = [
+            'arrangement' => $arrangement,
+            'kommune' => $this->hentKommune($k_id),
+            'user' => $this->hentCurrentUser()
+        ];
         return $this->render('UKMDeltaBundle:Innslag:type.html.twig', $view_data);
     }
 
-    public function whoAction($k_id, $pl_id, $type, $translationDomain)
-    {   
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type);
-        
-    	$view_data['translationDomain'] = $translationDomain;
-        //$view_data['translationDomain'] = 'innslag';
-
-    	return $this->render('UKMDeltaBundle:Innslag:who'. ($this->_tittellos( $type ) ? '_tittellos':'') .'.html.twig', $view_data );
-    }
-    
-    /* PERSONER */
-    public function newPersonAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/monstring.class.php');
-
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['person'] = false;
-        $view_data['translationDomain'] = $type;
-        $view_data['friends'] = $this->_getVenner( $pl_id, $b_id);
-        
-        
-        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
-    }
-
-    public function editPersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id, 'p_id' => $p_id);
-
-        // TODO: Hent data fra database (PersonService), ikke UserBundle
-        $user = $this->get('ukm_user')->getCurrentUser();
-        $personService = $this->get('ukm_api.person');
-        $innslagService = $this->get('ukm_api.innslag');
-        $innslag = $innslagService->hent($b_id);
-        $person = $personService->hent($p_id, $b_id);
-
-        // var_dump($p_id);
-        // var_dump($b_id);
-        // var_dump($person);
-
-        $view_data['user'] = $user;
-        $view_data['person'] = $person;
-        $view_data['innslag'] = $innslag;
-        $view_data['age'] = $personService->alder($person);
-        $view_data['translationDomain'] = $type;
-
-        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+    /**
+     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type>
+     * Lar brukeren velge hvem som meldes på (meg alene, meg med flere, jeg er kun kontaktperson)
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param [type] $translationDomain
+     * @return void
+     */
+    public function whoAction(Int $k_id, Int $pl_id, String $type, $translationDomain)
+    {
+        $view_data = [
+            'translationDomain' => $translationDomain,
+            'arrangement' => $this->hentArrangement($pl_id),
+            'kommune' => $this->hentKommune($k_id),
+            'user' => $this->hentCurrentUser(),
+            'type' => Typer::getByName($type)
+        ];
+        return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data);
     }
 
-    private function _getVenner( $pl_id, $b_id ) {
-        require_once('UKM/venner.class.php');
 
-        $monstring = new monstring_v2( $pl_id );
-        $innslag = $monstring->getInnslag()->get( $b_id, true );
-        $venner = Venner::findFriends(
-            $this->get('ukm_user')->getCurrentUser()->getPameldUser(),
-            $b_id
-        );
-        // Ikke foreslå venner som allerede er med
-        if( is_array( $venner ) ) {
-            foreach( $venner as $index => $person ) {
-                if( $innslag->getPersoner()->har( $person ) ) {
-                    unset( $venner[ $index ] );
-                }
-            }
-        }
-        return $venner;
-    }
+    /**
+     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/opprett/$hvem/>
+     * Oppretter innslaget, og legger til kontaktperson hvis dette skal gjøres
+     * 
+     * Videresender til rediger innslag etter oppretting
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param String $hvem
+     */
+    public function createAction(Int $k_id, $pl_id, $type, $hvem)
+    {
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'hvem' => $hvem
+        ];
 
-    public function saveNewPersonAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        // Ta imot post-variabler
-        $request = Request::createFromGlobals();
-        
-        $innslagService = $this->get('ukm_api.innslag');
-        $personService = $this->get('ukm_api.person');  
-
-        $fornavn = $request->request->get('fornavn');
-        $etternavn = $request->request->get('etternavn');
-        $alder = $request->request->get('alder');
-        $instrument = $request->request->get('instrument');
-        $mobil = $request->request->get('mobil');
-
-        // Hent personobjekt om deltakeren finnes, opprett en ny en hvis ikke.
-        $person = $personService->opprett($fornavn, $etternavn, $mobil, $pl_id);
-        $p_id = $person->get('p_id');
-
-        $innslagService->leggTilPerson($b_id, $p_id);
-        $innslagService->lagreInstrument($b_id, $p_id, $pl_id, $instrument);
-        $personService->lagreAlder($p_id, $pl_id, $alder);
-        $personService->lagreMobil($p_id, $pl_id, $mobil);
-
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function savePersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
-        // Ta imot post-variabler
-        $request = Request::createFromGlobals();
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-
-        $innslagService = $this->get('ukm_api.innslag');
-        $personService = $this->get('ukm_api.person');  
-
-        $fornavn = $request->request->get('fornavn');
-        $etternavn = $request->request->get('etternavn');
-        $alder = $request->request->get('alder');
-        $instrument = $request->request->get('instrument');
-        $mobil = $request->request->get('mobil');
-
-        // Sjekk inputs?
-
-        $innslagService->lagreInstrument($b_id, $p_id, $pl_id, $instrument);
-        $personService->lagreFornavn($p_id, $pl_id, $fornavn);
-        $personService->lagreEtternavn($p_id, $pl_id, $etternavn);
-        $personService->lagreAlder($p_id, $pl_id, $alder);
-        $personService->lagreMobil($p_id, $pl_id, $mobil);
-
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function removePersonAction($k_id, $pl_id, $type, $b_id, $p_id) {
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id, 'p_id' => $p_id);
-        $innslagService = $this->get('ukm_api.innslag');
-        
-        $innslagService->fjernPerson($b_id, $p_id);
-
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function create_tittellosAction($k_id, $pl_id, $type ) {
-		return $this->createAction($k_id, $pl_id, $type, 'alene');
-	}
-    public function createAction($k_id, $pl_id, $type, $hvem) {
-    	require_once('UKM/innslag.class.php');
-    	require_once('UKM/monstring.class.php');
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'hvem' => $hvem);
-
-    	$user = $this->get('ukm_user')->getCurrentUser();
-        $userManager = $this->container->get('fos_user.user_manager');
+        // Setup input data
+        $type = Typer::getByKey($type);
+        $user = $this->hentCurrentUser();
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
-		
-		$deadline = 'pl_deadline'. ($this->_tittellos( $type ) ? '2' : '');
 
-		if( in_array($type, array('nettredaksjon','arrangor','konferansier') ) ) {
-			$deadline = 'pl_deadline2';
-		} else {
-			$deadline = 'pl_deadline';
-		}
-		$monstring = new monstring( $pl_id );
-		if( !$monstring->subscribable( $deadline ) ) {
+        // Hent arrangement og sjekk at det er mulig å melde på innslag
+        $arrangement = new Arrangement($pl_id);
+        if (!$arrangement->erPameldingApen($type->getFrist())) {
             throw new Exception('Påmeldingsfristen er ute!');
         }
 
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
-            // Create user
-            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $pl_id);
-            $p_id = $person->get('p_id');
-            // Sett adresse og diverse.
-            $personService->adresse($person, $user->getAddress(), $user->getPostNumber(), $user->getPostPlace(), $pl_id);
-            // Sett alder basert på user-bundle-alder
-            $alder = $user->getBirthdate();
-            $personService->lagreAlder($p_id, $pl_id, $alder);
-            $personService->lagreEpost($p_id, $pl_id, $user->getEmail());
-            // Oppdater personobjektet
-            $person = $personService->hent($p_id);
-
-            $user->setPameldUser($p_id);
+            // Opprett person
+            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $arrangement->getId());
+            // Sett alder og e-post basert på user-bundle-alder
+            $person->setAlder($user->getBirthdate());
+            $person->setEpost($user->getEmail());
+            $personService->save($person);
             // Oppdater verdier i UserBundle
-            $userManager->updateUser($user);
+            $user->setPameldUser($person->getId());
+            $this->container->get('fos_user.user_manager')->updateUser($user);
         }
+        // Hvis brukeren er registrert i systemet fra før
         else {
-            // Hent brukerobjektet dersom det finnes
             $person = $personService->hent($user->getPameldUser());
         }
 
-        /**
-         * Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
-         * i denne _tittelløse_ kategorien, gå til redigering
-         */
-		if( $this->_tittellos( $type ) ) {
-			$meldt_pa_som_type = $innslagService->hentInnslagFraType($type, $pl_id, $person->get('p_id'));
-			if( $meldt_pa_som_type ) {
-				$view_data['b_id'] = $meldt_pa_som_type->get('b_id');
-				return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-			}
+        // Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
+        // i denne _tittelløse_ kategorien, gå til redigering
+        if (!$type->harTitler()) {
+            try {
+                $innslag = $innslagService->hentPameldingFraTittellos($type, $arrangement, $person);
+                $route_data['b_id'] = $innslag->getId();
+                return $this->redirectToRoute(
+                    'ukm_delta_ukmid_pamelding_innslag_oversikt',
+                    $route_data
+                );
+            } catch (Exception $e) {
+                // Hvis personen ikke er påmeldt fra før, opprett en ved å fortsette.
+                // Ignorerer derfor Exception $e
+            }
         }
-        
+
         // Opprett et nytt innslag
-        $innslag = $innslagService->opprett($k_id, $pl_id, $type, $hvem, $person, $user->getId());        
-        
-        // Flytt personvern-tilbakemelding over på person-objektet
-        $personService->oppdaterPersonvern( $user, $innslag->get('b_id'), $pl_id );
+        $innslag = $innslagService->opprett(
+            new Kommune($k_id),
+            $arrangement,
+            $type,
+            $hvem,
+            $person
+        );
 
+        if ($hvem == 'alene') {
+            $innslag->setNavn($person->getNavn());
+            $innslagService->lagre($innslag);
+        }
 
-        $view_data['b_id'] = $innslag->get('b_id');
-        //var_dump($hvem);
+        // Flytt personvern-tilbakemelding (nå lagret på delta user-objektet) over på person-objektet
+        $personService->oppdaterPersonvern($innslag);
 
-    	// var_dump($user);
-    	// var_dump($person);
-    	//var_dump($innslag);
-    	return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        $route_data['b_id'] = $innslag->getId();
+
+        return $this->redirectToRoute(
+            'ukm_delta_ukmid_pamelding_innslag_oversikt',
+            $route_data
+        );
     }
 
-    public function newTitleAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/tittel.class.php');
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = $type;
-
+    /**
+     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function overviewAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
         $innslagService = $this->get('ukm_api.innslag');
 
-        $view_data['innslag'] = $innslagService->hent($b_id);
-
-        switch( $type ) {
-            case 'film':        $form = 'smartukm_titles_video';        break;
-            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
-            case 'matkultur':   $form = 'smartukm_titles_other';        break;
-            default:            $form = 'smartukm_titles_scene';        break;
-        }
-
-       // $tittel = new tittel(false, $form);
-
-//        $view_data['tittel'] = false;
-
-        switch($type) {
-            case 'musikk':		return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
-            case 'dans':		return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-            case 'film':  		return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
-            case 'utstilling':  return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
-            case 'matkultur' :  return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
-            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
-        }
-    }
-
-    public function editTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
-        require_once('UKM/tittel.class.php');
-
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id, 't_id' => $t_id);
-        $innslagService = $this->get('ukm_api.innslag');
-        switch( $type ) {
-            case 'film':        $form = 'smartukm_titles_video';        break;
-            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
-            case 'matkultur':   $form = 'smartukm_titles_other';        break;
-            default:            $form = 'smartukm_titles_scene';        break;
-        }
-
-        $tittel = new tittel($t_id, $form);
-
-        $view_data['tittel'] = $tittel;
-        $view_data['innslag'] = $innslagService->hent($b_id);
-        $view_data['translationDomain'] = $type;
-		switch( $form ) {
-			case 'smartukm_titles_scene':
-		        $view_data['selvlaget'] = $tittel->get('selvlaget');
-		        $view_data['instrumental'] = $tittel->get('instrumental');
-		        switch($type) {
-		            case 'musikk':  	return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
-		            case 'dans':  	  	return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
-		            case 'teater':  	return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
-		            case 'litteratur':  return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
-		            default:    return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
-		        }
-		        break;
-		    case 'smartukm_titles_exhibition':
-		    	return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
-			case 'smartukm_titles_video':
-				return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
-            case 'smartukm_titles_other':
-                switch ($type) {
-                    case 'matkultur': return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
-                    default: return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
-                }
-                
-		}
-    }
-
-    public function saveTitleAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/tittel.class.php');
-
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id);
-        $request = Request::createFromGlobals();
-
-        $seasonService = $this->get('ukm_delta.season');
-		switch( $type ) {
-			case 'film':		$form = 'smartukm_titles_video';		break;
-			case 'utstilling':	$form = 'smartukm_titles_exhibition';	break;
-            case 'matkultur':   $form = 'smartukm_titles_other';        break;
-			default:			$form = 'smartukm_titles_scene';		break;
-		}
-
-		// Opprett tittel-objektet og sett tittel navn
-        $t_id = $request->request->get('t_id');
-
-        if ($t_id == 'new') {
-            // Create empty object
-		    $tittel = new tittel(false, $form);
-            $tittel->create( $b_id );
-        }
-        else {
-            // Create object with data
-            $tittel = new tittel($t_id, $form);
-        }
-		
-		// Sett standard-felter
-        if ($form != 'smartukm_titles_other') {
-            $tittel->set('tittel', $request->request->get('tittel') );		
-            $tittel->set('season', $seasonService->getActive() );
-        }
-    	
-    	// Switch på de forskjellige tabellene
-    	switch( $form ) {
-	    	case 'smartukm_titles_scene':
-				$tittel->set('varighet', $request->request->get('lengde'));	
-
-				// Sett felter basert på type (i scene-tabellen)
-		        switch ($type) {
-		            case 'musikk':
-						$instrumental = $request->request->get('sangtype') == 'instrumental' ? 1 : 0;		                
-		                $tittel->set('instrumental', $instrumental);
-		                // Musikk fortsetter inn i teater (no break)
-		            case 'teater':
-		                $tittel->set('melodi_av', $request->request->get('melodiforfatter'));		
-		                $tittel->set('selvlaget', $request->request->get('selvlaget'));
-		                
-		                // I teater skal tekstforfatter alltid lagres
-		                // For musikk skal tekstforfatter kun lagres hvis det 
-		                // ikke er en instrumental
-						if( $type == 'teater' || ( isset($instrumental) && !$instrumental) ) {
-							$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
-						} else {
-		                    $tittel->set('tekst_av', '');   
-		                }
-		                break;
-		            case 'dans':
-			            $tittel->set('koreografi', $request->request->get('koreografi'));
-			            #$tittel->set('melodi_av', $request->request->get('melodiforfatter'));
-		                break;
-		            case 'litteratur':
-						$tittel->set('tekst_av', $request->request->get('tekstforfatter'));
-
-		                $lese_opp = $request->request->get('leseopp');
-						$tittel->set('litterature_read', $lese_opp);
-						if( $lese_opp == ('0' || 0) ) {
-			                $tittel->set('varighet', 0);
-						}
-						break;
-		        }
-				break;
-	    	case 'smartukm_titles_exhibition':
-	            $tittel->set('type', $request->request->get('type'));
-	            $tittel->set('beskrivelse', $request->request->get('beskrivelse'));
-	    		break;
-			case 'smartukm_titles_video':
-				$tittel->set('varighet', $request->request->get('lengde'));	
-				break;
-            case 'smartukm_titles_other':
-                $tittel->set('tittel', $request->request->get('tittel'));
-                $tittel->set('erfaring', $request->request->get('erfaring'));
-                $tittel->set('kommentar', $request->request->get('kommentar'));
-                break;
-    	}
-
-		// Lagre tittel
-		$tittel->lagre();
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function deleteTitleAction($k_id, $pl_id, $type, $b_id, $t_id) {
-        require_once('UKM/tittel.class.php');
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type,'b_id' => $b_id, 't_id' => $t_id);
-        
-        // Sjekker tilgangsrettigheter på innslaget, rett band-type og at påmeldingsfristen ikke er ute.
-        $innslagService = $this->get('ukm_api.innslag');
-        $innslagService->sjekk($b_id, $type);
-        // Trenger ikke sjekke tittelen, fordi SQLdel inkluderer WHERE b_id.
-
-        switch( $type ) {
-            case 'film':        $form = 'smartukm_titles_video';        break;
-            case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
-            case 'matkultur':   $form = 'smartukm_titles_other';        break;
-            default:            $form = 'smartukm_titles_scene';        break;
-        }
-        $tittel = new tittel($t_id, $form);
-        $deleted = $tittel->delete();
-        // Slett tittel fra innslaget
-        if ($deleted) {
-	        $translated_message = $this->get('translator')->trans('tittel.slettet', array('%tittel'=>$tittel->tittel), $type);
-            $this->addFlash('success', $translated_message);
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);    
-        }
-        
-        $this->addFlash('danger', 'En feil oppsto ved sletting av tittel. Forsøk igjen, og kontakt support hvis problemet fortsetter.');
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function technicalAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = $type
-        ;
-        $innslagService = $this->get('ukm_api.innslag');
+        $user = $this->hentCurrentUser();
+        $type = Typer::getByKey($type);
         $innslag = $innslagService->hent($b_id);
-
-        $view_data['teknisk'] = $innslag->get('td_demand');
-        return $this->render('UKMDeltaBundle:Innslag:teknisk.html.twig', $view_data);
-    }
-
-    public function saveTechnicalAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-       
-        $innslagService = $this->get('ukm_api.innslag');
-        $innslag = $innslagService->hent($b_id);
-        $request = Request::createFromGlobals();
-
-        $tekniskekrav = $request->request->get('teknisk');
-
-        $innslagService->lagreTekniskeBehov($b_id, $tekniskekrav);
-
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
-    }
-
-    public function overviewAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/innslag.class.php');
-
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-
-        $user = $this->get('ukm_user')->getCurrentUser();
-
-        // Hent data om innslaget 
-        $innslagService = $this->get('ukm_api.innslag');
-        $personService = $this->get('ukm_api.person');
 
         // Sjekk tilgang og rett bandtype
-        $innslagService->sjekk($b_id, $type);       
-        $innslag = $innslagService->hent($b_id);
+        $innslagService->sjekk($innslag);
+        $innslagService->sjekkBandtype($innslag, $type); // Vil printe RedirectResponse og kaste Exception
 
-        $personer = $innslag->personer();
-        foreach ($personer as &$person) {
-            $alder = $personService->alder($personService->hent($person['p_id']));
-            if ($alder > 0) {
-               $person['age'] = $alder; 
-            }
-            else {
-               $person['age'] =  '25+';
-            }
-            
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type->getKey(),
+            'b_id' => $b_id,
+            'translationDomain' => $type->getKey(),
+            'user' => $user,
+            'innslag' => $innslag,
+            'kommune' => $this->get('ukm_api.geografi')->hentKommune($k_id),
+            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id)
+        ];
+
+        // Innslag uten titler har enklere skjema
+        if (!$type->harTitler()) {
+            return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
         }
-
-		// Hent beskrivelse av innslaget
-        $view_data['beskrivelse'] = $innslag->get('b_description');
-
-        $view_data['translationDomain'] = $type;
-        $view_data['user'] = $user;
-        $view_data['innslag'] = $innslag;
-        $view_data['personer'] = $personer;
-        
-        if( $this->_tittellos( $type ) ) {
-	        switch( $type ) {
-		        case 'konferansier':
-		        break;
-		        case 'nettredaksjon':
-		        	$view_data['funksjoner'] = array('tekst','foto','videoreportasjer','flerkamera_regi','flerkamera_kamera','pr');
-					$tittellos_person = $this->_hent_tittellos_person( $b_id );					
-					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
-		        	break;
-		        case 'arrangor':
-		       		$view_data['funksjoner'] = array('lyd','lys','scenearbeider','artistvert','info','koordinator');
-					$tittellos_person = $this->_hent_tittellos_person( $b_id );					
-					$view_data['valgte_funksjoner'] = json_decode( $tittellos_person->get('instrument_object') );
-		        	break;
-	        }
-	        return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
-        }
-        
-        // Legg data fra innslaget i variabler som kan jobbes med enklere i twig
-        $teknisk = $innslag->get('td_demand');
-        if (strlen($teknisk) > 220) {
-            $teknisk = substr_replace($teknisk, '...', 220);
-            // Dette vil ikke påvirke lagret informasjon.
-        }
-
-        $titler = $innslag->titler($pl_id); 
 
         // Hvis hvem-variabelen blir sendt med.
         $request = Request::createFromGlobals();
-        $hvem = $request->get('hvem');
-        if (!empty($hvem)) {
-            $view_data['hvem'] = $hvem;
-        }
-        
-        if ($innslag->info['b_name'] != 'Innslag uten navn') {
-            $view_data['name'] = $innslag->get('b_name');
-        }
-        else {
-            $view_data['name'] = '';
-        }
-        $view_data['sjanger'] = $innslag->get('b_sjanger');
-        $view_data['teknisk'] = $teknisk;
-        $view_data['titler'] = $titler;
-        $view_data['pameldt'] = false;
-        switch ($innslag->get('b_status')) {
-            case 1: $view_data['pameldt'] = false;
-                break;
-            default:
-                $view_data['pameldt'] = true;
+        if (!empty($request->get('hvem'))) {
+            $view_data['hvem'] = $request->get('hvem');
         }
 
-        switch ($type) {
-            case 'musikk':
-            case 'film':
-            case 'litteratur':
-            case 'dans':
-            case 'teater':
-            case 'annet':
-                $view_data['krev_sjanger'] = true;
-                // $view_data['krev_titler'] = true;
-                break;
-            // case 'matkultur':
-            //     $view_data['krev_sjanger'] = false;
-            //     $view_data['krev_titler'] = false;
-            default:
-                $view_data['krev_sjanger'] = false;  
-        }
-
-        // Krev tekniske behov for alle sceneinnslag, unntatt litteratur
-		if( $innslag->g('bt_form') == 'smartukm_titles_scene' && !in_array($type, array('litteratur')) ) {
-	    	$view_data['krev_tekniske'] = true;   
-	    } else {
-		    $view_data['krev_tekniske'] = false;
-	    }
-
-        
         return $this->render('UKMDeltaBundle:Innslag:oversikt.html.twig', $view_data);
     }
 
-    public function saveOverviewAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $innslagService = $this->get('ukm_api.innslag');
+
+    /**
+     * Handler for POST (lagring for) route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function saveOverviewAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
         $request = Request::createFromGlobals();
+        $innslagService = $this->get('ukm_api.innslag');
 
-        $desc = $request->request->get('beskrivelse');
-		// Håndter tittelløse innslag først
-		if( $this->_tittellos( $type ) ) {
-	        $innslagService->lagreBeskrivelse($b_id, $desc);
-	        $personService = $this->get('ukm_api.person');
-	        
-	        switch( $type ) {
-		        case 'nettredaksjon':
-		        case 'arrangor':
-					$tittellos_person = $this->_hent_tittellos_person( $b_id );
-					$instrument_object = $request->request->get('funksjoner');
-					$funksjon = '';
-					if( is_array( $instrument_object ) ) {
-						foreach( $instrument_object as $current_instrument ) {
-							$funksjon .= $this->get('translator')->trans('funksjon.'.$current_instrument, array(), $type).', ';
-						}
-						$funksjon = rtrim( $funksjon, ', ' );
-					}
-					
-					$innslagService->lagreInstrumentTittellos($b_id, $tittellos_person->g('p_id'), $pl_id, $funksjon, $instrument_object);
-		        break;
-	        }
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
-		}
+        // Hent inn innslaget
+        $innslag = $innslagService->hent($b_id);
 
-        $path = $request->request->get('path');
-        $name = $request->request->get('navn');
+        // Hvis innslaget ikke har titler
+        if ($innslag->getType()->erJobbeMed()) {
+            throw new Exception('TODO: Funksjonen er ikke implementert');
 
-        
-        if(($type == 'musikk') || ($type == 'litteratur') || ($type == 'film') || ($type == 'annet') || ($type == 'dans') || ($type == 'teater')) {
-            $genre = $request->request->get('sjanger');
-            $innslagService->lagreSjanger($b_id, $genre);
-        }
+            $innslagService->lagreBeskrivelse($b_id, $desc);
+            $personService = $this->get('ukm_api.person');
 
-        $innslagService->lagreBeskrivelse($b_id, $desc);
-        $innslagService->lagreArtistnavn($b_id, $name);
+            switch ($type) {
+                case 'nettredaksjon':
+                case 'arrangor':
+                    $tittellos_person = $this->_hent_tittellos_person($b_id);
+                    $instrument_object = $request->request->get('funksjoner');
+                    $funksjon = '';
+                    if (is_array($instrument_object)) {
+                        foreach ($instrument_object as $current_instrument) {
+                            $funksjon .= $this->get('translator')->trans('funksjon.' . $current_instrument, array(), $type) . ', ';
+                        }
+                        $funksjon = rtrim($funksjon, ', ');
+                    }
 
-        // var_dump($path);
-        // die();
-        // Path er henta fra deltapath, som blir satt javascriptet til path generert via Twig.
-        if (empty($path)) {
+                    $innslagService->lagreInstrumentTittellos($b_id, $tittellos_person->g('p_id'), $pl_id, $funksjon, $instrument_object);
+                    break;
+            }
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
         }
-        return $this->redirect($path);
-        // Sjekk om path er en route?
+
+        // Innslaget har titler
+
+        $innslag->setBeskrivelse($request->request->get('beskrivelse'));
+        $innslag->setNavn($request->request->get('navn'));
+        if (in_array($type, ['musikk', 'litteratur', 'film', 'video', 'annet', 'dans', 'teater'])) {
+            $innslag->setSjanger($request->request->get('sjanger'));
+        }
+
+        $innslagService->lagre($innslag);
+
+
+        // Hvis path er satt og ikke tom, så skal vi til et nytt sted (rediger person, for eksempel)
+        if (!empty($request->request->get('path'))) {
+            return $this->redirect($request->request->get('path'));
+        }
+
+        // Tilbake til statusAction
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
     }
 
-    public function removeAction($k_id, $pl_id, $type, $b_id) {
+
+    /**
+     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
+     * Viser skjema for å legge til person
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String] $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function newPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        return $this->render(
+            'UKMDeltaBundle:Innslag:person.html.twig',
+            [
+                'k_id' => $k_id,
+                'pl_id' => $pl_id,
+                'type' => $type,
+                'b_id' => $b_id,
+                'translationDomain' => $type,
+                'friends' => $this->_getVenner(
+                    $this->get('ukm_api.innslag')->hent($b_id)
+                )
+            ]
+        );
+    }
+
+    /**
+     * Hent alle venner som ikke er med i innslaget
+     *
+     * @param Innslag $innslag
+     * @return Array<Person>
+     */
+    private function _getVenner(Innslag $innslag)
+    {
+        $venner = Venner::exclude(
+            $innslag->getPersoner()->getAllIds(),
+            Venner::getAll(
+                $this->hentCurrentUser()->getPameldUser(),
+                $innslag->getId()
+            )
+        );
+
+        return $venner;
+    }
+
+    /**
+     * Handler for POST (lagre for) route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
+     * Oppretter ny person og legger til i innslaget
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function saveNewPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $request = Request::createFromGlobals();
+        $innslagService = $this->get('ukm_api.innslag');
+        $personService = $this->get('ukm_api.person');
+
+
+        $innslag = $innslagService->hent($b_id);
+        $arrangement = new Arrangement($pl_id);
+        $kommune = new Kommune($k_id);
+
+        // Opprett personen
+        $person = $personService->opprett(
+            $request->request->get('fornavn'),
+            $request->request->get('etternavn'),
+            $request->request->get('mobil'),
+            $kommune,
+            $arrangement
+        );
+
+        // Legg til i innslaget, sett rolle
+        $person->setRolle($request->request->get('instrument'));
+        $innslag->getPersoner()->leggTil($person);
+
+
+        // Sett alder
+        $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
+
+
+        Write::savePersoner($innslag);
+        PersonWrite::save($person);
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    }
+
+    /**
+     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/status/>
+     * 
+     * Viser enten "du er påmeldt" eller "dette mangler før du er påmeldt"
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function statusAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        if ($innslag->erPameldt()) {
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
+        }
+
+        $view_data = [
+            'translationDomain' => $type,
+            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id),
+            'innslag' => $innslag
+        ];
+
+        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge($route_data, $view_data));
+    }
+
+    /**
+     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/>
+     * Redigering av person
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @param Int $p_id
+     */
+    public function editPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
+    {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'user' => $this->hentCurrentUser(),
+            'person' => $this->get('ukm_api.person')->hent($p_id, $b_id),
+            'innslag' => $this->get('ukm_api.innslag')->hent($b_id),
+            'translationDomain' => $type
+        ];
+        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+    }
+
+    /**
+     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/lagre/>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @param Int $p_id
+     * @return void
+     */
+    public function savePersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
+    {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
+        // Setup service og request
+        $request = Request::createFromGlobals();
+        $innslagService = $this->get('ukm_api.innslag');
+
+        // Hent innslag
+        $innslag = $innslagService->hent($b_id);
+        $person = $innslag->getPersoner()->get($p_id);
+
+        // Oppdater objektet
+        $person->setFornavn($request->request->get('fornavn'));
+        $person->setEtternavn($request->request->get('etternavn'));
+        $person->setMobil($request->request->get('mobil'));
+        $person->setFodselsdato(
+            Person::getFodselsdatoFromAlder(
+                $request->request->get('alder')
+            )
+        );
+        $person->setInstrument($request->request->get('instrument'));
+
+        // Lagre
+        $this->get('ukm_api.person')->lagre($person, $innslag->getId());
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    }
+
+    /**
+     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/fjern/>
+     * Fjerner en person fra innslaget
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @param Int $p_id
+     * @return void
+     */
+    public function removePersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
+    {
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'p_id' => $p_id
+        ];
+
+        $this->get('ukm_api.innslag')->fjernPerson($b_id, $p_id);
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $route_data);
+    }
+
+    /**
+     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/>
+     * Rediger tekniske behov
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function technicalAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => $type,
+            'innslag' => $this->get('ukm_api.innslag')->hent($b_id)
+        ];
+        return $this->render('UKMDeltaBundle:Innslag:teknisk.html.twig', $view_data);
+    }
+
+    /**
+     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/lagre/>
+     * Lagrer tekniske behov
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function saveTechnicalAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+        ];
+
+        $request = Request::createFromGlobals();
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $innslag = $innslagService->hent($b_id);
+        $innslag->setTekniskeBehov($request->request->get('teknisk'));
+        $innslagService->lagre($innslag);
+
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $route_data);
+    }
+
+    /**
+     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/>
+     * Legg til en ny tittel
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function newTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => $type,
+            'innslag' => $innslagService->hent($b_id)
+        ];
+
+        return $this->_renderTitleAction($view_data);
+    }
+
+    /**
+     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/$t_id>
+     * Rediger eksisterende tittel
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function editTitleAction($k_id, $pl_id, $type, $b_id, $t_id)
+    {
+        $innslag = $this->get('ukm_api.innslag')->hent($b_id);
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => $type,
+            'innslag' => $innslag,
+            'tittel' => $innslag->getTitler()->get($t_id)
+        ];
+
+        return $this->_renderTitleAction($view_data);
+    }
+
+    /**
+     * Hjelper for newTitleAction og editTitleAction
+     * Disse gjør det samme, edit slenger bare på tittel som 
+     * data i view.
+     *
+     * @param Array $view_data
+     * @return 
+     */
+    private function _renderTitleAction(array $view_data)
+    {
+        switch ($view_data['type']) {
+            case 'musikk':
+                return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+            case 'dans':
+                return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+            case 'teater':
+                return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+            case 'film':
+                return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+            case 'litteratur':
+                return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
+            case 'utstilling':
+                return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
+            case 'matkultur':
+                return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
+            default:
+                return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
+        }
+    }
+
+    /**
+     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/lagre/>
+     * Legg til en ny tittel
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function saveTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
+        $request = Request::createFromGlobals();
+        $seasonService = $this->get('ukm_delta.season');
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $innslag = $innslagService->hent($b_id);
+
+        // Opprett tittel
+        if ($request->request->get('t_id') == 'new') {
+            $tittel = $innslagService->opprettTittel($innslag);
+        }
+        // Hent tittel
+        else {
+            $tittel = $innslag->getTitler()->get($request->request->get('t_id'));
+        }
+
+        // Sett standard-info
+        $tittel->setTittel($request->request->get('tittel'));
+        $tittel->setSesong($seasonService->getActive());
+
+        switch ($innslag->getType()->getKey()) {
+                // Musikk
+            case 'musikk':
+                $tittel->setVarighet($request->request->get('lengde'));
+                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                $tittel->setMelodiAv($request->request->get('melodiforfatter'));
+
+                if ($request->request->get('sangtype') == 'instrumental') {
+                    $tittel->setInstrumental(true);
+                } else {
+                    $tittel->setInstrumental(false);
+                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                }
+                break;
+                // Teater
+            case 'teater':
+                $tittel->setVarighet($request->request->get('lengde'));
+                $tittel->setInstrumental($request->request->get('sangtype') == 'instrumental' ? 1 : 0);
+                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                $tittel->setMelodiAv($request->request->get('melodiforfatter'));
+                $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                break;
+                // Dans
+            case 'dans':
+                $tittel->setVarighet($request->request->get('lengde'));
+                $tittel->setKoreografi($request->request->get('koreografi'));
+                break;
+                // Litteratur
+            case 'litteratur':
+                $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                if ($request->request->get('leseopp') == '1') {
+                    $tittel->setLitteraturLesOpp(true);
+                    $tittel->setVarighet($request->request->get('lengde'));
+                } else {
+                    $tittel->setLitteraturLesOpp(false);
+                    $tittel->setVarighet(0);
+                }
+                break;
+                // Utstilling
+            case 'utstilling':
+                $tittel->setType($request->request->get('type'));
+                break;
+                // Film
+            case 'film':
+            case 'video':
+                $tittel->setVarighet($request->request->get('lengde'));
+                break;
+                // Annet
+            case 'annet':
+            case 'scene':
+                $tittel->setErfaring($request->request->get('erfaring'));
+                $tittel->setKommentar($request->request->get('kommentar'));
+                break;
+            default:
+                throw new Exception(
+                    'Beklager, prøvde å lagre en ukjent tittel-type'
+                );
+        }
+
+        $innslagService->lagreTitler($innslag, $tittel);
+        // Lagre tittel
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    }
+
+    public function deleteTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $t_id)
+    {
+        $innslagService = $this->get('ukm_api.innslag');
+        
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            't_id' => $t_id
+        ];
+        
+        // Hent tittel
+        $innslag = $innslagService->hent($b_id);
+        $tittel = $innslag->getTitler()->get( $t_id );
+
+        // Fjern tittelen
+        $innslagService->fjernTittel( $innslag, $tittel );
+        
+        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function pameldingAction()
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+        $view_data = array();
+
+        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+        return $this->render('UKMDeltaBundle:Innslag:pamelding.html.twig', $view_data);
+    }
+
+    public function create_tittellosAction($k_id, $pl_id, $type)
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
+        return $this->createAction($k_id, $pl_id, $type, 'alene');
+    }
+
+    public function removeAction($k_id, $pl_id, $type, $b_id)
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         // Output confirm-vindu
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'base';
         // Sjekk tilgang
         $innslagService = $this->get('ukm_api.innslag');
 
         $innslagService->sjekk($b_id, $type);
         $innslag = $innslagService->hent($b_id);
-        
+
         // If post-request, i.e. JA-knapp.
         if ($this->getRequest()->isMethod('POST')) {
             $innslagService->meldAv($b_id, $pl_id);
@@ -669,85 +859,19 @@ class InnslagController extends Controller
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
         // Else render
-        
+
         $view_data['innslag'] = $innslag;
         $view_data['navn'] = $innslag->get('b_name');
         return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
     }
 
-    public function statusAction($k_id, $pl_id, $type, $b_id) {
-        require_once('UKM/inc/validate_innslag.inc.php');
-        require_once('UKM/monstring.class.php');
-        require_once('UKM/tittel.class.php');
 
-        $route_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = $type;
 
-        $innslagService = $this->get('ukm_api.innslag');
-        $innslag = $innslagService->hent($b_id);
-        
-        $status = $innslag->get('b_status');
-        $innslag->get('b_status_text');
+    public function attendingAction($k_id, $pl_id, $type, $b_id)
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
 
-        $monstring = new monstring($pl_id);
-        
-        $frist = new DateTime();
-        $frist->setTimestamp($monstring->get('pl_deadline'));
-		$validering = $innslagService->hentAdvarsler($b_id, $pl_id);
-        //var_dump($validering);
-        $view_data['status'] = $validering[0];
-        // var_dump($view_data['status']);
-        // echo '<br>';
-        $innslag = $innslagService->hent($b_id);
-        // var_dump($innslag->get('b_status'));
-        // echo '<br>';
-        // var_dump($innslag);
-        // die();
-        $view_data['grunner'] = $validering[1];
-        $personService = $this->get('ukm_api.person');
-        if (array_key_exists('personer', $validering[1]) && is_array($validering[1]['personer'])) {
-            foreach($validering[1]['personer'] as $pers) {
-                $view_data['pers'][$pers[0]] = $personService->hent($pers[0]);
-            }    
-        }
-        
-        if (array_key_exists('titler', $validering[1]) && is_array($validering[1]['titler'])) {
-            switch( $type ) {
-                case 'film':        $form = 'smartukm_titles_video';        break;
-                case 'utstilling':  $form = 'smartukm_titles_exhibition';   break;
-                default:            $form = 'smartukm_titles_scene';        break;
-            }
-            foreach($validering[1]['titler'] as $tittel) {
-                $view_data['t'][$tittel[0]] = $tittel = new tittel($tittel[0], $form);
-            }
-        }
-
-        //var_dump($view_data['grunner']);
-        $view_data['frist'] = $frist;
-        $view_data['innslag'] = $innslag;
-        $view_data['status_real'] = $status;
-
-        // Legg til at vi ønsker samtykke fra alle personer i innslaget
-        // Innslagservice kontrollerer at samtykke skal etterspørres
-        // (blant annet b_status == 8)
-        $innslagService->requestSamtykke( $b_id, $pl_id );
-
-        // var_dump($view_data['grunner']);
-        // var_dump($view_data['t']);
-        // Oppdater status på innslaget! 
-        // ValidateBand2 tar seg av status-oppdateringen??
-        if($view_data['status'] == 8) {
-            //$innslagService->lagreStatus($b_id, 8);
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
-        }
-        else {
-            //$innslagService->lagreStatus($b_id, 1); // lagre en ikke-ferdig-status
-            return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge( $route_data, $view_data ) );
-        }
-    }
-
-    public function attendingAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'innslag';
 
         require_once('UKM/monstring.class.php');
@@ -765,31 +889,67 @@ class InnslagController extends Controller
         $view_data['pl_navn'] = $name;
         $view_data['pl_start'] = $start;
         //$view_data['pl_link'] = $monstring->get('pl_link');
-        
-		$monstring_v2 = new monstring_v2( $pl_id );
-		$view_data['pl_link'] = $monstring_v2->getLink();
+
+        $monstring_v2 = new monstring_v2($pl_id);
+        $view_data['pl_link'] = $monstring_v2->getLink();
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
-    }   
+    }
 
-    public function fristAction($k_id, $pl_id, $type, $b_id) {
-        $view_data = array( 'k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
+    public function fristAction($k_id, $pl_id, $type, $b_id)
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
+        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
         $view_data['translationDomain'] = 'base';
 
         $innslagService = $this->get('ukm_api.innslag');
         $view_data['innslag'] = $innslagService->hent($b_id);
         return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);
     }
-    
-    private function _tittellos( $type ) {
-	    return in_array($type, array('nettredaksjon','arrangor','konferansier'));
-    }
-    private function _hent_tittellos_person( $b_id ) {
+
+    private function _hent_tittellos_person($b_id)
+    {
+        throw new Exception('TODO: Funksjonen er ikke implementert');
+
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
-		$innslag = $innslagService->hent( $b_id );
-		$personer = $innslag->personer();
-		$p_id = $personer[0]['p_id'];
-		return $personService->hent( $p_id, $b_id );
+        $innslag = $innslagService->hent($b_id);
+        $personer = $innslag->personer();
+        $p_id = $personer[0]['p_id'];
+        return $personService->hent($p_id, $b_id);
+    }
+
+
+    /**
+     * Hent kommune med gitt ID
+     *
+     * @param Int $kommuneID
+     * @return Kommune
+     */
+    private function hentKommune(Int $kommuneID)
+    {
+        return $this->container->get('ukm_api.geografi')->hentKommune($kommuneID);
+    }
+
+    /**
+     * Hent arrangement med gitt ID
+     *
+     * @param Int $arrangementID
+     * @return Arrangement
+     */
+    private function hentArrangement(Int $arrangementID)
+    {
+        return $this->container->get('ukm_api.arrangement')->hent($arrangementID);
+    }
+
+    /**
+     * Hent aktiv bruker
+     *
+     * @return 
+     */
+    public function hentCurrentUser()
+    {
+        return $this->get('ukm_user')->getCurrentUser();
     }
 }

@@ -13,22 +13,27 @@
 		<div class="row">
 			<div class="col-12">
 				{% block form_header %}
+                    {# REDIGER TITTEL #}
 					{% if tittel is defined %}
-						<h1 class="mt-0">{{ 'tittel.overskrift.rediger'|trans( {'%tittel': tittel.tittel} ) }}</h1>
-					{% else %}
+						<h1 class="mt-0">{{ 'tittel.overskrift.rediger'|trans( {'%tittel': tittel.getTittel() } ) }}</h1>
+					{# LEGG TIL TITTEL #}
+                    {% else %}
 						<h1 class="mt-0">{{ 'tittel.overskrift.legg_til'|trans }}</h1>
 					{% endif %}	
 					<form class="delta-form form-group" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
 				{% endblock form_header %}
 				
 				{% block form_body %}
-					<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}" />
-					<input type="hidden" name="t_id" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}" />
+					<input type="hidden" name="innslagsnavn" value="{{ innslag.getNavn() }}" />
+					<input type="hidden" name="t_id" value="{{ tittel is defined ? tittel.getId() : 'new' }}" />
+
+                    {# TITTEL #}
 					<div class="form-group">
 						<label>{{ 'tittel.tittel.label'|trans }}</label>
-						<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('tittel') : '' }}" />
+						<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getTittel() : '' }}" />
 					</div>
 			
+                    {# VARIGHET #}
 					<div class="form-group">
 						<label>{{ 'tittel.varighet.label'|trans }}</label>
 						{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
@@ -41,14 +46,14 @@
 					</p>
 					{% if tittel is defined %}
 						<p>
-							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: t_id }) }}" class="btn btn-block btn-danger btn-sm">
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-block btn-danger btn-sm">
 								{{ 'tittel.slett'|trans }}
 							</a>
 						</p>
 					{% endif %}
 					
 					<p class="center">
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}">
 							{{ 'tittel.avbryt'|trans }}
 						</a>
 					</p>
