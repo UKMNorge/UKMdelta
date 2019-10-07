@@ -48,7 +48,7 @@ overviewAction:
                 Her vil vi vite litt om forfatterne.
                 Eks. De har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
                 Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks dikt, novellesamling, manus osv...

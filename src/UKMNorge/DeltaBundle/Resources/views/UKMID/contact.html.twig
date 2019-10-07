@@ -1,99 +1,96 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
-	
+
 {% block scripts %}
-	{{ parent() }}
-	{% javascripts 
+    {{ parent() }}
+    {% javascripts 
 		'@UKMDeltaBundle/Resources/public/js/poststed.js' %}
-    	<script src="{{ asset_url }}"></script> 
-	{% endjavascripts %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<h1>{{ 'contactAction.overskrift'|trans }}</h1>
-			
-				<p class="lead">
-					{{ 'contactAction.topptekst'|trans|nl2br }}
-				</p>
-				
-				<form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
-					<h2>
-						{{ 'contactAction.personinfo'|trans }}
-					</h2>
-					
-					
-					<div class="form-group">
-						<label>{{ 'contactAction.fornavn'|trans }}</label>
-						<input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}" />
-					</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>{{ 'contactAction.overskrift'|trans }}</h1>
 
-					<div class="form-group">
-						<label>{{ 'contactAction.etternavn'|trans }}</label>
-						<input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}" />
-					</div>
-					
-					{% if age is defined %}
-						<div class="form-group">
-							<label>{{ 'contactAction.alder'|trans }}</label>
-							<select name="age" required class="form-control">
-								<option value="" {{ (age is defined) and (age < 25) and (age > 9) ? '' : 'selected' }} disabled>
-									{{ 'contactAction.alderVelger.Label'|trans }}
-								</option> 
-								{% for i in 10..25 %}
-									<option value="{{ i }}" {{ (age is defined) and (age == i) ? 'selected' : '' }}>
-										{{ i }} {{ 'contactAction.alderVelger.aar'|trans({ "year": "now"|date("Y") - i }) }}
-									</option> 
-								{% endfor %}
-								<option value="0" {{ (age is defined) and (age == 0 or age > 25) ? 'selected' : '0' }}>
-									{{ 'contactAction.alderVelger.gammel'|trans }}
-								</option>
-							</select>
-						</div>
-					{% endif %}
-					
-					<h2 class="mt-5">{{ 'contactAction.kontaktinfo'|trans }}</h2>
+                <p class="lead">
+                    {{ 'contactAction.topptekst'|trans|nl2br }}
+                </p>
 
-					<div class="form-group">
-						<label>{{ 'contactAction.mobil'|trans }}</label>
-						<input name="mobil" maxlength="8" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}" />
-					</div>
-					
-					<div class="form-group">
-						<label>{{ 'contactAction.epost'|trans }}</label>
-						<input name="epost" required type="text" class="form-control" value="{{ epost is defined ? epost : '' }}" />
-					</div>
-					
-					{% if person is defined %}
-						<div class="form-group">
-							<label>{{ 'contactAction.adresse'|trans }}</label>
-							<input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}" />
-						</div>
-						
-						<div class="form-group">
-							<label>{{ 'contactAction.postnummer'|trans }}</label>
-							<input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}" />
-						</div>
-						
-						<div class="form-group">
-							<label>{{ 'contactAction.poststed'|trans }}</label>
-							<input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}" />
-						</div>
-					{% endif %}
+                <form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
+                    <h2>
+                        {{ 'contactAction.personinfo'|trans }}
+                    </h2>
 
-					<div class="form-group my-5">
-						<button class="btn btn-block btn-outline-primary btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
-							{{ 'contactAction.lagre'|trans }}
-						</button>
-					</div>
 
-					<div class="center my-4">
-						<a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                    <div class="form-group">
+                        <label>{{ 'contactAction.fornavn'|trans }}</label>
+                        <input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ 'contactAction.etternavn'|trans }}</label>
+                        <input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}"/>
+                    </div>
+
+                    {# ALDER #}
+                    {% if person is defined %}
+                        <div class="form-group">
+                            <label>{{ 'contactAction.alder'|trans }}</label>
+                            <select name="alder" required id="alder" class="form-control delta-select">
+                                <option value="" {{ person.getAlder('') < 25 and person.getAlder('') > 9 and person.getAlder('') != '25+' ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option>
+                                {% for i in 10..25 %}
+                                    <option value="{{ i }}" id="{{ i }}" {{ person.getAlder('') == i ? 'selected' : '' }}>{{ i }}
+                                        {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option>
+                                {% endfor %}
+                                <option value="0" {{ (person.getAlder('') == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
+                            </select>
+                        </div>
+                    {% endif %}
+
+                    <h2 class="mt-5">{{ 'contactAction.kontaktinfo'|trans }}</h2>
+
+                    {# MOBIL #}
+                    <div class="form-group">
+                        <label>{{ 'contactAction.mobil'|trans }}</label>
+                        <input name="mobil" maxlength="8" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ 'contactAction.epost'|trans }}</label>
+                        <input name="epost" required type="text" class="form-control" value="{{ user.getEmail() }}"/>
+                    </div>
+
+                    {% if person is defined %}
+                        <div class="form-group">
+                            <label>{{ 'contactAction.adresse'|trans }}</label>
+                            <input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'contactAction.postnummer'|trans }}</label>
+                            <input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'contactAction.poststed'|trans }}</label>
+                            <input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}"/>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group my-5">
+                        <button class="btn btn-block btn-outline-primary btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
+                            {{ 'contactAction.lagre'|trans }}
+                        </button>
+                    </div>
+
+                    <div class="center my-4">
+                        <a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

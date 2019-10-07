@@ -72,7 +72,7 @@ attendingAction:
         alt9: 
             tekst: Vært deltaker før
             value: tidl_deltaker
-    monstringstarter: "starter %dag%. %maned%, kl %time%:%minutt%"
+    monstringstarter: "starter %dato%"
     viktigbeskjed:
         label: "Viktig beskjed fra lokalkontakten:"
         placeholder: Her får lokalkontakten fylle ut informasjon

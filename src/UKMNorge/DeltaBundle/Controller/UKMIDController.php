@@ -6,12 +6,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 use UKMCurl;
+use Exception;
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Personer\Write as WritePerson;
+use UKMNorge\Logger\Logger;
 
 require_once("UKM/Autoloader.php");
 
 
 class UKMIDController extends Controller
 {
+    /**
+     * Route handler for </ukmid/>
+     * Viser alle innslag kontaktpersonen har
+     * 
+     */
     public function indexAction()
     {
         try {
@@ -35,6 +44,11 @@ class UKMIDController extends Controller
     }
 
 
+    /**
+     * Route handler for </ukmid/personvern>
+     * Lar brukeren ta stilling til personvern
+     *
+     */
     public function personvernAction()
     {
 		$view_data = [
@@ -45,8 +59,9 @@ class UKMIDController extends Controller
 	}
 	
     /**
-     * checkPersonvern
+     * Route handler for POST </ukmid/personvern>
      * Kontrollerer brukerens svar på samtykke-spørsmålet
+     * 
      */
     public function checkPersonvernAction( Request $request )
     {
@@ -59,7 +74,12 @@ class UKMIDController extends Controller
         
         return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
 	}
-	
+    
+    /**
+     * Route handler for </ukmid/....>
+     * Hvis brukeren ikke har angitt alder, spør nå
+     *
+     */
     public function requestAgeAction() {
         $view_data = [
             'translationDomain' => 'ukmid'
@@ -78,6 +98,10 @@ class UKMIDController extends Controller
         return $this->render('UKMDeltaBundle:UKMID:alder.html.twig', $view_data );
     }
 
+    /**
+     * Lagre brukerens alder
+     *
+     */
     public function saveAgeAction() {
         $dato = new DateTime('now');
         $userManager = $this->container->get('fos_user.user_manager');
@@ -113,6 +137,12 @@ class UKMIDController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_checkinfo');
     }
 
+    /**
+     * Sjekk hvilken info vi har om brukeren, og send til riktig
+     * side for å innhente det vi mangler
+     *
+     * @return void
+     */
     public function checkInfoAction()
     {
         $user = $this->get('ukm_user')->getCurrentUser();
@@ -138,120 +168,97 @@ class UKMIDController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
     }
 
+    /**
+     * Rediger kontaktpersonen
+     *
+     * @return void
+     */
     public function editContactAction() {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        $view_data = array();
-        require_once('UKM/person.class.php');
         $personService = $this->get('ukm_api.person');
         $user = $this->get('ukm_user')->getCurrentUser();
 
+        $view_data = [
+            'translationDomain' => 'ukmid',
+            'user' => $user
+        ];
+
+        // Brukeren har ikke et assosiert Person-objekt (deltaker)
         if ($user->getPameldUser() == null) {
-           
-            // Hent alder fra UserBundle
             $view_data['epost'] = $user->getEmail();
-            //$view_data['age'] = null;
         }
+        // Brukeren har et Person-objekt tilkoblet sin konto
         else {
             $person = $personService->hent($user->getPameldUser());
-            $view_data['person'] = $person; 
-            $view_data['age'] = $personService->alder($person);
-            if ($view_data['age'] == '25+') {
-                $view_data['age'] = 0;
-            }
-            $view_data['epost'] = $person->get('p_email');
+            $view_data['person'] = $person;
+            $view_data['epost'] = $person->getEpost();
         }
-        
-       
-        $view_data['translationDomain'] = 'ukmid';
-        $view_data['user'] = $user;        
-        // $person = new person($user->getPameldUser());
         return $this->render('UKMDeltaBundle:UKMID:contact.html.twig', $view_data);
     }
 
     public function saveContactAction() {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        require_once('UKM/person.class.php');
-        $user = $this->get('ukm_user')->getCurrentUser();
-        $userManager = $this->container->get('fos_user.user_manager');
-        $innslagService = $this->container->get('ukm_api.innslag');
-        
         // Ta i mot post-variabler
         $request = Request::createFromGlobals();
 
-        // Dette vet vi alltid
+        $userManager = $this->container->get('fos_user.user_manager');
+        $innslagService = $this->container->get('ukm_api.innslag');
+
+        $user = $this->get('ukm_user')->getCurrentUser();
+        
+        // POST-verdier
+        // Disse vet vi alltid
         $fornavn = $request->request->get('fornavn');
         $etternavn = $request->request->get('etternavn');
         $mobil = $request->request->get('mobil');
         $epost = $request->request->get('epost');
 
-        // Dette vet vi kun om personen har meldt på et innslag!
-        if ($user->getPameldUser() != null) {
-            $person = new person($user->getPameldUser());
-            // Alder
-            $alder = $request->request->get('age');
-            // Beregn birthdate basert på age?
-            if ($alder != 0) {
-                $birthYear = (int)date('Y') - $alder;
-            }
-            else {
-                $birthYear = 1970;
-            }
-            $birthdate = mktime(0, 0, 0, 1, 1, $birthYear);
-            $dato = new DateTime('now');
-            $dato->setTimestamp($birthdate);
-            $user->setBirthdate($dato);
-            $person->set('p_dob', $dato->getTimestamp());
-            
-            // Adresse
-            $adresse = $request->request->get('adresse');
-            $user->setAddress($adresse);
-            $person->set('p_adress', $adresse);
-
-            $postnummer = $request->request->get('postnummer');
-            $user->setPostNumber($postnummer); 
-            $person->set('p_postnumber', $postnummer);
-            
-            // Poststed
-            $poststed = $request->request->get('poststed'); 
-            $user->setPostPlace($poststed);
-            $person->set('p_postplace', $poststed);
-
-            // Lagre til databasen
-            $person->set('p_firstname', $fornavn);
-            $person->set('p_lastname', $etternavn);
-            $person->set('p_email', $epost);
-            $person->set('p_phone', $mobil);
-            
-            $person->lagre('delta', $user->getPameldUser());
-
-            // Har personen et eller flere tittelløse innslag?
-            // I så fall, oppdater navn på disse
-            $innslagsliste = $innslagService->hentInnslagFraKontaktperson($user->getPameldUser(), $user->getId());
-            //var_dump($innslagsliste);
-            foreach ($innslagsliste['fullstendig'] as $innslag) {
-                if ($innslag->innslag->tittellos()) {
-                    // Innslaget er et tittelløst innslag
-                    $innslagService->lagreArtistnavn($innslag->innslag->get('b_id'), $fornavn . ' '. $etternavn);
-                }
-            }
-            foreach ($innslagsliste['ufullstendig'] as $innslag) {
-                if ($innslag->innslag->tittellos()) {
-                    // Innslaget er et tittelløst innslag
-                    $innslagService->lagreArtistnavn($innslag->innslag->get('b_id'), $fornavn . ' '. $etternavn);
-                }
-            }
-        }
-        
-
-        
         // Lagre til UserBundle
         $user->setFirstName($fornavn);
         $user->setLastName($etternavn);
         $user->setPhone($mobil);
         $user->setEmail($epost);
-    
+
+        // Dette vet vi kun om personen har meldt på et innslag!
+        if ($user->getPameldUser() != null) {
+            // POST-verdier
+            $adresse = $request->request->get('adresse');
+            $postnummer = $request->request->get('postnummer');
+            $poststed = $request->request->get('poststed'); 
+            $fodselsdato = WritePerson::fodselsdatoFraAlder($request->request->get('age')); // Alder
+            
+            // Oppdater bruker
+            if( $fodselsdato != 0 ) {
+                $user->setBirthdate($fodselsdato);
+            }
+            $user->setPostNumber($postnummer); 
+            $user->setAddress($adresse);
+            $user->setPostPlace($poststed);
+            
+            // Oppdater personobjekt
+            $person = new Person($user->getPameldUser());
+            $person->setAdresse($adresse);
+            $person->setPostnummer($postnummer);
+            $person->setPoststed($poststed);
+            $person->setFodselsdato($fodselsdato);
+            $person->setFornavn($fornavn);
+            $person->setEtternavn($etternavn);
+            $person->setMobil($mobil);
+            $person->setEpost($epost);
+            
+            // Bruker ikke personService, da vi mangler mønstringinfo
+            Logger::setID('delta_Dinside', $user->getId(), 1);
+            WritePerson::save( $person );
+
+            // Har personen et eller flere tittelløse innslag?
+            // I så fall, oppdater navn på disse
+            $alle_innslag = $innslagService->hentInnslagFraKontaktperson($user->getPameldUser(), $user->getId());
+            foreach( $alle_innslag->getAll() as $innslag ) {
+                if( $innslag->getType()->erJobbeMed() ) {
+                    $innslag->setNavn( $person->getNavn() );
+                    $innslagService->lagre( $innslag );
+                }
+            }
+        }
+        
         // Lagre user
         $userManager->updateUser($user);
 

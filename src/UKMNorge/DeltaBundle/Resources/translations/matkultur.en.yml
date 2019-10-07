@@ -33,7 +33,7 @@ overviewAction:
             placeholder: >
                 Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
                 De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: sjanger
         placeholder: Eks. Baking

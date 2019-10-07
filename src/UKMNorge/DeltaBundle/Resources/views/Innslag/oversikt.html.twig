@@ -20,7 +20,7 @@
 
 					<div class="form-group">
 						<label>{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</label>
-						<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ innslag.getNavn() }}" /> 
+						<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ innslag.getNavn() != 'Innslag uten navn' ? innslag.getNavn() : ''  }}" /> 
 					</div>
 
 					<div class="form-group">

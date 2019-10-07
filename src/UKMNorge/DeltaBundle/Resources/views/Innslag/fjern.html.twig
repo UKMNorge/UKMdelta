@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-12">
 				<h2 class="mt-0">
-					{{ 'removeAction.overskrift'|trans({'%name%': navn}, 'base') }}
+					{{ 'removeAction.overskrift'|trans({'%name%': innslag.getNavn()}, 'base') }}
 				</h2>
 				<div class="mt-4">
 					<form action="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" method="POST">

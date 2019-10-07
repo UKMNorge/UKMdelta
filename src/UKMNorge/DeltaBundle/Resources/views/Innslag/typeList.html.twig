@@ -1,12 +1,7 @@
-{% if type.getKey() == 'scene' %}
-    {% set key = 'annet' %}
-{% else %}
-    {% set key = type.getKey() %}
-{% endif %}
 <li class="list-group-item delta-type triggerLink click py-1">
     <div class="row">
         <div class="col-12 typeText" style="padding-top: .3em;">
-            <a href="{{ path('ukm_delta_ukmid_pamelding_' ~ key ~ '_hvem', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="actionLink" id="type_{{ key }}">{{ type.getNavn()|raw }}
+            <a href="{{ path('ukm_delta_ukmid_pamelding_' ~ type.getKey() ~ '_hvem', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="actionLink" id="type_{{ type.getKey() }}">{{ type.getNavn()|raw }}
             </a>
         </div>
     </div>

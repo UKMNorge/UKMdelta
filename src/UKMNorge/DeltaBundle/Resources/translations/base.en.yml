@@ -58,7 +58,10 @@ tittel:
 overviewAction:
     meldav: Meld av innslaget "%name"
     avbryt: avbryt
-    beskrivelse_hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+    beskrivelse_hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
+    beskrivelse:
+      hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
+
 
 statusAction:
     videreknapp: Ok, jeg fyller ut senere

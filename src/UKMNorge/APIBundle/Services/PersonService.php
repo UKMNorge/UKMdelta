@@ -105,7 +105,7 @@ class PersonService {
         $this->sjekkTilgang( $person, $innslagID );
         Write::saveRolle( $person );
         return Write::save( $person );
-	}
+    }
 
     /**
      * Sjekk om brukeren har tilgang til å redigere personen

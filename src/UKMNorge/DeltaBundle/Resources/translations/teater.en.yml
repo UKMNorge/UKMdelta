@@ -51,6 +51,7 @@ overviewAction:
                 skal spille et teaterstykke de har skrevet selv.
                 For de er teater en god måte å gjøre kritikk og humor av samfunnet rundt seg, 
                 samtidig som det er gøy!
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks monolog, revy osv...

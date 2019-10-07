@@ -9,17 +9,17 @@
 	
 	<div class="form-group"  id="melodi-valg">
 		<label class="radio-inline">
-			<input type="radio" name="selvlaget" value="1" {{ selvlaget is defined and (selvlaget == 1) ? 'checked' : '' }} />
+			<input type="radio" name="selvlaget" value="1" {{ tittel is defined and tittel.erSelvlaget() ? 'checked' }} />
 			{{ 'ja'|trans({}, 'base') }}
 		</label>
 		<label class="radio-inline">
-			<input type="radio" name="selvlaget" value="0" {{ selvlaget is defined and (selvlaget == 0) ? 'checked' : '' }} />
+			<input type="radio" name="selvlaget" value="0" {{ tittel is defined and not tittel.erSelvlaget() ? 'checked' }} />
 			{{ 'nei'|trans({}, 'base') }}
 		</label>
 	</div>
 	
 	<div class="form-group" id="tekst-rad">
 		<label>{{ 'tittel.tekst_av.label'|trans }}</label>
-		<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tekst_av') : '' }}" /> 
+		<input type="text" name="tekstforfatter" class="form-control" placeholder="{{ 'tittel.tekst_av.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getTittel() : '' }}" /> 
 	</div>
 {% endblock %}

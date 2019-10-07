@@ -24,8 +24,8 @@ require_once('UKM/Autoloader.php');
 class InnslagController extends Controller
 {
     /**
-     * Handler for route <ukmid/pamelding/>
      * Lar brukeren velge arrangement
+     * _@route: <ukmid/pamelding/>
      */
     public function geoAction()
     {
@@ -61,9 +61,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route <ukmid/pamelding/$k_id-$pl_id/>
-     * Velg type innslag du ønsker å melde på.
-     * Både mønstring og kommune er allerede valgt 
+     * Velg type innslag du ønsker å melde på. Både mønstring og kommune er allerede valgt 
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/>
      * 
      * @param Int KommuneID
      * @param Int ArrangementID
@@ -85,8 +84,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type>
      * Lar brukeren velge hvem som meldes på (meg alene, meg med flere, jeg er kun kontaktperson)
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -97,7 +96,7 @@ class InnslagController extends Controller
     public function whoAction(Int $k_id, Int $pl_id, String $type, $translationDomain)
     {
         $view_data = [
-            'translationDomain' => $translationDomain,
+            'translationDomain' => ($translationDomain == 'annet' ? 'scene' : $translationDomain),
             'arrangement' => $this->hentArrangement($pl_id),
             'kommune' => $this->hentKommune($k_id),
             'user' => $this->hentCurrentUser(),
@@ -108,8 +107,8 @@ class InnslagController extends Controller
 
 
     /**
-     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/opprett/$hvem/>
      * Oppretter innslaget, og legger til kontaktperson hvis dette skal gjøres
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/opprett/$hvem/>
      * 
      * Videresender til rediger innslag etter oppretting
      * @param Int $k_id
@@ -197,7 +196,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     * Vis informasjon om et innslag (oversiktssiden)
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -220,9 +220,9 @@ class InnslagController extends Controller
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
-            'type' => $type->getKey(),
+            'type' => $type->getKey() == 'video' ? 'film' : $type->getKey(),
             'b_id' => $b_id,
-            'translationDomain' => $type->getKey(),
+            'translationDomain' => $type->getKey() == 'video' ? 'film' : $type->getKey(),
             'user' => $user,
             'innslag' => $innslag,
             'kommune' => $this->get('ukm_api.geografi')->hentKommune($k_id),
@@ -245,8 +245,9 @@ class InnslagController extends Controller
 
 
     /**
-     * Handler for POST (lagring for) route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
-     *
+     * Lagrer alle endringer i et innslag
+     * _@route: POST (lagre) <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     * 
      * @param Int $k_id
      * @param Int $pl_id
      * @param String $type
@@ -298,7 +299,7 @@ class InnslagController extends Controller
 
         $innslag->setBeskrivelse($request->request->get('beskrivelse'));
         $innslag->setNavn($request->request->get('navn'));
-        if (in_array($type, ['musikk', 'litteratur', 'film', 'video', 'annet', 'dans', 'teater'])) {
+        if (in_array($type, ['musikk', 'litteratur', 'film', 'video', 'annet', 'scene', 'dans', 'teater'])) {
             $innslag->setSjanger($request->request->get('sjanger'));
         }
 
@@ -314,10 +315,43 @@ class InnslagController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
     }
 
+    /**
+     * Viser statusider. Enten "du er påmeldt" eller "dette mangler før du er påmeldt"
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/status/>
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function statusAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id
+        ];
+
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        if ($innslag->erPameldt()) {
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
+        }
+
+        $view_data = [
+            'translationDomain' => $type,
+            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id),
+            'innslag' => $innslag
+        ];
+
+        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge($route_data, $view_data));
+    }
 
     /**
-     * Handler for route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
      * Viser skjema for å legge til person
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -343,7 +377,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Hent alle venner som ikke er med i innslaget
+     * Hent alle venner som ikke er med i innslaget.
+     * Støttefunksjon for å legge til person i innslaget (ikke rediger person)
      *
      * @param Innslag $innslag
      * @return Array<Person>
@@ -362,8 +397,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for POST (lagre for) route <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
      * Oppretter ny person og legger til i innslaget
+     * _@route POST (lagre) <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/ny-person>
      * 
      * @param Int $k_id
      * @param Int $pl_id
@@ -399,9 +434,7 @@ class InnslagController extends Controller
         // Sett alder
         $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
 
-
-        Write::savePersoner($innslag);
-        PersonWrite::save($person);
+        $innslagService->leggTilPerson( $innslag, $person );
 
         $view_data = [
             'k_id' => $k_id,
@@ -412,45 +445,10 @@ class InnslagController extends Controller
 
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
-
+    
     /**
-     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/status/>
-     * 
-     * Viser enten "du er påmeldt" eller "dette mangler før du er påmeldt"
-     *
-     * @param Int $k_id
-     * @param Int $pl_id
-     * @param String $type
-     * @param Int $b_id
-     */
-    public function statusAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
-    {
-        $route_data = [
-            'k_id' => $k_id,
-            'pl_id' => $pl_id,
-            'type' => $type,
-            'b_id' => $b_id
-        ];
-
-        $innslagService = $this->get('ukm_api.innslag');
-        $innslag = $innslagService->hent($b_id);
-
-        if ($innslag->erPameldt()) {
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_pameldt', $route_data);
-        }
-
-        $view_data = [
-            'translationDomain' => $type,
-            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id),
-            'innslag' => $innslag
-        ];
-
-        return $this->render('UKMDeltaBundle:Innslag:status.html.twig', array_merge($route_data, $view_data));
-    }
-
-    /**
-     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/>
-     * Redigering av person
+     * Vis skjema for redigering av person
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/>
      * 
      * @param Int $k_id
      * @param Int $pl_id
@@ -474,8 +472,9 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/lagre/>
-     *
+     * Lagre en redigert person.
+     * _@route: POST (lagre) </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/p$p_id/lagre/>
+     * 
      * @param Int $k_id
      * @param Int $pl_id
      * @param String $type
@@ -544,7 +543,7 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/>
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/>
      * Rediger tekniske behov
      *
      * @param Int $k_id
@@ -567,8 +566,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/lagre/>
      * Lagrer tekniske behov
+     * _@route POST (lagre) </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/teknisk/lagre/>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -596,8 +595,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/>
      * Legg til en ny tittel
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -622,8 +621,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/$t_id>
      * Rediger eksisterende tittel
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/$t_id>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -650,8 +649,7 @@ class InnslagController extends Controller
 
     /**
      * Hjelper for newTitleAction og editTitleAction
-     * Disse gjør det samme, edit slenger bare på tittel som 
-     * data i view.
+     * Funksjonene gjør det samme, edit slenger bare på tittel som data i view.
      *
      * @param Array $view_data
      * @return 
@@ -679,8 +677,8 @@ class InnslagController extends Controller
     }
 
     /**
-     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/lagre/>
      * Legg til en ny tittel
+     * Handler for POST (lagre for) route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/lagre/>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -732,13 +730,14 @@ class InnslagController extends Controller
                 // Teater
             case 'teater':
                 $tittel->setVarighet($request->request->get('lengde'));
-                $tittel->setInstrumental($request->request->get('sangtype') == 'instrumental' ? 1 : 0);
+                $tittel->setInstrumental($request->request->get('sangtype') == 'instrumental');
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
                 $tittel->setMelodiAv($request->request->get('melodiforfatter'));
                 $tittel->setTekstAv($request->request->get('tekstforfatter'));
                 break;
                 // Dans
             case 'dans':
+                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
                 $tittel->setVarighet($request->request->get('lengde'));
                 $tittel->setKoreografi($request->request->get('koreografi'));
                 break;
@@ -765,8 +764,7 @@ class InnslagController extends Controller
                 // Annet
             case 'annet':
             case 'scene':
-                $tittel->setErfaring($request->request->get('erfaring'));
-                $tittel->setKommentar($request->request->get('kommentar'));
+                $tittel->setVarighet($request->request->get('lengde'));
                 break;
             default:
                 throw new Exception(
@@ -779,10 +777,20 @@ class InnslagController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
+    /**
+     * Slett en tittel fra innslaget
+     * _@route POST (lagre) </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/tittel/lagre/>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @param Int $t_id
+     */
     public function deleteTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $t_id)
     {
         $innslagService = $this->get('ukm_api.innslag');
-        
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -790,15 +798,81 @@ class InnslagController extends Controller
             'b_id' => $b_id,
             't_id' => $t_id
         ];
-        
+
         // Hent tittel
         $innslag = $innslagService->hent($b_id);
-        $tittel = $innslag->getTitler()->get( $t_id );
+        $tittel = $innslag->getTitler()->get($t_id);
 
         // Fjern tittelen
-        $innslagService->fjernTittel( $innslag, $tittel );
-        
+        $innslagService->fjernTittel($innslag, $tittel);
+
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+    }
+
+    /**
+     * "Slett" innslag. Markeres i db som status:77, og er i praksis borte fra systemet
+     *
+     * _@route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/fjern/>
+     * Viser bekreftelse
+     *
+     * _@route POST (utfør) </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/fjern/>
+     * Utfører avmelding, og markerer innslaget som slettet
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function removeAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $innslagService = $this->get('ukm_api.innslag');
+        $innslag = $innslagService->hent($b_id);
+
+        // Hvis POST-request, utfør
+        if ($this->getRequest()->isMethod('POST')) {
+            $innslagService->meldAv($innslag->getId(), $pl_id);
+            $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', ["%name" => $innslag->getNavn()], 'base'));
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => 'base',
+            'innslag' => $innslag
+        ];
+        return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
+    }
+
+    /**
+     * Viser info om arrangementet deltakeren nettopp har blitt påmeldt!
+     * _@route </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/pameldt/>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function attendingAction( Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $arrangement = $this->get('ukm_api.arrangement')->hent( $pl_id );
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => 'innslag',
+            'fb_share_caption' => $this->get('translator')->trans('fb_share', ['%monstring' => $arrangement->getNavn()], 'base'),
+            'arrangement' => $arrangement,
+            'innslag' => $this->get('ukm_api.innslag')->hent( $b_id )
+        ];
+
+        return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }
 
 
@@ -839,62 +913,11 @@ class InnslagController extends Controller
         return $this->createAction($k_id, $pl_id, $type, 'alene');
     }
 
-    public function removeAction($k_id, $pl_id, $type, $b_id)
-    {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        // Output confirm-vindu
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = 'base';
-        // Sjekk tilgang
-        $innslagService = $this->get('ukm_api.innslag');
-
-        $innslagService->sjekk($b_id, $type);
-        $innslag = $innslagService->hent($b_id);
-
-        // If post-request, i.e. JA-knapp.
-        if ($this->getRequest()->isMethod('POST')) {
-            $innslagService->meldAv($b_id, $pl_id);
-            $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', array("%name" => $innslag->get('b_name')), 'base'));
-            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
-        }
-        // Else render
-
-        $view_data['innslag'] = $innslag;
-        $view_data['navn'] = $innslag->get('b_name');
-        return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
-    }
 
 
 
-    public function attendingAction($k_id, $pl_id, $type, $b_id)
-    {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = 'innslag';
-
-        require_once('UKM/monstring.class.php');
-        $monstring = new monstring($pl_id);
-
-        $start = new DateTime();
-        $start->setTimestamp($monstring->get('old_pl_start'));
-
-        $name = $monstring->get('pl_name');
 
 
-        // Tekst som deles på facebook!
-        $view_data['fb_share_caption'] = $this->get('translator')->trans('fb_share', array('%monstring' => $name), 'base');
-
-        $view_data['pl_navn'] = $name;
-        $view_data['pl_start'] = $start;
-        //$view_data['pl_link'] = $monstring->get('pl_link');
-
-        $monstring_v2 = new monstring_v2($pl_id);
-        $view_data['pl_link'] = $monstring_v2->getLink();
-
-        return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
-    }
 
     public function fristAction($k_id, $pl_id, $type, $b_id)
     {

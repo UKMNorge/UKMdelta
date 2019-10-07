@@ -5,7 +5,9 @@
 	{% for tittel in innslag.getTitler().getAll() %}
 		<li class="list-group-item click triggerLink">
 			<div class="row">
-				{% if innslag.getType().getKey() not in ['utstilling','matkultur'] %}
+                {% if innslag.getType().getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
+                    <div class="col-2 px-0"></div>
+				{% elseif innslag.getType().getKey() not in ['utstilling','matkultur'] %}
 					<div class="col-2 px-0">
 						<div class="overunder">
 							{% if tittel is defined %}
@@ -18,7 +20,7 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ ( innslag.getType().getKey() not in ['utstilling','matkultur'] )? '9' : '7' }}">
+				<div class="col-{{ ( innslag.getType().getKey() not in ['utstilling','matkultur'] ) ? '7' : '9' }}">
 					<p style="line-height:1em">
 						{{ tittel is defined ? tittel.getTittel() }}
 						<br />

@@ -3,19 +3,19 @@
 
 
 {% block form_body %}
-	<input type="hidden" name="innslagsnavn" value="{{ innslag.get('b_name') }}" />
-	<input type="hidden" name="t_id" value="{{ tittel is defined and tittel.get('t_id') > 0 ? tittel.get('t_id') : 'new' }}" />
+	<input type="hidden" name="innslagsnavn" value="{{ innslag.getNavn() }}" />
+	<input type="hidden" name="t_id" value="{{ tittel is defined ? tittel.getId() : 'new' }}" />
 
 
 	<div class="form-group">
 		<label>{{ 'tittel.tittel.label'|trans }}</label>
-		<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('tittel') : '' }}" />
+		<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getTittel() }}" />
 	</div>
 	
 	
 	<div class="form-group">
 		<label>{{ 'tittel.type.label'|trans }}</label>
-		<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.get('type') : '' }}" />
+		<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getType() }}" />
 		<p class="help">{{ 'tittel.type.forklaring'|trans }}</p>
 	</div>
 {% endblock form_body %}

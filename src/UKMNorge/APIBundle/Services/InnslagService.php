@@ -15,9 +15,10 @@ use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Samling;
 use UKMNorge\Innslag\Titler\Tittel;
 use UKMNorge\Innslag\Type;
-use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Logger\Logger;
+use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;
+use UKMNorge\Innslag\Personer\Write as WritePerson;
 
 require_once('UKM/Autoloader.php');
 
@@ -47,7 +48,7 @@ class InnslagService
             $kommune,
             $arrangement,
             $type,
-            $hvem == 'alene' ? $kontakt->getNavn() : '',
+            $hvem == 'alene' ? $kontakt->getNavn() : 'Innslag uten navn',
             $kontakt
         );
 
@@ -175,13 +176,12 @@ class InnslagService
      */
     public function meldAv(Int $innslagID, Int $arrangementID)
     {
+        $this->_setupLogger( $arrangementID );
         $innslag = $this->hent($innslagID);
-        $arrangement = $this->hentArrangement($arrangementID);
 
         // Sjekk at mønstringen tillater av- og påmeldinger
         $this->sjekkFrist($innslag);
 
-        // Avbryt samtykke før avmelding
         WriteInnslag::fjern($innslag);
         return true;
     }
@@ -243,6 +243,28 @@ class InnslagService
         }
 
         return $alle_innslag;
+    }
+
+    /**
+     * Legg til en person i innslaget
+     * 
+     * @throws Exception hvis manglende rettighet til innslaget, fristen er ute, logger feil satt opp, lagring feilet.
+     * @param Int $innslagId
+     * @param Person $person
+     * @return void
+     */
+    public function leggTilPerson( Innslag $innslag, Person $person ) {
+        // Sjekk at mønstringen tillater av- og påmeldinger
+        $this->sjekkFrist($innslag);
+        // Sjekk at vi kan redigere innslaget
+        $this->sjekkTilgang( $innslag );
+        // Setup logger
+        $this->_setupLogger( $innslag->getHomeId() );
+
+        WriteInnslag::savePersoner($innslag);
+        WritePerson::save($person);
+        
+        return true;
     }
 
     /**
