@@ -6,10 +6,8 @@ overviewAction:
             Eks. Jeg Jeg har jobbet med lys og lyd på ungdomsklubben en gang, 
             eller jeg har ikke gjort det før, 
             eller jeg har vært frivillig på Øya-festivalen tidligere.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     lagre: Lagre
-    hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-
-
 
 funksjon:
     label: Hva vil du aller helst jobbe med?

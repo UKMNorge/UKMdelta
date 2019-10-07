@@ -116,7 +116,7 @@ class InnslagController extends Controller
      * @param String $type
      * @param String $hvem
      */
-    public function createAction(Int $k_id, $pl_id, $type, $hvem)
+    public function createAction(Int $k_id, Int $pl_id, String $type, String $hvem)
     {
         $route_data = [
             'k_id' => $k_id,
@@ -137,21 +137,32 @@ class InnslagController extends Controller
             throw new Exception('Påmeldingsfristen er ute!');
         }
 
+        $kommune = new Kommune($k_id);
+
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
             // Opprett person
-            $person = $personService->opprett($user->getFirstname(), $user->getLastname(), $user->getPhone(), $arrangement->getId());
+            $person = $personService->opprett(
+                $user->getFirstname(),
+                $user->getLastname(),
+                $user->getPhone(),
+                $kommune,
+                $arrangement
+            );
             // Sett alder og e-post basert på user-bundle-alder
-            $person->setAlder($user->getBirthdate());
+            $person->setFodselsdato($user->getBirthdate());
             $person->setEpost($user->getEmail());
-            $personService->save($person);
+            
             // Oppdater verdier i UserBundle
             $user->setPameldUser($person->getId());
             $this->container->get('fos_user.user_manager')->updateUser($user);
+
+            $lagrePerson = true;
         }
         // Hvis brukeren er registrert i systemet fra før
         else {
             $person = $personService->hent($user->getPameldUser());
+            $lagrePerson = false;
         }
 
         // Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
@@ -172,7 +183,7 @@ class InnslagController extends Controller
 
         // Opprett et nytt innslag
         $innslag = $innslagService->opprett(
-            new Kommune($k_id),
+            $kommune,
             $arrangement,
             $type,
             $hvem,
@@ -184,6 +195,9 @@ class InnslagController extends Controller
             $innslagService->lagre($innslag);
         }
 
+        if( $lagrePerson ) {
+            $personService->lagre($person, $innslag);
+        }
         // Flytt personvern-tilbakemelding (nå lagret på delta user-objektet) over på person-objektet
         $personService->oppdaterPersonvern($innslag);
 
@@ -193,6 +207,11 @@ class InnslagController extends Controller
             'ukm_delta_ukmid_pamelding_innslag_oversikt',
             $route_data
         );
+    }
+
+    public function create_tittellosAction($k_id, $pl_id, $type)
+    {
+        return $this->createAction($k_id, $pl_id, $type, 'alene');
     }
 
     /**
@@ -265,39 +284,34 @@ class InnslagController extends Controller
 
         $request = Request::createFromGlobals();
         $innslagService = $this->get('ukm_api.innslag');
+        $personService = $this->get('ukm_api.person');
 
         // Hent inn innslaget
         $innslag = $innslagService->hent($b_id);
 
+        $innslag->setBeskrivelse($request->request->get('beskrivelse'));
+
         // Hvis innslaget ikke har titler
         if ($innslag->getType()->erJobbeMed()) {
-            throw new Exception('TODO: Funksjonen er ikke implementert');
+            $person = $innslag->getPersoner()->getSingle();
 
-            $innslagService->lagreBeskrivelse($b_id, $desc);
-            $personService = $this->get('ukm_api.person');
+            $innslag->setNavn($person->getNavn());
 
-            switch ($type) {
-                case 'nettredaksjon':
-                case 'arrangor':
-                    $tittellos_person = $this->_hent_tittellos_person($b_id);
-                    $instrument_object = $request->request->get('funksjoner');
-                    $funksjon = '';
-                    if (is_array($instrument_object)) {
-                        foreach ($instrument_object as $current_instrument) {
-                            $funksjon .= $this->get('translator')->trans('funksjon.' . $current_instrument, array(), $type) . ', ';
-                        }
-                        $funksjon = rtrim($funksjon, ', ');
-                    }
 
-                    $innslagService->lagreInstrumentTittellos($b_id, $tittellos_person->g('p_id'), $pl_id, $funksjon, $instrument_object);
-                    break;
+            if( $innslag->getType()->harFunksjoner() ) {
+                $funksjoner = [];
+                $mulige = $innslag->getType()->getFunksjoner();
+                foreach($request->request->get('funksjoner') as $element) {
+                    $funksjoner[$element] = $mulige[$element];
+                }
+                $person->setRolle( $funksjoner );
             }
+            $personService->lagre($person, $innslag->getId());
+            $innslagService->lagre( $innslag );
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
         }
 
         // Innslaget har titler
-
-        $innslag->setBeskrivelse($request->request->get('beskrivelse'));
         $innslag->setNavn($request->request->get('navn'));
         if (in_array($type, ['musikk', 'litteratur', 'film', 'video', 'annet', 'scene', 'dans', 'teater'])) {
             $innslag->setSjanger($request->request->get('sjanger'));
@@ -508,7 +522,7 @@ class InnslagController extends Controller
                 $request->request->get('alder')
             )
         );
-        $person->setInstrument($request->request->get('instrument'));
+        $person->setRolle($request->request->get('instrument'));
 
         // Lagre
         $this->get('ukm_api.person')->lagre($person, $innslag->getId());
@@ -875,74 +889,29 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function pameldingAction()
+    /**
+     * Vis informasjon om at påmeldingsfristen har gått ut
+     * _@route: </ukmid/pamelding/$k_id-$pl_id/$type/$b_id/frist/>
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     * @return void
+     */
+    public function fristAction( Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-        $view_data = array();
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'translationDomain' => 'base',
+            'innslag' => $this->get('ukm_api.innslag')->hent($b_id)
+        ];
 
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        return $this->render('UKMDeltaBundle:Innslag:pamelding.html.twig', $view_data);
-    }
-
-    public function create_tittellosAction($k_id, $pl_id, $type)
-    {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        return $this->createAction($k_id, $pl_id, $type, 'alene');
-    }
-
-
-
-
-
-
-
-    public function fristAction($k_id, $pl_id, $type, $b_id)
-    {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        $view_data = array('k_id' => $k_id, 'pl_id' => $pl_id, 'type' => $type, 'b_id' => $b_id);
-        $view_data['translationDomain'] = 'base';
-
-        $innslagService = $this->get('ukm_api.innslag');
-        $view_data['innslag'] = $innslagService->hent($b_id);
         return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);
     }
-
-    private function _hent_tittellos_person($b_id)
-    {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        $innslagService = $this->get('ukm_api.innslag');
-        $personService = $this->get('ukm_api.person');
-        $innslag = $innslagService->hent($b_id);
-        $personer = $innslag->personer();
-        $p_id = $personer[0]['p_id'];
-        return $personService->hent($p_id, $b_id);
-    }
-
 
     /**
      * Hent kommune med gitt ID

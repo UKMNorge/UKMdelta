@@ -215,34 +215,19 @@ class InnslagService
      * @param Int $contact_id
      * @return Samling
      */
-    public function hentInnslagFraKontaktperson(Int $contact_id)
+    public function hentInnslagFraKontaktperson()
     {
         $user = $this->hentCurrentUser();
         $sesong = $this->container->get('ukm_delta.season')->getActive();
-        $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
-
-        $context = Context::createKontaktperson($person, $sesong);
-        $seasonService = $this->container->get('ukm_delta.season');
-
-        return new Samling($context);
-
-        throw new Exception('Mangler implementering av brukere uten kontaktperson-objekt');
-        // Søk etter innslag i databasen?
-        if (empty($contact_id)) {
-            $qry = new Query(
-                "SELECT `smartukm_band`.`b_id`, 
-								   `smartukm_band`.`b_status`,
-								   `smartukm_band`.`bt_id`, 
-								   `smartukm_band`.`b_kategori` 
-							FROM `smartukm_band` 
-							WHERE `b_password` = 'delta_#user_id' 
-							AND `b_season` = '#season'
-							AND `b_status` < 9",
-                array('user_id' => $user->getId(), 'season' => $seasonService->getActive())
-            );
+        
+        if( $user->getPameldUser() != null ) {
+            $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
+            $context = Context::createKontaktperson($person, $sesong);
+        } else {
+            $context = Context::createDeltaUser($user->getId(), $sesong);
         }
 
-        return $alle_innslag;
+        return new Samling($context);
     }
 
     /**

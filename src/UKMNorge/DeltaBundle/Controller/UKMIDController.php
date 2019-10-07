@@ -17,8 +17,8 @@ require_once("UKM/Autoloader.php");
 class UKMIDController extends Controller
 {
     /**
-     * Route handler for </ukmid/>
      * Viser alle innslag kontaktpersonen har
+     * _@route: </ukmid/>
      * 
      */
     public function indexAction()
@@ -33,20 +33,15 @@ class UKMIDController extends Controller
             'translationDomain' => 'ukmid',
             'user' => $user,
             'dinside' => true,
-            'alle_innslag' => $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson(
-                $user->getPameldUser(), 
-                $user->getId()
-            )
+            'alle_innslag' => $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()
         ];
-        $view_data['alle_innslag']->getAll();
 
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
     }
 
-
     /**
-     * Route handler for </ukmid/personvern>
      * Lar brukeren ta stilling til personvern
+     * _@route: </ukmid/personvern>
      *
      */
     public function personvernAction()
@@ -59,8 +54,8 @@ class UKMIDController extends Controller
 	}
 	
     /**
-     * Route handler for POST </ukmid/personvern>
      * Kontrollerer brukerens svar på samtykke-spørsmålet
+     * _@route: POST </ukmid/personvern>
      * 
      */
     public function checkPersonvernAction( Request $request )
@@ -76,8 +71,8 @@ class UKMIDController extends Controller
 	}
     
     /**
-     * Route handler for </ukmid/....>
      * Hvis brukeren ikke har angitt alder, spør nå
+     * _@route: </ukmid/....>
      *
      */
     public function requestAgeAction() {
@@ -100,7 +95,7 @@ class UKMIDController extends Controller
 
     /**
      * Lagre brukerens alder
-     *
+     * _@route: </ukmid/....>
      */
     public function saveAgeAction() {
         $dato = new DateTime('now');
@@ -195,6 +190,11 @@ class UKMIDController extends Controller
         return $this->render('UKMDeltaBundle:UKMID:contact.html.twig', $view_data);
     }
 
+    /**
+     * Lagre endringer i kontaktperson
+     *
+     * @return void
+     */
     public function saveContactAction() {
         // Ta i mot post-variabler
         $request = Request::createFromGlobals();
@@ -267,12 +267,25 @@ class UKMIDController extends Controller
         return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }
 
+    /**
+     * Vis support-siden
+     *
+     * @return void
+     */
     public function supportAction() {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
-        $view_data['translationDomain'] = 'ukmid';
-        return $this->render('UKMDeltaBundle:UKMID:support.html.twig', $view_data);
+        return $this->render(
+            'UKMDeltaBundle:UKMID:support.html.twig',
+            [
+                'translationDomain' =>'ukmid'
+            ]
+        );
     }
+
+
+
+
+
+
 
     public function fbconnectAction() {
         throw new Exception('TODO: Funksjonen er ikke implementert');
