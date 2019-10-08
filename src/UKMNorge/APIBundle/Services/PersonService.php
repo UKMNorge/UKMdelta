@@ -9,7 +9,7 @@ use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Write;
 use UKMNorge\Innslag\Personer\Person;
-use UKMNorge\Logger\Logger;
+use UKMNorge\Log\Logger;
 use UKMNorge\Samtykke\Person as PersonSamtykke;
 
 require_once('UKM/Autoloader.php');

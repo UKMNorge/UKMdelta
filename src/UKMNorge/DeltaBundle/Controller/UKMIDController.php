@@ -9,7 +9,7 @@ use UKMCurl;
 use Exception;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
-use UKMNorge\Logger\Logger;
+use UKMNorge\Log\Logger;
 
 require_once("UKM/Autoloader.php");
 

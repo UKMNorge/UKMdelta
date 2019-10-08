@@ -72,7 +72,7 @@ class InnslagController extends Controller
         $arrangement = $this->hentArrangement($pl_id);
 
         if (!$arrangement->erPameldingApen()) {
-            throw new Excecption('Påmeldingsfristen er ute!');
+            throw new Exception('Påmeldingsfristen er ute!');
         }
 
         $view_data = [
