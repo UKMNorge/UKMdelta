@@ -6,6 +6,7 @@ use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Arrangement\Program\Hendelse;
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Database\SQL\Update;
 use UKMNorge\Geografi\Kommune;
@@ -34,13 +35,13 @@ class InnslagService
      * Opprett et nytt innslag
      *
      * @param Kommune $kommune
-     * @param Arrangement $arrangement
+     * @param Hendelse $arrangement
      * @param Type $type
      * @param String $hvem
      * @param Person $kontakt
      * @return void
      */
-    public function opprett(Kommune $kommune, Arrangement $arrangement, Type $type, String $hvem, Person $kontakt)
+    public function opprett(Kommune $kommune, Hendelse $arrangement, Type $type, String $hvem, Person $kontakt)
     {
         $this->_setupLogger($arrangement->getId());
         // Opprett innslag
@@ -182,7 +183,7 @@ class InnslagService
         // Sjekk at mønstringen tillater av- og påmeldinger
         $this->sjekkFrist($innslag);
 
-        WriteInnslag::fjern($innslag);
+        WriteInnslag::meldAv($innslag);
         return true;
     }
 
