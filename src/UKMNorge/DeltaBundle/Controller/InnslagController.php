@@ -52,6 +52,28 @@ class InnslagController extends Controller
                     'arrangementer',
                     $arrangementer
                 );
+
+                if( $arrangementer->getAntall() == 0 ) {
+                    $action = 'visIngenArrangement';
+                    $link = '';
+                } elseif( $arrangementer->getAntall() > 1 ) {
+                    $action = 'visArrangementer';
+                    $link = '';
+                } elseif( $arrangementer->getAntall() == 1 && $arrangementer->getFirst()->erFellesmonstring() ) {
+                    $action = 'visKommuner';
+                    $link = '';
+                } else {
+                    $action = 'visDirekteLenke';
+                    $link = $this->generateUrl(
+                        'ukm_delta_ukmid_pamelding_hva',
+                        [
+                            'k_id' => $kommune->getId(),
+                            'pl_id' => $arrangementer->getFirst()->getId()
+                        ]
+                    );
+                }
+                $kommune->setAttr('action', $action);
+                $kommune->setAttr('link', $link);
             }
         }
 

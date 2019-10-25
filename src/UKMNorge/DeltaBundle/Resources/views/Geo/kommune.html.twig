@@ -1,0 +1,12 @@
+<div class="autoshrink">
+    {{ kommune.getNavn() }}
+</div>
+{% if kommune.getTidligere()|length > 0 %}
+    <div class="autoshrink">
+        <small>Tidligere
+            {% for tidligere in kommune.getTidligere() %}
+                {{ tidligere.getNavn() }}{{ not loop.last ? ', ' }}
+            {% endfor %}
+        </small>
+    </div>
+{% endif %}

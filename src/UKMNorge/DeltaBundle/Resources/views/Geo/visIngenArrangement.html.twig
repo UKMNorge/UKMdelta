@@ -1,0 +1,8 @@
+{% include "UKMDeltaBundle:Geo:kommune.html.twig" %}
+
+<div class="alert alert-warning noArrangement" style="display:none;">
+    Beklager, det er ikke registrert info om UKM
+    {{ kommune.getNavn() }}
+    enda.
+    <a href="{{ kommune.getLink() }}">Kontakt oss</a>
+</div>

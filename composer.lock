@@ -731,12 +731,12 @@
             "version": "v2.4.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "5aedac1e5c5caaeac14798822c70325dc242d467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/5aedac1e5c5caaeac14798822c70325dc242d467",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/5aedac1e5c5caaeac14798822c70325dc242d467",
                 "reference": "5aedac1e5c5caaeac14798822c70325dc242d467",
                 "shasum": ""
             },
@@ -2720,7 +2720,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMresponsive.git",
-                "reference": "705cde7f3daf9eb312abd71ce2c31eaa411adb1f"
+                "reference": "a63e6f0e7c679e4445c51d5a8efd941b89ad09a5"
             },
             "require": {
                 "mariusmandal/wpoo": "^1.0",
@@ -2746,7 +2746,7 @@
             ],
             "description": "Felles design for UKM.no og undersider",
             "homepage": "http://github.com/UKMNorge/UKMresponsive",
-            "time": "2018-12-12T19:13:54+00:00"
+            "time": "2019-10-25T14:40:23+00:00"
         }
     ],
     "packages-dev": [

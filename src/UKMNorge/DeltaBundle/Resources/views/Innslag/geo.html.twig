@@ -8,37 +8,78 @@
 		'@UKMDeltaBundle/Resources/public/js/fastlivefilter.jquery.js' %}
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
+    <script>
+        $(document).on('click', '#lokalmonstringer li.kommune', (e) => {
+            console.log('Clicked something');
+            // Hvis vi trykket på ei lenke - følg den da.
+            if( $(e.target).is('a') ) {
+                return true;
+            }
+            e.preventDefault();
+            
+            var clicked = $(e.target).parents('li');
+            console.log('Clicked ('+ clicked.attr('data-action') +')');
+            console.log(clicked);
+            
+            // VI SKAL VISE/SKJULE NOE
+            var selector = false;
+            // Kommunen har ingen arrangement
+            if (clicked.attr('data-action') == 'visIngenArrangement') {
+                console.log('noArrangement');
+                selector = '.noArrangement';
+            }
+            // Kommunen har flere arrangement
+            else if (clicked.attr('data-action') == 'visArrangementer') {
+                console.log('visArrangementer');
+                selector = '.visArrangementer';
+            }
+            // Kommunen har ett arrangement som er en fellesmønstring
+            else if (clicked.attr('data-action') == 'visKommuner') {
+                console.log('kommuner');
+                selector = '.visKommuner';
+            }
+            else {
+                console.log('redir to '+ clicked.attr('data-link'));
+                return false;
+                window.location.href = clicked.attr('data-link');
+                return true;
+            }
+
+            if( clicked.find(selector).is(':visible') ) {
+                clicked.find(selector).slideUp();
+            } else {
+                clicked.find(selector).slideDown();
+            }
+        });
+        
+    </script>
 {% endblock %}
+
 {% block content %}
-	<div class="container">	
-		<div class="row">
-			<div class="col-12">
-				<h1 class="mt-0">{{ 'geoAction.overskrift'|trans }}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mt-0">{{ 'geoAction.overskrift'|trans }}</h1>
                 <p class="lead">
                     {{ 'geoAction.topptekst'|trans }}
                 </p>
-				
-				<!-- Søkefelt her -->
-				<input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}" />
-				<div id="lokalmonstringer">
-					{% for fylke in fylker %}
-						<h4 id="header_{{ fylke.getId() }}" class="mt-4 mb-2">{{ fylke.getNavn() }}</h4>
-						<ul data-fylke="{{ fylke.getId() }}" class="list list-unstyled list-group"> 
-							{% for kommune in fylke.getKommuner() %}
-								<li class="list-group-item click" data-filter="{{ kommune.getNavn() }} {{ kommune.getFilterNavn() }} {{ fylke.getNavn() }}" >
-									<b>{{ kommune.getNavn() }}{{ kommune.getAttr('index')}}</b>
-                                    <br />
-                                    {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
-                                        {% include "UKMDeltaBundle:Innslag:geo_fellesmonstring.html.twig" with {'arrangement': arrangement, 'fylke_id': fylke.id} %}
-                                    {% else %}
-                                        {{ kommune.getNavn() }} har ingen arrangementer.
-                                    {% endfor %}
-								</li>
-							{% endfor %}
-						</ul>
-					{% endfor %}
-				</div>
-			</div>
-		</div>
-	</div>
+
+                <!-- Søkefelt her -->
+                <input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}"/>
+                <div id="lokalmonstringer">
+                    {% for fylke in fylker %}
+                        <h4 id="header_{{ fylke.getId() }}" class="mt-4 mb-2">{{ fylke.getNavn() }}</h4>
+                        <ul data-fylke="{{ fylke.getId() }}" class="list list-unstyled list-group">
+                            {% for kommune in fylke.getKommuner().getAll() %}
+                                <li class="list-group-item click kommune" data-action="{{ kommune.getAttr('action') }}" data-filter="{{ include("UKMDesignBundle:Kommune:filternavn.html.twig"|UKMpath)|oneline|lower }} {{ fylke.getNavn() }}" data-link="{{ kommune.getAttr('link') }}">
+                                    {% include "UKMDeltaBundle:Geo:"~ kommune.getAttr('action') ~".html.twig" %}
+                                    <div class="clearfix"></div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
