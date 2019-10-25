@@ -8,7 +8,7 @@ class SeasonService {
 
 	public function getActive() {
 		if ($this->container->getParameter('UKM_HOSTNAME') == 'ukm.dev')
-			return 2015;
+			return 2020;
 		if( date('n') < 8) {
 			return (int) date('Y');
 		} 
