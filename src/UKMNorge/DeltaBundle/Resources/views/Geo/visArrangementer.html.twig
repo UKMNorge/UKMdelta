@@ -3,12 +3,12 @@
 <p>
     Hvilket av arrangementene våre vil du melde deg på?
     </p>
-    <ol class="list-group">
+    <ol class="list-group list-group-flush">
         {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
-            <li class="list-group-item click">
+            <li class="list-group-item click px-1 mx-0">
                 <p>
                     {% if not arrangement.erFellesmonstring() %}
-                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="nocolor">
+                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}">
                     {% endif %}
                     <b>{{ arrangement.getNavn() }}</b>
                     <br />

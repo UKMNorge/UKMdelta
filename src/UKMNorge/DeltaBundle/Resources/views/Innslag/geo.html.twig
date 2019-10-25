@@ -9,46 +9,57 @@
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
     <script>
-        $(document).on('click', '#lokalmonstringer li.kommune', (e) => {
-            console.log('Clicked something');
+        $(document).on('click', 'li.kommune', (e) => {
+            
+            var clicked = $(e.target);
+
+            if( clicked.is('li.kommune') ) {
+                var kommune = clicked;
+            } else {
+
+                var kommune = clicked.parents('li.kommune');
+            }
+
             // Hvis vi trykket på ei lenke - følg den da.
             if( $(e.target).is('a') ) {
+                console.log('FØLG LENKE');
                 return true;
             }
             e.preventDefault();
             
-            var clicked = $(e.target).parents('li');
-            console.log('Clicked ('+ clicked.attr('data-action') +')');
-            console.log(clicked);
+            console.log('Clicked ('+ kommune.attr('data-action') +')');
+            console.log(kommune);
             
             // VI SKAL VISE/SKJULE NOE
             var selector = false;
             // Kommunen har ingen arrangement
-            if (clicked.attr('data-action') == 'visIngenArrangement') {
+            if (kommune.attr('data-action') == 'visIngenArrangement') {
                 console.log('noArrangement');
                 selector = '.noArrangement';
             }
             // Kommunen har flere arrangement
-            else if (clicked.attr('data-action') == 'visArrangementer') {
+            else if (kommune.attr('data-action') == 'visArrangementer') {
                 console.log('visArrangementer');
                 selector = '.visArrangementer';
             }
             // Kommunen har ett arrangement som er en fellesmønstring
-            else if (clicked.attr('data-action') == 'visKommuner') {
+            else if (kommune.attr('data-action') == 'visKommuner') {
                 console.log('kommuner');
                 selector = '.visKommuner';
             }
             else {
-                console.log('redir to '+ clicked.attr('data-link'));
+                console.log('redir to '+ kommune.attr('data-link'));
                 return false;
-                window.location.href = clicked.attr('data-link');
+                window.location.href = kommune.attr('data-link');
                 return true;
             }
 
-            if( clicked.find(selector).is(':visible') ) {
-                clicked.find(selector).slideUp();
+            if( kommune.find(selector).is(':visible') ) {
+                kommune.removeClass('active');
+                kommune.find(selector).slideUp();
             } else {
-                clicked.find(selector).slideDown();
+                kommune.addClass('active');
+                kommune.find(selector).slideDown();
             }
         });
         
@@ -66,9 +77,10 @@
 
                 <!-- Søkefelt her -->
                 <input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}"/>
+                
                 <div id="lokalmonstringer">
                     {% for fylke in fylker %}
-                        <h4 id="header_{{ fylke.getId() }}" class="mt-4 mb-2">{{ fylke.getNavn() }}</h4>
+                        <p class="bold mb-0 fylkeHeader mt-4 mb-2" id="header_{{ fylke.getId() }}">{{ fylke.getNavn()|upper }}</p>
                         <ul data-fylke="{{ fylke.getId() }}" class="list list-unstyled list-group">
                             {% for kommune in fylke.getKommuner().getAll() %}
                                 <li class="list-group-item click kommune" data-action="{{ kommune.getAttr('action') }}" data-filter="{{ include("UKMDesignBundle:Kommune:filternavn.html.twig"|UKMpath)|oneline|lower }} {{ fylke.getNavn() }}" data-link="{{ kommune.getAttr('link') }}">
@@ -79,6 +91,10 @@
                         </ul>
                     {% endfor %}
                 </div>
+
+                <p id="plNoneFound">
+                    Finner ingen kommuner eller bydeler med det navnet.
+                </p>
             </div>
         </div>
     </div>
