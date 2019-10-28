@@ -109,9 +109,10 @@ tittel:
             Solen sto i en unik vinkel på grunn av måneformørkelsen og det hele er meget merkelig.
     info_mangler: Info mangler
     slett: Slett utstillingsobjekt
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
+
     
 technicalAction:
     overskrift: Tekniske behov
@@ -122,7 +123,7 @@ technicalAction:
     avbryttekst: avbryt
     
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen

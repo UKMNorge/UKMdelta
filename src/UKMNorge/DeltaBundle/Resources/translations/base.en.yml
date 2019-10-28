@@ -110,6 +110,7 @@ mangler:
     kontakt.epost:
         mangler: Kontaktperson mangler epostadresse
         ikkegyldig: Kontaktpersonens epostadresse er ugyldig
+    kontakt.mobil: Kontaktperson mangler telefonnummer
     kontakt.telefon: Kontaktperson mangler telefonnummer
     kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
     kontakt.adresse: Kontaktperson mangler adresse
