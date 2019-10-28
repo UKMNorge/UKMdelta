@@ -218,7 +218,7 @@ class InnslagController extends Controller
         }
 
         if( $lagrePerson ) {
-            $personService->lagre($person, $innslag);
+            $personService->lagre($person, $innslag->getId());
         }
         // Flytt personvern-tilbakemelding (nå lagret på delta user-objektet) over på person-objektet
         $personService->oppdaterPersonvern($innslag);
