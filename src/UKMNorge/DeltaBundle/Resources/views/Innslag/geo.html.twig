@@ -9,47 +9,45 @@
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
     <script>
-        $(document).on('click', 'li.kommune', (e) => {
-            
+        // Vis kommuner, ingen arrangementer, arrangement-liste, eller send videre til påmelding
+        // avhengig av kommunens muligheter. Oh the choices.
+        $(document).on('click', 'li.kommune:not(".visArrangementKommuner")', (e) => {
             var clicked = $(e.target);
 
+            // Det er en kommune med flere arrangement, og brukeren trykket på en av de,
+            // som også er et felles-arrangement (tjo-hei!)
+            if( clicked.parents('.visArrangementKommuner').length > 0 ) {
+                return true;
+            }
+
+            // Finn kommune ut fra hvilket element som er klikket på
             if( clicked.is('li.kommune') ) {
                 var kommune = clicked;
             } else {
-
                 var kommune = clicked.parents('li.kommune');
             }
 
             // Hvis vi trykket på ei lenke - følg den da.
             if( $(e.target).is('a') ) {
-                console.log('FØLG LENKE');
                 return true;
             }
             e.preventDefault();
-            
-            console.log('Clicked ('+ kommune.attr('data-action') +')');
-            console.log(kommune);
             
             // VI SKAL VISE/SKJULE NOE
             var selector = false;
             // Kommunen har ingen arrangement
             if (kommune.attr('data-action') == 'visIngenArrangement') {
-                console.log('noArrangement');
                 selector = '.noArrangement';
             }
             // Kommunen har flere arrangement
             else if (kommune.attr('data-action') == 'visArrangementer') {
-                console.log('visArrangementer');
                 selector = '.visArrangementer';
             }
             // Kommunen har ett arrangement som er en fellesmønstring
             else if (kommune.attr('data-action') == 'visKommuner') {
-                console.log('kommuner');
                 selector = '.visKommuner';
             }
             else {
-                console.log('redir to '+ kommune.attr('data-link'));
-                return false;
                 window.location.href = kommune.attr('data-link');
                 return true;
             }
@@ -63,6 +61,19 @@
             }
         });
         
+        // Vis kommuner for en kommunes arrangementer
+        $(document).on('click', 'li.kommune .visArrangementKommuner', (e) => {
+            var clicked = $(e.target);
+
+            var arrangement = clicked.parents('.arrangement');
+            var kommuneListe = arrangement.find('.arrangementKommuner');
+            
+            if( kommuneListe.is(':visible') ) {
+                kommuneListe.slideUp();
+            } else {
+                kommuneListe.slideDown();
+            }
+        });
     </script>
 {% endblock %}
 
