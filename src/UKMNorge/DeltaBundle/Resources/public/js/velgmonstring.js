@@ -15,13 +15,14 @@ jQuery(document).ready(function() {
 
 jQuery(document).on('monstring_none_found', function() {
     jQuery('#plNoneFound').show();
+    jQuery('.fylkeHeader').hide();
 });
 
 jQuery(document).on('monstring_some_found', function() {
     //jQuery('#plStartSearch').hide();
     jQuery('#plNoneFound').hide();
     jQuery('#lokalmonstringer ul').each(function() {
-        if (jQuery(this).find('li:visible').length == 0) {
+        if (jQuery(this).find('li.kommune:visible').length == 0) {
             jQuery('#header_' + jQuery(this).attr('data-fylke')).hide();
         } else {
             jQuery('#header_' + jQuery(this).attr('data-fylke')).show();
