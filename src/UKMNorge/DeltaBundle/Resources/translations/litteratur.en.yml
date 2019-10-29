@@ -48,7 +48,7 @@ overviewAction:
                 Her vil vi vite litt om forfatterne.
                 Eks. De har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
                 Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks dikt, novellesamling, manus osv...
@@ -115,17 +115,17 @@ tittel:
     varighet:
         label: Hvor lang tid trenger du for å lese opp?
         velg_varighet: Velg hvor lang tid du trenger
-        help: OBS: Vi anbefaler at du holder deg under 5 minutter, og kanskje leser ut et utdrag hvis teksten er lang.
+        help: 'OBS: Vi anbefaler at du holder deg under 5 minutter, og kanskje leser ut et utdrag hvis teksten er lang.'
     info_mangler: Info mangler
     slett: Slett tekst / verk
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
 
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
 
 technicalAction:

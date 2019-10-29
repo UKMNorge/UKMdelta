@@ -58,12 +58,15 @@ tittel:
 overviewAction:
     meldav: Meld av innslaget "%name"
     avbryt: avbryt
-    beskrivelse_hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+    beskrivelse_hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
+    beskrivelse:
+      hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
+
 
 statusAction:
     videreknapp: Ok, jeg fyller ut senere
     undertekst: Det er ikke alltid man har all informasjon med en gang, vi skjønner det. Derfor kan du logge inn og fullføre dette senere.
-    obstekst: OBS: du MÅ fylle ut all informasjon før %dag% %dato%. %maned% kl. %time%:%minutt%!
+    obstekst: "OBS: du MÅ fylle ut all informasjon før %dato%!"
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
 
@@ -90,7 +93,7 @@ mangler:
     # Person
     person.fornavn: Fornavn mangler
     person.etternavn: Etternavn mangler
-    person.phone: Telefonnummeret består ikke av 8 siffer
+    person.mobil: Telefonnummeret består ikke av 8 siffer
     person.rolle: Funksjon/rolle/instrument mangler
     # Innslag
     innslag.ingendeltakere: Det er ingen deltakere i innslaget
@@ -99,7 +102,7 @@ mangler:
     innslag.beskrivelse: Innslaget mangler beskrivelse
     innslag.beskrivelseLengde: Beskrivelsen må være mer enn 5 tegn lang
     # Tekniske behov
-    td.mangler: Tekniske behov mangler
+    innslag.tekniske: Tekniske behov mangler
     td.lengde: Tekniske behov må være mer enn 5 tegn lang
     # Kontaktperson
     kontakt.fornavn: Kontaktperson mangler fornavn
@@ -107,17 +110,20 @@ mangler:
     kontakt.epost:
         mangler: Kontaktperson mangler epostadresse
         ikkegyldig: Kontaktpersonens epostadresse er ugyldig
+    kontakt.mobil: Kontaktperson mangler telefonnummer
     kontakt.telefon: Kontaktperson mangler telefonnummer
     kontakt.telefonugyldig: Telefonnummeret til kontaktpersonen er ugyldig
     kontakt.adresse: Kontaktperson mangler adresse
     kontakt.postnummer: Kontaktperson mangler postnummer
     # Titler
     tittel.mangler: Innslaget har ingen titler
-    tittel.t_time: Tittelen har ingen lengde
-    tittel.t_name: Tittelen har ikke noe navn
-    tittel.t_titleby: Det er ikke oppgitt tekstforfatter
-    tittel.t_musicby: Det er ikke oppgitt komponist/musikk av
-    tittel.t_coreography: Det er ikke oppgitt koreograf
+    tittel.varighet: Tittelen har ingen lengde
+    tittel.tittel: Tittelen har ikke noe navn
+    tittel.tekstav: Det er ikke oppgitt tekstforfatter
+    tittel.melodiav: Det er ikke oppgitt komponist/musikk av
+    tittel.koreografi: Det er ikke oppgitt koreograf
+    tittel.type: Type kunstverk er ikke oppgitt
+    tittel.manus: Det er ikke oppgitt hvem som har skrevet manus
     tittel.t_instrumental: Det er ikke oppgitt om låta har tekst eller er en t_instrumental
     tittel.t_selfmade: Det er ikke oppgitt om tittelen er selvskrevet
     tittel.t_litterature_read: Du har ikke oppgitt om teksten skal leses opp fra scena eller ikke.
@@ -131,10 +137,10 @@ mangler:
     tittel.t_v_comments: Kommentarer / info om filmen er ikke oppgitt
     tittel.t_e_made_by: t_e_made_by
     tittel.t_e_title: Tittel på kunstverket er ikke oppgitt
-    tittel.t_e_type: Type kunstverk er ikke oppgitt
     tittel.t_e_technique: Teknikk er ikke oppgitt
     tittel.t_e_format: Format er ikke oppgitt
     tittel.t_e_comments: Kommentarer / info om kunstverket er ikke oppgitt
+
     
 
 feil:

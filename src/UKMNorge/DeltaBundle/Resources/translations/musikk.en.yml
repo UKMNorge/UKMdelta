@@ -32,7 +32,7 @@ overviewAction:
             placeholder: Eks. Superbandet, Musikalske villmenn, Ole og %fornavn...
     beskrivelse:
         alene:
-            label: Beskrivelse av artist
+            label: Beskrivelse av deg
             placeholder: >
                 Her vil vi vite mer om deg som opptrer.
                 Eks. Jeg spiller gitar og synger alene på scenen. Jeg har spilt gitar i mange år, men dette er det første året jeg synger også.
@@ -48,7 +48,7 @@ overviewAction:
                 Her vil vi vite mer om dere som opptrer.
                 Eks. De er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
                 De spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks hardrock, visesang...
@@ -123,14 +123,14 @@ tittel:
     
     info_mangler: Info mangler
     slett: Slett låten
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
     
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     artistnavn: Artistnavn / Gruppenavn
     lat: Du må legge til minst én låt
     ingendeltakere: Du må legge til minst én person

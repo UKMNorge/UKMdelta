@@ -2,24 +2,22 @@
 <label>{{ 'overviewAction.personer.overskrift'|trans }}</label>
 
 <ul class="list-group">
-	{% for person in personer %}
+	{% for person in innslag.getPersoner().getAll() %}
 		<li class="list-group-item click triggerLink">
 			<div class="row">
 				<div class="col-2 px-0">
 					<div class="overunder">
-						<div class="over">{{ person.age is defined ? person.age : '?' }} år</div>
-						<div class="under">
-							{{ person.age is defined and person.age != "25+" ? 'person.alder.ar'|trans({ "year": "now"|date("Y") - person.age }, 'base') : '' }}
-						</div>
+						<div class="over">{{ person.getAlder('') }}</div>
+						<div class="under">år</div>
 					</div>
 				</div>
 				<div class="col-7">
 					<p style="line-height:1em">
-						{{ person.p_firstname is defined ? person.p_firstname : '' }} {{ person.p_lastname is defined ? person.p_lastname : '' }}
+						{{ person.getNavn() }}
 						<br />
 						<small>
-							{% if (person.instrument is defined) and not ( person.instrument is empty) %}
-								{{ person.instrument }}
+							{% if person.getRolle() is not empty %}
+								{{ person.getRolle() }}
 							{% else %}
 								<span class="badge badge-danger">{{ 'person.rolle.ukjent'|trans }}</span>
 							{% endif %}
@@ -27,7 +25,7 @@
 					</p>
 				</div>
 				<div class="col-3">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.p_id } ) }}" id="editP{{ person.p_id }}" class="actionLink btn btn-sm btn-outline-primary autoshrink">{{ 'person.rediger'|trans({},'base') }}</a>
+					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.getId() } ) }}" id="editP{{ person.getId() }}" class="actionLink btn btn-sm btn-outline-primary autoshrink">{{ 'person.rediger'|trans({},'base') }}</a>
 				</div>
 			</div>
 		</li>

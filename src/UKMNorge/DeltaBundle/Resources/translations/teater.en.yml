@@ -51,6 +51,7 @@ overviewAction:
                 skal spille et teaterstykke de har skrevet selv.
                 For de er teater en god måte å gjøre kritikk og humor av samfunnet rundt seg, 
                 samtidig som det er gøy!
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks monolog, revy osv...
@@ -118,10 +119,9 @@ tittel:
         label: Hvem har skrevet manus?
         placeholder: (valgfritt felt)
         #help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
-    
     info_mangler: Info mangler
     slett: Slett tittel
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
 
@@ -133,7 +133,7 @@ technicalAction:
     placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.
     
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS! "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS! "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen

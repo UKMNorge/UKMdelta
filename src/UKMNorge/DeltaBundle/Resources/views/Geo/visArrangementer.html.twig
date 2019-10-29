@@ -1,0 +1,34 @@
+{% include "UKMDeltaBundle:Geo:kommune.html.twig" %}
+<div class="visArrangementer" style="display: none;">
+<p>
+    Hvilket av arrangementene våre vil du melde deg på?
+    </p>
+    <ol class="list-group">
+        {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
+            <li class="list-group-item click px-2 mx-0 white visArrangementKommuner arrangement" style="background-color: transparent; border-color:#fff;">
+                <p class="mb-0 white">
+                    {% if not arrangement.erFellesmonstring() %}
+                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="white">
+                    {% endif %}
+                    <b>{{ arrangement.getNavn() }}</b>
+                    <br />
+                    <small>{{ arrangement.getStart()|dato('D j. M Y')|capitalize}}</small>
+                    {% if not arrangement.erFellesmonstring() %}
+                        </a>
+                    {% endif %}
+                </p>
+
+                {% if arrangement.erFellesmonstring() %}
+                    <p class="mb-0 arrangementKommuner" style="display:none;">Hvilken {{ fylke.erOslo()? 'bydel': 'kommune' }} er du fra? 
+                    {% for velg_kommune in arrangement.getKommuner().getAll() %}
+                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: velg_kommune.getId(), pl_id: arrangement.getId() }) }}" class="btn btn-outline-primary btn-block white click" style="border-color: #fff!important; background: #fff; color: #010260 !important;">
+                            {{ velg_kommune.getNavn() }}
+                        </a>
+                    {% endfor %}
+                {% endif %}
+                <div class="clearfix"></div>
+            </li>
+        {% endfor %}
+    </ol>
+    <div class="clearfix"></div>
+</div>

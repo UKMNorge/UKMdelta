@@ -47,7 +47,7 @@ overviewAction:
                 Her vil vi vite mer om de som danser.
                 Eks. De møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
                 De danser som oftest klassisk ballett, men har meldt seg på UKM med popping.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
 
     sjanger:
         label: Sjanger
@@ -120,14 +120,14 @@ tittel:
         placeholder: Hvem har laget melodien? Eks. Philter, Rihanna osv...
     info_mangler: Info mangler
     slett: Slett dansen
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
     
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     artistnavn: Gruppenavn / artistnavn
     lat: Du må legge til minst én dans
     ingendeltakere: Du må legge til minst én person
@@ -136,4 +136,4 @@ statusAction:
 technicalAction:
     eksempler: >
         Trenger dere dansematter? Eller en barstol, eller andre rekvisitter? Skal dere ha playback av musikk? Skal noen av dere synge og trenger en mikrofon?
-    placeholder_teknisk: Så lenge scenen er tilpasset dansing trenger vi ikke dansematter, og ingen av oss skal synge osv.. Har dere ingen behov: skriv "ingen behov".
+    placeholder_teknisk: 'Så lenge scenen er tilpasset dansing trenger vi ikke dansematter, og ingen av oss skal synge osv.. Har dere ingen behov: skriv "ingen behov".'

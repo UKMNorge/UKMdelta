@@ -51,7 +51,7 @@ overviewAction:
                 Her vil vi vite mer om de som har laget filmen.
                 Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
                 De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks musikkvideo, action, animasjon...
@@ -105,14 +105,14 @@ tittel:
         velg_varighet: Velg hvor lenge filmen varer
     info_mangler: Info mangler
     slett: Slett filmen
-    slettet: %tittel er nå slettet
+    slettet: '%tittel er nå slettet'
     lagre: Lagre
     avbryt: avbryt
     
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     artistnavn: Navn / filmgruppens navn
     lat: Du må legge til minst én film
     ingendeltakere: Du må legge til minst én person

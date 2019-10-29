@@ -33,7 +33,7 @@ overviewAction:
             placeholder: >
                 Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
                 De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
-        hvor: Denne teksten vil vises på nettsiden, i oversikten over påmeldte.
+        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: sjanger
         placeholder: Eks. Baking
@@ -60,12 +60,12 @@ person:
     ar: år
     rediger: rediger
     fjern:
-        label: Fjern %person fra %innslag
+        label: 'Fjern %person fra %innslag'
 
 statusAction:
-    obs-topptekst: OBS: "%innslag" er ikke meldt på UKM enda!
-    obs-men-ok-topptekst: OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.
-    infotekst: Denne informasjonen mangler før det er påmeldt:
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
     artistnavn: Navn / Gruppenavn
     lat: Du må legge til minst én tittel
     ingendeltakere: Du må legge til minst én person

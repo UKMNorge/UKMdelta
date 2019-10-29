@@ -2,239 +2,144 @@
 namespace UKMNorge\APIBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use person;
-use person_v2;
 use DateTime;
 use Exception;
-use monstring_v2;
-use innslag_v2;
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Geografi\Kommune;
+use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Write;
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Log\Logger;
+use UKMNorge\Samtykke\Person as PersonSamtykke;
 
-use UKMNorge\Samtykke;
-
-require_once('UKM/person.class.php');
-use SQL;
-use SQLins;
+require_once('UKM/Autoloader.php');
 
 class PersonService {
 	public function __construct($container) {
 		$this->container = $container;
-	}
+    }
+    
+    /**
+     * Setup UKM Logger
+     *
+     * @param Int $arrangement_id
+     * @return void
+     */
+    private function _setupLogger( Int $arrangement_id ) {
+        Logger::setID('delta', $this->hentCurrentUser()->getId(), $arrangement_id);
+    }
 
-	public function opprett($fornavn, $etternavn, $mobil, $pl_id) {
-		// Keys i person-objektet
-		// p_firstname
-		// p_lastname
-		// p_phone
-		// echo '<br>opprett():<br/>';
-		// var_dump($fornavn);
-  //       var_dump($etternavn);
-  //       var_dump($mobil);
+    /**
+     * Hent en gitt person.
+     * Relatert til innslaget hvis parameter 2 (innslagID) er angitt
+     *
+     * @param Int $personID
+     * @param Int $innslagID
+     * @return Person
+     * @throws Exception Person not found
+     */
+	public function hent(Int $personID, Int $innslagID=null) {
+        if( $innslagID !== null ) {
+            $innslag = $this->hentInnslag( $innslagID );
+            $person = $innslag->getPersoner()->get( $personID );
+        } else {
+            $person = Person::loadFromId( $personID );
+        }
+        
+        return $person;
+    }
+    
+    /**
+     * Hent innslag fra Innslag-service
+     *
+     * @param Int $innslagID
+     * @return Innslag
+     * @throws Exception har ikke tilgang
+     */
+    public function hentInnslag( Int $innslagID ) {
+        return $this->container->get('ukm_api.innslag')->hent( $innslagID );
+    }
 
-		$user = $this->container->get('ukm_user')->getCurrentUser();
+    /**
+     * Hent aktiv bruker
+     *
+     * @return 
+     */
+    public function hentCurrentUser() {
+        return $this->container->get('ukm_user')->getCurrentUser();
+    }
 
-		// Oppretter et tomt personobjekt (Se person.class.php)
-		$person = new person(false, false);
 
-		// Sjekk om personen finnes
-		$finnes = $person->getExistingPerson($fornavn, $etternavn, $mobil);
+    /**
+     * Opprett et person-objekt.
+     * Returnerer eksisterende person hvis den allerede finnes
+     *
+     * @param String $fornavn
+     * @param String $etternavn
+     * @param Int $mobil
+     * @param Kommune $kommune
+     * @return Person $person
+     */
+	public function opprett( String $fornavn, String $etternavn, Int $mobil, Kommune $kommune, Arrangement $arrangement ) {
+        $this->_setupLogger( $arrangement->getId() );
 
-		// var_dump($finnes);
-		if ($finnes)
-			return $finnes;
-
-		$person->create();
-		// Oppdater verdier i person-objektet
-		$person->set('p_firstname', $fornavn);
-		$person->set('p_lastname', $etternavn);
-		$person->set('p_phone', $mobil);
-		// Send data til databasen
-		// var_dump($person);
-		$person->lagre('delta', $user->getId(), $pl_id);
-
+        $person = Write::create(
+            $fornavn,
+            $etternavn,
+            $mobil,
+            $kommune
+        );
+        
 		return $person;
 	}
 
-	public function adresse($person, $adresse, $postnummer, $poststed, $pl_id) {
-		$user = $this->container->get('ukm_user')->getCurrentUser();
-		
-		if (!get_class($person) == 'person') {
-			throw new Exception ('Kunne ikke oppdatere adresse - feil objekt mottatt. Ventet person, fikk ' . get_class($person));
-		}
-		
-		// Sjekk lengden på poststed, padd med 0 i starten om > 4
-		$postnummer = strval($postnummer);
-		while (strlen($postnummer) < 4) {
-			$postnummer = "0" . $postnummer;
-		}
-		$person->set('p_adress', $adresse);
-		$person->set('p_postnumber', $postnummer);
-		$person->set('p_postplace', $poststed);
-		$person->lagre('delta', $user->getId(), $pl_id);
-	}
+    /**
+     * Lagre en persons fornavn
+     *
+     * @param Int $personID
+     * @param String $fornavn
+     * @return void
+     */
+	public function lagre( Person $person, Int $innslagID ) {
+        $this->_setupLogger( $this->hentInnslag( $innslagID )->getHomeId() );
+        $this->sjekkTilgang( $person, $innslagID );
+        Write::saveRolle( $person );
+        return Write::save( $person );
+    }
 
-	public function hent($id, $b_id=false) {
-		$person = new person($id, $b_id);
-		$innslagService = $this->container->get('ukm_api.innslag');
-
-		// Hvis vi har innslaget kan vi vite om vedkommende har tilgang
-		if( false != $b_id ) {
-			$innslag = $innslagService->hent( $b_id );
-			if( !$innslag->harPerson( $id ) ) {
-				throw new Exception('Du har ikke tilgang til denne personen',20001);
-			}
-		}
-
-		if (!is_numeric($person->get('p_id'))) {
-			throw new Exception('Fant ikke person med id ' . $id);
-		}
-
-		$postnummer = $person->get('p_postnumber');
-		while (strlen($postnummer) < 4) {
-			$postnummer = '0'.$postnummer;
-		}
-		// Fiks for visning.
-		$person->set('p_postnumber', $postnummer);
-		return $person;
-	}
-
-	public function alder($person) {
-
-		$birthdate = new DateTime();
-		$birthdate->setTimestamp($person->get('p_dob'));
-
-		if( $person->get('p_dob') == 0 ) {
-			$age = '25+';			
-		} else {
-	        $now = new DateTime('now');
-			$age = $birthdate->diff($now)->y;
-		}
-
-        // $person->set('age', $age);
-        return $age;
-	}
-
-	public function lagreFornavn($personID, $pl_id, $fornavn) {
-		$person = new person($personID);
-
-		if ($person->get('p_firstname') != $fornavn) {
-			// Oppdater fornavn
-			$sql = new SQLins('smartukm_participant', array('p_id' => $personID));
-			$sql->add('p_firstname', $fornavn);
-			$sql->run();
-			// Error check her?
-			// Force reload av innslagsnavn om det er et alene-innslag?
-		}
-		else {
-			// Ikke gjør noe
-			return 0;
-		}
-	}
-
-	public function lagreEtternavn($personID, $pl_id, $etternavn) {
-		$person = new person($personID);
-
-		if ($person->get('p_lastname') != $etternavn) {
-			// Oppdater etternavn
-			$sql = new SQLins('smartukm_participant', array('p_id' => $personID));
-			$sql->add('p_lastname', $etternavn);
-			$sql->run();
-			// Error check her?
-			// Force reload av innslagsnavn om det er et alene-innslag?
-
-			// Legge til noe i flashbag elns?
-		}
-		else {
-			// Ikke gjør noe
-			return 0;
-		}
-	}
-
-	public function lagreAlder($personID, $pl_id, $alder) {
-		$person = new person($personID);
-		$user = $this->container->get('ukm_user')->getCurrentUser();
-
-		if (is_object($alder) && get_class($alder) == "DateTime") {
-			$dob = $alder->getTimestamp();
-			$alder = date("Y") - $alder->format("Y");
-		}
-		elseif( $alder == 0) {
-			$dob = 0;
-		}
-		else {
-			// Konverter fra alder i tall til år
-			$dob = new DateTime();
-			$birthyear = date("Y") - $alder;
-			$dob->setDate($birthyear, 1, 1); // Setter året til fødselsåret
-			$dob = $dob->getTimestamp();
-
-		}
-
-		if ($person->getAge() != $alder) {
-			//var_dump($birthyear);
-			//var_dump($dob);
-			
-			$person->set('p_dob', $dob);
-			$person->lagre('delta', $user->getId(), $pl_id);
-		}
-		else {
-			// Ikke gjør noe
-			return 0;
-		}
-	}
-
-	public function lagreMobil($personID, $pl_id, $mobil) {
-		$person = new person($personID);
-		$user = $this->container->get('ukm_user')->getCurrentUser();
-
-        $mobil = preg_replace('/\D/', '', $mobil );
-		if ($person->get('p_phone') != $mobil) {
-			$person->set('p_phone', $mobil);
-			$person->lagre('delta', $user->getId(), $pl_id);
-		}
-	}
-
-	public function lagreEpost($personID, $pl_id, $epost) {
-		$person = new person($personID);
-		$user = $this->container->get('ukm_user')->getCurrentUser();
-
-		if ($person->get('p_email') != $epost) {
-			$person->set('p_email', $epost);
-			$person->lagre('delta', $user->getId(), $pl_id);
-		}
-	}
+    /**
+     * Sjekk om brukeren har tilgang til å redigere personen
+     *
+     * @param Person $person
+     * @param Int $innslagID
+     * @return Innslag $innslag
+     */
+    public function sjekkTilgang( Person $person, Int $innslagID ) {
+        $innslag = $this->container->get('ukm_api.innslag')->hent( $innslagID );
+        if( !$innslag->getPersoner()->har( $person ) ) {
+            throw new Exception('Beklager, du har ikke tilgang til å endre denne personen');
+        }
+        return $innslag;
+    }
 
     /**
      * Oppdater personvern-valg for brukeren
      * Setter samme innstilling på ss3_participant-objektet som delta-brukeren
      */
-    public function oppdaterPersonvern( $user, $innslagId, $monstringId ) {
-        /**
-         * Hvis dette skjer er funksjonen kalt på feil sted i koden,
-         * men det kan jo skje.
-         */
-        if ($user->getPameldUser() === null) {
-            return false;
-        }
-        $person = new person_v2( $user->getPameldUser() );
+    public function oppdaterPersonvern( Innslag $innslag ) {
+        $user = $this->hentCurrentUser();
+        $person = $this->hent( $user->getPameldUser() );
         
-        require_once('UKM/samtykke/person.class.php');
-        $sesong = $this->container->get('ukm_delta.season')->getActive();
         $status = $user->getSamtykke() ? 
             'godkjent' : 
             'ikke_godkjent';
+
         $ip = isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ? 
             $_SERVER['HTTP_CF_CONNECTING_IP'] :
             $_SERVER['REMOTE_ADDR'];
 
-        // Hent mønstringen
-        require_once('UKM/monstring.class.php');
-        require_once('UKM/samtykke/person.class.php');
-
-        $monstring = new monstring_v2( $monstringId );
-        $innslag = $monstring->getInnslag()->get( $innslagId, true );
-
         // Opprett og lagre samtykke
-        $samtykke = new Samtykke\Person( $person, $innslag );
+        $samtykke = new PersonSamtykke( $person, $innslag );
         $samtykke->setStatus( $status, $ip );
         $samtykke->persist();
 

@@ -289,14 +289,14 @@ ukm_delta_ukmid_pamelding_teater_opprett:
 
 
 ### FILM
-ukm_delta_ukmid_pamelding_film_hvem:
+ukm_delta_ukmid_pamelding_video_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/film/
     defaults: { _controller: UKMDeltaBundle:Film:who }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,5})
 
-ukm_delta_ukmid_pamelding_film_opprett:
+ukm_delta_ukmid_pamelding_video_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/film/opprett/{hvem}/
     defaults: { _controller: UKMDeltaBundle:Film:create }
     requirements:
@@ -337,14 +337,14 @@ ukm_delta_ukmid_pamelding_litteratur_opprett:
               hvem: ([a-z]+)
 
 ### ANNET
-ukm_delta_ukmid_pamelding_annet_hvem:
+ukm_delta_ukmid_pamelding_scene_hvem:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/
     defaults: { _controller: UKMDeltaBundle:Annet:who }
     requirements:
               k_id: ([0-9]{1,4})
               pl_id: ([0-9]{1,5})
 
-ukm_delta_ukmid_pamelding_annet_opprett:
+ukm_delta_ukmid_pamelding_scene_opprett:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/opprett/{hvem}/
     defaults: { _controller: UKMDeltaBundle:Annet:create }
     requirements:

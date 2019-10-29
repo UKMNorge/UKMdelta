@@ -8,11 +8,11 @@
 				<h1>
 					{{ 'frist.overskrift'|trans({}, 'base') }}
 				</h1>
-				<p class="lead">{{ 'frist.ledetekst'|trans({}, 'base') }}</p>
+				<p class="lead">{{ 'frist.ledetekst.tidligere'|trans({}, 'base') }}</p>
 				{% if innslag is defined %}
 					<p>
 						{{ 'frist.link'|trans({}, 'base') }}
-						<a href="//ukm.no/pl{{ pl_id }}/">ukm.no/pl{{ pl_id }}/</a> 
+						<a href="{{ innslag.getHome().getLink() }}">{{ innslag.getHome().getLink() }}</a> 
 					</p>
 				{% endif %}
 

@@ -25,31 +25,28 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="delta-input-header"> 
-					<!-- List opp påmeldinger eller si fra at det ikke finnes noen påmeldinger her -->
-					{% if alle_innslag.fullstendig is not empty %}
-						<h3>{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
-						
+                    {% if alle_innslag|length == 0 %}
+                        <p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
+                    {% else %}
+                        <h3>{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
 						<ul class="list list-group innslag">
-							{% for status, innslag in alle_innslag.fullstendig %}
-								{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
-							{% endfor %}
+                            {% for innslag in alle_innslag.getAll() if innslag.erPameldt() %}
+                                {% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
+                            {% else %}
+                                {{ 'indexAction.pameldinger.ingen_fullforte'|trans }}
+                            {% endfor %}
 						</ul>
-					{% endif %}
-			
-					{% if alle_innslag.ufullstendig is not empty %}
-						<h3>{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
+
+                        <h3>{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
 						<ul class="list list-group innslag">
-							{% for status, innslag in alle_innslag.ufullstendig %}
-								{% embed "UKMDeltaBundle:UKMID:innslag.html.twig" %}{% endembed %}
-							{% endfor %}
+                            {% for innslag in alle_innslag.getAll() if not innslag.erPameldt() %}
+                                {% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
+                            {% else %}
+                                {{ 'indexAction.pameldinger.ingen_ikkefullforte'|trans }}
+                            {% endfor %}
 						</ul>
-					{% endif %}
-			
-					{% if alle_innslag.ufullstendig is empty and alle_innslag.fullstendig is empty %}
-						<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
 					{% endif %}
 				</div>
-
 
 				<form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
 					<button class="btn btn-block btn-outline-primary my-3" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style="">{{ 'indexAction.pameldinger.startny'|trans }}</button>

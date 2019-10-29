@@ -20,37 +20,37 @@
 
 					<div class="form-group">
 						<label>{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans }}</label>
-						<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ name is defined ? name : '' }}" /> 
+						<input type="text" required name="navn" class="form-control" placeholder="{{ ('overviewAction.artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ innslag.getNavn() != 'Innslag uten navn' ? innslag.getNavn() : ''  }}" /> 
 					</div>
 
 					<div class="form-group">
 						<label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
 						<p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans }}</p>
-						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ beskrivelse }}</textarea>			
+						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ innslag.getBeskrivelse() }}</textarea>			
 					</div>
 					
 					{# SJANGER #}
 					{# Kun printe denne om kategori er musikk, film, annet? #}
-					{% if krev_sjanger %}
+					{% if innslag.getType().harSjanger() %}
 						<div class="form-group">
 							<label>{{ ('overviewAction.sjanger.label')|trans }}</label>
-							<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ sjanger is defined ? sjanger : '' }}" />
+							<input type="text" name="sjanger" class="form-control" placeholder="{{ ('overviewAction.sjanger.placeholder')|trans }}" value="{{ innslag.getSjanger() }}" />
 						</div>
 					{% endif %}
 					
+                    {# PERSONER #}
 					<div class="my-3">
-						{# PERSONER #}
 						{% include 'UKMDeltaBundle:Innslag:personer.html.twig' %} 
 					</div>
 					
+                    {# TITLER #}
 					<div class="my-3">
-						{# TITLER #}
 						{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 					</div>
 
+                    {# TEKNISKE BEHOV #}
 					<div class="my-3">
-						{% if krev_tekniske %}
-							{# TEKNISKE BEHOV #}
+						{% if innslag.getType().harTekniskeBehov() %}
 							{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
 						{% endif %}
 					</div>
@@ -60,9 +60,9 @@
 					</div>
 					
 					{# KUN VIS DENNE OM INNSLAGET ER PÅMELDT ELLER PÅ VEI TIL Å BLI PÅMELDT? #}
-					{% if pameldt %}
+					{% if innslag.erPameldt() %}
 						<p class="my-4">
-							<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger btn-sm">{{ 'overviewAction.meldav'|trans({'%name': innslag.get('b_name')}, 'base') }}</a>
+							<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger btn-sm">{{ 'overviewAction.meldav'|trans({'%name': innslag.getNavn()}, 'base') }}</a>
 						</p>
 					{% endif %}
 

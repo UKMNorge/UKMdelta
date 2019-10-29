@@ -1,52 +1,40 @@
 {% trans_default_domain translationDomain %}
-{% set isOkay = 
-( not (innslag.type is empty)) and 
-( not innslag.innslag.get('b_kommune') is empty) and 
-( not innslag.innslag.get('b_id') is empty) and 
-( not innslag.monstring.get('pl_id') is empty) %}
 
-{% if innslag.innslag.get('bt_id') == 4 %}
-	{% set innslag_type = 'konferansier' %}
-{% elseif innslag.innslag.get('bt_id') == 5 %}
-	{% set innslag_type = 'media' %}
-{% elseif innslag.innslag.get('bt_id') == 8 %}
-	{% set innslag_type = 'arrangor' %}
-{% endif %}
+{% set pamelding_apen = innslag.getHome().erPameldingApen( innslag.getType().getFrist() ) %}
 
-{## SKJUL PÅMELDINGER SOM IKKE KAN VISES PGA FEIL I DATABASE ##}
-{% if isOkay %}
-	{% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
-	{% set delete_target = path('ukm_delta_ukmid_meld_av', { k_id: innslag.innslag.get('b_kommune'), pl_id: innslag.monstring.get('pl_id'), type: innslag.type, b_id: innslag.innslag.get('b_id') }) %}
-	<li class="list-group-item {% if innslag.pamelding_apen %}triggerLink click{% endif %}">
-		<div class="row">
-			<div class="col-9">
-				{% if innslag.pamelding_apen %}
-					<a href="{{ link_target }}">{{ innslag.innslag.get('b_name') }}</a>
-				{% else %}
-					{{ innslag.innslag.get('b_name') }}
-				{% endif %}
-				<small>
-					{{ innslag.innslag.get('kategori')|capitalize }} 
-					| 
-					{{ innslag.monstring.get('pl_name')|capitalize }}
-				</small>
-				{% if innslag.innslag.getNominasjon( 'land' ).har() and innslag.innslag.getNominasjon('land').harDeltakerskjema() %}
-					<br />
-					<label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn (#{{ innslag.innslag.getNominasjon('land').getId() }})</label>
-				{% endif %}
-				
-			</div>
+{% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.getKommune().getId(), pl_id: innslag.getHome().getId(), type: innslag.getType().getKey(), b_id: innslag.getId() }) %}
 
-			<div class="col-3 right px-0">
-				{% if innslag.pamelding_apen %}
-					<a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary actionLink autoshrink">{{ 'indexAction.rediger'|trans }}</a>
-					<a href="{{ delete_target }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
-				{% else %}
-					<i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
-				{% endif %}
-				
-			</div>
+<li class="list-group-item {{ pamelding_apen ? 'triggerLink click' }}">
+    <div class="row">
+        <div class="col-9">
+            {% if pamelding_apen %}
+                <a href="{{ link_target }}">{{ innslag.getNavn() }}</a>
+            {% else %}
+                {{ innslag.getNavn() }}
+            {% endif %}
+            <small>
+                {{ innslag.getType().getNavn() }} 
+                | 
+                {{ innslag.getHome().getNavn() }}
+            </small>
+            {# TODO: implementer nominasjon! #}
+            {# https://github.com/UKMNorge/UKMapi/issues/41 #}
+            {#% if innslag.getNominasjon( 'land' ).har() and innslag.innslag.getNominasjon('land').harDeltakerskjema() %}
+                <br />
+                <label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn (#{{ innslag.innslag.getNominasjon('land').getId() }})</label>
+            {% endif %#}
+            
+        </div>
 
-		</div>
-	</li>
-{% endif %}
+        <div class="col-3 right px-0">
+            {% if pamelding_apen %}
+                <a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary actionLink autoshrink">{{ 'indexAction.rediger'|trans }}</a>
+                <a href="{{ path('ukm_delta_ukmid_meld_av', { k_id: innslag.getKommune().getId(), pl_id: innslag.getHomeId(), type: innslag.getType().getKey(), b_id: innslag.getId() }) }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
+            {% else %}
+                <i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
+            {% endif %}
+            
+        </div>
+
+    </div>
+</li>
