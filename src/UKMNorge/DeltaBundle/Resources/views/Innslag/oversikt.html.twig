@@ -62,7 +62,7 @@
 					{# KUN VIS DENNE OM INNSLAGET ER PÅMELDT ELLER PÅ VEI TIL Å BLI PÅMELDT? #}
 					{% if innslag.erPameldt() %}
 						<p class="my-4">
-							<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-danger btn-sm">{{ 'overviewAction.meldav'|trans({'%name': innslag.getNavn()}, 'base') }}</a>
+							<a href="{{ path('ukm_delta_ukmid_meld_av', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="text-secondary">{{ 'overviewAction.meldav'|trans({'%name': innslag.getNavn()}, 'base') }}</a>
 						</p>
 					{% endif %}
 
