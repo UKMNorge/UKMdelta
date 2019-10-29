@@ -10,7 +10,7 @@ nosms:
         Vi får ikke sendt SMS-koden til deg, 
         så da kan du sende en til oss.
     varsel: Send UKM %id til 1963
-    obs: OBS: Du må sende denne tekstmeldingen fra %nr
+    obs: "OBS: Du må sende denne tekstmeldingen fra %nr"
     videre: Når du har gjort dette kan du gå videre til neste side
     videreknapp: Jeg har sendt SMS
 
