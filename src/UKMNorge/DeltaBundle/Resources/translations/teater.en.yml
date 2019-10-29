@@ -130,7 +130,6 @@ technicalAction:
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
         Skal dere ha playback av musikk?
-    placeholder_teknisk: Vi trenger to mikrofoner. Vi har med en akustisk gitar som ikke har innebygd mikrofon.
     
 statusAction:
     obs-topptekst: 'OBS! "%innslag" er ikke meldt på UKM enda!'
