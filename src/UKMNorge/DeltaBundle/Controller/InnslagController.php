@@ -63,7 +63,7 @@ class InnslagController extends Controller
                     $action = 'visKommuner';
                     $link = '';
                 } else {
-                    $action = 'visDirekteLenke';
+                    $action = 'visDirektelenke';
                     $link = $this->generateUrl(
                         'ukm_delta_ukmid_pamelding_hva',
                         [
