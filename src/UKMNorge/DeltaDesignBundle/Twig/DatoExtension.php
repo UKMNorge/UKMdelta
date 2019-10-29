@@ -3,12 +3,15 @@
 // src/UKMNorge/DesignBundle/Twig/DatoExtension.php
 namespace UKMNorge\DeltaDesignBundle\Twig;
 
-class DatoExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class DatoExtension extends AbstractExtension
 {
 	public function getFilters()
 	{
 		return array(
-			new \Twig_SimpleFilter('dato', array($this, 'TWIG_date')),
+			new TwigFilter('dato', array($this, 'TWIG_date')),
 			);
 	}
 
