@@ -100,7 +100,9 @@ class InnslagService
                 $innslag->getType()->getKey(),
                 $innslag->getHome()->getId(),
                 $innslag->getHome()->getType(),
-                $innslag->getHome()->getSesong()
+                $innslag->getHome()->getSesong(),
+                $innslag->getHome()->getFylke()->getId(),
+                $innslag->getHome()->getKommuner()->getIdArray()
             )
         );
 
@@ -222,7 +224,7 @@ class InnslagService
         
         if( $user->getPameldUser() != null ) {
             $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
-            $context = Context::createKontaktperson($person, $sesong);
+            $context = Context::createKontaktperson($person->getId(), $sesong);
         } else {
             $context = Context::createDeltaUser($user->getId(), $sesong);
         }
@@ -246,9 +248,10 @@ class InnslagService
         // Setup logger
         $this->_setupLogger( $innslag->getHomeId() );
 
+        $innslag->getPersoner()->leggTil($person);
+
         WriteInnslag::savePersoner($innslag);
         WritePerson::save($person);
-        
         return true;
     }
 

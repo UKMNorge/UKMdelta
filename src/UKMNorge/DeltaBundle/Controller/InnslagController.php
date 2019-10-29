@@ -464,8 +464,6 @@ class InnslagController extends Controller
 
         // Legg til i innslaget, sett rolle
         $person->setRolle($request->request->get('instrument'));
-        $innslag->getPersoner()->leggTil($person);
-
 
         // Sett alder
         $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
@@ -747,10 +745,10 @@ class InnslagController extends Controller
 
         // Sett standard-info
         $tittel->setTittel($request->request->get('tittel'));
-        $tittel->setSesong($seasonService->getActive());
+        #$tittel->setSesong($seasonService->getActive());
 
         switch ($innslag->getType()->getKey()) {
-                // Musikk
+            // Musikk
             case 'musikk':
                 $tittel->setVarighet($request->request->get('lengde'));
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
@@ -766,9 +764,7 @@ class InnslagController extends Controller
                 // Teater
             case 'teater':
                 $tittel->setVarighet($request->request->get('lengde'));
-                $tittel->setInstrumental($request->request->get('sangtype') == 'instrumental');
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setMelodiAv($request->request->get('melodiforfatter'));
                 $tittel->setTekstAv($request->request->get('tekstforfatter'));
                 break;
                 // Dans
@@ -781,10 +777,10 @@ class InnslagController extends Controller
             case 'litteratur':
                 $tittel->setTekstAv($request->request->get('tekstforfatter'));
                 if ($request->request->get('leseopp') == '1') {
-                    $tittel->setLitteraturLesOpp(true);
+                    $tittel->setLesOpp(true);
                     $tittel->setVarighet($request->request->get('lengde'));
                 } else {
-                    $tittel->setLitteraturLesOpp(false);
+                    $tittel->setLesOpp(false);
                     $tittel->setVarighet(0);
                 }
                 break;
