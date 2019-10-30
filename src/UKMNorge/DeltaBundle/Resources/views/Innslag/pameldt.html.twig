@@ -1,20 +1,6 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(document).on("click", "#share", function () {
-            FB.ui({
-                method: 'share',
-                href: 'https://delta.ukm.no',
-                caption: '{{ fb_share_caption }}',
-                picture: 'https://grafikk.ukm.no/pamelding/startpamelding.png'
-            }, function (response) {});
-        });
-    </script>
-{% endblock %}
-
 {% block content %}
     <div class="container">
         <div class="row">
@@ -31,12 +17,6 @@
 
 
             <div class="col-12">
-                <button class="btn btn-block btn-outline-primary" id="share">
-                    {{ 'fb_share_button'|trans({}, 'base') }}
-                </button>
-
-                <p>&nbsp;</p>
-
                 <a class="btn btn-block btn-outline-primary this-is-js" href="{{ arrangement.getLink() }}/pameldte/" target="_lokalside">
                     {{ 'attendingAction.vispameldte'|trans }}
                 </a>
