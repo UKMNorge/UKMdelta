@@ -220,24 +220,29 @@ class UKMIDController extends Controller
         // Dette vet vi kun om personen har meldt på et innslag!
         if ($user->getPameldUser() != null) {
             // POST-verdier
+            /*
             $adresse = $request->request->get('adresse');
             $postnummer = $request->request->get('postnummer');
             $poststed = $request->request->get('poststed'); 
+            */
             $fodselsdato = WritePerson::fodselsdatoFraAlder($request->request->get('age')); // Alder
             
             // Oppdater bruker
             if( $fodselsdato != 0 ) {
                 $user->setBirthdate($fodselsdato);
             }
+            /*
             $user->setPostNumber($postnummer); 
             $user->setAddress($adresse);
             $user->setPostPlace($poststed);
-            
+            */
             // Oppdater personobjekt
             $person = new Person($user->getPameldUser());
+            /*
             $person->setAdresse($adresse);
             $person->setPostnummer($postnummer);
             $person->setPoststed($poststed);
+            */
             $person->setFodselsdato($fodselsdato);
             $person->setFornavn($fornavn);
             $person->setEtternavn($etternavn);

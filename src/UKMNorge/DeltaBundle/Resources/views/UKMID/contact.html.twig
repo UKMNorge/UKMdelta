@@ -63,23 +63,6 @@
                         <input name="epost" required type="text" class="form-control" value="{{ user.getEmail() }}"/>
                     </div>
 
-                    {% if person is defined %}
-                        <div class="form-group">
-                            <label>{{ 'contactAction.adresse'|trans }}</label>
-                            <input name="adresse" required type="text" class="form-control" value="{{ user.getAddress() is defined ? user.getAddress() : '' }}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label>{{ 'contactAction.postnummer'|trans }}</label>
-                            <input name="postnummer" required id="postNumber" maxlength="4" type="text" class="form-control" value="{{ user.getPostNumber() is defined ? user.getPostNumber() : '' }}"/>
-                        </div>
-
-                        <div class="form-group">
-                            <label>{{ 'contactAction.poststed'|trans }}</label>
-                            <input name="poststed" required id="postPlace" type="text" class="form-control" value="{{ user.getPostPlace() is defined ? user.getPostPlace() : '' }}"/>
-                        </div>
-                    {% endif %}
-
                     <div class="form-group my-5">
                         <button class="btn btn-block btn-outline-primary btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
                             {{ 'contactAction.lagre'|trans }}
