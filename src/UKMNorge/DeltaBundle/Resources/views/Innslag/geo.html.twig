@@ -11,7 +11,7 @@
     <script>
         // Vis kommuner, ingen arrangementer, arrangement-liste, eller send videre til påmelding
         // avhengig av kommunens muligheter. Oh the choices.
-        $(document).on('click', 'li.kommune:not(".visArrangementKommuner")', (e) => {
+        $(document).on('click', 'li.kommune:not(".visArrangementKommuner")', function(e) {
             var clicked = $(e.target);
 
             // Det er en kommune med flere arrangement, og brukeren trykket på en av de,
@@ -62,7 +62,7 @@
         });
         
         // Vis kommuner for en kommunes arrangementer
-        $(document).on('click', 'li.kommune .visArrangementKommuner', (e) => {
+        $(document).on('click', 'li.kommune .visArrangementKommuner', function(e) {
             var clicked = $(e.target);
 
             var arrangement = clicked.parents('.arrangement');
