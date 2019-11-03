@@ -4,6 +4,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use UKMCurl;
 use Exception;
@@ -287,81 +288,74 @@ class UKMIDController extends Controller
     }
 
 
-
-
-
-
-
     public function fbconnectAction() {
-        throw new Exception('TODO: Funksjonen er ikke implementert');
-
+        $log = $this->get('logger');
+        $log->info("fbconnectAction");
         // Sjekk om brukeren er koblet til med facebook allerede, i så fall redirect til ukmid
         $user = $this->get('ukm_user')->getCurrentUser();
         if ($user->getFacebookId()) {
+            $log->info("User already connected - setting flashbag and skipping to homepage.");
+            $this->addFlash("success", "Koblet til Facebook - neste gang kan du logge inn ved å trykke på Logg inn med Facebook-knappen!");
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
-        
+
         // Hvis ikke, kjør facebook-tilkoblings-kode:
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
         $redirectURL = 'https://delta.'.($this->getParameter('UKM_HOSTNAME') == 'ukm.dev' ? 'ukm.dev'.'/app_dev.php' : $this->getParameter('UKM_HOSTNAME')) . '/ukmid/fbconnect';
 
         if ($req->query->get('code')) {
+            $log->info("Found code from facebook - fetching token.");
             $code = $req->query->get('code');
             // This means we are coming from facebook
             // Bytt code for en access-token
             $curl = new UKMCurl();
-            $url = 'https://graph.facebook.com/v2.3/oauth/access_token';
+            $url = 'https://graph.facebook.com/v5.0/oauth/access_token';
             $url .= '?client_id='.$this->getParameter('facebook_client_id');
             $url .= '&redirect_uri='.$redirectURL;
             $url .= '&client_secret='.$this->getParameter('facebook_client_secret');
             $url .= '&code='.$code;
             $curl->timeout(50);
-            // var_dump($url);
-            // var_dump($curl);
+            
             $result = $curl->process($url);
             if(isset($result->error)) {
-                var_dump($result);
-                die();
+                $log->error("Failed to fetch token from facebook.", ["result" => $result]);
+                $this->addFlash("danger", "Klarte ikke å koble til Facebook. Ga du oss tillatelse?");
+                return $this->redirectToRoute('ukm_delta_ukmid_homepage');
             }
 
             $token = $result->access_token;
+            $log->info("Got token, swapping it for user data");
             // Hent brukerdata
             $url = 'https://graph.facebook.com/me';
             $url .= '?access_token='.$token;
             $fbUser = $curl->process($url);
 
             if (isset($fbUser->error)) {
-                var_dump($fbUser);
-                die();
+                $log->error("Failed to fetch user data from facebook.", ["fbUser" => $fbUser]);
+                $this->addFlash("danger", "Klarte ikke å hente data fra Facebook. Har du gitt oss tillatelse?");
+                return $this->redirectToRoute('ukm_delta_ukmid_homepage');
             }
 
             // Fyll inn fb-data i brukertabellen
             $user->setFacebookId($fbUser->id);
-
             $userManager = $this->container->get('fos_user.user_manager');
             $userManager->updateUser($user);
 
-            // Gjennomfør loginsuccess, så man blir redirectet om man skal bli redirectet?
+            // Gjennomfør loginsuccess, så man blir redirectet til andre sider enn Delta om man skal bli det.
             $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
             $usertoken = $this->get('security.token_storage')->getToken(); 
             $response = $handler->onAuthenticationSuccess($req, $usertoken);
             return $response;
-            // Success!
-            // return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        } elseif ( $req->query->get('error') ) {
+            $log->error("Something failed when connecting to facebook. User was redirected back with error. Maybe user clicked cancel?", ["request params:" => $req->query->all()]);
+            $this->addFlash("danger", "Klarte ikke å hente data fra Facebook. Har du gitt oss tillatelse?");
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }
 
+        // Dersom folk har trykt på knappen i menyen trenger vi ikke vise et ekstra GUI for å vise de en ekstra knapp...
         $app_id = $this->getParameter('facebook_client_id');
-        $view_data = array();
-        $view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
-        
-        $rdirurl = $this->get('session')->get('rdirurl');
-        if ($rdirurl == 'ambassador') {
-            $view_data['system'] = 'ambassador';
-        }
-        
-
-        return $this->render('UKMDeltaBundle:UKMID:fbconnect.html.twig', $view_data);
+        return new RedirectResponse("https://www.facebook.com/dialog/oauth?client_id=".$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email');
     }
 
 }
