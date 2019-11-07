@@ -22,7 +22,7 @@
 
                 <p class="my-4">
                     <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
-                        {{ 'whoAction.kontakt'|trans }}
+                        {{ 'whoAction.kontakt'|trans({}, 'base') }}
                     </a>
                 </p>
             </div>
@@ -31,7 +31,7 @@
             <div class="col-12">
                 <p class="delta-subtext center">
                     <small>
-                        {{ 'whoAction.forklaring'|trans }}
+                        {{ 'whoAction.forklaring'|trans({}, 'base') }}
                     </small>
                 </p>
             </div>

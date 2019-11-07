@@ -19,7 +19,7 @@
 					<h1 class="mt-0">{{ 'tittel.overskrift.legg_til'|trans }}</h1>
 				{% endif %}	
 				
-				<form method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+				<form method="POST" action="{{ path('ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
 					<input type="hidden" name="innslagsnavn" value="{{ innslag.getNavn() }}" />
 					<input type="hidden" name="t_id" value="{{ tittel is defined ? tittel.getId() : 'new' }}" />
 
@@ -39,14 +39,14 @@
 					
 					{% if tittel is defined > 0 %}
 						<p class="my-4">
-							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, t_id: tittel.getId() }) }}" class="btn btn-block btn-danger">
+							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {  k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id, t_id: tittel.getId() }) }}" class="btn btn-block btn-danger">
 								{{ 'tittel.slett'|trans({'%tittel': tittel.getTittel() }) }}
 							</a>
 						</p>
 					{% endif %}
 
 					<p class="my-3 center">
-						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+						<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
 							{{ 'tittel.avbryt'|trans }}
 						</a>
 					</p>

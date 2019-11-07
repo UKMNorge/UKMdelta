@@ -4,24 +4,24 @@
 {% block form_body %}
 	{{ parent() }}
 	<div class="form-group">
-		<label>{{ 'tittel.tekst.label'|trans }}</label>
+		<label>{{ 'tittel.tekst.label'|trans({'%bestemt': type.getTekst('titler.bestemt')},'base') }}</label>
 	</div>
 
     {# SANGTYPE #}
 	<div class="form-group" id="tekst-valg">
 		<label class="radio-inline">
 			<input type="radio" name="sangtype" value="sang" {{ tittel is defined and not tittel.erInstrumental() ? 'checked' }} required />
-			{{ 'tittel.tekst.tekst'|trans }}
+			{{ 'tittel.tekst.tekst'|trans({},'base') }}
 		</label>
 		<label class="radio-inline">
 			<input type="radio" name="sangtype" value="instrumental" {{ tittel is defined and tittel.erInstrumental() ? 'checked' }} required />
-			{{ 'tittel.tekst.instrumental'|trans }}
+			{{ 'tittel.tekst.instrumental'|trans({},'base') }}
 		</label>
 	</div>
 
     {# SELVLAGET #}
 	<div class="form-group">
-		<label>{{ 'tittel.selvlaget.label'|trans }}</label>
+		<label>{{ 'tittel.selvlaget.label'|trans({'%bestemt': type.getTekst('titler.bestemt')},'base') }}</label>
 	</div>
 	<div class="form-group" id="melodi-valg">
 		<label class="radio-inline">

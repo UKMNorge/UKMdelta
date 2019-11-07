@@ -8,17 +8,17 @@
                 <h1 class="mt-0">Nesten ferdig!</h1>
                 {% if innslag.erPameldt() and innslag.getMangler().getAntall() > 0 %}
                     <div class="alert alert-warning col-xs-10 col-xs-offset-1">
-                        {{ 'statusAction.obs-men-ok-topptekst'|trans({'%innslag': innslag.getNavn()}) }}
+                        {{ 'statusAction.obs-men-ok-topptekst'|trans({'%innslag': innslag.getNavn()},'base') }}
                     </div>
                 {% else %}
                     <div class="alert alert-danger col-xs-10 col-xs-offset-1">
-                        {{ 'statusAction.obs-topptekst'|trans({'%innslag': innslag.getNavn() }) }}
+                        {{ 'statusAction.obs-topptekst'|trans({'%innslag': innslag.getNavn() },'base') }}
                     </div>
                 {% endif %}
 
-                <label>{{ 'statusAction.infotekst'|trans }}</label>
+                <label>{{ 'statusAction.infotekst'|trans({},'base') }}</label>
                 <br/>
-                <span class="text-muted">{{ 'statusAction.helper'|trans  }}</span>
+                <span class="text-muted">{{ 'statusAction.helper'|trans({},'base')  }}</span>
                 <ul
                     class="list-group">
                     {# ALT OM INNSLAGET #}

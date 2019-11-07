@@ -1,6 +1,6 @@
 {% trans_default_domain translationDomain %}
 <select name="lengde" required="required" class="form-control">
-	<option value="" {{ tittel is not defined ? 'selected' : '' }} disabled>{{ 'tittel.varighet.velg_varighet'|trans }}</option>
+	<option value="" {{ tittel is not defined ? 'selected' : '' }} disabled>{{ 'tittel.varighet.velg_varighet'|trans({'%bestemt': type.getTekst('titler.bestemt')},'base') }}</option>
 	{% for i in 0..60 %}
 		<option value="{{ i * 10 }}" {{ (tittel is defined and tittel.getSekunder() == i * 10) ? 'selected' : '' }}>
 			{% if (i / 6)|round(0, 'floor') < 1 %}

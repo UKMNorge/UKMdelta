@@ -261,7 +261,8 @@ class InnslagController extends Controller
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
-            'type' => $type->getKey() == 'video' ? 'film' : $type->getKey(),
+            'type' => $type,
+            'type_key' => strtolower($type->getKey() == 'video' ? 'film' : $type->getKey()),
             'b_id' => $b_id,
             'translationDomain' => $type->getKey() == 'video' ? 'film' : $type->getKey(),
             'user' => $user,
@@ -402,7 +403,7 @@ class InnslagController extends Controller
             [
                 'k_id' => $k_id,
                 'pl_id' => $pl_id,
-                'type' => $type,
+                'type' => Typer::getByKey($type),
                 'b_id' => $b_id,
                 'translationDomain' => $type,
                 'friends' => $this->_getVenner(
@@ -645,7 +646,8 @@ class InnslagController extends Controller
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
-            'type' => $type,
+            'type' => Typer::getByKey($type),
+            'type_key' => $type,
             'b_id' => $b_id,
             'translationDomain' => $type,
             'innslag' => $innslagService->hent($b_id)
@@ -690,7 +692,7 @@ class InnslagController extends Controller
      */
     private function _renderTitleAction(array $view_data)
     {
-        switch ($view_data['type']) {
+        switch ($view_data['type_key']) {
             case 'musikk':
                 return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
             case 'dans':

@@ -8,11 +8,11 @@
                 {# REDIGER PERSON #}
                 {% if person is defined %}
                     <h1 class="mt-0">{{ 'person.overskrift.rediger'|trans({'%fornavn': person.getFornavn()}, 'base') }}</h1>
-                    <form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.getId() }) }}">
+                    <form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_personinfo', { k_id: k_id, pl_id: pl_id, type: type.getKey(), b_id: b_id, p_id: person.getId() }) }}">
                 {# LEGG TIL PERSON #}
                 {% else %}
                     <h1 class="mt-0">{{ 'person.overskrift.legg_til'|trans({}, 'base') }}</h1>
-                    <form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_ny_person', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+                    <form class="delta-form " method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre_ny_person', { k_id: k_id, pl_id: pl_id, type: type.getKey(), b_id: b_id }) }}">
                 {% endif %}
 
                     {# FORNAVN #}
@@ -71,9 +71,9 @@
 
                     {# INSTRUMENT / ROLLE #}
                     <div class="form-group">
-                        <label>{{ 'person.rolle.label'|trans({'%person': person is defined and person.getFornavn() is not empty ? person.getFornavn() : 'personen'})  }}</label>
-                        <input type="text" required name="instrument" class="form-control" placeholder="{{ 'person.rolle.placeholder'|trans({'%person': person is defined and person.getFornavn() is not empty ? person.getFornavn() : 'personen'}) }}" value="{{ person is defined ? person.getRolle() : '' }}"/>
-                        <p class="help">{{ 'person.rolle.help'|trans({'%person': person.get('p_firstname') is defined ? person.get('p_firstname') : 'personen'}) }}</p>
+                        <label>{{ type.getTekst('rolle.navn', {'%person': person is defined and person.getFornavn() is not empty ? person.getFornavn() : 'personen'})  }}</label>
+                        <input type="text" required name="instrument" class="form-control" placeholder="{{ type.getTekst('rolle.placeholder', {'%person': person is defined and person.getFornavn() is not empty ? person.getFornavn() : 'personen'}) }}" value="{{ person is defined ? person.getRolle() : '' }}"/>
+                        <p class="help">{{ type.getTekst('rolle.hjelp', {'%person': person.get('p_firstname') is defined ? person.get('p_firstname') : 'personen'}) }}</p>
                     </div>
 
                     <div class="form-group mt-5">
@@ -82,12 +82,12 @@
                         </p>
                         {% if person is defined %}
                             <p class="my-4">
-                                <a href="{{ path('ukm_delta_ukmid_pamelding_fjern_person', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.getId() }) }}" class="btn btn-danger btn-block btn-sm">{{ 'person.fjern.label'|trans({'%person': person.getNavn(), '%innslag': innslag.getNavn()}) }}</a>
+                                <a href="{{ path('ukm_delta_ukmid_pamelding_fjern_person', { k_id: k_id, pl_id: pl_id, type: type.getKey(), b_id: b_id, p_id: person.getId() }) }}" class="btn btn-danger btn-block btn-sm">{{ 'person.fjern'|trans({'%person': person.getNavn(), '%innslag': innslag.getNavn()}, 'base') }}</a>
                             {% endif %}
                         </p>
 
                         <p align="center">
-                            <a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">{{ 'person.avbryt'|trans({},'base') }}</a>
+                            <a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type.getKey(), b_id: b_id }) }}">{{ 'person.avbryt'|trans({},'base') }}</a>
                         </p>
                     </div>
                 </form>
