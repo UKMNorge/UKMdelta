@@ -4,7 +4,7 @@
 {% block form_body %}
 	{{ parent() }}
 	<div class="form-group">
-		<label>{{ 'tittel.selvlaget.label'|trans }}</label>
+		<label>{{ 'tittel.selvlaget.label'|trans({'%bestemt': type.getTekst('titler.bestemt')},'base') }}</label>
 	</div>
 
 	<div class="form-group" id="koreografi-valg" >
