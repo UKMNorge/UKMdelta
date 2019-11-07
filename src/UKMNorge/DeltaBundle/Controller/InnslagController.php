@@ -404,6 +404,7 @@ class InnslagController extends Controller
                 'k_id' => $k_id,
                 'pl_id' => $pl_id,
                 'type' => Typer::getByKey($type),
+                'type_key' => $type,
                 'b_id' => $b_id,
                 'translationDomain' => $type,
                 'friends' => $this->_getVenner(
@@ -496,7 +497,8 @@ class InnslagController extends Controller
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
-            'type' => $type,
+            'type' => Typer::getByKey($type),
+            'type_key' => $type,
             'b_id' => $b_id,
             'user' => $this->hentCurrentUser(),
             'person' => $this->get('ukm_api.person')->hent($p_id, $b_id),
@@ -694,17 +696,17 @@ class InnslagController extends Controller
     {
         switch ($view_data['type_key']) {
             case 'musikk':
-                return $this->render('UKMDeltaBundle:Musikk:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:musikk.html.twig', $view_data);
             case 'dans':
-                return $this->render('UKMDeltaBundle:Dans:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:dans.html.twig', $view_data);
             case 'teater':
-                return $this->render('UKMDeltaBundle:Teater:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:teater.html.twig', $view_data);
             case 'film':
-                return $this->render('UKMDeltaBundle:Film:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:film.html.twig', $view_data);
             case 'litteratur':
-                return $this->render('UKMDeltaBundle:Litteratur:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:litteratur.html.twig', $view_data);
             case 'utstilling':
-                return $this->render('UKMDeltaBundle:Utstilling:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:utstilling.html.twig', $view_data);
             case 'matkultur':
                 return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
             default:

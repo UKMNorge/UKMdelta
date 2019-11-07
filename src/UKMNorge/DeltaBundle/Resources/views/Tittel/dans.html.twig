@@ -1,0 +1,25 @@
+{% extends "UKMDeltaBundle:Tittel:skjema.html.twig" %}
+{% trans_default_domain translationDomain %}
+
+{% block form_body %}
+	{{ parent() }}
+	<div class="form-group">
+		<label>{{ 'tittel.selvlaget.label'|trans({'%bestemt': type.getTekst('titler.bestemt')},'base') }}</label>
+	</div>
+
+	<div class="form-group" id="koreografi-valg" >
+		<label class="radio-inline">
+			<input type="radio" name="selvlaget" value="1" {{ tittel is defined and tittel.erSelvlaget() ? 'checked' }} />
+			{{ 'ja'|trans({}, 'base') }}
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="selvlaget" value="0" {{ tittel is defined and not tittel.erSelvlaget() ? 'checked' }} />
+			{{ 'nei'|trans({}, 'base') }}
+		</label>
+	</div>
+	
+	<div class="form-group" id="koreografi-rad">
+		<label>{{ 'tittel.koreografi.label'|trans }}</label>
+		<input type="text" required name="koreografi" class="form-control" placeholder="{{ 'tittel.koreografi.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getKoreografiAv() }}" />
+	</div>
+{% endblock %}
