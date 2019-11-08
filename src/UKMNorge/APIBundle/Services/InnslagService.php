@@ -14,7 +14,7 @@ use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Samling;
 use UKMNorge\Innslag\Titler\Tittel;
-use UKMNorge\Innslag\Type;
+use UKMNorge\Innslag\Typer\Type;
 use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;

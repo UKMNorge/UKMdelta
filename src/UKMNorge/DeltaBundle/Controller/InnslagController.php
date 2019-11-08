@@ -17,7 +17,7 @@ use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Venner;
-use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Typer\Typer;
 
 require_once('UKM/Autoloader.php');
 
