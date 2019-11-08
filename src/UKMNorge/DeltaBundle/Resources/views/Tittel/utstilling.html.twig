@@ -8,8 +8,8 @@
 
 
 	<div class="form-group">
-		<label>{{ 'tittel.tittel.label'|trans }}</label>
-		<input type="text" required name="tittel" class="form-control" placeholder="{{ 'tittel.tittel.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getTittel() }}" />
+        <label>{{ 'tittel.tittel.label'|trans({'%bestemt': type.getTekst('titler.bestemt')|capitalize},'base') }}</label>
+		<input type="text" required name="tittel" class="form-control" placeholder="{{ type.getTekst('titler.placeholder') }}" />
 	</div>
 	
 	

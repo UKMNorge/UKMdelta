@@ -1,10 +1,3 @@
-whoAction:
-    sporsmal: Deltar du alene eller med andre?
-    alene: Jeg deltar alene
-    sammen: Vi er en gruppe som skal delta
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
 #### INNSLAGSSIDEN
 # Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
 # alene: 	Bruker har valgt "jeg har laget filmen alene"
@@ -18,18 +11,15 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+whoAction:
+    sporsmal: Deltar du alene eller med andre?
+    alene: Jeg deltar alene
+    sammen: Vi er en gruppe som skal delta
 overviewAction:
-## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG    
-    artistnavn:
-        alene:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Sjonglør-%fornavn, %fornavn %etternavn, %etternavn Stacking osv...
-        sammen:
-            label: Gruppenavn / Artistnavn
-            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
-        kontakt:
-            label: Gruppenavn / Artistnavn
-            placeholder: Eks. Sjonglørgruppa, %etternavn og de andre stackerne..
     beskrivelse:
         alene:
             label: Beskrivelse av gruppe / artist
@@ -46,75 +36,6 @@ overviewAction:
             placeholder: >
                 Her vil vi vite mer om gruppen / artisten.
                 Eks. Gruppa har sjonglert i noen år, og hadde sommerjobb hos Sirkus Super i år der de lærte å sjonglere med brennende fakler og noen andre triks.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    sjanger:
-        label: Sjanger
-        placeholder: Eks sjonglering, flammeblåsing...
-    titler:
-        overskrift: Titler
-        endre: legg til / endre
-        ingen: Du må legge til minst én tittel. Ingen titler er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    tekniske:
-        overskrift: Tekniske behov / utstyrsbehov
-        endre: Endre
-        ingen: Tekniske behov ikke lagt til.
-        legg_til: Legg til tekniske behov
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-person:
-    rolle: 
-        label: Skriv inn hva %person gjør i innslaget
-        placeholder: F.eks sjonglør, danser, skuespiller osv
-        help: " "
-        ukjent: Ukjent rolle / funksjon. Trykk her
-    fjern:
-        label: Fjern %person fra %innslag
-
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
-tittel:
-    overskrift:
-        legg_til: Legg til tittel
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Tittel / navn på det som skal fremføres
-        placeholder: Eks. Stacking 1-2-3, BMX-cycle, Banankake-kasting osv..
-    varighet:
-        label: Varighet
-        velg_varighet: Velg hvor lenge det varer
-    info_mangler: Info mangler
-    slett: Slett tittel
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-
 technicalAction:
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?

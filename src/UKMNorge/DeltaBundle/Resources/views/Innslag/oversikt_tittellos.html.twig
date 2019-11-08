@@ -19,27 +19,27 @@
                     {{ innslag.getNavn() }}
                 </h1>
 
-                <form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+                <form class="form-group delta-form" id="mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
                     <div class="form-group">
                         <label>{{ ('overviewAction.beskrivelse.label')|trans }}</label>
                         <textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.placeholder')|trans }}" required>{{ innslag.getBeskrivelse() }}</textarea>
                         <p class="help text-muted">
-                            {{ 'overviewAction.beskrivelse.hvor'|trans }}
+                            {{ 'overviewAction.beskrivelse.hvor'|trans({},'base') }}
                         </p>
                     </div>
 
-                    {% if innslag.getType().harFunksjoner() %}
+                    {% if type.harFunksjoner() %}
                         <div class="form-group">
                             <label>{{ ('funksjon.label')|trans }}</label>
                             <p class="help">{{ 'funksjon.forklaring'|trans }}</p>
                         </div>
 
                         <div class="list-group">
-                            {% for id, funksjon in innslag.getType().getFunksjoner() %}
+                            {% for id in type.getFunksjoner() %}
                                 <label class="list-group-item click" for="funksjon_{{ id }}">
                                     <input type="checkbox" name="funksjoner[]" value="{{ id }}" {{ id in innslag.getPersoner().getSingle().getRolleObject() ? 'checked="checked"' }} id="funksjon_{{ id }}"/>
                                     &nbsp;
-                                    {{ ('funksjon.'~id)|trans }}
+                                    {{ type.getTekst('funksjon.'~id) }}
                                 </label>
                             {% endfor %}
                         </div>
@@ -48,7 +48,7 @@
 
                     <div class="form-group my-3">
                         <button type="submit" class="btn btn-block btn-outline-primary btn-success">
-                            {{ 'overviewAction.lagre'|trans }}
+                            {{ 'overviewAction.lagre'|trans({},'base') }}
                         </button>
                     </div>
                 </form>

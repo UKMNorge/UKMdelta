@@ -1,23 +1,25 @@
+#### INNSLAGSSIDEN
+# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
+# alene: 	Bruker har valgt "jeg har laget filmen alene"
+# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
+# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
 whoAction:
     sporsmal: Er du alene eller med andre?
     alene: Jeg er alene
     sammen: Vi er en gruppe
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-tittel.slettet: Tittelen %tittel ble slettet!
-
-overviewAction:
-    artistnavn:
-        alene:
-            label: Navn
-            placeholder: Eks. Kokke-Kari
-        sammen:
-            label: Gruppenavn
-            placeholder: Eks. Kokkegjengen
-        kontakt:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Kokke-Kari, Kokkegjengen
+overviewAction:        
     beskrivelse:
         alene:
             label: Beskrivelse
@@ -33,52 +35,7 @@ overviewAction:
             placeholder: >
                 Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
                 De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    sjanger:
-        label: sjanger
-        placeholder: Eks. Baking
-    titler:
-        overskrift: Titler
-        endre: legg til / endre
-        ingen: Ingen titler er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    lagre: Lagre
-
-person:
-    rolle: 
-        label: Skriv inn hva %person gjør
-        placeholder: F.eks kokk, konditor
-        help: " "
-        ukjent: Ukjent rolle. Trykk her
-    ar: år
-    rediger: rediger
-    fjern:
-        label: 'Fjern %person fra %innslag'
-
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    artistnavn: Navn / Gruppenavn
-    lat: Du må legge til minst én tittel
-    ingendeltakere: Du må legge til minst én person
-    teknisk: Du må oppgi tekniske behov
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-
-
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
     placeholder_teknisk: >
         Eks. Vi skal lage mat, og har derfor bruk for en koketopp med minst 3 plater, 
         arbeidsbenk med plass til minst to skjærefjøler, fire mellomstore boller og en stor bakebolle.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt 

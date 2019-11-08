@@ -1,10 +1,3 @@
-whoAction:
-    sporsmal: Har du skrevet verket alene eller med andre?
-    alene: Jeg har skrevet det alene
-    sammen: Vi er flere som har samarbeidet
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
 #### INNSLAGSSIDEN
 # Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
 # alene: 	Bruker har valgt "jeg har laget filmen alene"
@@ -18,18 +11,15 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+whoAction:
+    sporsmal: Har du skrevet verket alene eller med andre?
+    alene: Jeg har skrevet det alene
+    sammen: Vi er flere som har samarbeidet
 overviewAction:
-## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
-    artistnavn:
-        alene:
-            label: Navn på forfatter
-            placeholder: Eks. Forfatter-Frank, %fornavn %etternavn...
-        sammen:
-            label: Navn på forfattergruppe / forfatter
-            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
-        kontakt:
-            label: Navn på forfattergruppe / forfatter
-            placeholder: Eks. Litteraturklubben, Kreative Skribenter fra Hamar...
     beskrivelse:
         alene:
             label: Beskrivelse av forfatter
@@ -48,63 +38,7 @@ overviewAction:
                 Her vil vi vite litt om forfatterne.
                 Eks. De har gått på samme skole i fire år, men aldri egentlig gjort så mye sammen før dette prosjektet.
                 Martine ville skrive noe, og Per ble med fordi han syntes ideen var så bra.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    sjanger:
-        label: Sjanger
-        placeholder: Eks dikt, novellesamling, manus osv...
-    titler:
-        overskrift: Tekster / verk
-        endre: legg til / endre
-        ingen: Du må legge til minst én tekst / verk. Ingen er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til ny tekst / nytt verk
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Du må legge til minst én person. Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    tekniske:
-        overskrift: Informasjon om visning / fremføring
-        endre: Endre
-        ingen: Vi trenger å vite litt om hvordan du vil vise frem verket.
-        legg_til: Legg til beskrivelse og tekniske behov
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-#     person.rolle.label
-person:
-    rolle: 
-        label: Skriv inn hva %person har bidratt med til verket / gjør i fremføringen
-        placeholder: F.eks oppleser, forfatter kapittel 1, korrekturleser
-        help: " "
-        ukjent: Ukjent rolle / funksjon. Trykk her
-    ar: år
-    rediger: rediger
-    fjern:
-        label: Fjern %person fra %innslag
-        
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
 tittel:
-    overskrift:
-        legg_til: Legg til tekst / verk
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Navn på tekst / verk
-        placeholder: Eks. Hobbiten, Enders Game, Paper Towns osv...
     tekst_av:
         label: Medforfattere
         placeholder: Eks. J.R.R Tolkien, Orson Scott Card, John Green osv...
@@ -116,18 +50,6 @@ tittel:
         label: Hvor lang tid trenger du for å lese opp?
         velg_varighet: Velg hvor lang tid du trenger
         help: 'OBS: Vi anbefaler at du holder deg under 5 minutter, og kanskje leser ut et utdrag hvis teksten er lang.'
-    info_mangler: Info mangler
-    slett: Slett tekst / verk
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-
 technicalAction:
     eksempler: >
         Noen vil lese opp verket sitt, mens andre vil vise det frem i utstillingen.

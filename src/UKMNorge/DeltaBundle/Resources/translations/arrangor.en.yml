@@ -6,17 +6,9 @@ overviewAction:
             Eks. Jeg Jeg har jobbet med lys og lyd på ungdomsklubben en gang, 
             eller jeg har ikke gjort det før, 
             eller jeg har vært frivillig på Øya-festivalen tidligere.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    lagre: Lagre
-
 funksjon:
-    label: Hva vil du aller helst jobbe med?
+    label: Skriv litt om deg selv og din arrangør-erfaring (hvis du har gjort det før)
     forklaring: |
         Kryss gjerne av for flere kategorier. 
         OBS: det er ikke sikkert at alt er mulig på ditt lokale UKM. Spør lokalkontakten om du vil ha mer info.
-    lyd: Lyd
-    lys: Lys
-    artistvert: Artistvert
-    scenearbeider: Scenearbeider
-    info: Info / sekretariat
-    koordinator: Koordinator / produsent
+   

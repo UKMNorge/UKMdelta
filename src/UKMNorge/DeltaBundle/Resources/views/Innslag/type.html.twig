@@ -17,7 +17,7 @@
                 <h1 class="mt-0">{{ 'typeAction.overskrift'|trans }}</h1>
                 <div>
                     {# VISE FREM #}
-                    {% if arrangement.getInnslagTyper().harJobbemed() %}
+                    {% if arrangement.getInnslagTyper().harViseFrem() and arrangement.getInnslagTyper().harJobbeMed() %}
                         <p class="small bold mb-1 mt-4">{{ 'kategori.vise_frem'|trans({},'base') }}</p>
                     {% endif %}
                     {% for type in arrangement.getInnslagTyper() if type.harTitler() %}
@@ -25,8 +25,10 @@
                     {% endfor %}
 
                     {# JOBBE MED NOE #}
-                    {% if arrangement.getInnslagTyper().harJobbeMed() %}
-                        <p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
+                    {% if arrangement.getInnslagTyper().harJobbeMed()%}
+                        {% if arrangement.getInnslagTyper().harViseFrem() %}
+                            <p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
+                        {% endif %}
                         {% for type in arrangement.getInnslagTyper() if type.erJobbeMed() %}
                             {% include "UKMDeltaBundle:Innslag:typeList.html.twig" %}
                         {% endfor %}

@@ -25,7 +25,7 @@
 
 					<div class="form-group">
 						<label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
-						<p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans }}</p>
+						<p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans({},'base') }}</p>
 						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ innslag.getBeskrivelse() }}</textarea>			
 					</div>
 					

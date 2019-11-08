@@ -51,7 +51,6 @@ overviewAction:
                 Her vil vi vite mer om de som har laget filmen.
                 Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
                 De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks musikkvideo, action, animasjon...

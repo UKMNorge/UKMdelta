@@ -97,6 +97,19 @@ class InnslagController extends Controller
             throw new Exception('Påmeldingsfristen er ute!');
         }
 
+        if( $arrangement->getInnslagTyper()->getAntall() == 1 ) {
+
+            $tillatt_type = $arrangement->getInnslagTyper()->getAll()[0];
+
+            return $this->redirectToRoute(
+                'ukm_delta_ukmid_pamelding_'. $tillatt_type->getKey() .'_hvem',
+                [
+                    'k_id' => $k_id,
+                    'pl_id' => $pl_id
+                ]
+            );
+        }
+
         $view_data = [
             'arrangement' => $arrangement,
             'kommune' => $this->hentKommune($k_id),
@@ -320,12 +333,11 @@ class InnslagController extends Controller
 
             $innslag->setNavn($person->getNavn());
 
-
             if( $innslag->getType()->harFunksjoner() ) {
                 $funksjoner = [];
-                $mulige = $innslag->getType()->getFunksjoner();
+                #$mulige = $innslag->getType()->getFunksjoner();
                 foreach($request->request->get('funksjoner') as $element) {
-                    $funksjoner[$element] = $mulige[$element];
+                    $funksjoner[$element] = $innslag->getType()->getTekst( $element );// = $mulige[$element];
                 }
                 $person->setRolle( $funksjoner );
             }
@@ -675,7 +687,8 @@ class InnslagController extends Controller
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
-            'type' => $type,
+            'type' => Typer::getByKey($type),
+            'type_key' => $type,
             'b_id' => $b_id,
             'translationDomain' => $type,
             'innslag' => $innslag,
@@ -710,7 +723,7 @@ class InnslagController extends Controller
             case 'matkultur':
                 return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
             default:
-                return $this->render('UKMDeltaBundle:Annet:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:skjema.html.twig', $view_data);
         }
     }
 
