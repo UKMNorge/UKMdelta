@@ -11,7 +11,7 @@
                 <p>
                     UKM
                     {{ arrangement.getNavn() }}
-                    {{ 'attendingAction.monstringstarter'|trans({ '%dato%': arrangement.getFrist( innslag.getType().getFrist() )|dato('l d.F \\k\\l. H:i')}) }}
+                    {{ 'attendingAction.monstringstarter'|trans({ '%dato%': arrangement.getStart()|dato('l d.F \\k\\l. H:i')}) }}
                 </p>
             </div>
 
