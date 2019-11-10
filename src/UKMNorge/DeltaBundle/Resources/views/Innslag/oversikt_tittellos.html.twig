@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="list-group">
-                            {% for id in type.getFunksjoner() %}
+                            {% for id, navn in type.getFunksjoner() %}
                                 <label class="list-group-item click" for="funksjon_{{ id }}">
                                     <input type="checkbox" name="funksjoner[]" value="{{ id }}" {{ id in innslag.getPersoner().getSingle().getRolleObject() ? 'checked="checked"' }} id="funksjon_{{ id }}"/>
                                     &nbsp;

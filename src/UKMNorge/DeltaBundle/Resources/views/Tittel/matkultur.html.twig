@@ -1,0 +1,19 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/tittel.js' %}
+    	<script src="{{ asset_url }}"></script> 
+	{% endjavascripts %}
+{% endblock %}
+	
+{% block form_body %}
+	{{ parent() }}
+	<div class="form-group">
+
+	</div>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

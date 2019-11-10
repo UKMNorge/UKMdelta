@@ -61,13 +61,14 @@ tittel:
         minutter: minutter
     rediger: rediger
     lagre: Lagre
+    slett: Fjern %entall
     info_mangler: Info mangler
     tekst:
         label: Har %bestemt tekst, eller er det en instrumental?
         tekst: Tekst
         instrumental: Instrumental
     selvlaget:
-        label: Har du/dere laget %bestemt selv?    
+        label: Har du/dere laget %bestemt selv?  
 
 
 whoAction:

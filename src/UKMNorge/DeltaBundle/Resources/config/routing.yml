@@ -1,6 +1,3 @@
-extra:
-    resource: 'routing_musikk.yml'
-
 # FORSIDE
 ukm_delta_homepage:
     path:     /
@@ -85,6 +82,25 @@ ukm_delta_ukmid_support:
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
+
+### GENERISK ROUTING FOR INNSLAGSTYPER I V2 =D 
+ukm_delta_ukmid_pamelding_v2_hvem:
+  path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/hvem
+  defaults: { _controller: UKMDeltaBundle:Innslag:who }
+  requirements:
+    k_id:  ([0-9]{1,4})
+    pl_id: ([0-9]{1,4})
+    type:  (.*)
+
+ukm_delta_ukmid_pamelding_v2_opprett:
+  path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/opprett/{hvem}
+  defaults: { _controller: UKMDeltaBundle:Innslag:create }
+  requirements:
+    k_id:  ([0-9]{1,4})
+    pl_id: ([0-9]{1,4})
+    type:  (.*)
+    hvem:  (.*)
+
 
 ukm_delta_ukmid_meld_av:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/fjern/
@@ -246,151 +262,6 @@ ukm_delta_ukmid_pamelding_innslag_lagre_ny_tittel:
               b_id: ([0-9]{1,11})
     methods:  [POST]
 
-### DANS
-ukm_delta_ukmid_pamelding_dans_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/
-    defaults: { _controller: UKMDeltaBundle:Dans:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_dans_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/dans/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Dans:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### TEATER
-ukm_delta_ukmid_pamelding_teater_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/
-    defaults: { _controller: UKMDeltaBundle:Teater:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_teater_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/teater/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Teater:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-# ukmid_delta_ukmid_pamelding_lagre_innslag:
-#     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/lagre/
-#     defaults: { _controller: UKMDeltaBundle:Innslag:saveOverview }
-#     requirements:
-#               k_id: ([0-9]{1,4})
-#               pl_id: ([0-9]{1,5})
-#               type: ([a-z]+)
-#               b_id: ([0-9]{1,11})
-
-
-### FILM
-ukm_delta_ukmid_pamelding_video_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/film/
-    defaults: { _controller: UKMDeltaBundle:Film:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_video_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/film/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Film:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### UTSTILLING
-ukm_delta_ukmid_pamelding_utstilling_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/
-    defaults: { _controller: UKMDeltaBundle:Utstilling:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_utstilling_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/utstilling/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Utstilling:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### LITTERATUR
-ukm_delta_ukmid_pamelding_litteratur_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/
-    defaults: { _controller: UKMDeltaBundle:Litteratur:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_litteratur_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/litteratur/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Litteratur:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### ANNET
-ukm_delta_ukmid_pamelding_scene_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/
-    defaults: { _controller: UKMDeltaBundle:Annet:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_scene_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/annet/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Annet:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### MATKULTUR
-ukm_delta_ukmid_pamelding_matkultur_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/
-    defaults: { _controller: UKMDeltaBundle:Matkultur:who }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-ukm_delta_ukmid_pamelding_matkultur_opprett:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/matkultur/opprett/{hvem}/
-    defaults: { _controller: UKMDeltaBundle:Matkultur:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              hvem: ([a-z]+)
-
-### KONFERANSIER
-ukm_delta_ukmid_pamelding_konferansier_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/konferansier/
-    defaults: { _controller: UKMDeltaBundle:Konferansier:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-
-### UKM MEDIA
-ukm_delta_ukmid_pamelding_nettredaksjon_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/nettredaksjon/
-    defaults: { _controller: UKMDeltaBundle:Nettredaksjon:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              
-### ARRANGØR
-ukm_delta_ukmid_pamelding_arrangor_hvem:
-    path:     /ukmid/pamelding/{k_id}-{pl_id}/arrangor/
-    defaults: { _controller: UKMDeltaBundle:Arrangor:create }
-    requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
               
 #### KAMPANJER
 ## LOS BANDO 2017

@@ -128,14 +128,14 @@ class InnslagController extends Controller
      * @param [type] $translationDomain
      * @return void
      */
-    public function whoAction(Int $k_id, Int $pl_id, String $type, $translationDomain)
+    public function whoAction(Int $k_id, Int $pl_id, String $type, $translationDomain = 'annet')
     {
         $view_data = [
-            'translationDomain' => ($translationDomain == 'annet' ? 'scene' : $translationDomain),
+            'translationDomain' => ($type == 'annet' ? 'scene' : $type),
             'arrangement' => $this->hentArrangement($pl_id),
             'kommune' => $this->hentKommune($k_id),
             'user' => $this->hentCurrentUser(),
-            'type' => Typer::getByName($type)
+            'type' => Typer::getByKey($type)
         ];
         return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data);
     }
@@ -269,7 +269,7 @@ class InnslagController extends Controller
 
         // Sjekk tilgang og rett bandtype
         $innslagService->sjekk($innslag);
-        $innslagService->sjekkBandtype($innslag, $type); // Vil printe RedirectResponse og kaste Exception
+        #$innslagService->sjekkBandtype($innslag, $type); // Vil printe RedirectResponse og kaste Exception
 
         $view_data = [
             'k_id' => $k_id,

@@ -47,7 +47,7 @@
 					{% if tittel is defined %}
 						<p>
 							<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_slett_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type_key, 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-block btn-danger btn-sm">
-								{{ 'tittel.slett'|trans({},'base') }}
+								{{ 'tittel.slett'|trans({'%entall' : type.getTekst('titler.entall')},'base') }}
 							</a>
 						</p>
 					{% endif %}

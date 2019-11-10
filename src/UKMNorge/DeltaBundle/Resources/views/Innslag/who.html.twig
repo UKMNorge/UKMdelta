@@ -9,19 +9,19 @@
                 <h2 class="mt-0">{{ 'whoAction.sporsmal'|trans }}</h2>
 
                 <p class="my-4">
-                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'alene' }) }}" class="btn btn-outline-primary btn-block">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_v2_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), type: type.getKey(), hvem: 'alene' }) }}" class="btn btn-outline-primary btn-block">
                         {{ 'whoAction.alene'|trans }}
                     </a>
                 </p>
 
                 <p class="my-4">
-                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'sammen' }) }}" class="btn btn-outline-primary btn-block">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_v2_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), type: type.getKey(), hvem: 'sammen' }) }}" class="btn btn-outline-primary btn-block">
                         {{ 'whoAction.sammen'|trans }}
                     </a>
                 </p>
 
                 <p class="my-4">
-                    <a href="{{ path('ukm_delta_ukmid_pamelding_'~ type.getKey() ~'_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
+                    <a href="{{ path('ukm_delta_ukmid_pamelding_v2_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), type: type.getKey(), hvem: 'kontakt' }) }}" class="btn btn-outline-primary btn-block">
                         {{ 'whoAction.kontakt'|trans({}, 'base') }}
                     </a>
                 </p>
