@@ -140,7 +140,6 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data);
     }
 
-
     /**
      * Oppretter innslaget, og legger til kontaktperson hvis dette skal gjøres
      * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/opprett/$hvem/>
@@ -482,7 +481,12 @@ class InnslagController extends Controller
         // Sett alder
         $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
 
-        $innslagService->leggTilPerson( $innslag, $person );
+        try {
+            $innslagService->leggTilPerson( $innslag, $person );            
+            $this->addFlash("success", "La til ".$person->getNavn());
+        } catch (Exception $e) {
+            $this->addFlash("danger", "Klarte ikke å legge til ".$person->getNavn()." i innslaget!");
+        }
 
         $view_data = [
             'k_id' => $k_id,
@@ -560,7 +564,12 @@ class InnslagController extends Controller
         $person->setRolle($request->request->get('instrument'));
 
         // Lagre
-        $this->get('ukm_api.person')->lagre($person, $innslag->getId());
+        try {
+            $this->get('ukm_api.person')->lagre($person, $innslag->getId());
+            $this->addFlash("success", "Lagret endringer");
+        } catch (Exception $e) {
+            $this->addFlash("danger", "Klarte ikke å lagre endringer på ".$person->getNavn()."!");
+        }
 
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
@@ -586,8 +595,13 @@ class InnslagController extends Controller
             'p_id' => $p_id
         ];
 
-        $this->get('ukm_api.innslag')->fjernPerson($b_id, $p_id);
-
+        try {
+            $this->get('ukm_api.innslag')->fjernPerson($b_id, $p_id);    
+            $this->addFlash("success", "Lagret endringer");
+        } catch (Exception $e) {
+            $this->addFlash("danger", "Klarte ikke å lagre endringer");
+        }
+        
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $route_data);
     }
 
@@ -636,9 +650,14 @@ class InnslagController extends Controller
         $request = Request::createFromGlobals();
         $innslagService = $this->get('ukm_api.innslag');
 
-        $innslag = $innslagService->hent($b_id);
-        $innslag->setTekniskeBehov($request->request->get('teknisk'));
-        $innslagService->lagre($innslag);
+        try {
+            $innslag = $innslagService->hent($b_id);
+            $innslag->setTekniskeBehov($request->request->get('teknisk'));
+            $innslagService->lagre($innslag);    
+            $this->addFlash("success", "Lagret tekniske behov");
+        } catch ( Exception $e ) {
+            $this->addFlash("danger", "Klarte ikke å lagre tekniske behov");
+        }
 
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $route_data);
     }
@@ -816,13 +835,17 @@ class InnslagController extends Controller
                 $tittel->setVarighet($request->request->get('lengde'));
                 break;
             default:
-                throw new Exception(
-                    'Beklager, prøvde å lagre en ukjent tittel-type'
-                );
+                $this->addFlash("danger", "Beklager, prøvde å lagre en ukjent tittel-type");
+                return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
         }
 
-        $innslagService->lagreTitler($innslag, $tittel);
-        // Lagre tittel
+        try {
+            $innslagService->lagreTitler($innslag, $tittel);
+            $this->addFlash("success", "Lagret tittel-endringer!");
+        } catch ( Exception $e ) {
+            $this->addFlash("danger", "Klarte ikke å lagre tittel!");
+        }
+        
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
 
@@ -853,7 +876,13 @@ class InnslagController extends Controller
         $tittel = $innslag->getTitler()->get($t_id);
 
         // Fjern tittelen
-        $innslagService->fjernTittel($innslag, $tittel);
+        try {
+            $innslagService->fjernTittel($innslag, $tittel);    
+            $this->addFlash("success", "Fjernet tittel!");
+        } catch ( Exception $e ) {
+            $this->get('logger')->error("Klarte ikke å fjerne tittel ".$t_id." fra innslag ".$b_id.". Feilmelding: ".$e->getCode()." - ".$e->getMessage());
+            $this->addFlash("danger", "Klarte ikke å fjerne tittel");
+        }        
 
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
     }
