@@ -349,12 +349,11 @@ class InnslagController extends Controller
 
         // Innslaget har titler
         $innslag->setNavn($request->request->get('navn'));
-        if (in_array($type, ['musikk', 'litteratur', 'film', 'video', 'annet', 'scene', 'dans', 'teater'])) {
+        if( $innslag->getType()->harSjanger() ) {
             $innslag->setSjanger($request->request->get('sjanger'));
         }
 
         $innslagService->lagre($innslag);
-
 
         // Hvis path er satt og ikke tom, så skal vi til et nytt sted (rediger person, for eksempel)
         if (!empty($request->request->get('path'))) {
