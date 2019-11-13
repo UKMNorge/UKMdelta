@@ -3,7 +3,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts '@UKMDeltaBundle/Resources/public/js/tittel.js' %}
+	{% javascripts '@UKMDeltaBundle/Resources/public/js/tittel.js' output="js/tittel.js" %}
 		<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
 {% endblock %}
