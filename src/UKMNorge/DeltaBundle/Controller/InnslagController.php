@@ -329,7 +329,7 @@ class InnslagController extends Controller
         }
 
         // Hvis innslaget ikke har titler
-        if ($innslag->getType()->erJobbeMed()) {
+        if ($innslag->getType()->erEnkeltperson()) {
             $person = $innslag->getPersoner()->getSingle();
 
             $innslag->setNavn($person->getNavn());
