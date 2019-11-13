@@ -324,7 +324,9 @@ class InnslagController extends Controller
         // Hent inn innslaget
         $innslag = $innslagService->hent($b_id);
 
-        $innslag->setBeskrivelse($request->request->get('beskrivelse'));
+        if( $innslag->getType()->harBeskrivelse() ) {
+            $innslag->setBeskrivelse($request->request->get('beskrivelse'));
+        }
 
         // Hvis innslaget ikke har titler
         if ($innslag->getType()->erJobbeMed()) {

@@ -32,12 +32,14 @@
 						<label>{{ type.getTekst('artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.navn') }}</label>
 						<input type="text" required name="navn" class="form-control" placeholder="{{ type.getTekst('artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder', {'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ innslag.getNavn() != 'Innslag uten navn' ? innslag.getNavn() : ''  }}" /> 
 					</div>
-
-					<div class="form-group">
-						<label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
-						<p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans({},'base') }}</p>
-						<textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ innslag.getBeskrivelse() }}</textarea>			
-					</div>
+                    
+                    {% if type.harBeskrivelse() %}
+                        <div class="form-group">
+                            <label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
+                            <p class="help">{{ ('overviewAction.beskrivelse.hvor')|trans({},'base') }}</p>
+                            <textarea name="beskrivelse" rows="3" class="form-control" placeholder="{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}">{{ innslag.getBeskrivelse() }}</textarea>			
+                        </div>
+                    {% endif %}
 					
 					{# SJANGER #}
 					{# Kun printe denne om kategori er musikk, film, annet? #}
