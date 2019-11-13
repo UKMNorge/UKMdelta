@@ -33,6 +33,7 @@
 						<input type="text" required name="navn" class="form-control" placeholder="{{ type.getTekst('artistnavn.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.placeholder', {'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}" value="{{ innslag.getNavn() != 'Innslag uten navn' ? innslag.getNavn() : ''  }}" /> 
 					</div>
                     
+                    {# BESKRIVELSE #}
                     {% if type.harBeskrivelse() %}
                         <div class="form-group">
                             <label>{{ ('overviewAction.beskrivelse.' ~ ( hvem is defined ? hvem : 'kontakt' ) ~ '.label')|trans({'%fornavn': user.getFirstName(), '%etternavn': user.getLastName() }) }}</label>
@@ -42,7 +43,6 @@
                     {% endif %}
 					
 					{# SJANGER #}
-					{# Kun printe denne om kategori er musikk, film, annet? #}
 					{% if type.harSjanger() %}
 						<div class="form-group">
 							<label>{{ type.getTekst('sjanger.navn')|capitalize }}</label>
@@ -56,8 +56,11 @@
 					</div>
 					
                     {# TITLER #}
-					<div class="my-3">
-						{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
+                    <div class="my-3">
+                    	{% if type.harTitler() %}
+					
+							{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
+						{% endif %}
 					</div>
 
                     {# TEKNISKE BEHOV #}
