@@ -283,9 +283,9 @@ class InnslagController extends Controller
             'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id)
         ];
 
-        // Innslag uten titler har enklere skjema
-        if (!$type->harTitler()) {
-            return $this->render('UKMDeltaBundle:Innslag:oversikt_tittellos.html.twig', $view_data);
+        // Enkeltperson-påmeldinger har enklere skjema
+        if ($type->erEnkeltperson()) {
+            return $this->render('UKMDeltaBundle:Innslag:oversikt_enkeltperson.html.twig', $view_data);
         }
 
         // Hvis hvem-variabelen blir sendt med.
@@ -487,6 +487,7 @@ class InnslagController extends Controller
             $this->addFlash("success", "La til ".$person->getNavn());
         } catch (Exception $e) {
             $this->addFlash("danger", "Klarte ikke å legge til ".$person->getNavn()." i innslaget!");
+            $this->get('logger')->error("Klarte ikke å legge til ".$person->getNavn() ." i innslag ".$innslag->getNavn().". Feil: ".$e->getMessage());
         }
 
         $view_data = [
