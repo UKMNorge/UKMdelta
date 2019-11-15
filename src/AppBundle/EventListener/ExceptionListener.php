@@ -77,7 +77,6 @@ class ExceptionListener {
         	case 0:
         		// Egne exceptions uten statuskode dukker opp her!
         		$view_data = $this->deltaException($event);
-                $this->notifySupport($event->getException());
         		break;
         	case 404:
         		// Not found Exception
@@ -155,6 +154,8 @@ class ExceptionListener {
         else {
             $this->container->get('logger')->error("ExceptionListener: Totalt ukjent. File: ".$_SERVER['REQUEST_URI']);
 
+            $this->notifySupport($event->getException());
+            
             $key = 'feil.ukjentfeil.';
             $view_data['ledetekst'] = $key.'topptekst';
         
