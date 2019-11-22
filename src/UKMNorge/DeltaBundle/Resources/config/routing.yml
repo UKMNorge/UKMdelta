@@ -90,7 +90,7 @@ ukm_delta_ukmid_pamelding_v2_opprett:
   requirements:
     k_id:  ([0-9]{1,4})
     pl_id: ([0-9]{1,4})
-    type:  (.*)
+    type:  ([a-z]+)
 
 
 ukm_delta_ukmid_meld_av:
