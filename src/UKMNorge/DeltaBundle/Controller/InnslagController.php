@@ -755,7 +755,7 @@ class InnslagController extends Controller
             case 'utstilling':
                 return $this->render('UKMDeltaBundle:Tittel:utstilling.html.twig', $view_data);
             case 'matkultur':
-                return $this->render('UKMDeltaBundle:Matkultur:tittel.html.twig', $view_data);
+                return $this->render('UKMDeltaBundle:Tittel:matkultur.html.twig', $view_data);
             default:
                 return $this->render('UKMDeltaBundle:Tittel:skjema.html.twig', $view_data);
         }
