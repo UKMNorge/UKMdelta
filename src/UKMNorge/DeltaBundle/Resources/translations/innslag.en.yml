@@ -78,8 +78,8 @@ attendingAction:
         placeholder: Her får lokalkontakten fylle ut informasjon
     visprogram: Vis program
     vispameldte: Vis påmeldte
-    viskontakt: Vis kontaktpersoner
-    rediger: Rediger innslaget
+    viskontakt: Trenger du hjelp? Se kontaktpersoner
+    rediger: Rediger %innslaget
     flertekst: Det er lov å delta med flere ting.
     meldtekst: Meld deg på fra Din side.
     videreknapp: Gå til Din side

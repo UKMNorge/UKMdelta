@@ -30,7 +30,7 @@
 
             <div class="col-12">
                 <a class="btn btn-block btn-outline-primary my-3" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-                    {{ 'attendingAction.rediger'|trans }}
+                    {{ 'attendingAction.rediger'|trans({'%innslaget': innslag.getNavn()|length < 20 ? innslag.getNavn() : 'innslaget'}) }}
                 </a>
 
                 <a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
