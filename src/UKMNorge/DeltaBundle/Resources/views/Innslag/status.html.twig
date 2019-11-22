@@ -103,17 +103,14 @@
                     </a>
                 </p>
 
+                <p>
+                    {{ 'statusAction.undertekst'|trans({},'base') }}
+                    {{ 'statusAction.obstekst'|trans({ '%dato%': arrangement.getFrist( innslag.getType().getFrist() )|dato('l d.F \\k\\l. H:i')}, 'base') }}
+                </p>
                 <p class="mb-3">
                     <a class="btn btn-block btn-default btn-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">
                         {{ 'statusAction.videreknapp'|trans({},'base') }}
                     </a>
-                </p>
-
-                <p>
-                    {{ 'statusAction.undertekst'|trans({},'base') }}
-                </p>
-                <p class="text-danger">
-                    {{ 'statusAction.obstekst'|trans({ '%dato%': arrangement.getFrist( innslag.getType().getFrist() )|dato('l d.F \\k\\l. H:i')}, 'base') }}
                 </p>
             </div>
         </div>
