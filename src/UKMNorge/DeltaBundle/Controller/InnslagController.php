@@ -176,39 +176,39 @@ class InnslagController extends Controller
             $lagrePerson = false;
         }
 
+        $innslag = false;
         // Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
         // i denne _tittelløse_ kategorien, gå til redigering
         if ($type->erEnkeltPerson()) {
             try {
                 $innslag = $innslagService->hentEnkeltPersonInnslag($type, $arrangement, $person);
-                $route_data['b_id'] = $innslag->getId();
-                return $this->redirectToRoute(
-                    'ukm_delta_ukmid_pamelding_innslag_oversikt',
-                    $route_data
-                );
             } catch (Exception $e) {
                 // Hvis personen ikke er påmeldt fra før, opprett en ved å fortsette.
                 // Ignorerer derfor Exception $e
             }
         }
 
-        // Opprett et nytt innslag
-        $innslag = $innslagService->opprett(
-            $kommune,
-            $arrangement,
-            $type,
-            $person
-        );
+        // Opprett nytt innslag hvis vi ikke nettopp fant det
+        if(!$innslag) {
+            $innslag = $innslagService->opprett(
+                $kommune,
+                $arrangement,
+                $type,
+                $person
+            );
+        }
 
+        // Lagre endringer på personobjektet
         if( $lagrePerson ) {
             $personService->lagre($person, $innslag->getId());
         }
+
         // Flytt personvern-tilbakemelding (nå lagret på delta user-objektet) over på person-objektet
         $personService->oppdaterPersonvern($innslag);
 
         $route_data['b_id'] = $innslag->getId();
 
-        // Enkeltpersoner kan potensielt ikke ha flere steg. 
+        // Enkeltpersoner kan potensielt være ferdig påmeldt nå.
         // Ved å trigge lagre, trigges også evalueringen av mangler.
         if( $type->erEnkeltPerson() ) {
             $innslagService->lagre($innslag);
