@@ -57,6 +57,13 @@ $(document).on('submit', 'form', function(){
     return true;
 });
 
-jQuery(document).ready(function(){
-	jQuery('textarea').autogrow();
+jQuery(document).ready(function() {
+    jQuery('textarea').autogrow();
+});
+
+$(document).on('touchend click', '.clickLinkWithin', function(e) {
+    var link = $(e.target).find('a.linkWithin');
+    if (link) {
+        window.location.href = link.attr('href');
+    }
 });
