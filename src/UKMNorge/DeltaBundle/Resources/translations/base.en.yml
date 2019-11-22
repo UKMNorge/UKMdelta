@@ -101,7 +101,7 @@ overviewAction:
       hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     titler:
         endre: legg til / endre
-        ingen: Du må legge til minst %pronomen %entall. Ingen %flertall er lagt til
+        ingen: Du må legge til minst %pronomen %entall.
         lukk_listen: lukk listen
         legg_til: Legg til ny %entall
     tittel:
