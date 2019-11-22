@@ -267,7 +267,15 @@ class RegistrationController extends BaseController
 			to("support@ukm.no")->
 			setFrom('delta@'.UKM_HOSTNAME, 'UKMdelta')->
 			subject('Manuell validering for '.$phone)->
-			message('Deltaker med mobilnummer '.$phone.' har prøvd å registrere seg, men fikk ikke SMS med godkjenningskode og trykte derfor på "Ikke fått SMS"-knappen. Dersom alt er OK vil du få flere e-poster merket med det samme nummeret innen kort tid. Kode som skal sendes inn er satt til '.$user->getId().'. Steg 1 av 3.');
+			message(
+                'Deltaker med mobilnummer '.$phone.' har prøvd å registrere seg, men fikk ikke SMS med godkjenningskode. '.
+                'Deltakeren trykte deretter på "Ikke fått SMS"-knappen. '. "\r\n\r\n".
+                'Dersom alt er OK vil du få flere e-poster merket med det samme nummeret innen kort tid. '. "\r\n\r\n".
+                'For at det skal skje mer med denne saken, må deltakeren sende UKM V '. $user->getId() .' til 1963 fra '. $phone .'. '.
+                'Hvis dette ikke skjer, kommer det heller ikke flere e-poster.'. "\r\n".
+                'Det er lov å anta at dette problemet løser seg av seg selv, og kan autolukkes i support-systemet.'.
+                'Steg 1 av 3.'
+            );
 		if('ukm.dev' == UKM_HOSTNAME) {
 			$this->get('logger')->notice("UKMdelta: Not sending email in dev due to timeouts!");
 		} else {
