@@ -47,7 +47,7 @@ class InnslagService
             $kommune,
             $arrangement,
             $type,
-            'Innslag uten navn',
+            $type->erEnkeltPerson() ? $kontakt->getNavn() : 'Innslag uten navn',
             $kontakt
         );
 
