@@ -285,6 +285,19 @@ class InnslagController extends Controller
 
         // Enkeltperson-påmeldinger har enklere skjema
         if ($type->erEnkeltperson()) {
+            // Hvis det er et enkeltperson-innslag, som hverken har
+            // beskrivelse eller funksjoner, så har vi alt da. Tut og kjør, du er påmeldt!
+            if( !$type->harBeskrivelse() && !$type->harFunksjoner() ) {
+                return $this->redirectToRoute(
+                    'ukm_delta_ukmid_pamelding_status',
+                    [
+                        'k_id' => $k_id,
+                        'pl_id' => $pl_id,
+                        'type' => $type->getKey(),
+                        'b_id' => $b_id
+                    ]
+                );
+            }
             return $this->render('UKMDeltaBundle:Innslag:oversikt_enkeltperson.html.twig', $view_data);
         }
 
