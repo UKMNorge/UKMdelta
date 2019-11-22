@@ -1,8 +1,3 @@
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -15,10 +10,6 @@
 #   %tittel substitueres med tittelen
 #   GJELDER
 #     tittel.overskrift.rediger
-whoAction:
-    sporsmal: Fremfører du alene eller med andre?
-    alene: Jeg fremfører alene
-    sammen: Jeg fremfører sammen med andre
 overviewAction:
     beskrivelse:
         alene:
@@ -33,13 +24,6 @@ overviewAction:
                 Eks. Vi kommer fra Hadeland, går sammen på ungdomsskolen, er 15 og 16 år og 
                 skal spille et teaterstykke vi har skrevet selv. 
                 For oss er teater en god måte å gjøre kritikk og humor av samfunnet rundt oss, 
-                samtidig som det er gøy!
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Eks. Gruppa kommer fra Hadeland, går sammen på ungdomsskolen, er 15 og 16 år og
-                skal spille et teaterstykke de har skrevet selv.
-                For de er teater en god måte å gjøre kritikk og humor av samfunnet rundt seg, 
                 samtidig som det er gøy!
 tittel:
     tekst_av:

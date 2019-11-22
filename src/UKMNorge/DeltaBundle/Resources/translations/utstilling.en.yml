@@ -1,8 +1,3 @@
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -15,10 +10,6 @@
 #   %tittel substitueres med tittelen
 #   GJELDER
 #     tittel.overskrift.rediger
-whoAction:
-    sporsmal: Har du laget kunstverket alene eller med andre?
-    alene: Jeg har laget det alene
-    sammen: Jeg har laget det sammen med andre
 overviewAction:
     beskrivelse:
         alene:
@@ -32,13 +23,6 @@ overviewAction:
                 Her vil vi vite mer om dere og hvordan dere har laget kunstverket.
                 Eks. Vi går ikke på samme skole, men har møttes gjennom ungdomsklubben.
                 Her har vi lært å lage små origamifigurer fra kjente filmer. Vi har planer om å leve av å lage origami.
-        kontakt:
-            label: Beskrivelse av kunstner-gruppen
-            placeholder: >
-                Her vil vi vite mer om gruppa / kunstneren og hvordan de har laget kunstverket.
-                Eks. De går ikke på samme skole, men har møttes gjennom ungdomsklubben.
-                Her har de lært å lage små origamifigurer fra kjente filmer. 
-                De har ingen planer om å leve av å lage origami, men synes det er en hyggelig hobby.
 tittel:
     type:
         label: Type og teknikk

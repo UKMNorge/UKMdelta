@@ -102,7 +102,7 @@ class InnslagController extends Controller
             $tillatt_type = $arrangement->getInnslagTyper()->getAll()[0];
 
             return $this->redirectToRoute(
-                'ukm_delta_ukmid_pamelding_'. $tillatt_type->getKey() .'_hvem',
+                'ukm_delta_ukmid_pamelding_'. $tillatt_type->getKey() .'_opprett',
                 [
                     'k_id' => $k_id,
                     'pl_id' => $pl_id
@@ -119,44 +119,20 @@ class InnslagController extends Controller
     }
 
     /**
-     * Lar brukeren velge hvem som meldes på (meg alene, meg med flere, jeg er kun kontaktperson)
-     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type>
-     *
-     * @param Int $k_id
-     * @param Int $pl_id
-     * @param String $type
-     * @param [type] $translationDomain
-     * @return void
-     */
-    public function whoAction(Int $k_id, Int $pl_id, String $type, $translationDomain = 'annet')
-    {
-        $view_data = [
-            'translationDomain' => ($type == 'annet' ? 'scene' : $type),
-            'arrangement' => $this->hentArrangement($pl_id),
-            'kommune' => $this->hentKommune($k_id),
-            'user' => $this->hentCurrentUser(),
-            'type' => Typer::getByKey($type)
-        ];
-        return $this->render('UKMDeltaBundle:Innslag:who.html.twig', $view_data);
-    }
-
-    /**
      * Oppretter innslaget, og legger til kontaktperson hvis dette skal gjøres
-     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/opprett/$hvem/>
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/opprett/>
      * 
      * Videresender til rediger innslag etter oppretting
      * @param Int $k_id
      * @param Int $pl_id
      * @param String $type
-     * @param String $hvem
      */
-    public function createAction(Int $k_id, Int $pl_id, String $type, String $hvem)
+    public function createAction(Int $k_id, Int $pl_id, String $type )
     {
         $route_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
             'type' => $type,
-            'hvem' => $hvem
         ];
 
         // Setup input data
@@ -220,14 +196,8 @@ class InnslagController extends Controller
             $kommune,
             $arrangement,
             $type,
-            $hvem,
             $person
         );
-
-        if ($hvem == 'alene') {
-            $innslag->setNavn($person->getNavn());
-            $innslagService->lagre($innslag);
-        }
 
         if( $lagrePerson ) {
             $personService->lagre($person, $innslag->getId());
@@ -250,7 +220,7 @@ class InnslagController extends Controller
 
     /**
      * Vis informasjon om et innslag (oversiktssiden)
-     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     * _@route: <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/>
      *
      * @param Int $k_id
      * @param Int $pl_id
@@ -301,19 +271,13 @@ class InnslagController extends Controller
             return $this->render('UKMDeltaBundle:Innslag:oversikt_enkeltperson.html.twig', $view_data);
         }
 
-        // Hvis hvem-variabelen blir sendt med.
-        $request = Request::createFromGlobals();
-        if (!empty($request->get('hvem'))) {
-            $view_data['hvem'] = $request->get('hvem');
-        }
-
         return $this->render('UKMDeltaBundle:Innslag:oversikt.html.twig', $view_data);
     }
 
 
     /**
      * Lagrer alle endringer i et innslag
-     * _@route: POST (lagre) <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/?hvem=$hvem>
+     * _@route: POST (lagre) <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/>
      * 
      * @param Int $k_id
      * @param Int $pl_id

@@ -1,8 +1,3 @@
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -15,10 +10,6 @@
 #   %tittel substitueres med tittelen
 #   GJELDER
 #     tittel.overskrift.rediger
-whoAction:
-    sporsmal: Er det kun deg, eller er dere flere?
-    alene: Jeg er alene
-    sammen: Vi er flere
 overviewAction:
     beskrivelse:
         alene:
@@ -29,7 +20,3 @@ overviewAction:
             label: Fortell litt mer om dere og hva dere skal vise frem
             placeholder: >
                 Eks. Vi har vært fans av anime siden ungdomsskolen ca, og lærte oss å sy kostymer sammen. Sammen er vi hele gjengen fra Super Mario på nye eventyr!
-        kontakt:
-            label: Beskrivelse av deltakerne og innslaget
-            placeholder: >
-                Eks. Gjengen har vært fans av anime siden ungdomsskolen, og brukte kunst- og håndverkstimene til å lage kostymer sammen.

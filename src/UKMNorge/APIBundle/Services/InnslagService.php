@@ -36,11 +36,10 @@ class InnslagService
      * @param Kommune $kommune
      * @param Arrangement $arrangement
      * @param Type $type
-     * @param String $hvem
      * @param Person $kontakt
      * @return void
      */
-    public function opprett(Kommune $kommune, Arrangement $arrangement, Type $type, String $hvem, Person $kontakt)
+    public function opprett(Kommune $kommune, Arrangement $arrangement, Type $type, Person $kontakt)
     {
         $this->_setupLogger($arrangement->getId());
         // Opprett innslag
@@ -48,15 +47,13 @@ class InnslagService
             $kommune,
             $arrangement,
             $type,
-            $hvem == 'alene' ? $kontakt->getNavn() : 'Innslag uten navn',
+            'Innslag uten navn',
             $kontakt
         );
 
         // Legg til kontaktpersonen i innslaget
-        if ($hvem != 'kontakt') {
-            $innslag->getPersoner()->leggTil($kontakt);
-            WriteInnslag::savePersoner($innslag);
-        }
+        $innslag->getPersoner()->leggTil($kontakt);
+        WriteInnslag::savePersoner($innslag);
 
         $setValidated = new Update(
             'smartukm_band',

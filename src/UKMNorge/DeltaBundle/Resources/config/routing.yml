@@ -84,22 +84,13 @@ ukm_delta_ukmid_pamelding:
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
 
 ### GENERISK ROUTING FOR INNSLAGSTYPER I V2 =D 
-ukm_delta_ukmid_pamelding_v2_hvem:
-  path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/hvem
-  defaults: { _controller: UKMDeltaBundle:Innslag:who }
-  requirements:
-    k_id:  ([0-9]{1,4})
-    pl_id: ([0-9]{1,4})
-    type:  (.*)
-
 ukm_delta_ukmid_pamelding_v2_opprett:
-  path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/opprett/{hvem}
+  path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/opprett/
   defaults: { _controller: UKMDeltaBundle:Innslag:create }
   requirements:
     k_id:  ([0-9]{1,4})
     pl_id: ([0-9]{1,4})
     type:  (.*)
-    hvem:  (.*)
 
 
 ukm_delta_ukmid_meld_av:

@@ -1,8 +1,3 @@
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -15,10 +10,6 @@
 #   %tittel substitueres med tittelen
 #   GJELDER
 #     tittel.overskrift.rediger
-whoAction:
-    sporsmal: Er du alene eller med andre?
-    alene: Jeg er alene
-    sammen: Vi er en gruppe
 overviewAction:        
     beskrivelse:
         alene:
@@ -30,11 +21,6 @@ overviewAction:
             placeholder: >
                 Eks. Vi går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
                 Vi syntes det var kjempegøy, så vi vil vise fram noen bakverk under årets UKM!
-        kontakt:
-            label: Beskrivelse av person / gruppe
-            placeholder: >
-                Eks. Gjengen går på samme skole, og hadde et bakeprosjekt i Kost og Helse på skolen.
-                De syntes det var kjempegøy, og vil vise fram noen bakverk under årets UKM.
 technicalAction:
     placeholder_teknisk: >
         Eks. Vi skal lage mat, og har derfor bruk for en koketopp med minst 3 plater, 

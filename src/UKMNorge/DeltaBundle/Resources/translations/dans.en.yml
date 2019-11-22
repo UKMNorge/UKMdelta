@@ -1,8 +1,3 @@
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -15,10 +10,6 @@
 #   %tittel substitueres med tittelen
 #   GJELDER
 #     tittel.overskrift.rediger
-whoAction:
-    sporsmal: Danser du alene eller med andre?
-    alene: Jeg danser alene
-    sammen: Jeg danser sammen med andre
 overviewAction:
     beskrivelse:
         alene:
@@ -32,12 +23,6 @@ overviewAction:
                 Her vil vi vite mer om dere som danser.
                 Eks. Vi møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
                 Vi danser som oftest klassisk ballett, men har meldt oss på UKM med popping.
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Her vil vi vite mer om de som danser.
-                Eks. De møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
-                De danser som oftest klassisk ballett, men har meldt seg på UKM med popping.
 tittel:
     koreografi:
         label: Koreografi av
