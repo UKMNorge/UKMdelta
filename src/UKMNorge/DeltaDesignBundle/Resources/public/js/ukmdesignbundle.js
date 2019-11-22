@@ -62,6 +62,9 @@ jQuery(document).ready(function() {
 });
 
 $(document).on('touchend click', '.clickLinkWithin', function(e) {
+    if ($(e.target).is('a') || $(e.target).is('button')) {
+        return true;
+    }
     var link = $(e.target).find('a.linkWithin');
     if (link) {
         window.location.href = link.attr('href');
