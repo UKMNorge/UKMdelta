@@ -9,6 +9,12 @@
     	<script src="{{ asset_url }}"></script> 
 	{% endjavascripts %}
     <script>
+        $(document).on('click', '.clickLinkWithin', function(e) {
+            var link = $(e.target).find('a.linkWithin');
+            if( link ) {
+                window.location.href = link.attr('href');
+            }
+        });
         // Vis kommuner, ingen arrangementer, arrangement-liste, eller send videre til påmelding
         // avhengig av kommunens muligheter. Oh the choices.
         $(document).on('click', 'li.kommune:not(".visArrangementKommuner")', function(e) {

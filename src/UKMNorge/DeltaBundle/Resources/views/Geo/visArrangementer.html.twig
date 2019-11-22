@@ -5,10 +5,10 @@
     </p>
     <ol class="list-group">
         {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
-            <li class="list-group-item click px-2 mx-0 white visArrangementKommuner arrangement" style="background-color: transparent; border-color:#fff;">
+            <li class="list-group-item click px-2 mx-0 white visArrangementKommuner arrangement {{ not arrangement.erFellesmonstring() ? 'clickLinkWithin' }}" style="background-color: transparent; border-color:#fff;">
                 <p class="mb-0 white">
                     {% if not arrangement.erFellesmonstring() %}
-                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="white">
+                        <a href="{{ path('ukm_delta_ukmid_pamelding_hva', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}" class="white linkWithin">
                     {% endif %}
                     <b>{{ arrangement.getNavn() }}</b>
                     <br />
