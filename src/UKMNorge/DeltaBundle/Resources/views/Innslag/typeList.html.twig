@@ -1,8 +1,15 @@
-<li class="list-group-item delta-type clickLinkWithin click py-1">
+<li class="list-group-item delta-type {{ arrangement.erPameldingApen( type.getFrist() ) ? 'clickLinkWithin click' }} py-1">
     <div class="row">
         <div class="col-12 typeText" style="padding-top: .3em;">
-            <a href="{{ path('ukm_delta_ukmid_pamelding_v2_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), type: type.getKey() }) }}" class="linkWithin" id="type_{{ type.getKey() }}">{{ type.getNavn()|raw }}
+            {% if arrangement.erPameldingApen( type.getFrist() ) %}
+                <a href="{{ path('ukm_delta_ukmid_pamelding_v2_opprett', { k_id: kommune.getId(), pl_id: arrangement.getId(), type: type.getKey() }) }}" class="linkWithin" id="type_{{ type.getKey() }}">
+            {% endif %}
+                {{ type.getNavn()|raw }}
+            {% if arrangement.erPameldingApen( type.getFrist() ) %}
             </a>
+            {% else %}
+                <small>- nettpåmeldingen er stengt.</small>
+            {% endif %}
         </div>
     </div>
 </li>
