@@ -34,10 +34,12 @@
 					</div>
 			
                     {# VARIGHET #}
-					<div class="form-group">
-						<label>{{ 'tittel.varighet.label'|trans({},'base') }}</label>
-						{% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
-					</div>
+                    {% if type.harTid() %}
+                        <div class="form-group">
+                            <label>{{ 'tittel.varighet.label'|trans({},'base') }}</label>
+                            {% include "UKMDeltaBundle:Tittel:varighet.html.twig" %}
+                        </div>
+                    {% endif %}
 				{% endblock form_body %}
 				
 				{% block form_footer %}

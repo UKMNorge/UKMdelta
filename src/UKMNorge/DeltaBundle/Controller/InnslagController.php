@@ -796,12 +796,13 @@ class InnslagController extends Controller
 
         // Sett standard-info
         $tittel->setTittel($request->request->get('tittel'));
-        #$tittel->setSesong($seasonService->getActive());
+        if( $innslag->getType()->harTid() ) {
+            $tittel->setVarighet($request->request->get('lengde'));
+        }
 
         switch ($innslag->getType()->getKey()) {
             // Musikk
             case 'musikk':
-                $tittel->setVarighet($request->request->get('lengde'));
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
                 $tittel->setMelodiAv($request->request->get('melodiforfatter'));
 
@@ -814,14 +815,12 @@ class InnslagController extends Controller
                 break;
                 // Teater
             case 'teater':
-                $tittel->setVarighet($request->request->get('lengde'));
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
                 $tittel->setTekstAv($request->request->get('tekstforfatter'));
                 break;
                 // Dans
             case 'dans':
                 $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setVarighet($request->request->get('lengde'));
                 $tittel->setKoreografi($request->request->get('koreografi'));
                 break;
                 // Litteratur
@@ -829,7 +828,6 @@ class InnslagController extends Controller
                 $tittel->setTekstAv($request->request->get('tekstforfatter'));
                 if ($request->request->get('leseopp') == '1') {
                     $tittel->setLesOpp(true);
-                    $tittel->setVarighet($request->request->get('lengde'));
                 } else {
                     $tittel->setLesOpp(false);
                     $tittel->setVarighet(0);
@@ -839,19 +837,6 @@ class InnslagController extends Controller
             case 'utstilling':
                 $tittel->setType($request->request->get('type'));
                 break;
-                // Film
-            case 'film':
-            case 'video':
-                $tittel->setVarighet($request->request->get('lengde'));
-                break;
-                // Annet
-            case 'annet':
-            case 'scene':
-                $tittel->setVarighet($request->request->get('lengde'));
-                break;
-            default:
-                $this->addFlash("danger", "Beklager, prøvde å lagre en ukjent tittel-type");
-                return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
         }
 
         try {
