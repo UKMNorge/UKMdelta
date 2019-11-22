@@ -36,6 +36,8 @@ technicalAction:
 
 attendingAction:
     overskrift: Du er påmeldt!
+    overskrift_men: Men, det mangler noe informasjon.
+    infotekst: "Denne informasjonen mangler:"
     hortom: 
         label: Hvordan hørte du om UKM?
         alt1: 

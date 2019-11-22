@@ -2,42 +2,51 @@
 {% trans_default_domain translationDomain %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="mt-0">
-                    {{ 'attendingAction.overskrift'|trans }}
-                </h1>
-                <p>
-                    UKM
-                    {{ arrangement.getNavn() }}
-                    {{ 'attendingAction.monstringstarter'|trans({ '%dato%': arrangement.getStart()|dato('l d.F \\k\\l. H:i')}) }}
-                </p>
-            </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="mt-0">
+					{{ 'attendingAction.overskrift'|trans }}
+					{% if innslag.getMangler().getAntall() > 0 %}
+						{{ 'attendingAction.overskrift_men'|trans }}
+					{% endif %}
+				</h1>
+				<p>
+					UKM
+					{{ arrangement.getNavn() }}
+					{{ 'attendingAction.monstringstarter'|trans({ '%dato%': arrangement.getStart()|dato('l d.F \\k\\l. H:i')}) }}
+				</p>
+			</div>
 
+			<div class="col-12">
+				{% if innslag.getMangler().getAntall() > 0 %}
+					<label>{{ 'attendingAction.infotekst'|trans }}</label>
+					<br/>
+					{% include "UKMDeltaBundle:Innslag:mangler.html.twig" %}
+                    <p>&nbsp;</p>
+				{% endif %}
+				<a class="btn btn-block btn-outline-primary this-is-js" href="{{ arrangement.getLink() }}/pameldte/" target="_lokalside">
+					{{ 'attendingAction.vispameldte'|trans }}
+				</a>
 
-            <div class="col-12">
-                <a class="btn btn-block btn-outline-primary this-is-js" href="{{ arrangement.getLink() }}/pameldte/" target="_lokalside">
-                    {{ 'attendingAction.vispameldte'|trans }}
-                </a>
+				<a class="btn btn-block btn-outline-primary this-is-js" href="{{ arrangement.getLink() }}/kontaktpersoner/" target="_lokalside">
+					{{ 'attendingAction.viskontakt'|trans }}
+				</a>
+			</div>
 
-                <a class="btn btn-block btn-outline-primary this-is-js" href="{{ arrangement.getLink() }}/kontaktpersoner/" target="_lokalside">
-                    {{ 'attendingAction.viskontakt'|trans }}
-                </a>
-            </div>
+			<p>&nbsp;</p>
 
-            <p>&nbsp;</p>
+			<div
+				class="col-12">
+				{# Hvis det ikke er noe å redigere, ikke vis rediger-knappen #}
+				{% if not ( innslag.getType().erEnkeltperson() and not innslag.getType().harBeskrivelse() and not innslag.getType().harFunksjoner() ) %}
+					<a class="btn btn-block btn-outline-primary my-3" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+						{{ 'attendingAction.rediger'|trans({'%innslaget': innslag.getNavn()|length < 20 ? innslag.getNavn() : 'innslaget'}) }}
+					</a>
+				{% endif %}
 
-            <div class="col-12">
-                {# Hvis det ikke er noe å redigere, ikke vis rediger-knappen #}
-                {% if not ( innslag.getType().erEnkeltperson() and not innslag.getType().harBeskrivelse() and not innslag.getType().harFunksjoner() ) %}
-                    <a class="btn btn-block btn-outline-primary my-3" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-                        {{ 'attendingAction.rediger'|trans({'%innslaget': innslag.getNavn()|length < 20 ? innslag.getNavn() : 'innslaget'}) }}
-                    </a>
-                {% endif %}
-
-                <a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
-            </div>
-        </div>
-    </div>
+				<a class="btn btn-block btn-outline-primary" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'attendingAction.videreknapp'|trans }}</a>
+			</div>
+		</div>
+	</div>
 {% endblock %}
