@@ -200,7 +200,7 @@ class InnslagService
      * @return Innslag
      * @throws Exception found none
      */
-    public function hentPameldingFraTittellos(Type $type, Arrangement $arrangement, Person $person)
+    public function hentEnkeltPersonInnslag(Type $type, Arrangement $arrangement, Person $person)
     {
         $alle_innslag = $this->hentInnslagFraKontaktperson($person->getId());
         foreach ($alle_innslag->getAll() as $innslag) {

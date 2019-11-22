@@ -201,9 +201,9 @@ class InnslagController extends Controller
 
         // Hvis brukeren (kontaktpersonen) allerede er påmeldt på denne mønstringen
         // i denne _tittelløse_ kategorien, gå til redigering
-        if (!$type->harTitler()) {
+        if ($type->erEnkeltPerson()) {
             try {
-                $innslag = $innslagService->hentPameldingFraTittellos($type, $arrangement, $person);
+                $innslag = $innslagService->hentEnkeltPersonInnslag($type, $arrangement, $person);
                 $route_data['b_id'] = $innslag->getId();
                 return $this->redirectToRoute(
                     'ukm_delta_ukmid_pamelding_innslag_oversikt',
