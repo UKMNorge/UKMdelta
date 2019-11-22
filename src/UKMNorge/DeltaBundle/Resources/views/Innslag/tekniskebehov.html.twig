@@ -13,7 +13,7 @@
 		</li>
 		{% if innslag.getTekniskeBehov()|length == 0 %}
 			<li class="list-group-item">
-				<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
+				<a class="btn btn-block btn-sm btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
 					{{ 'overviewAction.tekniske.legg_til'|trans({},'base') }}
 				</a>
 			</li>
