@@ -102,10 +102,11 @@ class InnslagController extends Controller
             $tillatt_type = $arrangement->getInnslagTyper()->getAll()[0];
 
             return $this->redirectToRoute(
-                'ukm_delta_ukmid_pamelding_'. $tillatt_type->getKey() .'_opprett',
+                'ukm_delta_ukmid_pamelding_v2_opprett',
                 [
                     'k_id' => $k_id,
-                    'pl_id' => $pl_id
+                    'pl_id' => $pl_id,
+                    'type' => $tillatt_type->getKey()
                 ]
             );
         }
@@ -207,6 +208,12 @@ class InnslagController extends Controller
 
         $route_data['b_id'] = $innslag->getId();
 
+        // Enkeltpersoner kan potensielt ikke ha flere steg. 
+        // Ved å trigge lagre, trigges også evalueringen av mangler.
+        if( $type->erEnkeltPerson() ) {
+            $innslagService->lagre($innslag);
+        }
+
         return $this->redirectToRoute(
             'ukm_delta_ukmid_pamelding_innslag_oversikt',
             $route_data
@@ -259,7 +266,7 @@ class InnslagController extends Controller
             // beskrivelse eller funksjoner, så har vi alt da. Tut og kjør, du er påmeldt!
             if( !$type->harBeskrivelse() && !$type->harFunksjoner() ) {
                 return $this->redirectToRoute(
-                    'ukm_delta_ukmid_pamelding_status',
+                    'ukm_delta_ukmid_pamelding_'. ($innslag->erPameldt() ? 'pameldt' : 'status'),
                     [
                         'k_id' => $k_id,
                         'pl_id' => $pl_id,
