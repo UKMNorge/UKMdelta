@@ -1,15 +1,3 @@
-whoAction:
-    sporsmal: Danser du alene eller med andre?
-    alene: Jeg danser alene
-    sammen: Jeg danser sammen med andre
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -18,17 +6,11 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
 overviewAction:
-    artistnavn:
-        alene:
-            label: Artistnavn / dansegruppe
-            placeholder: Eks. Danse-%fornavn, %fornavn %etternavn, %etternavn dance crew
-        sammen:
-            label: Dansegruppe / artistnavn / crew
-            placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
-        kontakt:
-            label: Dansegruppe / artistnavn / crew
-            placeholder: Eks. Superdanserne, We Dance, Folkedanserne...
     beskrivelse:
         alene:
             label: Beskrivelse av danser / gruppe
@@ -41,98 +23,13 @@ overviewAction:
                 Her vil vi vite mer om dere som danser.
                 Eks. Vi møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
                 Vi danser som oftest klassisk ballett, men har meldt oss på UKM med popping.
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Her vil vi vite mer om de som danser.
-                Eks. De møttes på ungdomsskolen, og har siden danset sammen tre ganger i uken.
-                De danser som oftest klassisk ballett, men har meldt seg på UKM med popping.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-
-    sjanger:
-        label: Sjanger
-        placeholder: Eks samba, ballett, moderne...
-    titler:
-        overskrift: Koreografi / dans / innslag
-        endre: legg til / endre
-        ingen: Du må legge til minst én koreografi/dans.
-        lukk_listen: lukk listen
-        legg_til: Legg til ny koreografi/dans
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Du må legge til minst én person. Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    tekniske:
-        overskrift: Tekniske behov / utstyrsbehov
-        endre: Endre
-        ingen: Tekniske behov ikke lagt til.
-        legg_til: Legg til tekniske behov
-        
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-person:
-    rolle: 
-        label: Skriv inn hva %person gjør i dansenummeret
-        placeholder: F.eks danser, koreograf osv...
-        help: " "
-        ukjent: Ukjent rolle / funksjon. Trykk her
-    fjern:
-        label: Fjern %person fra %innslag
-
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
 tittel:
-    overskrift:
-        legg_til: Legg til dans
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Dansens tittel / navn
-        placeholder: Eks. Svanesjøen, Love me like you do, Spretten mix osv...
-    varighet:
-        label: Varighet
-        velg_varighet: Velg hvor lenge dansen varer
-    tekst:
-        label: Har låta tekst, eller er det en instrumental?
-        tekst: Tekst
-        instrumental: Instrumental
-    selvlaget:
-        label: Har du/dere laget (koreografert) dansen selv?
     koreografi:
         label: Koreografi av
         placeholder: Hvem har koreografert dansen?
     melodi_av:
         label: Melodi av
         placeholder: Hvem har laget melodien? Eks. Philter, Rihanna osv...
-    info_mangler: Info mangler
-    slett: Slett dansen
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-    
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    artistnavn: Gruppenavn / artistnavn
-    lat: Du må legge til minst én dans
-    ingendeltakere: Du må legge til minst én person
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-    
 technicalAction:
     eksempler: >
         Trenger dere dansematter? Eller en barstol, eller andre rekvisitter? Skal dere ha playback av musikk? Skal noen av dere synge og trenger en mikrofon?

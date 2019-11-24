@@ -17,21 +17,22 @@
                 <h1 class="mt-0">{{ 'typeAction.overskrift'|trans }}</h1>
                 <div>
                     {# VISE FREM #}
-                    {% if arrangement.getInnslagTyper().harJobbemed() %}
+                    {% if arrangement.getInnslagTyper().harViseFrem() and arrangement.getInnslagTyper().harJobbeMed() %}
                         <p class="small bold mb-1 mt-4">{{ 'kategori.vise_frem'|trans({},'base') }}</p>
                     {% endif %}
-                    {% for type in arrangement.getInnslagTyper() if type.harTitler() %}
+                    {% for type in arrangement.getInnslagTyper().getAll() if type.erViseFrem() %}
                         {% include "UKMDeltaBundle:Innslag:typeList.html.twig" %}
                     {% endfor %}
 
                     {# JOBBE MED NOE #}
-                    {% if arrangement.getInnslagTyper().harJobbeMed() %}
-                        <p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
-                        {% for type in arrangement.getInnslagTyper() if type.erJobbeMed() %}
+                    {% if arrangement.getInnslagTyper().harJobbeMed()%}
+                        {% if arrangement.getInnslagTyper().harViseFrem() %}
+                            <p class="small bold mb-1 mt-4">{{ 'kategori.jobbe_med'|trans({},'base') }}</p>
+                        {% endif %}
+                        {% for type in arrangement.getInnslagTyper().getAll() if type.erJobbeMed() %}
                             {% include "UKMDeltaBundle:Innslag:typeList.html.twig" %}
                         {% endfor %}
                     {% endif %}
-
                     <div class="col-12 center mt-4">
                         <a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'avbryt'|trans({}, 'base') }}</a>
                     </div>

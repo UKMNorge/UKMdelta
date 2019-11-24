@@ -20,6 +20,7 @@ person:
     overskrift:
         legg_til: Legg til person
         rediger: Rediger %fornavn
+    fjern: Fjern %person fra %innslag
 
 ja: ja
 nei: nei
@@ -46,22 +47,80 @@ kategori:
     vise_frem: Vise frem noe på UKM
     jobbe_med: Jobbe på UKM
 tittel:
+    overskrift:
+        legg_til: Legg til %entall
+        rediger: Rediger "%tittel"
+    tittel:
+        label: "%bestemts tittel / navn"
     varighet:
+        label: Varighet
+        velg_varighet: Velg hvor lenge %bestemt varer
         sek: sek
         min: min
         sekunder: sekunder
         minutter: minutter
     rediger: rediger
     lagre: Lagre
+    slett: Fjern %entall
     info_mangler: Info mangler
+    tekst:
+        label: Har %bestemt tekst, eller er det en instrumental?
+        tekst: Tekst
+        instrumental: Instrumental
+    selvlaget:
+        label: Har du/dere laget %bestemt selv?  
 
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+# SUBSTITUERING VARIABLER
+# %person substitueres med gjeldende persons fornavn
+# %innslaget substitueres med innslagets navn
+# GJELDER
+# person.fjern.label
+# person.rolle.label
 overviewAction:
     meldav: Meld av innslaget "%name"
     avbryt: avbryt
     beskrivelse_hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    beskrivelse:
+    beskrivelse: 
       hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-
+    titler:
+        endre: legg til / endre
+        ingen: Du må legge til minst %pronomen %entall.
+        lukk_listen: lukk listen
+        legg_til: Legg til ny %entall
+    tittel:
+        info_mangler: Info mangler
+        slett: Slett %entall
+        slettet: '%tittel er nå slettet'
+        lagre: Lagre
+        avbryt: avbryt
+    personer:
+        overskrift: Personer
+        endre: legg til / endre
+        ingen: Du må legge til minst én person. Ingen personer er lagt til
+        lukk_listen: lukk listen
+        legg_til: Legg til person
+    tekniske:
+        overskrift: Tekniske behov / utstyrsbehov
+        endre: Endre tekniske behov
+        ingen: Tekniske behov ikke lagt til.
+        legg_til: Legg til tekniske behov
+    lagre: Lagre
+    person:
+        ar: år
+        rediger: rediger
+        fjern: Fjern %person fra %innslag
 
 statusAction:
     videreknapp: Ok, jeg fyller ut senere
@@ -69,7 +128,14 @@ statusAction:
     obstekst: "OBS: du MÅ fylle ut all informasjon før %dato%!"
     tilbakeknapp: Gå tilbake for å fylle ut det siste
     helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-
+    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
+    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
+    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
+    artistnavn: Artistnavn / Gruppenavn
+    tittel: Du må legge til minst %pronomen %tittel
+    ingendeltakere: Du må legge til minst én person
+    teknisk: Du må oppgi tekniske behov
+    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
     
 removeAction:
     overskrift: Vil du virkelig melde av innslaget "%name%"?

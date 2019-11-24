@@ -1,13 +1,13 @@
 {% trans_default_domain translationDomain %}
-<label>{{ 'overviewAction.titler.overskrift'|trans }}</label>
+<label>{{ type.getTekst('titler.flertall')|capitalize }}</label>
 
 <ul class="list-group">
 	{% for tittel in innslag.getTitler().getAll() %}
 		<li class="list-group-item click triggerLink">
 			<div class="row">
-                {% if innslag.getType().getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
+                {% if type.getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
                     <div class="col-2 px-0"></div>
-				{% elseif innslag.getType().getKey() not in ['utstilling','matkultur'] %}
+				{% elseif type.getKey() not in ['utstilling','matkultur'] %}
 					<div class="col-2 px-0">
 						<div class="overunder">
 							{% if tittel is defined %}
@@ -20,7 +20,7 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ ( innslag.getType().getKey() not in ['utstilling','matkultur'] ) ? '7' : '9' }}">
+				<div class="col-{{ ( type.getKey() not in ['utstilling','matkultur'] ) ? '7' : '9' }}">
 					<p style="line-height:1em">
 						{{ tittel is defined ? tittel.getTittel() }}
 						<br />
@@ -35,7 +35,7 @@
 					</p>
 				</div>
 				<div class="col-3">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-sm btn-outline-primary actionLink autoshrink" id="editT{{ tittel.getId() }}">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type.getKey(), 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-sm btn-outline-primary actionLink autoshrink" id="editT{{ tittel.getId() }}">
 						{{ 'tittel.rediger'|trans({}, 'base') }}
 					</a>
 				</div>
@@ -43,12 +43,12 @@
 		</li>
 	{% else %}
 		<li class="list-group-item">
-			{{ 'overviewAction.titler.ingen'|trans }}
+			{{ 'overviewAction.titler.ingen'|trans({'%entall': type.getTekst('titler.entall'), '%flertall': type.getTekst('titler.flertall'), '%pronomen': type.getTekst('titler.pronomen')}, 'base') }}
 		</li>
 	{% endfor %}
 	<li class="list-group-item">
-		<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}">
-			{{ 'overviewAction.titler.legg_til'|trans }}
+		<a class="btn btn-block btn-sm btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type.getKey(), 'b_id': b_id }) }}">
+			{{ 'overviewAction.titler.legg_til'|trans({'%entall': type.getTekst('titler.entall')}, 'base') }}
 		</a>
 	</li>
 </ul>

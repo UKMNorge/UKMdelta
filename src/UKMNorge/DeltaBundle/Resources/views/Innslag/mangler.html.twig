@@ -1,0 +1,84 @@
+<span class="text-muted">{{ 'statusAction.helper'|trans({},'base')  }}</span>
+<ul
+	class="list-group">
+	{# ALT OM INNSLAGET #}
+	{% if innslag.getMangler().harKategori('innslag') %}
+		{% for mangel in innslag.getMangler().getAllSortert('innslag') %}
+			<li class="list-group-item">
+				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_' ~ (mangel.getId() == 'innslag.tekniske' ? 'teknisk' : 'oversikt'), { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+					{{ ( 'mangler.' ~ mangel.getId() )|trans({}, 'base' ) }}
+				</a>
+			</li>
+		{% endfor %}
+	{% endif %}
+
+	{# ALT OM KONTAKTPERSONEN #}
+	{% if innslag.getMangler().harKategori('kontakt') %}
+		{% for mangel in innslag.getMangler().getAllSortert('kontakt') %}
+			<li class="list-group-item">
+				<a href="{{ path('ukm_delta_ukmid_contact') }}">
+					{{ ( 'mangler.' ~ mangel.getId() )|trans({}, 'base' ) }}
+				</a>
+			</li>
+		{% endfor %}
+	{% endif %}
+
+	{# ALT OM PERSONER #}
+	{% if innslag.getMangler().harKategori('person') %}
+		{% set printed = [] %}
+		{% for mangel in innslag.getMangler().getAllSortert('person') if mangel.getObjektId() not in printed %}
+			{% if mangel.getId() == 'person.ingen' %}
+				<li class="list-group-item">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+						{{ 'mangler.innslag.ingendeltakere'|trans({},'base') }}
+					</a>
+				</li>
+			{% else %}
+				{% set printed = printed|merge([mangel.getObjektId()]) %}
+				<li class="list-group-item">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: mangel.getObjektId() } ) }}">
+						{{ 'mangler.overskrift.person'|trans({'%person': innslag.getPersoner().get( mangel.getObjektId() ).getNavn() }, 'base') }}
+					</a>
+					<ol>
+						{% for hva_mangler in innslag.getMangler().getAllSortert('person') if mangel.getObjektId() == hva_mangler.getObjektId() %}
+							<li>{{ ( 'mangler.' ~ hva_mangler.getId() )|trans({}, 'base' ) }}</li>
+						{% endfor %}
+					</ol>
+				</li>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+	{# ALT OM TITLER #}
+	{% if innslag.getMangler().harKategori('tittel') %}
+		{% set printed = [] %}
+		{% for mangel in innslag.getMangler().getAllSortert('tittel') if mangel.getObjektId() not in printed %}
+			{% if mangel.getId() == 'tittel.ingen' %}
+				<li class="list-group-item">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', { 'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}">
+						{{ 'mangler.tittel.mangler'|trans({}, 'base') }}
+					</a>
+				</li>
+			{% else %}
+				{% set printed = printed|merge([mangel.getObjektId()]) %}
+				<li class="list-group-item">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', { 'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id, 't_id': mangel.getObjektId() }) }}">
+						{{ 'mangler.overskrift.tittel'|trans({'%tittel': innslag.getTitler().get( mangel.getObjektId() ).getTittel()}, 'base') }}
+					</a>
+
+					<ol>
+						{% for hva_mangler in innslag.getMangler().getAllSortert('tittel') if mangel.getObjektId() == hva_mangler.getObjektId() %}
+							<li>{{ ( 'mangler.' ~ hva_mangler.getId() )|trans({}, 'base' ) }}</li>
+						{% endfor %}
+					</ol>
+				</li>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+</ul>
+
+<p class="my-4">
+	<a class="btn btn-block btn-outline-primary btn-success" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+		{{ 'statusAction.tilbakeknapp'|trans({},'base') }}
+	</a>
+</p>

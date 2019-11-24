@@ -1,15 +1,3 @@
-whoAction:
-    sporsmal: Fremfører du alene eller med andre?
-    alene: Jeg fremfører alene
-    sammen: Jeg fremfører sammen med andre
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -18,18 +6,11 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
 overviewAction:
-## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
-    artistnavn:
-        alene:
-            label: Artistnavn
-            placeholder: Eks. Teater-%fornavn, %fornavn %etternavn osv...
-        sammen:
-            label: Gruppe-navn
-            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
-        kontakt:
-            label: Gruppe-navn / artistnavn
-            placeholder: Eks. Teaterteamet, ImprovGjengen, %etternavn-truppen osv...
     beskrivelse:
         alene:
             label: Beskrivelse av artist
@@ -44,95 +25,13 @@ overviewAction:
                 skal spille et teaterstykke vi har skrevet selv. 
                 For oss er teater en god måte å gjøre kritikk og humor av samfunnet rundt oss, 
                 samtidig som det er gøy!
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Eks. Gruppa kommer fra Hadeland, går sammen på ungdomsskolen, er 15 og 16 år og
-                skal spille et teaterstykke de har skrevet selv.
-                For de er teater en god måte å gjøre kritikk og humor av samfunnet rundt seg, 
-                samtidig som det er gøy!
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    sjanger:
-        label: Sjanger
-        placeholder: Eks monolog, revy osv...
-    titler:
-        overskrift: Titler
-        endre: legg til / endre
-        ingen: Ingen titler er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til ny tittel
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    tekniske:
-        overskrift: Tekniske behov / utstyrsbehov
-        endre: Endre
-        ingen: Tekniske behov ikke lagt til.
-        legg_til: Legg til tekniske behov
-
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-#     person.rolle.label
-#     person.rolle.placeholder
-person:
-    rolle: 
-        label: Hva spiller eller gjør %person?
-        placeholder: F.eks hovedperson, Operafantomet, skuespiller osv...
-        help: ""
-        ukjent: Ukjent rolle. Trykk her
-    ar: år
-    rediger: rediger
-    fjern:
-        label: Fjern %person fra %innslag
-
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
 tittel:
-    overskrift:
-        legg_til: Legg til sketsj / stykke
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Navn på sketsj / stykke
-        placeholder: Eks. Karlson på taket, Putti plutti pott osv...
-    varighet:
-        label: Varighet
-        velg_varighet: Velg hvor lenge sketsjen / stykket varer
-    selvlaget:
-        label: Har du/dere laget sketsjen / stykket selv?
     tekst_av:
         label: Hvem har skrevet manus?
         placeholder: (valgfritt felt)
         #help: Hvis det er tekst i teaterstykket, skriver du hvem som har skrevet den her.
-    info_mangler: Info mangler
-    slett: Slett tittel
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-
 technicalAction:
     placeholder_teknisk: Eks. Vi trenger en scene på minst 10x5 meter, 4 trådløse mikrofoner, helst mygger. Playback av musikkeffekter til spesifikke tider. Rigging av scenebakgrunn.
     eksempler: >
         Skal to av dere synge? Trenger dere vokalmikrofoner, eller ønsker dere mygger? Trenger dere en høy stol, lite bord eller lignende?
         Skal dere ha playback av musikk?
-    
-statusAction:
-    obs-topptekst: 'OBS! "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS! "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen

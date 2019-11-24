@@ -1,15 +1,3 @@
-whoAction:
-    sporsmal: Spiller du alene eller med andre?
-    alene: Jeg spiller alene
-    sammen: Jeg spiller sammen med andre
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -18,18 +6,11 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
 overviewAction:
-## ARTISTNAVN / GRUPPE / NAVN PÅ INNSLAG
-    artistnavn:
-        alene:
-            label: Artistnavn / Gruppenavn
-            placeholder: Eks. Superbandet, %fornavn %etternavn, %etternavn-band...
-        sammen:
-            label: Gruppenavn / Artistnavn
-            placeholder: Eks. Superbandet, %fornavn and the others...
-        kontakt:
-            label: Gruppenavn / Artistnavn
-            placeholder: Eks. Superbandet, Musikalske villmenn, Ole og %fornavn...
     beskrivelse:
         alene:
             label: Beskrivelse av deg
@@ -42,102 +23,13 @@ overviewAction:
                 Her vil vi vite mer om dere som opptrer.
                 Eks. Vi er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
                 Vi spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Her vil vi vite mer om dere som opptrer.
-                Eks. De er en gruppe som har spilt sammen i 3 år, etter å ha møtt hverandre på kulturskolens jam-kveld.
-                De spiller psykedelisk progressiv rock, og blander det med blokkfløytesangene søsteren til Johan lærer på skolen.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    sjanger:
-        label: Sjanger
-        placeholder: Eks hardrock, visesang...
-    titler:
-        overskrift: Låter
-        endre: legg til / endre
-        ingen: Du må legge til minst én låt. Ingen låter er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til ny låt
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Du må legge til minst én person. Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    tekniske:
-        overskrift: Tekniske behov / utstyrsbehov
-        endre: Endre tekniske behov
-        ingen: Tekniske behov ikke lagt til.
-        legg_til: Legg til tekniske behov
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-#     person.rolle.label
-person:
-    rolle: 
-        label: Instrument
-        placeholder: F.eks vokal, bass, gitar
-        help: Skriv inn hva %person spiller/gjør
-        ukjent: Ukjent instrument. Trykk her
-    ar: år
-    rediger: rediger
-    fjern:
-        label: Fjern %person fra %innslag
-
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
 tittel:
-    overskrift:
-        legg_til: Legg til låt
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Låtens tittel / navn
-        placeholder: Eks. Skyfall, Utadæsjælåplevelse osv...
-    varighet:
-        label: Varighet
-        velg_varighet: Velg hvor lenge låten varer
-    tekst:
-        label: Har låten tekst, eller er det en instrumental?
-        tekst: Tekst
-        instrumental: Instrumental
     tekst_av:
         label: Hvem har skrevet teksten?
         placeholder: Eks. Razika, Leonard Cohen osv..
     melodi_av:
         label: Hvem har laget melodien?
         placeholder: Eks. Philter, Rihanna osv...
-    selvlaget:
-        label: Har du/dere laget låten selv?
-    
-    info_mangler: Info mangler
-    slett: Slett låten
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-    
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    artistnavn: Artistnavn / Gruppenavn
-    lat: Du må legge til minst én låt
-    ingendeltakere: Du må legge til minst én person
-    teknisk: Du må oppgi tekniske behov
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen
-
-    
 technicalAction:
     eksempler: >
         Skal to av dere synge? Skriv opp to vokalmikrofoner. Vil du helst ha et flygel om det er tilgjengelig, eller et el-piano? Spiller du el-gitar eller akustisk gitar? Og trenger den mikrofon eller forsterker? Ønsker dere noe spesielt av lysdesign?

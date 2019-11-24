@@ -1,26 +1,26 @@
 {% trans_default_domain translationDomain %}
 
 <div class="form-group">
-	<label>{{ 'overviewAction.tekniske.overskrift'|trans }}</label>
+	<label>{{ 'overviewAction.tekniske.overskrift'|trans({},'base') }}</label>
 	
 	<ul class="list-group">
 		<li class="list-group-item">
 			{% if innslag.getTekniskeBehov()|length > 0 %}
 				{{ innslag.getTekniskeBehov() }}
 			{% else %}
-				{{ 'overviewAction.tekniske.ingen'|trans }} 
+				{{ 'overviewAction.tekniske.ingen'|trans({},'base') }} 
 			{% endif %}
 		</li>
 		{% if innslag.getTekniskeBehov()|length == 0 %}
 			<li class="list-group-item">
-				<a class="btn btn-block btn-sm btn-outline-secondary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-					{{ 'overviewAction.tekniske.legg_til'|trans }}
+				<a class="btn btn-block btn-sm btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
+					{{ 'overviewAction.tekniske.legg_til'|trans({},'base') }}
 				</a>
 			</li>
 		{% else %}
 			<li class="list-group-item">
-				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-sm btn-block btn-outline-secondary">
-					{{ 'overviewAction.tekniske.endre'|trans }}
+				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_teknisk', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}" class="btn btn-sm btn-block btn-outline-secondary">
+					{{ 'overviewAction.tekniske.endre'|trans({},'base') }}
 				</a>
 			</li>
 		{% endif %}

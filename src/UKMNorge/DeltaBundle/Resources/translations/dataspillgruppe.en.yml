@@ -1,0 +1,22 @@
+# SUBSTITUERING VARIABLER
+#   %fornavn substitueres med kontaktpersonens fornavn
+#   %etternavn substitueres med kontaktpersonens etternavn
+#   GJELDER
+#     artistnavn.*.label
+#     artistnavn.*.placeholder
+#     beskrivelse.*.label
+#     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
+overviewAction:
+    beskrivelse:
+        alene:
+            label: Fortell oss litt mer om deg selv
+            placeholder: >
+                Eks. Jeg har spilt CS:GO fra jeg begynte på ungdomsskolen.
+        sammen:
+            label: Beskrivelse av laget
+            placeholder: >
+                Eks. Vi startet en clan i fjor høst, og spiller jevnlig forskjellige spill sammen.

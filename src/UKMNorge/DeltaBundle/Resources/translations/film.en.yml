@@ -1,16 +1,3 @@
-#### HVEM SKAL DU MELDE PÅ?
-whoAction:
-    sporsmal: Vil du melde på en film du har laget alene eller sammen med andre?
-    alene: Jeg har laget filmen alene
-    sammen: Vi er flere som har laget filmen sammen
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -28,9 +15,6 @@ overviewAction:
         sammen:
             label: Filmgruppens navn
             placeholder: Eks. Film-gjengen, %fornavn %etternavn, %etternavn Productions...
-        kontakt:
-            label: Filmgruppens navn
-            placeholder: Eks. Film-gjengen, Per, Pål og Espen...
 ## BESKRIVELSE AV INNSLAGET
     beskrivelse:
         alene:
@@ -45,13 +29,6 @@ overviewAction:
                 Her vil vi vite mer om de som har laget filmen.
                 Eks. Vi har gått på samme skole i fire år, men aldri gjort så mye sammen før vi fant ut at vi skulle lage en film.
                 Vi har aldri gjort skjult kamera før, men syns dette var veldig gøy!
-        kontakt:
-            label: Beskrivelse av artist / gruppe
-            placeholder: >
-                Her vil vi vite mer om de som har laget filmen.
-                Eks. Gruppa har gått på samme skole i fire år, men aldri gjort så mye sammen før de fant ut at de skulle lage en film.
-                De har aldri gjort skjult kamera før, men synes dette var veldig gøy!
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
     sjanger:
         label: Sjanger
         placeholder: Eks musikkvideo, action, animasjon...

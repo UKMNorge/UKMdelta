@@ -1,10 +1,3 @@
-whoAction:
-    sporsmal: Deltar du alene eller med andre?
-    alene: Jeg deltar alene
-    sammen: Jeg deltar sammen med andre
-    kontakt: Jeg er bare kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
 geoAction:
     overskrift: Hvor skal du melde deg på?
     topptekst: Velg hvor du vil delta på UKM.
@@ -43,6 +36,8 @@ technicalAction:
 
 attendingAction:
     overskrift: Du er påmeldt!
+    overskrift_men: Men, det mangler noe informasjon.
+    infotekst: "Denne informasjonen mangler:"
     hortom: 
         label: Hvordan hørte du om UKM?
         alt1: 
@@ -78,8 +73,8 @@ attendingAction:
         placeholder: Her får lokalkontakten fylle ut informasjon
     visprogram: Vis program
     vispameldte: Vis påmeldte
-    viskontakt: Vis kontaktpersoner
-    rediger: Rediger innslaget
+    viskontakt: Trenger du hjelp? Se kontaktpersoner
+    rediger: Rediger %innslaget
     flertekst: Det er lov å delta med flere ting.
     meldtekst: Meld deg på fra Din side.
     videreknapp: Gå til Din side

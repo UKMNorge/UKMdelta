@@ -13,7 +13,7 @@ personvernAction:
         ingress: Vi lagrer påmeldingen din, men selger aldri informasjonen videre til andre.
         kort: |
             Offentlig informasjon (navn, hva du har deltatt med osv) lagrer vi på UKM.no og i arkivet, mens alle andre detaljer slettes hvert år.
-            Vi lagrer også mobilnummeret ditt, slik at du senere kan hente ut alt vi har lagret om deg.
+            Vi lagrer også mobilnummeret ditt. Dette gjør vi så du kan hente ut alt vi har lagret om deg, og så vi kan sende deg informasjon knyttet til din deltakelse.
     media:    
         overskrift: Bilder og film
         ingress: UKM er et offentlig arrangement hvor det blir tatt bilder og film.

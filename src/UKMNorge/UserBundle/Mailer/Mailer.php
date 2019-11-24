@@ -47,7 +47,7 @@ class Mailer implements MailerInterface
 
 		$UKMSMS = $this->container->get('ukmsms');
         try {
-	        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#code', $user->getSmsValidationCode(), $text) );
+	        $UKMSMS->sendSMS( $user->getPhone(), 'flashsms:'. str_replace('#code', $user->getSmsValidationCode(), $text) );
 	    } catch( Exception $e ) {
 		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
 	    }

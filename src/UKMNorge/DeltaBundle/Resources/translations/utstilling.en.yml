@@ -1,15 +1,3 @@
-whoAction:
-    sporsmal: Har du laget kunstverket alene eller med andre?
-    alene: Jeg har laget det alene
-    sammen: Jeg har laget det sammen med andre
-    kontakt: Jeg er kun kontaktperson
-    forklaring: Hvis du er forelder / foresatt / lærer og skal melde på noen andre enn deg selv, velger du "Jeg er bare kontaktperson".
-
-#### INNSLAGSSIDEN
-# Tekstene varierer mellom de tre alternativene (alene/sammen/kontakt) ut fra hva kontaktpersonen valgte i whoAction
-# alene: 	Bruker har valgt "jeg har laget filmen alene"
-# sammen: 	Bruker har valgt "Vi er flere som har laget filmen sammen"
-# kontakt:	Bruker har valgt "jeg er kun kontaktperson"
 # SUBSTITUERING VARIABLER
 #   %fornavn substitueres med kontaktpersonens fornavn
 #   %etternavn substitueres med kontaktpersonens etternavn
@@ -18,17 +6,11 @@ whoAction:
 #     artistnavn.*.placeholder
 #     beskrivelse.*.label
 #     beskrivelse.*.placeholder
+# SUBSTITUERING VARIABLER
+#   %tittel substitueres med tittelen
+#   GJELDER
+#     tittel.overskrift.rediger
 overviewAction:
-    artistnavn:
-        alene:
-            label: Navn / kunstner-navn
-            placeholder: Eks. Kunst-%fornavn, %fornavn %etternavn...
-        sammen:
-            label: Kunstnernavn / navn på gruppe
-            placeholder: Eks. Kunstlinja, painting cowboys, %etternavn-gjengen...
-        kontakt:
-            label: Kunstnernavn / navn på gruppe
-            placeholder: Eks. Kunstlinja, painting cowboys, tegneklassen...
     beskrivelse:
         alene:
             label: Beskrivelse av kunstner
@@ -41,89 +23,17 @@ overviewAction:
                 Her vil vi vite mer om dere og hvordan dere har laget kunstverket.
                 Eks. Vi går ikke på samme skole, men har møttes gjennom ungdomsklubben.
                 Her har vi lært å lage små origamifigurer fra kjente filmer. Vi har planer om å leve av å lage origami.
-        kontakt:
-            label: Beskrivelse av kunstner-gruppen
-            placeholder: >
-                Her vil vi vite mer om gruppa / kunstneren og hvordan de har laget kunstverket.
-                Eks. De går ikke på samme skole, men har møttes gjennom ungdomsklubben.
-                Her har de lært å lage små origamifigurer fra kjente filmer. 
-                De har ingen planer om å leve av å lage origami, men synes det er en hyggelig hobby.
-        hvor: Teksten vises på UKM.no, i oversikten over påmeldte.
-    titler:
-        overskrift: Kunstverk / utstillingsobjekter
-        endre: legg til / endre
-        ingen: Du må legge til minst ett kunstverk / utstillingsobjekt.
-        lukk_listen: lukk listen
-        legg_til: Legg til nytt kunstverk
-    personer:
-        overskrift: Personer
-        endre: legg til / endre
-        ingen: Ingen personer er lagt til
-        lukk_listen: lukk listen
-        legg_til: Legg til person
-    lagre: Lagre
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   GJELDER
-#     person.rolle.label
-#     person.rolle.help
-
-# SUBSTITUERING VARIABLER
-#   %person substitueres med gjeldende persons fornavn
-#   %innslaget substitueres med innslagets navn
-#   GJELDER
-#     person.fjern.label
-person:
-    rolle: 
-        label: Skriv inn hvilken rolle %person har, eller hva %person gjør
-        placeholder: F.eks maler, tegner, illustratør, skulptør osv..
-        help: " "
-        ukjent: Ukjent rolle. Trykk her
-    ar: år
-    rediger: rediger
-    fjern:
-        label: Fjern %person fra %innslag
-
-# SUBSTITUERING VARIABLER
-#   %tittel substitueres med tittelen
-#   GJELDER
-#     tittel.overskrift.rediger
 tittel:
-    overskrift:
-        legg_til: Legg til verk / utstillingsobjekt
-        rediger: Rediger "%tittel"
-    tittel:
-        label: Verket / utstillingsobjektets tittel eller navn
-        placeholder: Eks. Elg i Solnedgang, Vakker bru osv...
     type:
         label: Type og teknikk
         placeholder: Eks. portrettfoto, akvarellmaling, acryl osv...
         forklaring: >
             Skriv hva du har laget, sånn at vi kan planlegge utstillingen på best mulig måte.
-            Et fotografi trenger f.eks gjerne en vegg å henges på, mens statuer ofte trenger mer gulvplass.
+        #Et fotografi trenger f.eks gjerne en vegg å henges på, mens statuer ofte trenger mer gulvplass.
     beskrivelse:
         label: Beskrivelse av verket / utstillingsobjektet
         placeholder: >
             Eks. Bildet av elgen ble tatt med 50mm, og den så veldig stor ut på så kort avstand.
             Solen sto i en unik vinkel på grunn av måneformørkelsen og det hele er meget merkelig.
-    info_mangler: Info mangler
-    slett: Slett utstillingsobjekt
-    slettet: '%tittel er nå slettet'
-    lagre: Lagre
-    avbryt: avbryt
-
-    
 technicalAction:
-    overskrift: Tekniske behov
-    ledetekst: Skriv inn dine/deres tekniske behov
-    forklaring: Her lurer vi på ting som... [mer forklaring kommer]
     placeholder_teknisk: Eks. Vi trenger en måte å henge opp maleriene, som har kroker på baksiden.
-    lagreknapp: Lagre og gå til oversikten
-    avbryttekst: avbryt
-    
-statusAction:
-    obs-topptekst: 'OBS: "%innslag" er ikke meldt på UKM enda!'
-    obs-men-ok-topptekst: 'OBS: "%innslag" er meldt på, men det mangler fortsatt noe informasjon.'
-    infotekst: 'Denne informasjonen mangler før det er påmeldt:'
-    helper: Trykk på feilmeldingen nedenfor for å gå rett til feilen

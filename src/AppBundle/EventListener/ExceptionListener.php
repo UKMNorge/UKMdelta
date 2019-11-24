@@ -7,9 +7,11 @@
 # UKM Norge / UKM Media
 #########
 
-#namespace Acme\CoreBundle\Listener;
 namespace AppBundle\EventListener;
 
+use Exception;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -26,6 +28,10 @@ use Symfony\Component\Templating\TemplateNameParser;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+
+require_once("UKMconfig.inc.php");
+require_once("UKM/mail.class.php");
+use UKMmail;
 
 class ExceptionListener {
 	
@@ -80,6 +86,7 @@ class ExceptionListener {
         		// Dette er intern server-feil, men kan også være egne kastede exceptions.
             default:
                 $view_data = $this->unknownErrorException($event);
+                $this->notifySupport($event->getException());
         		break;
         }
         
@@ -147,6 +154,8 @@ class ExceptionListener {
         else {
             $this->container->get('logger')->error("ExceptionListener: Totalt ukjent. File: ".$_SERVER['REQUEST_URI']);
 
+            $this->notifySupport($event->getException());
+            
             $key = 'feil.ukjentfeil.';
             $view_data['ledetekst'] = $key.'topptekst';
         
@@ -201,6 +210,48 @@ class ExceptionListener {
         $view_data['sadface'] = true;
 
         return $view_data;
+    }
+
+    public function notifySupport(Exception $e, $header = null) {
+
+
+        $request = Request::createFromGlobals();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $message = "En ukjent feil har oppstått i Delta!\n\nDebug-informasjon:\n";
+        if($header != null) {
+            $message .= "Feilmelding: ".$header."\n";
+        }
+
+        $message .= "\n<b>Exception:</b> ".$e->getMessage();
+        $message .= "\n<b>Route:</b> ".$request->server->get('REQUEST_URI');
+        if(is_object($user) ) {
+            $message .= "\n<b>User:</b> ".$user->getName(). ', <b>ID:</b> '.$user->getId();    
+        } else {
+            $message .= "\n<b>User:</b> ".$user." - ikke et bruker-objekt! Er brukeren blitt logget ut underveis?";
+        }
+        
+        $message .= "\n<b>Debug backtrace:</b> \n".$e->getTraceAsString();
+
+        if ( $this->container->getParameter("kernel.environment") == 'dev' ) {
+            echo 'Utviklingsmodus, sender ikke e-post til support.<br>';
+            echo nl2br($message);
+        } 
+        else {
+            $this->container->get('logger')->info("UKMdelta: Notifying support of the issue");
+            $mail = new UKMmail();
+            $ok = $mail->setTo('support@ukm.no')
+                ->setFrom('delta@ukm.no', 'UKMdelta')
+                ->setReplyTo('delta@ukm.no', 'UKMdelta')
+                ->subject('Feil oppstått i Delta')
+                ->message($message)
+                ->ok();
+            return true;
+            if(!$ok) {
+                $this->container->get('logger')->error("UKMdelta: Fikk ikke til å sende info til support om Exception!");
+                return false;
+            }
+        }
     }
 }
 ?>

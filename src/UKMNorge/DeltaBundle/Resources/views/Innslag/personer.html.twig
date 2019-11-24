@@ -1,5 +1,5 @@
 {% trans_default_domain translationDomain %}
-<label>{{ 'overviewAction.personer.overskrift'|trans }}</label>
+<label>{{ 'overviewAction.personer.overskrift'|trans({},'base') }}</label>
 
 <ul class="list-group">
 	{% for person in innslag.getPersoner().getAll() %}
@@ -19,20 +19,20 @@
 							{% if person.getRolle() is not empty %}
 								{{ person.getRolle() }}
 							{% else %}
-								<span class="badge badge-danger">{{ 'person.rolle.ukjent'|trans }}</span>
+								<span class="badge badge-danger">{{ type.getTekst('rolle.ukjent') }}: trykk her</span>
 							{% endif %}
 						</small>
 					</p>
 				</div>
 				<div class="col-3">
-					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: person.getId() } ) }}" id="editP{{ person.getId() }}" class="actionLink btn btn-sm btn-outline-primary autoshrink">{{ 'person.rediger'|trans({},'base') }}</a>
+					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id, p_id: person.getId() } ) }}" id="editP{{ person.getId() }}" class="actionLink btn btn-sm btn-outline-primary autoshrink">{{ 'person.rediger'|trans({},'base') }}</a>
 				</div>
 			</div>
 		</li>
 	{% else %}
-		<li class="list-group-item">{{ 'overviewAction.personer.ingen'|trans }}</h3>
+		<li class="list-group-item">{{ 'overviewAction.personer.ingen'|trans({},'base') }}</h3>
 	{% endfor %}
 	<li class="list-group-item">
-		<a href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="btn btn-block btn-outline-secondary btn-sm">{{ 'overviewAction.personer.legg_til'|trans }}</a>
+		<a href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}" class="btn btn-block btn-outline-primary btn-sm">{{ 'overviewAction.personer.legg_til'|trans({},'base') }}</a>
 	</li>
 </ul>

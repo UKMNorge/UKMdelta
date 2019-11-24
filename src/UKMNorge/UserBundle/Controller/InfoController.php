@@ -6,10 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use UKMNorge\Geografi\Fylker;
 use Exception;
 use stdClass;
 use UKMCURL;
-use fylker;
+
+require_once('UKM/Autoloader.php');
 
 class InfoController extends Controller {
 
@@ -100,9 +102,8 @@ class InfoController extends Controller {
 	private function kommuneSkjema($view_data) {
 		$liste = array();
 
-		require_once('UKM/fylker.class.php');
 		$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
-        $view_data['fylker'] = fylker::getAll();;
+        $view_data['fylker'] = Fylker::getAll();;
 
         return $this->render('UKMUserBundle:Info:kommune.html.twig', $view_data);
 	}
