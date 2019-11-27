@@ -65,7 +65,12 @@ $(document).on('touchend click', '.clickLinkWithin', function(e) {
     if ($(e.target).is('a') || $(e.target).is('button')) {
         return true;
     }
-    var link = $(e.target).find('a.linkWithin');
+    if ($(e.target).hasClass('clickLinkWithin')) {
+        var clicked = $(e.target);
+    } else {
+        var clicked = $(e.target).parents('.clickLinkWithin');
+    }
+    var link = clicked.find('a.linkWithin');
     if (link) {
         window.location.href = link.attr('href');
     }
