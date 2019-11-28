@@ -18,7 +18,7 @@
 				
 					<div class="form-group">
 						<label for="username">Mobilnummer</label>
-						<input class="form-control" type="text" id="username" name="username" required="required" placeholder="Skriv inn ditt mobilnummer" value="{{ app.request.get('phone') }}" />
+						<input class="form-control" type="text" id="username" maxlength="8" name="username" required="required" placeholder="Skriv ditt mobilnummer (bare tall)" value="{{ app.request.get('phone') }}" />
 					</div>
 				
 					<div>
