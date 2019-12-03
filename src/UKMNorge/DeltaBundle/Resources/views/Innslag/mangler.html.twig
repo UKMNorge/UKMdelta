@@ -26,7 +26,7 @@
 	{# ALT OM PERSONER #}
 	{% if innslag.getMangler().harKategori('person') %}
 		{% set printed = [] %}
-		{% for mangel in innslag.getMangler().getAllSortert('person') if mangel.getObjektId() not in printed %}
+		{% for mangel in innslag.getMangler().getAllSortert('person')|filter( (mangel,printed) => mangel.getObjektId() not in printed) %}
 			{% if mangel.getId() == 'person.ingen' %}
 				<li class="list-group-item clickLinkWithin click">
 					<a href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="linkWithin">
@@ -40,7 +40,7 @@
 						{{ 'mangler.overskrift.person'|trans({'%person': innslag.getPersoner().get( mangel.getObjektId() ).getNavn() }, 'base') }}
 					</a>
 					<ol>
-						{% for hva_mangler in innslag.getMangler().getAllSortert('person') if mangel.getObjektId() == hva_mangler.getObjektId() %}
+						{% for hva_mangler in innslag.getMangler().getAllSortert('person')|filter((mangel,hva_mangler) => mangel.getObjektId() == hva_mangler.getObjektId()) %}
 							<li>{{ ( 'mangler.' ~ hva_mangler.getId() )|trans({}, 'base' ) }}</li>
 						{% endfor %}
 					</ol>
@@ -52,7 +52,7 @@
 	{# ALT OM TITLER #}
 	{% if innslag.getMangler().harKategori('tittel') %}
 		{% set printed = [] %}
-		{% for mangel in innslag.getMangler().getAllSortert('tittel') if mangel.getObjektId() not in printed %}
+		{% for mangel in innslag.getMangler().getAllSortert('tittel')|filter( (mangel,printed) => mangel.getObjektId() not in printed ) %}
 			{% if mangel.getId() == 'tittel.ingen' %}
 				<li class="list-group-item clickLinkWithin click">
 					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', { 'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}" class="linkWithin">
@@ -67,7 +67,7 @@
 					</a>
 
 					<ol>
-						{% for hva_mangler in innslag.getMangler().getAllSortert('tittel') if mangel.getObjektId() == hva_mangler.getObjektId() %}
+						{% for hva_mangler in innslag.getMangler().getAllSortert('tittel')|filter( (mangel,hva_mangler) => mangel.getObjektId() == hva_mangler.getObjektId() ) %}
 							<li>{{ ( 'mangler.' ~ hva_mangler.getId() )|trans({}, 'base' ) }}</li>
 						{% endfor %}
 					</ol>
