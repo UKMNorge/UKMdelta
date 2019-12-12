@@ -240,7 +240,7 @@ class ExceptionListener {
         else {
             $this->container->get('logger')->info("UKMdelta: Notifying support of the issue");
             $mail = new UKMmail();
-            $ok = $mail->setTo('support@ukm.no')
+            $ok = $mail->to('support@ukm.no')
                 ->setFrom('delta@ukm.no', 'UKMdelta')
                 ->setReplyTo('delta@ukm.no', 'UKMdelta')
                 ->subject('Feil oppstått i Delta')
