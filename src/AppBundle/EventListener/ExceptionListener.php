@@ -246,11 +246,11 @@ class ExceptionListener {
                 ->subject('Feil oppstått i Delta')
                 ->message($message)
                 ->ok();
-            return true;
             if(!$ok) {
                 $this->container->get('logger')->error("UKMdelta: Fikk ikke til å sende info til support om Exception!");
                 return false;
             }
+            return true;
         }
     }
 }
