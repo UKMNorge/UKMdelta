@@ -52,7 +52,7 @@ class ExceptionListener {
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
         $exception = $event->getException();
-        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event));
+        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event);
         
         $code = -1;
         $view_data = array();
@@ -165,6 +165,8 @@ class ExceptionListener {
             $teknisk['line'] = $event->getException()->getLine();
             $teknisk['trace'] = $event->getException()->getTraceAsString();
         
+            $this->container->get('logger')->error("Trace data: ".var_export($teknisk, true));
+
             $view_data['teknisk'] = $teknisk;
         }
 
@@ -190,6 +192,7 @@ class ExceptionListener {
         //$teknisk['exception'] = $event->getException();
         $view_data['teknisk'] = $teknisk;
 
+        $this->container->get('logger')->error("Trace data: ".var_export($teknisk, true));
         return $view_data;
     }
     public function notFoundException(GetResponseForExceptionEvent $event) {
@@ -207,14 +210,12 @@ class ExceptionListener {
         $view_data['tekst'] = $key.'tekst';
 
         // Humornøkkel
-        $view_data['sadface'] = true;
+        $view_data['sadface'] = false;
 
         return $view_data;
     }
 
     public function notifySupport(Exception $e, $header = null) {
-
-
         $request = Request::createFromGlobals();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
