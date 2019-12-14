@@ -9,6 +9,13 @@
 
 namespace AppBundle\EventListener;
 
+require_once("UKMconfig.inc.php");
+require_once("UKM/Kommunikasjon/Epost.php");
+require_once("UKM/Kommunikasjon/Mottaker.php");
+
+use UKMNorge\Kommunikasjon\Epost;
+use UKMNorge\Kommunikasjon\Mottaker;
+use DateTime;
 use Exception;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +36,7 @@ use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-require_once("UKMconfig.inc.php");
-require_once("UKM/mail.class.php");
-use UKMmail;
+
 
 class ExceptionListener {
 	
@@ -52,7 +57,7 @@ class ExceptionListener {
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
         $exception = $event->getException();
-        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event);
+        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event));
         
         $code = -1;
         $view_data = array();
@@ -89,7 +94,6 @@ class ExceptionListener {
                 $this->notifySupport($event->getException());
         		break;
         }
-        
         if( $code == 100 ) {
             $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
             $response = new RedirectResponse(
@@ -217,6 +221,8 @@ class ExceptionListener {
 
     public function notifySupport(Exception $e, $header = null) {
         $request = Request::createFromGlobals();
+        $time = new DateTime();
+
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $message = "En ukjent feil har oppstått i Delta!\n\nDebug-informasjon:\n";
@@ -234,25 +240,21 @@ class ExceptionListener {
         
         $message .= "\n<b>Debug backtrace:</b> \n".$e->getTraceAsString();
 
-        if ( $this->container->getParameter("kernel.environment") == 'dev' ) {
-            echo 'Utviklingsmodus, sender ikke e-post til support.<br>';
-            echo nl2br($message);
-        } 
-        else {
-            $this->container->get('logger')->info("UKMdelta: Notifying support of the issue");
-            $mail = new UKMmail();
-            $ok = $mail->to('support@ukm.no')
-                ->setFrom('delta@ukm.no', 'UKMdelta')
-                ->setReplyTo('delta@ukm.no', 'UKMdelta')
-                ->subject('Feil oppstått i Delta')
-                ->message($message)
-                ->ok();
-            if(!$ok) {
-                $this->container->get('logger')->error("UKMdelta: Fikk ikke til å sende info til support om Exception!");
-                return false;
-            }
-            return true;
+        $this->container->get('logger')->info("UKMdelta: Notifying support of the issue");
+        
+        $epost = new Epost();
+        $ok = $epost->setFra(Mottaker::fraEpost("delta@ukm.no", "UKMdelta"))
+            ->setSvarTil(Mottaker::fraEpost("support@ukm.no", "UKM Support"))
+            ->leggTilMottaker(Mottaker::fraEpost("support@ukm.no", "UKM Support"))
+            ->setEmne("Feil oppstått i Delta ". $time->format("d.m h:i"))
+            ->setMelding(nl2br($message))
+            ->send();
+
+        if(!$ok) {
+            $this->container->get('logger')->error("UKMdelta: Fikk ikke til å sende info til support om Exception!");
+            return false;
         }
+        return true;
     }
 }
 ?>
