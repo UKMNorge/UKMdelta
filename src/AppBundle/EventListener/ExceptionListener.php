@@ -234,7 +234,7 @@ class ExceptionListener {
         
         $message .= "\n<b>Debug backtrace:</b> \n".$e->getTraceAsString();
 
-        if ( $this->container->getParameter("kernel.environment") == 'dev' ) {
+        if ( $this->container->getParameter("kernel.environment") == 'dev' || (defined('UKM_HOSTNAME') && UKM_HOSTNAME == 'ukm.dev')) {
             echo 'Utviklingsmodus, sender ikke e-post til support.<br>';
             echo nl2br($message);
         } 
