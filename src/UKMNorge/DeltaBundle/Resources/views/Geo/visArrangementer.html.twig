@@ -4,7 +4,7 @@
     Hvilket av arrangementene våre vil du melde deg på?
     </p>
     <ol class="list-group">
-        {% for arrangement in kommune.getAttr('arrangementer').getAll() %}
+        {% for arrangement in kommune.getAttr('arrangementer').getAllSynlige() %}
             <li class="list-group-item click px-2 mx-0 white visArrangementKommuner arrangement {{ not arrangement.erFellesmonstring() ? 'clickLinkWithin' }}" style="background-color: transparent; border-color:#fff;">
                 <p class="mb-0 white">
                     {% if not arrangement.erFellesmonstring() %}
