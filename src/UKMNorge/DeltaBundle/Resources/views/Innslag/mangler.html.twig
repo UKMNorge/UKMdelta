@@ -33,6 +33,16 @@
 						{{ 'mangler.innslag.ingendeltakere'|trans({},'base') }}
 					</a>
 				</li>
+			{% elseif mangel.getId() == 'person.rolle' and not innslag.getType().harTitler() and innslag.getType().harFunksjoner() %}
+				<li class="list-group-item clickLinkWithin click">
+					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id } ) }}" class="linkWithin">
+						{{ 'mangler.overskrift.person'|trans({'%person': innslag.getPersoner().get( mangel.getObjektId() ).getNavn() }, 'base') }}
+					</a>
+					<ol>
+						{% for hva_mangler in innslag.getMangler().getAllSortert('person')|filter(hva_mangler => hva_mangler.getObjektId() == mangel.getObjektId()) %}
+							<li>{{ ( 'mangler.' ~ hva_mangler.getId() )|trans({}, 'base' ) }}</li>
+						{% endfor %}
+					</ol>
 			{% else %}
 				{% set printed = printed|merge([mangel.getObjektId()]) %}
 				<li class="list-group-item clickLinkWithin click">
