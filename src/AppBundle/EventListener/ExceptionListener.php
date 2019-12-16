@@ -52,7 +52,7 @@ class ExceptionListener {
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
         $exception = $event->getException();
-        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event);
+        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event));
         
         $code = -1;
         $view_data = array();
