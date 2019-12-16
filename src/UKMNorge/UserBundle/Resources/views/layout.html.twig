@@ -1,9 +1,5 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
-{% block content_pre %}
-	{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
-{% endblock %}
-
 {% block delta_content %}
         <div>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
