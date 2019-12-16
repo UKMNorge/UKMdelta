@@ -318,9 +318,9 @@ class InnslagController extends Controller
 
             $innslag->setNavn($person->getNavn());
 
-            if( $innslag->getType()->harFunksjoner() ) {
+            if( $innslag->getType()->harFunksjoner() && $request->request->get('funksjoner') != null) {
                 $funksjoner = [];
-                #$mulige = $innslag->getType()->getFunksjoner();
+
                 foreach($request->request->get('funksjoner') as $element) {
                     $funksjoner[$element] = $innslag->getType()->getTekst( $element );// = $mulige[$element];
                 }
