@@ -446,19 +446,30 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
 
-
         $innslag = $innslagService->hent($b_id);
         $arrangement = new Arrangement($pl_id);
         $kommune = new Kommune($k_id);
 
-        // Opprett personen
-        $person = $personService->opprett(
-            $request->request->get('fornavn'),
-            $request->request->get('etternavn'),
-            $request->request->get('mobil'),
-            $kommune,
-            $arrangement
-        );
+        $mobil = $request->request->get('mobil');
+
+        try {
+            // Opprett personen
+            $person = $personService->opprett(
+                $request->request->get('fornavn'),
+                $request->request->get('etternavn'),
+                $mobil,
+                $kommune,
+                $arrangement
+            );
+        } catch (Exception $e) {
+            $this->addFlash("danger", "Klarte ikke å lagre ".$request->request->get('fornavn'));
+            $view_data['k_id'] = $k_id;
+            $view_data['pl_id'] = $pl_id;
+            $view_data['type'] = $type;
+            $view_data['b_id'] = $b_id;
+
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_ny_person', $view_data);
+        }
 
         // Legg til i innslaget, sett rolle
         $person->setRolle($request->request->get('instrument'));

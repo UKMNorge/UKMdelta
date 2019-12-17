@@ -9,6 +9,7 @@ person:
         label: Etternavn
     mobil: 
         label: Mobil
+        placeholder: Mobil (bare tall, 8 siffer)
     alder:
         label: Alder
         listDefault: Velg riktig alder

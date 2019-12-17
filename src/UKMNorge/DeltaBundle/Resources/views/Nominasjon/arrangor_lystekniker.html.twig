@@ -1,17 +1,6 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
-{% block content %}	
-	{% if app.session.flashBag.peekAll()|length > 0 %}
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
-				</div>
-			</div>
-		</div>
-	{% endif %}
-	
-	
+{% block delta_content %}		
 	<div class="container">
 		<div class="row">
 			<div class="col-12">

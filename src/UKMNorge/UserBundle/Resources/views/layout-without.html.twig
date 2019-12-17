@@ -4,7 +4,7 @@
 	{% embed "UKMDeltaDesignBundle:FlashBag:list.html.twig" %}{% endembed %}
 {% endblock %}
 
-{% block content %}
+{% block delta_content %}
         <div>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |

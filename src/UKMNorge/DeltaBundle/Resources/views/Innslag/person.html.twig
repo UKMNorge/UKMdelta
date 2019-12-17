@@ -1,7 +1,7 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 {% trans_default_domain translationDomain %}
 
-{% block content %}
+{% block delta_content %}
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -65,7 +65,7 @@
                     {# MOBIL #}
                     <div class="form-group">
                         <label>{{ 'person.mobil.label'|trans({}, 'base') }}</label>
-                        <input type="tel" required name="mobil" id="mobil" maxlength="8" class="form-control" placeholder="" value="{{ person is defined ? person.getMobil() : '' }}"/>
+                        <input type="tel" required name="mobil" id="mobil" pattern="^\d{8}$" maxlength="8" class="form-control" placeholder="{{ 'person.mobil.placeholder'|trans({}, 'base') }}" value="{{ person is defined ? person.getMobil() : '' }}"/>
                     </div>
 
                     {# INSTRUMENT / ROLLE #}
