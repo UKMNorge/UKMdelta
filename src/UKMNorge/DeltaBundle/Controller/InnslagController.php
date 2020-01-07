@@ -111,9 +111,21 @@ class InnslagController extends Controller
             );
         }
 
+        // Er dette en kommune eller et fylke?
+        try {
+            $sted = $this->hentKommune($k_id);
+        } catch(Exception $e) {
+            if($e->getCode() != 102001 ) {
+                throw $e;
+            }
+
+            // Ikke kommune, sjekk om det er et fylke
+            $sted = $this->container->get('ukm_api.geografi')->hentFylke($k_id);
+        }
+
         $view_data = [
             'arrangement' => $arrangement,
-            'kommune' => $this->hentKommune($k_id),
+            'kommune' => $sted,
             'user' => $this->hentCurrentUser()
         ];
         return $this->render('UKMDeltaBundle:Innslag:type.html.twig', $view_data);
@@ -148,7 +160,13 @@ class InnslagController extends Controller
             throw new Exception('Påmeldingsfristen er ute!');
         }
 
-        $kommune = new Kommune($k_id);
+        try {
+            $sted = new Kommune($k_id);
+        } catch(Exception $e) {
+            if($e->getCode() == 102001) {
+                $sted = $this->container->get('ukm_api.geografi')->hentFylke($k_id);
+            }
+        }
 
         // Hvis brukeren ikke er registrert i systemet fra før
         if ($user->getPameldUser() === null) {
@@ -157,7 +175,7 @@ class InnslagController extends Controller
                 $user->getFirstname(),
                 $user->getLastname(),
                 $user->getPhone(),
-                $kommune,
+                $sted,
                 $arrangement
             );
             // Sett alder og e-post basert på user-bundle-alder
@@ -190,12 +208,21 @@ class InnslagController extends Controller
 
         // Opprett nytt innslag hvis vi ikke nettopp fant det
         if(!$innslag) {
-            $innslag = $innslagService->opprett(
-                $kommune,
-                $arrangement,
-                $type,
-                $person
-            );
+            if( get_class($sted) == Kommune::class) {
+                $innslag = $innslagService->opprett(
+                    $sted,
+                    $arrangement,
+                    $type,
+                    $person
+                );
+            } else {
+                $innslag = $innslagService->opprett_fylke(
+                    $arrangement,
+                    $type,
+                    $person,
+                    $sted
+                );
+            }
         }
 
         // Lagre endringer på personobjektet

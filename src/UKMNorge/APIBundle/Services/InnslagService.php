@@ -9,6 +9,7 @@ use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Database\SQL\Update;
 use UKMNorge\Geografi\Kommune;
+use UKMNorge\Geografi\Fylke;
 use UKMNorge\Innslag\Context\Context;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
@@ -49,6 +50,44 @@ class InnslagService
             $type,
             $type->erEnkeltPerson() ? $kontakt->getNavn() : 'Innslag uten navn',
             $kontakt
+        );
+
+        // Legg til kontaktpersonen i innslaget
+        $innslag->getPersoner()->leggTil($kontakt);
+        WriteInnslag::savePersoner($innslag);
+
+        $setValidated = new Update(
+            'smartukm_band',
+            [
+                'b_id' => $innslag->getId()
+            ]
+        );
+        $setValidated->add('b_validatedby', $kontakt->getMobil());
+        $setValidated->add('b_password', 'delta_' . $this->container->get('ukm_user')->getCurrentUser()->getId());
+        $setValidated->run();
+
+        return $innslag;
+    }
+
+    /**
+     * Opprett et nytt innslag
+     *
+     * @param Kommune $kommune
+     * @param Arrangement $arrangement
+     * @param Type $type
+     * @param Person $kontakt
+     * @return void
+     */
+    public function opprett_fylke( Arrangement $arrangement, Type $type, Person $kontakt, Fylke $fylke )
+    {
+        $this->_setupLogger($arrangement->getId());
+        // Opprett innslag
+        $innslag = WriteInnslag::create_fylke(
+            $arrangement,
+            $type,
+            $type->erEnkeltPerson() ? $kontakt->getNavn() : 'Innslag uten navn',
+            $kontakt,
+            $fylke
         );
 
         // Legg til kontaktpersonen i innslaget

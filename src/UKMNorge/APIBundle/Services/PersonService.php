@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Geografi\Kommune;
+use UKMNorge\Geografi\Fylke;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Write;
 use UKMNorge\Innslag\Personer\Person;
@@ -69,6 +70,16 @@ class PersonService {
         return $this->container->get('ukm_user')->getCurrentUser();
     }
 
+    /**
+     * Alias for opprettHosFylke / opprettHosKommune
+     */
+    public function opprett( String $fornavn, String $etternavn, Int $mobil, $sted, Arrangement $arrangement ) {
+        if(get_class($sted) == Kommune::class) {
+            return opprettHosKommune( $fornavn, $etternavn, $mobil, $sted, $arrangement);
+        } else {
+            return opprettHosFylke( $fornavn, $etternavn, $mobil, $sted, $arrangement);
+        }
+    }
 
     /**
      * Opprett et person-objekt.
@@ -80,7 +91,30 @@ class PersonService {
      * @param Kommune $kommune
      * @return Person $person
      */
-	public function opprett( String $fornavn, String $etternavn, Int $mobil, Kommune $kommune, Arrangement $arrangement ) {
+	public function opprettHosKommune( String $fornavn, String $etternavn, Int $mobil, Kommune $kommune, Arrangement $arrangement ) {
+        $this->_setupLogger( $arrangement->getId() );
+
+        $person = Write::create(
+            $fornavn,
+            $etternavn,
+            $mobil,
+            $kommune
+        );
+        
+		return $person;
+    }
+    
+    /**
+     * Opprett et person-objekt.
+     * Returnerer eksisterende person hvis den allerede finnes
+     *
+     * @param String $fornavn
+     * @param String $etternavn
+     * @param Int $mobil
+     * @param Fylke $fylke
+     * @return Person $person
+     */
+	public function opprettHosFylke( String $fornavn, String $etternavn, Int $mobil, Fylke $fylke, Arrangement $arrangement ) {
         $this->_setupLogger( $arrangement->getId() );
 
         $person = Write::create(

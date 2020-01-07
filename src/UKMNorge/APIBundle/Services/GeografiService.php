@@ -15,7 +15,16 @@ class GeografiService {
     }
 
     public function hentKommune( Int $kommuneID ) {
-        return new Kommune( $kommuneID );
+        try {
+            $kommune = new Kommune( $kommuneID );
+        } catch(Exception $e) {
+            if($e->getCode() == 102001) {
+                $kommune = null;
+            } else {
+                throw $e;
+            }
+        }
+        return $kommune;
     }
 
     public function hentFylke( Int $fylkeID ) {
