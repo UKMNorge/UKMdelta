@@ -5,12 +5,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use DateTime;
 use Exception;
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Database\SQL\Update;
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Write;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Log\Logger;
 use UKMNorge\Samtykke\Person as PersonSamtykke;
+use UKMNorge\UserBundle\Entity\User;
+use UKMNorge\Wordpress\LoginToken;
 
 require_once('UKM/Autoloader.php');
 
@@ -72,7 +76,7 @@ class PersonService {
 
     /**
      * Opprett et person-objekt.
-     * Returnerer eksisterende person hvis den allerede finnes
+     * Returnerer eksisterende person hvis den allerede finnes.
      *
      * @param String $fornavn
      * @param String $etternavn
@@ -152,6 +156,57 @@ class PersonService {
             $samtykke->persist();
         }
         return true;
+    }
+
+    public static function hentWordpressUserId(User $user) {
+        $sql = new Query("SELECT `wp_id` FROM `ukm_delta_wp_user` WHERE `delta_id` = '#delta_id'", ['delta_id' => $user->getId()]);
+        $sql->run();
+        $wp_id = $sql->getField();
+    
+        # Hvis vi ikke finner $wp_id, prøv å sett delta-id basert på p_id
+        if( null == $wp_id ) {
+            self::addDeltaIDToWordpressLoginUser( $user->getPameldUser(), $user->getId());
+            $sql->run();
+            $wp_id = $sql->getField();
+        }
+
+        if( null == $wp_id ) {
+            throw new Exception("Er du sikker på at du har fått lov til å logge på arrangørsystemet?");
+        }
+        return $wp_id;
+    }
+
+    /**
+     * Oppdater delta/wp-innloggingsbruker.
+     * Skal brukes hver gang man kaller setPameldUser på en Delta-bruker, som vil si når vi kobler en Delta-bruker mot en påmelding.
+     * Dersom delta-brukeren ikke finnes i den tabellen (det vil si at det ikke er opprettet WP-innlogging), gjør vi ingenting.
+     * 
+     * @param Int delta_user_id - Bruker-ID fra Delta's User
+     * @param Int p_id - Participant ID.
+     * @return Int - affected rows. 0 ved feil, 1 ved OK.
+     */
+    public static function updateWordpressLoginUserParticipantIdForDeltaId(Int $delta_user_id, Int $p_id) {
+        $sql = new Update('ukm_delta_wp_user', ['delta_id' => $delta_user_id]);
+        $sql->add("participant_id", $p_id);
+        return $sql->run();
+    }
+
+    /**
+     * Legg til delta-id i Delta/WP-innloggingstabell
+     * Kalles når det er forsøkt en innlogging til WP der delta_user ikke finnes i delta_wp_user-tabellen, men p_id matcher.
+     *
+     * @param Int p_id - Participant ID.
+     * @param Int delta_user_id - Delta's bruker-ID
+     * @return Int - affected rows. 0 ved feil, 1 ved OK.
+     */
+    public static function addDeltaIDToWordpressLoginUser(Int $p_id, Int $delta_user_id) {
+        $sql = new Update('ukm_delta_wp_user', ['participant_id' => $p_id]);
+        $sql->add("delta_id", $delta_user_id);
+        return $sql->run();
+    }
+
+    public static function hentWordpressLoginURL(LoginToken $token) {
+        return "https://".UKM_HOSTNAME."/autologin/?wp_id=".$token->wp_id."&token_id=".$token->token_id."&token=".$token->secret;
     }
 }
 ?>

@@ -168,6 +168,10 @@ class InnslagController extends Controller
             $user->setPameldUser($person->getId());
             $this->container->get('fos_user.user_manager')->updateUser($user);
 
+            // Se om brukeren har fått tildelt en Wordpress-innloggingsbruker (via UKMusers etc), og prøv å koble den.
+            $personService = $this->container->get('ukm_api.person');
+            $personService->addDeltaIDToWordpressLoginUser($person->getId(), $user->getId());
+
             $lagrePerson = true;
         }
         // Hvis brukeren er registrert i systemet fra før

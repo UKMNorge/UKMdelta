@@ -25,6 +25,10 @@ ukm_delta_ukmid_homepage:
     path:     /ukmid/
     defaults: { _controller: UKMDeltaBundle:UKMID:index }
 
+ukm_delta_ukmid_wordpress_connect:
+    path:     /ukmid/wordpress-connect/
+    defaults: { _controller: UKMDeltaBundle:Wordpress:connect }
+
 ukm_delta_ukmid_frist:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/frist
     defaults: { _controller: UKMDeltaBundle:Innslag:frist }

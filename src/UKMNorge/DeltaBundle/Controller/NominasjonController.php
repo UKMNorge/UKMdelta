@@ -290,10 +290,15 @@ class NominasjonController extends Controller
 				$person = person_v2::loadFromData( $user->getFirstname(), $user->getLastname(), $user->getPhone() );
 
 				// Oppdater delta-brukeren
-				$userManager = $this->container->get('fos_user.user_manager');
-				$user->setPameldUser( $person->getId() );
-				$userManager->updateUser($user);
-
+                $userManager = $this->container->get('fos_user.user_manager');
+                $user->setPameldUser( $person->getId() );
+                $userManager->updateUser($user);
+                
+                // Oppdater WP-innloggingsbruker med delta-ID om p_id finnes i tabellen.
+                // Ettersom denne Delta-brukeren ikke har en tilknyttet UKM-person fra før, vil delta_ID uansett ikke ligge der.
+                $personService = $this->container->get('ukm_api.person');
+                $personService->addDeltaIDToWordpressLoginUser($person->getId(), $user->getId());
+				
 				// Last inn V1-bruker da UKMdelta benytter APIv1
 				$person_objekt = new person( $person->getId() );
 			} catch( Exception $e ) {
