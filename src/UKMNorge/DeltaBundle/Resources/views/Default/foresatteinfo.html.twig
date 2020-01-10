@@ -1,0 +1,31 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block delta_content %}
+	<form method="POST" action="{{ path('ukm_delta_foresattesave', {p_id: p_id, p_mobil: p_mobil} ) }}" id="nominasjonsskjema">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h1>Kontaktinformasjon til foresatte</h1>
+					<p class="lead">
+						Vi trenger Kontaktinformasjon til en av dine foresatte. Vennligst fyll inn under.
+					</p>
+
+					<input type="hidden" value="{{ p_id }}" name="p_id">
+					<input type="hidden" value="{{ p_mobil }}" name="p_mobil">
+
+					<div class="form-group">
+						<label>Foresattes navn</label>
+						<input type="text" name="foresatteNavn" class="form-control" placeholder="Foresattes navn" />
+					</div>
+
+					<div class="form-group">
+						<label>Foresattes telefonnummer</label>
+						<input type="tel" name="foresatteMobil" class="form-control" placeholder="Foresattes telefonnummer" />
+					</div>
+
+					<button type="submit" class="btn btn-primary btn-block center" id="saveNominasjon">Send inn</button>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}

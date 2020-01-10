@@ -1,0 +1,20 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block delta_content %}
+	<form method="POST" action="{{ url('ukm_nominasjon_media_save') }}" id="nominasjonsskjema">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h1>Takk!</h1>
+					<p class="lead">
+						Vi har registrert dette om dine foresatte:<br />
+						Navn: <b>{{ foresatteNavn }}</b><br />
+						Mobil: <b>{{ foresatteMobil }}</b><br /><br />
+
+						Om dette ikke stemmer, vennligst kontakt lokalkontakten din.
+					</p>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}

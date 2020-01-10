@@ -1,6 +1,6 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
-{% block delta_content %}	
+{% block delta_content %}
 	<form method="POST" action="{{ url('ukm_nominasjon_media_save') }}" id="nominasjonsskjema">
 		<div class="container">
 			<div class="row">
@@ -9,7 +9,7 @@
 					<p class="lead">
 						I UKM Media jobber vi i flere team, med innhold til et nyhetsbrev, sosiale medier og UKM-TV/skjermer i sal.
 					</p>
-					
+
 					{% for key, gruppe in {1: 'Hva har du mest lyst til å jobbe med?', 2: 'Jeg vil også jobbe med', 3: 'eller '} %}
 						<div class="form-group">
 							<label>{{ gruppe }}</label>
@@ -24,28 +24,28 @@
 							</select>
 						</div>
 					{% endfor %}
-	
+
 					<p>&nbsp;</p>
-					
+
 					<div class="form-group">
 						<label>Jeg kan noe som jeg har lyst til å gjøre, men det står ikke i listen.</label>
 						<input type="text" name="annet" class="form-control" placeholder="Skriv det her" />
 					</div>
-	
+
 					<p>&nbsp;</p>
-					
+
 					<div class="form-group">
 						<p>
-							Skriv litt om hvorfor du vil jobbe med dette, og hvilken erfaring du har med det fra før. 
+							Skriv litt om hvorfor du vil jobbe med dette, og hvilken erfaring du har med det fra før.
 						</p>
 						<p>
 							Dette er ikke et felt med fasit-svar, men hvor vi ønsker at du forteller oss litt om deg selv og hva du kan.
 						</p>
 						<textarea rows="6" name="beskrivelse" class="form-control" required="true"></textarea>
 					</div>
-					
+
 					<p>&nbsp;</p>
-					
+
 					<div class="form-check">
 						<p>
 							Dessverre kan du ikke redigere nominasjonen din etter du har sendt den inn. Når du trykker send inn sendes den til UKM Norge.
@@ -58,7 +58,7 @@
 
 					<p>&nbsp;</p>
 
-	
+
 					<button type="submit" class="btn btn-primary btn-block center" id="saveNominasjon">Send inn</button>
 				</div>
 			</div>
