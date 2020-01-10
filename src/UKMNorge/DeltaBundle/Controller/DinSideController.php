@@ -9,6 +9,7 @@ use UKMNorge\DeltaBundle\Entity\HideCampaign;
 use DateTime;
 use UKMmail;
 
+require_once('UKMconfig.inc.php');
 
 class DinSideController extends Controller
 {
