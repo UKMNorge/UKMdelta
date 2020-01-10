@@ -513,12 +513,21 @@ class InnslagController extends Controller
             'type' => Typer::getByKey($type),
             'type_key' => $type,
             'b_id' => $b_id,
-            'user' => $this->hentCurrentUser(),
-            'person' => $this->get('ukm_api.person')->hent($p_id, $b_id),
-            'innslag' => $this->get('ukm_api.innslag')->hent($b_id),
             'translationDomain' => $type
         ];
-        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+
+        try {
+            $view_data['user'] = $this->hentCurrentUser();
+            $view_data['person'] = $this->get('ukm_api.person')->hent($p_id, $b_id);
+            $view_data['innslag'] = $this->get('ukm_api.innslag')->hent($b_id);
+            return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+        } catch( Exception $e ) {
+            // Oppsto det en feil mens vi prøvde å sende brukerne til rediger person-siden, sett en flashbag og send de tilbake til oversikten.
+
+            $view_data['type'] = $type;
+            $this->addFlash( 'danger', "Klarte ikke å redigere person. Systemet sa: ".$e->getMessage() );
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
     }
 
     /**
