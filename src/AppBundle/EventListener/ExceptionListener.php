@@ -70,8 +70,7 @@ class ExceptionListener {
 
         $response = new Response();
         
-        // Sjekk hvilken exception det er her
-        // TODO: Logg stuff her
+        // Sjekk hvilken exception det er her.
         $view_data = array();
         switch ($code) {
         	case 0:
@@ -83,13 +82,21 @@ class ExceptionListener {
         		$view_data = $this->notFoundException($event);
         		break;	
         	case 500: 
-        		// Dette er intern server-feil, men kan også være egne kastede exceptions.
+                // Dette er intern server-feil, men kan også være egne kastede exceptions.
             default:
                 $view_data = $this->unknownErrorException($event);
+                
+                # Ikke notify support dersom feilen er en av disse kjente:
+                if($e->getMessage() == "Call to a member function getPameldUser() on string") {
+                    # Brukere som får denne skal egentlig bli redirecta til innlogging igjen. Skjønner ikke helt hvorfor de får denne i stedet?
+                    break;
+                }
+
                 $this->notifySupport($event->getException());
         		break;
         }
         
+        ### Logg ut brukeren
         if( $code == 100 ) {
             $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
             $response = new RedirectResponse(
