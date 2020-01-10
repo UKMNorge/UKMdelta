@@ -513,12 +513,21 @@ class InnslagController extends Controller
             'type' => Typer::getByKey($type),
             'type_key' => $type,
             'b_id' => $b_id,
-            'user' => $this->hentCurrentUser(),
-            'person' => $this->get('ukm_api.person')->hent($p_id, $b_id),
-            'innslag' => $this->get('ukm_api.innslag')->hent($b_id),
             'translationDomain' => $type
         ];
-        return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+
+        try {
+            $view_data['user'] = $this->hentCurrentUser();
+            $view_data['person'] = $this->get('ukm_api.person')->hent($p_id, $b_id);
+            $view_data['innslag'] = $this->get('ukm_api.innslag')->hent($b_id);
+            return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
+        } catch( Exception $e ) {
+            // Oppsto det en feil mens vi prøvde å sende brukerne til rediger person-siden, sett en flashbag og send de tilbake til oversikten.
+
+            $view_data['type'] = $type;
+            $this->addFlash( 'danger', "Klarte ikke å redigere person. Systemet sa: ".$e->getMessage() );
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
     }
 
     /**
@@ -761,71 +770,71 @@ class InnslagController extends Controller
             'b_id' => $b_id
         ];
 
-        $request = Request::createFromGlobals();
-        $seasonService = $this->get('ukm_delta.season');
-        $innslagService = $this->get('ukm_api.innslag');
-
-        $innslag = $innslagService->hent($b_id);
-
-        // Opprett tittel
-        if ($request->request->get('t_id') == 'new') {
-            $tittel = $innslagService->opprettTittel($innslag);
-        }
-        // Hent tittel
-        else {
-            $tittel = $innslag->getTitler()->get($request->request->get('t_id'));
-        }
-
-        // Sett standard-info
-        $tittel->setTittel($request->request->get('tittel'));
-        if( $innslag->getType()->harTid() ) {
-            $tittel->setVarighet($request->request->get('lengde'));
-        }
-
-        switch ($innslag->getType()->getKey()) {
-            // Musikk
-            case 'musikk':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setMelodiAv($request->request->get('melodiforfatter'));
-
-                if ($request->request->get('sangtype') == 'instrumental') {
-                    $tittel->setInstrumental(true);
-                } else {
-                    $tittel->setInstrumental(false);
-                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                }
-                break;
-                // Teater
-            case 'teater':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                break;
-                // Dans
-            case 'dans':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setKoreografi($request->request->get('koreografi'));
-                break;
-                // Litteratur
-            case 'litteratur':
-                $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                if ($request->request->get('leseopp') == '1') {
-                    $tittel->setLesOpp(true);
-                } else {
-                    $tittel->setLesOpp(false);
-                    $tittel->setVarighet(0);
-                }
-                break;
-                // Utstilling
-            case 'utstilling':
-                $tittel->setType($request->request->get('type'));
-                break;
-        }
-
         try {
+            $request = Request::createFromGlobals();
+            $seasonService = $this->get('ukm_delta.season');
+            $innslagService = $this->get('ukm_api.innslag');
+
+            $innslag = $innslagService->hent($b_id);
+
+            // Opprett tittel
+            if ($request->request->get('t_id') == 'new') {
+                $tittel = $innslagService->opprettTittel($innslag);
+            }
+            // Hent tittel
+            else {
+                $tittel = $innslag->getTitler()->get($request->request->get('t_id'));
+            }
+
+            // Sett standard-info
+            $tittel->setTittel($request->request->get('tittel'));
+            if( $innslag->getType()->harTid() ) {
+                $tittel->setVarighet($request->request->get('lengde'));
+            }
+
+            switch ($innslag->getType()->getKey()) {
+                // Musikk
+                case 'musikk':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setMelodiAv($request->request->get('melodiforfatter'));
+
+                    if ($request->request->get('sangtype') == 'instrumental') {
+                        $tittel->setInstrumental(true);
+                    } else {
+                        $tittel->setInstrumental(false);
+                        $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    }
+                    break;
+                    // Teater
+                case 'teater':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    break;
+                    // Dans
+                case 'dans':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setKoreografi($request->request->get('koreografi'));
+                    break;
+                    // Litteratur
+                case 'litteratur':
+                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    if ($request->request->get('leseopp') == '1') {
+                        $tittel->setLesOpp(true);
+                    } else {
+                        $tittel->setLesOpp(false);
+                        $tittel->setVarighet(0);
+                    }
+                    break;
+                    // Utstilling
+                case 'utstilling':
+                    $tittel->setType($request->request->get('type'));
+                    break;
+            }
+
             $innslagService->lagreTitler($innslag, $tittel);
             $this->addFlash("success", "Lagret tittel-endringer!");
         } catch ( Exception $e ) {
-            $this->addFlash("danger", "Klarte ikke å lagre tittel!");
+            $this->addFlash("danger", "Klarte ikke å lagre tittel! Systemet sa: ".$e->getMessage());
         }
         
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
@@ -855,7 +864,17 @@ class InnslagController extends Controller
 
         // Hent tittel
         $innslag = $innslagService->hent($b_id);
-        $tittel = $innslag->getTitler()->get($t_id);
+        // Fix #309 - brukere har fått "Finner ikke tittel XX i innslaget"-feil. Mulig fordi den allerede er slettet i en tidligere request.
+        // Vi feiler gracefully her, med å late som om det var en vellykka sletting
+        // Dersom noen tror de er lurere enn oss og prøver å fjerne en tittel fra et annet innslag vil det stå at det funka, men ikke gjøre det 😈
+        // Vi logger denne feilen litt hardere, for å se om vi finner andre feil enn "Klarte ikke å finne tittel xx i innslag."
+        try {
+            $tittel = $innslag->getTitler()->get($t_id);
+        } catch( Exception $e ) {
+            $this->get('logger')->error("Innslag:deleteTitle - Klarte ikke å hente tittel for sletting. Dette kan være at tittelen allerede er slettet, eller en grovere systemfeil. Brukeren har fått en hyggelig beskjed om at sletting funket. Feilkode: ".$e->getCode().", melding: ".$e->getMessage().".");
+            $this->addFlash('success', "Fjernet tittel");
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
 
         // Fjern tittelen
         try {
