@@ -222,11 +222,12 @@ class InnslagService
         if( $user->getPameldUser() != null ) {
             $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
             $context = Context::createKontaktperson($person->getId(), $sesong);
+            return new Samling($context);
         } else {
-            $context = Context::createDeltaUser($user->getId(), $sesong);
+            // Har vi ikke en pameldUser har vi ikke opprettet noen innslag siden delta-databasen ble påbegynt.
+            // Tar derfor ut denne:
+            #$context = Context::createDeltaUser($user->getId(), $sesong);
         }
-
-        return new Samling($context);
     }
 
     /**
