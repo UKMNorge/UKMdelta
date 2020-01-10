@@ -770,71 +770,71 @@ class InnslagController extends Controller
             'b_id' => $b_id
         ];
 
-        $request = Request::createFromGlobals();
-        $seasonService = $this->get('ukm_delta.season');
-        $innslagService = $this->get('ukm_api.innslag');
-
-        $innslag = $innslagService->hent($b_id);
-
-        // Opprett tittel
-        if ($request->request->get('t_id') == 'new') {
-            $tittel = $innslagService->opprettTittel($innslag);
-        }
-        // Hent tittel
-        else {
-            $tittel = $innslag->getTitler()->get($request->request->get('t_id'));
-        }
-
-        // Sett standard-info
-        $tittel->setTittel($request->request->get('tittel'));
-        if( $innslag->getType()->harTid() ) {
-            $tittel->setVarighet($request->request->get('lengde'));
-        }
-
-        switch ($innslag->getType()->getKey()) {
-            // Musikk
-            case 'musikk':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setMelodiAv($request->request->get('melodiforfatter'));
-
-                if ($request->request->get('sangtype') == 'instrumental') {
-                    $tittel->setInstrumental(true);
-                } else {
-                    $tittel->setInstrumental(false);
-                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                }
-                break;
-                // Teater
-            case 'teater':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                break;
-                // Dans
-            case 'dans':
-                $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
-                $tittel->setKoreografi($request->request->get('koreografi'));
-                break;
-                // Litteratur
-            case 'litteratur':
-                $tittel->setTekstAv($request->request->get('tekstforfatter'));
-                if ($request->request->get('leseopp') == '1') {
-                    $tittel->setLesOpp(true);
-                } else {
-                    $tittel->setLesOpp(false);
-                    $tittel->setVarighet(0);
-                }
-                break;
-                // Utstilling
-            case 'utstilling':
-                $tittel->setType($request->request->get('type'));
-                break;
-        }
-
         try {
+            $request = Request::createFromGlobals();
+            $seasonService = $this->get('ukm_delta.season');
+            $innslagService = $this->get('ukm_api.innslag');
+
+            $innslag = $innslagService->hent($b_id);
+
+            // Opprett tittel
+            if ($request->request->get('t_id') == 'new') {
+                $tittel = $innslagService->opprettTittel($innslag);
+            }
+            // Hent tittel
+            else {
+                $tittel = $innslag->getTitler()->get($request->request->get('t_id'));
+            }
+
+            // Sett standard-info
+            $tittel->setTittel($request->request->get('tittel'));
+            if( $innslag->getType()->harTid() ) {
+                $tittel->setVarighet($request->request->get('lengde'));
+            }
+
+            switch ($innslag->getType()->getKey()) {
+                // Musikk
+                case 'musikk':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setMelodiAv($request->request->get('melodiforfatter'));
+
+                    if ($request->request->get('sangtype') == 'instrumental') {
+                        $tittel->setInstrumental(true);
+                    } else {
+                        $tittel->setInstrumental(false);
+                        $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    }
+                    break;
+                    // Teater
+                case 'teater':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    break;
+                    // Dans
+                case 'dans':
+                    $tittel->setSelvlaget($request->request->get('selvlaget') == '1');
+                    $tittel->setKoreografi($request->request->get('koreografi'));
+                    break;
+                    // Litteratur
+                case 'litteratur':
+                    $tittel->setTekstAv($request->request->get('tekstforfatter'));
+                    if ($request->request->get('leseopp') == '1') {
+                        $tittel->setLesOpp(true);
+                    } else {
+                        $tittel->setLesOpp(false);
+                        $tittel->setVarighet(0);
+                    }
+                    break;
+                    // Utstilling
+                case 'utstilling':
+                    $tittel->setType($request->request->get('type'));
+                    break;
+            }
+
             $innslagService->lagreTitler($innslag, $tittel);
             $this->addFlash("success", "Lagret tittel-endringer!");
         } catch ( Exception $e ) {
-            $this->addFlash("danger", "Klarte ikke å lagre tittel!");
+            $this->addFlash("danger", "Klarte ikke å lagre tittel! Systemet sa: ".$e->getMessage());
         }
         
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
