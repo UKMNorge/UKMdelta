@@ -855,7 +855,17 @@ class InnslagController extends Controller
 
         // Hent tittel
         $innslag = $innslagService->hent($b_id);
-        $tittel = $innslag->getTitler()->get($t_id);
+        // Fix #309 - brukere har fått "Finner ikke tittel XX i innslaget"-feil. Mulig fordi den allerede er slettet i en tidligere request.
+        // Vi feiler gracefully her, med å late som om det var en vellykka sletting
+        // Dersom noen tror de er lurere enn oss og prøver å fjerne en tittel fra et annet innslag vil det stå at det funka, men ikke gjøre det 😈
+        // Vi logger denne feilen litt hardere, for å se om vi finner andre feil enn "Klarte ikke å finne tittel xx i innslag."
+        try {
+            $tittel = $innslag->getTitler()->get($t_id);
+        } catch( Exception $e ) {
+            $this->get('logger')->error("Innslag:deleteTitle - Klarte ikke å hente tittel for sletting. Dette kan være at tittelen allerede er slettet, eller en grovere systemfeil. Brukeren har fått en hyggelig beskjed om at sletting funket. Feilkode: ".$e->getCode().", melding: ".$e->getMessage().".");
+            $this->addFlash('success', "Fjernet tittel");
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
 
         // Fjern tittelen
         try {
