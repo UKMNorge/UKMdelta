@@ -73,7 +73,6 @@ class PersonService {
         return $this->container->get('ukm_user')->getCurrentUser();
     }
 
-
     /**
      * Opprett et person-objekt.
      * Returnerer eksisterende person hvis den allerede finnes.
