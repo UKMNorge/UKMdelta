@@ -18,7 +18,8 @@ require_once("UKM/Autoloader.php");
 class UKMIDController extends Controller
 {
     /**
-     * Viser alle innslag kontaktpersonen har
+     * Viser alle innslag kontaktpersonen har.
+     * Håndterer også eventuelle feilmeldinger som en bruker har blitt sendt tilbake til UKMID med.
      * _@route: </ukmid/>
      * 
      */
@@ -28,6 +29,13 @@ class UKMIDController extends Controller
             $user = $this->get('ukm_user')->getCurrentUserAsObject();
         } catch( Exception $e ) {
             return $this->redirectToRoute('fos_user_security_logout');
+        }
+
+        // Ved retur fra WP-innlogging kan du ha fått med deg en feilmelding. Vi printer den her:
+        if( $this->get('request')->query->get('feilkode') == 1)  {
+            # Vi sier ikke automatisk fra til support, velger i stedet å håndtere feil med å vise den til brukeren.
+            $this->container->get("logger")->error("UKMIDController:index - Innlogging feilet i Wordpress. Det kan være at brukeren ikke har fått lov til å logge inn, eller at noe er feil i Wordpress-oppsettet.");
+            $this->addFlash('danger', "Innlogging feilet i arrangørsystemet. Har du fått lov til å logge inn av arrangøren?");
         }
         
         $view_data = [

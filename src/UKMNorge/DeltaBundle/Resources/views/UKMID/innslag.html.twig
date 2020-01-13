@@ -29,12 +29,15 @@
         <div class="col-3 right px-0">
             {% if pamelding_apen %}
                 <a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary autoshrink">{{ 'indexAction.rediger'|trans }}</a>
+            {% endif %}
+            {% if innslag.getType().getKey() in ["nettredaksjon", "media"] and not pamelding_apen %}
+                <a href="{{ path('ukm_delta_ukmid_wordpress_connect')}}" class="btn btn-block btn-sm btn-outline-primary autoshring">logg inn på arrangørside</a>
+            {% endif %}
+            {% if pamelding_apen %}
                 <a href="{{ path('ukm_delta_ukmid_meld_av', { k_id: innslag.getKommune().getId(), pl_id: innslag.getHomeId(), type: innslag.getType().getKey(), b_id: innslag.getId() }) }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
             {% else %}
                 <i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
-            {% endif %}
-            
+            {% endif %}       
         </div>
-
     </div>
 </li>
