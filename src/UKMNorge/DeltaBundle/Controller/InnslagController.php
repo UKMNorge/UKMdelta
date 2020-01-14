@@ -593,6 +593,7 @@ class InnslagController extends Controller
      */
     public function removePersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
     {
+        $this->get('logger')->notice("DeltaBundle:removePerson - Remove person request received for person ".$p_id." from band ".$b_id.".");
         $route_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,

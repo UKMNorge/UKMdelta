@@ -69,6 +69,16 @@ class ExceptionListener {
         }
 
         $response = new Response();
+
+        ## Ignore-liste - disse gjør vi ingenting med - UANSETT
+        if ($exception->getMessage() == "Call to a member function getPameldUser() on string") {
+            # Vi redirecter bare brukeren til innlogging og hjemmeside dersom dette skjer. Feil kommer av at brukeren er logget ut (av oss eller invalid session, f.eks).
+            $route = $this->container->get('router')->getRouteCollection()->get('ukm_delta_ukmid_homepage');
+            echo new RedirectResponse($route->getPath());
+            // Gjør som under - setter response i $event til en tom response for ikke å outputte feilmeldingen.
+            $event->setResponse(new Response());
+            return $event;
+        }
         
         // Sjekk hvilken exception det er her.
         $view_data = array();
@@ -85,13 +95,6 @@ class ExceptionListener {
                 // Dette er intern server-feil, men kan også være egne kastede exceptions.
             default:
                 $view_data = $this->unknownErrorException($event);
-                
-                # Ikke notify support dersom feilen er en av disse kjente:
-                if($e->getMessage() == "Call to a member function getPameldUser() on string") {
-                    # Brukere som får denne skal egentlig bli redirecta til innlogging igjen. Skjønner ikke helt hvorfor de får denne i stedet?
-                    break;
-                }
-
                 $this->notifySupport($event->getException());
         		break;
         }
@@ -114,7 +117,6 @@ class ExceptionListener {
             // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
             $event->setResponse(new Response());
         }
-
     }
 
     /** 
@@ -226,12 +228,12 @@ class ExceptionListener {
         $request = Request::createFromGlobals();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        $message = "En ukjent feil har oppstått i Delta!\n\nDebug-informasjon:\n";
+        $message = "En ukjent feil har oppstått i Delta ".date("Y-m-d H:i:s").".\n\nDebug-informasjon:\n";
         if($header != null) {
             $message .= "Feilmelding: ".$header."\n";
         }
 
-        $message .= "\n<b>Exception:</b> ".$e->getMessage();
+        $message .= "\n<b>Exception:</b> ".$e->getCode().", ".$e->getMessage();
         $message .= "\n<b>Route:</b> ".$request->server->get('REQUEST_URI');
         if(is_object($user) ) {
             $message .= "\n<b>User:</b> ".$user->getName(). ', <b>ID:</b> '.$user->getId();    
@@ -251,7 +253,7 @@ class ExceptionListener {
             $ok = $mail->to('support@ukm.no')
                 ->setFrom('delta@ukm.no', 'UKMdelta')
                 ->setReplyTo('delta@ukm.no', 'UKMdelta')
-                ->subject('Feil oppstått i Delta')
+                ->subject('Feil oppstått i Delta '.date("Y-m-d H:i:s"))
                 ->message($message)
                 ->ok();
             if(!$ok) {
