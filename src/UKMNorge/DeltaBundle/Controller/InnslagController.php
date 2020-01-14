@@ -558,27 +558,29 @@ class InnslagController extends Controller
         $request = Request::createFromGlobals();
         $innslagService = $this->get('ukm_api.innslag');
 
-        // Hent innslag
-        $innslag = $innslagService->hent($b_id);
-        $person = $innslag->getPersoner()->get($p_id);
-
-        // Oppdater objektet
-        $person->setFornavn($request->request->get('fornavn'));
-        $person->setEtternavn($request->request->get('etternavn'));
-        $person->setMobil($request->request->get('mobil'));
-        $person->setFodselsdato(
-            Person::getFodselsdatoFromAlder(
-                $request->request->get('alder')
-            )
-        );
-        $person->setRolle($request->request->get('instrument'));
-
-        // Lagre
+        // Peis alle feil og advarsler (unntatt feil med request etc) i en flashbag + logging
         try {
+
+            // Hent innslag
+            $innslag = $innslagService->hent($b_id);
+            $person = $innslag->getPersoner()->get($p_id);
+
+            // Oppdater objektet
+            $person->setFornavn($request->request->get('fornavn'));
+            $person->setEtternavn($request->request->get('etternavn'));
+            $person->setMobil($request->request->get('mobil'));
+            $person->setFodselsdato(
+                Person::getFodselsdatoFromAlder(
+                    $request->request->get('alder')
+                )
+            );
+            $person->setRolle($request->request->get('instrument'));
+
             $this->get('ukm_api.person')->lagre($person, $innslag->getId());
             $this->addFlash("success", "Lagret endringer");
         } catch (Exception $e) {
-            $this->addFlash("danger", "Klarte ikke å lagre endringer på ".$person->getNavn()."!");
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:savePerson - Klarte ikke å lagre endringer på ".$request->request->get('fornavn').". Systemet sa: ".$e->getCode().", ".$e->getMessage());
+            $this->addFlash("danger", "Klarte ikke å lagre endringer på ".$request->request->get('fornavn')."! Feilkode: ".$e->getCode());
         }
 
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
