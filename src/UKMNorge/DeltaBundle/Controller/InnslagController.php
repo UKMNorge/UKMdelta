@@ -309,47 +309,54 @@ class InnslagController extends Controller
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
 
-        // Hent inn innslaget
-        $innslag = $innslagService->hent($b_id);
+        try {
+            // Hent inn innslaget
+            $innslag = $innslagService->hent($b_id);
 
-        if( $innslag->getType()->harBeskrivelse() ) {
-            $innslag->setBeskrivelse($request->request->get('beskrivelse'));
-        }
-
-        // Hvis innslaget ikke har titler
-        if ($innslag->getType()->erEnkeltperson()) {
-            $person = $innslag->getPersoner()->getSingle();
-
-            $innslag->setNavn($person->getNavn());
-
-            if( $innslag->getType()->harFunksjoner() && $request->request->get('funksjoner') != null) {
-                $funksjoner = [];
-
-                foreach($request->request->get('funksjoner') as $element) {
-                    $funksjoner[$element] = $innslag->getType()->getTekst( $element );// = $mulige[$element];
-                }
-                $person->setRolle( $funksjoner );
+            if( $innslag->getType()->harBeskrivelse() ) {
+                $innslag->setBeskrivelse($request->request->get('beskrivelse'));
             }
-            $personService->lagre($person, $innslag->getId());
-            $innslagService->lagre( $innslag );
+
+            // Hvis innslaget ikke har titler
+            if ($innslag->getType()->erEnkeltperson()) {
+                $person = $innslag->getPersoner()->getSingle();
+
+                $innslag->setNavn($person->getNavn());
+
+                if( $innslag->getType()->harFunksjoner() && $request->request->get('funksjoner') != null) {
+                    $funksjoner = [];
+
+                    foreach($request->request->get('funksjoner') as $element) {
+                        $funksjoner[$element] = $innslag->getType()->getTekst( $element );// = $mulige[$element];
+                    }
+                    $person->setRolle( $funksjoner );
+                }
+                $personService->lagre($person, $innslag->getId());
+                $innslagService->lagre( $innslag );
+                return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
+            }
+
+            // Innslaget har titler
+            $innslag->setNavn($request->request->get('navn'));
+            if( $innslag->getType()->harSjanger() ) {
+                $innslag->setSjanger($request->request->get('sjanger'));
+            }
+
+            $innslagService->lagre($innslag);
+
+            // Hvis path er satt og ikke tom, så skal vi til et nytt sted (rediger person, for eksempel)
+            if (!empty($request->request->get('path'))) {
+                return $this->redirect($request->request->get('path'));
+            }
+
+            // Tilbake til statusAction
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
+        } catch( Exception $e ) {
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:saveOverview - Feil oppsto i forbindelse med lagring av innslagsdata! Feilkode: ".$e->getCode().". Melding: ".$e->getMessage());
+            $this->addFlash('danger', "Oops! Klarte ikke å lagre endringene. Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
         }
-
-        // Innslaget har titler
-        $innslag->setNavn($request->request->get('navn'));
-        if( $innslag->getType()->harSjanger() ) {
-            $innslag->setSjanger($request->request->get('sjanger'));
-        }
-
-        $innslagService->lagre($innslag);
-
-        // Hvis path er satt og ikke tom, så skal vi til et nytt sted (rediger person, for eksempel)
-        if (!empty($request->request->get('path'))) {
-            return $this->redirect($request->request->get('path'));
-        }
-
-        // Tilbake til statusAction
-        return $this->redirectToRoute('ukm_delta_ukmid_pamelding_status', $view_data);
+       
     }
 
     /**
@@ -398,20 +405,26 @@ class InnslagController extends Controller
      */
     public function newPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        return $this->render(
-            'UKMDeltaBundle:Innslag:person.html.twig',
-            [
-                'k_id' => $k_id,
-                'pl_id' => $pl_id,
-                'type' => Typer::getByKey($type),
-                'type_key' => $type,
-                'b_id' => $b_id,
-                'translationDomain' => $type,
-                'friends' => $this->_getVenner(
-                    $this->get('ukm_api.innslag')->hent($b_id)
-                )
-            ]
-        );
+        try {
+            return $this->render(
+                'UKMDeltaBundle:Innslag:person.html.twig',
+                [
+                    'k_id' => $k_id,
+                    'pl_id' => $pl_id,
+                    'type' => Typer::getByKey($type),
+                    'type_key' => $type,
+                    'b_id' => $b_id,
+                    'translationDomain' => $type,
+                    'friends' => $this->_getVenner(
+                        $this->get('ukm_api.innslag')->hent($b_id)
+                    )
+                ]
+            );
+        } catch( Exception $e ) {
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:newPerson - Feil oppsto ved uthenting av data til newPerson! Feilkode: ".$e->getCode().". Melding: ".$e->getMessage());
+            $this->addFlash('danger', "Oops! Klarte ikke å legge til en ny person. Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
     }
 
     /**
@@ -449,44 +462,50 @@ class InnslagController extends Controller
         $request = Request::createFromGlobals();
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
-
-        $innslag = $innslagService->hent($b_id);
-        $arrangement = new Arrangement($pl_id);
-        $kommune = new Kommune($k_id);
-
-        $mobil = $request->request->get('mobil');
-
-        try {
-            // Opprett personen
-            $person = $personService->opprett(
-                $request->request->get('fornavn'),
-                $request->request->get('etternavn'),
-                $mobil,
-                $kommune,
-                $arrangement
-            );
-        } catch (Exception $e) {
-            $this->addFlash("danger", "Klarte ikke å lagre ".$request->request->get('fornavn'));
-            $view_data['k_id'] = $k_id;
-            $view_data['pl_id'] = $pl_id;
-            $view_data['type'] = $type;
-            $view_data['b_id'] = $b_id;
-
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_ny_person', $view_data);
-        }
-
-        // Legg til i innslaget, sett rolle
-        $person->setRolle($request->request->get('instrument'));
-
-        // Sett alder
-        $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
+        
+        $view_data['k_id'] = $k_id;
+        $view_data['pl_id'] = $pl_id;
+        $view_data['type'] = $type;
+        $view_data['b_id'] = $b_id;
 
         try {
+
+            $innslag = $innslagService->hent($b_id);
+            $arrangement = new Arrangement($pl_id);
+            $kommune = new Kommune($k_id);
+
+            $mobil = $request->request->get('mobil');
+
+            try {
+                // Opprett personen
+                $person = $personService->opprett(
+                    $request->request->get('fornavn'),
+                    $request->request->get('etternavn'),
+                    $mobil,
+                    $kommune,
+                    $arrangement
+                );
+            } catch (Exception $e) {
+                // Får vi ikke til å opprette personen, går vi tilbake til skjemaet. Andre feil, gå til oversikten.
+                $this->get('logger')->error("UKMDeltaBundle:Innslag:saveNewPerson - Klarte ikke å opprette person på innslag ".$b_id.". Feilkode: ".$e->getCode().". Melding: ".$e->getMessage().".\n\nData: ", 
+                    [$request->request->get('fornavn'), $request->request->get('etternavn'), $mobil, $kommune, $arrangement]);
+                $this->addFlash("danger", "Klarte ikke å lagre ".$request->request->get('fornavn'));
+
+                return $this->redirectToRoute('ukm_delta_ukmid_pamelding_ny_person', $view_data);
+            }
+
+            // Legg til i innslaget, sett rolle
+            $person->setRolle($request->request->get('instrument'));
+
+            // Sett alderf
+            $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
+
             $innslagService->leggTilPerson( $innslag, $person );            
             $this->addFlash("success", "La til ".$person->getNavn());
-        } catch (Exception $e) {
-            $this->addFlash("danger", "Klarte ikke å legge til ".$person->getNavn()." i innslaget!");
+        } catch( Exception $e ) {
             $this->get('logger')->error("Klarte ikke å legge til ".$person->getNavn() ." i innslag ".$innslag->getNavn().". Feil: ".$e->getMessage());
+            $this->addFlash("danger", "Klarte ikke å legge til ".$person->getNavn()." i innslaget! Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
         }
 
         $view_data = [
@@ -526,8 +545,8 @@ class InnslagController extends Controller
             $view_data['innslag'] = $this->get('ukm_api.innslag')->hent($b_id);
             return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
         } catch( Exception $e ) {
-            // Oppsto det en feil mens vi prøvde å sende brukerne til rediger person-siden, sett en flashbag og send de tilbake til oversikten.
 
+            // Oppsto det en feil mens vi prøvde å sende brukerne til rediger person-siden, sett en flashbag og send de tilbake til oversikten.
             $view_data['type'] = $type;
             $this->addFlash( 'danger', "Klarte ikke å redigere person. Systemet sa: ".$e->getMessage() );
             return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
@@ -669,6 +688,7 @@ class InnslagController extends Controller
             $innslagService->lagre($innslag);    
             $this->addFlash("success", "Lagret tekniske behov");
         } catch ( Exception $e ) {
+            $this->get('logger')->errror("UKMDeltaBundle:Innslag:saveTechnical - Klarte ikke å lagre tekniske behov. Feilkode: ". $e->getCode().". Melding: ".$e->getMessage(), $route_data);
             $this->addFlash("danger", "Klarte ikke å lagre tekniske behov");
         }
 
@@ -695,11 +715,19 @@ class InnslagController extends Controller
             'type' => Typer::getByKey($type),
             'type_key' => $type,
             'b_id' => $b_id,
-            'translationDomain' => $type,
-            'innslag' => $innslagService->hent($b_id)
+            'translationDomain' => $type
         ];
 
-        return $this->_renderTitleAction($view_data);
+        try {
+
+            $view_data['innslag'] = $innslagService->hent($b_id);
+            return $this->_renderTitleAction($view_data);
+
+        } catch (Exception $e) {
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:newTitle - Klarte ikke å vise ny tittel-siden. Feilkode: ". $e->getCode().". Melding: ".$e->getMessage(), $view_data);
+            $this->addFlash('danger', "Klarte ikke å legge til en ny tittel! Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
     }
 
     /**
@@ -723,11 +751,16 @@ class InnslagController extends Controller
             'type_key' => $type,
             'b_id' => $b_id,
             'translationDomain' => $type,
-            'innslag' => $innslag,
-            'tittel' => $innslag->getTitler()->get($t_id)
         ];
-
-        return $this->_renderTitleAction($view_data);
+        try {
+            $view_data['innslag'] = $innslag;
+            $view_data['tittel'] = $innslag->getTitler()->get($t_id);
+            return $this->_renderTitleAction($view_data);
+        } catch (Exception $e) {
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:newTitle - Klarte ikke å laste inn tittelen. Feilkode: ". $e->getCode().". Melding: ".$e->getMessage(), $view_data);
+            $this->addFlash('danger', "Klarte ikke å redigere tittel. Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+        }
     }
 
     /**
@@ -841,7 +874,7 @@ class InnslagController extends Controller
             $innslagService->lagreTitler($innslag, $tittel);
             $this->addFlash("success", "Lagret tittel-endringer!");
         } catch ( Exception $e ) {
-            $this->addFlash("danger", "Klarte ikke å lagre tittel! Systemet sa: ".$e->getMessage());
+            $this->addFlash("danger", "Klarte ikke å lagre tittel! Feilkode: ".$e->getCode());
         }
         
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
@@ -913,24 +946,32 @@ class InnslagController extends Controller
     public function removeAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
         $innslagService = $this->get('ukm_api.innslag');
-        $innslag = $innslagService->hent($b_id);
-
-        // Hvis POST-request, utfør
-        if ($this->getRequest()->isMethod('POST')) {
-            $innslagService->meldAv($innslag->getId(), $pl_id);
-            $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', ["%name" => $innslag->getNavn()], 'base'));
-            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
-        }
-
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
             'type' => $type,
             'b_id' => $b_id,
-            'translationDomain' => 'base',
-            'innslag' => $innslag
+            'translationDomain' => 'base'
         ];
-        return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
+
+        try {
+            $innslag = $innslagService->hent($b_id);
+
+            // Hvis POST-request, utfør
+            if ($this->getRequest()->isMethod('POST')) {
+                $innslagService->meldAv($innslag->getId(), $pl_id);
+                $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', ["%name" => $innslag->getNavn()], 'base'));
+                return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+            }
+
+            $view_data['innslag'] = $innslag;
+            
+            return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
+        } catch (Exception $e) {
+            $this->get('logger')->error("Klarte ikke å melde av innslag ".$b_id.". Feilmelding: ".$e->getCode()." - ".$e->getMessage());
+            $this->addFlash("danger", "Klarte ikke å melde av innslaget. Feilkode: ".$e->getCode());
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
     }
 
     /**
