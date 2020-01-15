@@ -52,7 +52,6 @@ class ExceptionListener {
     public function onKernelException(GetResponseForExceptionEvent $event) 
     {
         $exception = $event->getException();
-        $this->container->get('logger')->error("ExceptionListener: ERROR: Unhandled Exception occurred. Event-data: ", array("event" => $event));
         
         $code = -1;
         $view_data = array();
@@ -99,14 +98,18 @@ class ExceptionListener {
         		break;
         }
         
-        ### Logg ut brukeren
+        ## Code 100 = Exception fra UserService - Brukeren ikke logget inn. Force logout på vanlig symfony-vis.
         if( $code == 100 ) {
+            $this->container->get('logger')->notice("ExceptionListener: Logger ut brukeren via symfony-logout.");
             $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
             $response = new RedirectResponse(
                 $route->getPath()
             );
             $event->setResponse( $response );
-        } else {
+        }
+        # Dersom vi ikke har noe brukerobjekt (usertoken), sett en anon-token og logg ut brukeren. Ikke logg ut vanlige brukere som bare har hatt en feil som ikke er håndtert.
+        if (NULL == $this->container->get('security.context')->getToken()) {
+            $this->container->get('logger')->error("ExceptionListener: Mangler bruker-objekt! Logger ut brukeren via anon-token.");
             $view_data['code'] = $code;
             $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
             $this->container->get('security.token_storage')->setToken($usertoken);
@@ -116,6 +119,7 @@ class ExceptionListener {
             echo $response;
             // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
             $event->setResponse(new Response());
+            return new Response();
         }
     }
 
