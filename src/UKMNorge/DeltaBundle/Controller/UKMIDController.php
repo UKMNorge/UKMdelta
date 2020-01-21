@@ -39,14 +39,15 @@ class UKMIDController extends Controller
         }
         
         $alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
-
-        foreach( $alle_innslag->getAll() as $innslag ) {
-            try {
-                $innslag->getHome();
-            } catch( Exception $e ) {
-                // Workaround for noen få brukere som har slettede innslag.
-                $this->get('logger')->notice("UKMID:index - Hopper over et påmeldt innslag på grunn av slettet arrangement! Dette er en bug som ikke skal oppstå etter sesongen 2020.");
-                $alle_innslag->fjern( $innslag );
+        if( null != $alle_innslag && $alle_innslag->harInnslag() ) {
+            foreach( $alle_innslag->getAll() as $innslag ) {
+                try {
+                    $innslag->getHome();
+                } catch( Exception $e ) {
+                    // Workaround for noen få brukere som har slettede innslag.
+                    $this->get('logger')->notice("UKMID:index - Hopper over et påmeldt innslag på grunn av slettet arrangement! Dette er en bug som ikke skal oppstå etter sesongen 2020.");
+                    $alle_innslag->fjern( $innslag );
+                }
             }
         }
 
