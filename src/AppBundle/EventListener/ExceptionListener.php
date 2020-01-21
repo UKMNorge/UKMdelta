@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\Templating;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Twig_Environment;
@@ -86,7 +85,16 @@ class ExceptionListener {
         	case 0:
         		// Egne exceptions uten statuskode dukker opp her!
         		$view_data = $this->deltaException($event);
-        		break;
+                break;
+            case 100:
+                ## Code 100 = Exception fra UserService - Brukeren ikke logget inn. Force logout på vanlig symfony-vis.
+                $this->container->get('logger')->notice("ExceptionListener: Logger ut brukeren via symfony-logout.");
+                $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
+                $response = new RedirectResponse(
+                    $route->getPath()
+                );
+                $event->setResponse( $response );
+                break;
         	case 404:
         		// Not found Exception
         		$view_data = $this->notFoundException($event);
@@ -99,24 +107,21 @@ class ExceptionListener {
         		break;
         }
         
-        ### Logg ut brukeren
-        if( $code == 100 ) {
-            $route = $this->container->get('router')->getRouteCollection()->get('fos_user_security_logout');
-            $response = new RedirectResponse(
-                $route->getPath()
-            );
-            $event->setResponse( $response );
-        } else {
+        # Dersom vi ikke har noe brukerobjekt (usertoken), sett en anon-token og logg ut brukeren. Ikke logg ut vanlige brukere som bare har hatt en feil som ikke er håndtert.
+        if (NULL == $this->container->get('security.context')->getToken()) {
+            $this->container->get('logger')->error("ExceptionListener: Mangler bruker-objekt! Logger ut brukeren via anon-token.");
             $view_data['code'] = $code;
             $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
             $this->container->get('security.token_storage')->setToken($usertoken);
-            // La Twig rendre i vei
-            $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
-            // Send data til nettleseren
-            echo $response;
-            // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
-            $event->setResponse(new Response());
         }
+
+        // La Twig rendre i vei
+        $response = $this->container->get('templating')->render('UKMDeltaBundle:Error:index.html.twig', $view_data);
+        // Send data til nettleseren
+        echo $response;
+        // Setter denne til en tom response for å stoppe original varsling i tillegg til vår egen.
+        $event->setResponse(new Response());
+        return new Response();
     }
 
     /** 
@@ -161,7 +166,7 @@ class ExceptionListener {
             $view_data['pl_id'] = $this->container->get('request')->get('pl_id');
         }
         else {
-            $this->container->get('logger')->error("ExceptionListener: Totalt ukjent. File: ".$_SERVER['REQUEST_URI']);
+            $this->container->get('logger')->error("ExceptionListener: Totalt ukjent delta-feil. File: ".$_SERVER['REQUEST_URI']);
 
             $this->notifySupport($event->getException());
             
