@@ -39,7 +39,7 @@ class UKMIDController extends Controller
         }
         
         $alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
-        if( null != $alle_innslag && $alle_innslag->harInnslag() ) {
+        if( null != $alle_innslag  ) {
             foreach( $alle_innslag->getAll() as $innslag ) {
                 try {
                     $innslag->getHome();
