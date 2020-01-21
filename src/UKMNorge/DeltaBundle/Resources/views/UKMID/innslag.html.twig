@@ -30,7 +30,7 @@
             {% if pamelding_apen %}
                 <a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary autoshrink">{{ 'indexAction.rediger'|trans }}</a>
             {% endif %}
-            {% if innslag.getType().getKey() in ["nettredaksjon", "media"] and not pamelding_apen %}
+            {% if innslag.getType().getKey() in ["nettredaksjon", "media"] %}
                 <a href="{{ path('ukm_delta_ukmid_wordpress_connect')}}" class="btn btn-block btn-sm btn-outline-primary autoshring">logg inn på arrangørside</a>
             {% endif %}
             {% if pamelding_apen %}
