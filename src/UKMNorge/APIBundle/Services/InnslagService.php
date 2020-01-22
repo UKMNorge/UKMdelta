@@ -224,13 +224,23 @@ class InnslagService
 
         if ($user->getPameldUser() != null) {
             $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
-            $context = Context::createKontaktperson($person->getId(), $sesong);
-            return new Samling($context);
+            $p_id = $person->getId();
         } else {
-            // Har vi ikke en pameldUser har vi ikke opprettet noen innslag siden delta-databasen ble påbegynt.
-            // Tar derfor ut denne:
-            #$context = Context::createDeltaUser($user->getId(), $sesong);
+            $p_id = 0;
         }
+        $context = Context::createKontaktperson($p_id, $sesong);
+        $alle_innslag = new Samling($context);
+
+        foreach( $alle_innslag->getAll() as $innslag ) {
+            try {
+                $innslag->getHome();
+            } catch( Exception $e ) {
+                // Workaround for noen få brukere som har slettede innslag.
+                #$this->get('logger')->notice("UKMID:index - Hopper over et påmeldt innslag på grunn av slettet arrangement! Dette er en bug som ikke skal oppstå etter sesongen 2020.");
+                $alle_innslag->fjern( $innslag );
+            }
+        }        
+        return $alle_innslag;
     }
 
     /**
