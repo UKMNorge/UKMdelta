@@ -87,12 +87,13 @@ class InnslagService
      * @param Innslag $innslag
      * @return Tittel
      */
-    public function opprettTittel( Innslag $innslag ) {
-        $this->_setupLogger( $innslag->getHomeId());
-        
+    public function opprettTittel(Innslag $innslag)
+    {
+        $this->_setupLogger($innslag->getHomeId());
+
         $tittel = WriteTittel::create($innslag);
-        $tittel->setContext( 
-            Context::createInnslag( 
+        $tittel->setContext(
+            Context::createInnslag(
                 $innslag->getId(),
                 $innslag->getType()->getKey(),
                 $innslag->getHome()->getId(),
@@ -113,10 +114,11 @@ class InnslagService
      * @param Tittel $tittel
      * @throws Exception hvis feilet (fra WriteTittel)
      */
-    public function fjernTittel( Innslag $innslag, Tittel $tittel ) {
-        $this->_setupLogger( $innslag->getHomeId());
-        
-        WriteTittel::fjern( $tittel );
+    public function fjernTittel(Innslag $innslag, Tittel $tittel)
+    {
+        $this->_setupLogger($innslag->getHomeId());
+
+        WriteTittel::fjern($tittel);
     }
 
     /**
@@ -125,9 +127,10 @@ class InnslagService
      * @param Innslag $innslag
      * @return void
      */
-    public function lagreTitler( Innslag $innslag, Tittel $tittel ) {
-        $this->_setupLogger( $innslag->getHomeId());
-        return WriteTittel::save( $tittel );
+    public function lagreTitler(Innslag $innslag, Tittel $tittel)
+    {
+        $this->_setupLogger($innslag->getHomeId());
+        return WriteTittel::save($tittel);
     }
 
     /**
@@ -175,7 +178,7 @@ class InnslagService
      */
     public function meldAv(Int $innslagID, Int $arrangementID)
     {
-        $this->_setupLogger( $arrangementID );
+        $this->_setupLogger($arrangementID);
         $innslag = $this->hent($innslagID);
 
         // Sjekk at mønstringen tillater av- og påmeldinger
@@ -218,8 +221,8 @@ class InnslagService
     {
         $user = $this->hentCurrentUser();
         $sesong = $this->container->get('ukm_delta.season')->getActive();
-        
-        if( $user->getPameldUser() != null ) {
+
+        if ($user->getPameldUser() != null) {
             $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
             $context = Context::createKontaktperson($person->getId(), $sesong);
             return new Samling($context);
@@ -238,13 +241,14 @@ class InnslagService
      * @param Person $person
      * @return void
      */
-    public function leggTilPerson( Innslag $innslag, Person $person ) {
+    public function leggTilPerson(Innslag $innslag, Person $person)
+    {
         // Sjekk at mønstringen tillater av- og påmeldinger
         $this->sjekkFrist($innslag);
         // Sjekk at vi kan redigere innslaget
-        $this->sjekkTilgang( $innslag );
+        $this->sjekkTilgang($innslag);
         // Setup logger
-        $this->_setupLogger( $innslag->getHomeId() );
+        $this->_setupLogger($innslag->getHomeId());
 
         $innslag->getPersoner()->leggTil($person);
 
@@ -261,7 +265,7 @@ class InnslagService
      * @return Bool true
      * @throws Exception ikke tilgang, feil osv
      */
-    public function fjernPerson(Int $innslagID, Int $personID )
+    public function fjernPerson(Int $innslagID, Int $personID)
     {
         $innslag = $this->hent($innslagID);
 
@@ -269,11 +273,11 @@ class InnslagService
         $this->sjekkFrist($innslag);
 
         // Fjern personen
-        $person = $innslag->getPersoner()->get( $personID );
-        $innslag->getPersoner()->fjern( $person );        
+        $person = $innslag->getPersoner()->get($personID);
+        $innslag->getPersoner()->fjern($person);
 
         // Lagre
-        $this->_setupLogger( $innslag->getHomeId() );
+        $this->_setupLogger($innslag->getHomeId());
         WriteInnslag::savePersoner($innslag);
         return true;
     }
