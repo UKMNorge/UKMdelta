@@ -238,7 +238,9 @@ class UKMIDController extends Controller
             
             // Oppdater bruker
             if( $fodselsdato != 0 ) {
-                $user->setBirthdate($fodselsdato);
+                $dateTimeDato = new DateTime('now');
+                $dateTimeDato->setTimestamp($fodselsdato);
+                $user->setBirthdate($dateTimeDato);
             }
             /*
             $user->setPostNumber($postnummer); 
