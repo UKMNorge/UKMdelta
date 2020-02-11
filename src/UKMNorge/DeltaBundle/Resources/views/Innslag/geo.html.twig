@@ -85,6 +85,16 @@
                 <p class="lead">
                     {{ 'geoAction.topptekst'|trans }}
                 </p>
+                {% if suggested_kommune is defined %}
+                    <div id="suggested">
+                        Vi tror du vil melde deg på i
+                        <li class="list-group-item click kommune" data-action="{{ suggested_kommune.getAttr('action') }}" data-link="{{ suggested_kommune.getAttr('link') }}">
+                            {% include "UKMDeltaBundle:Geo:"~ suggested_kommune.getAttr('action') ~".html.twig" with { kommune: suggested_kommune, fylke: suggested_fylke } %}
+                            <div class="clearfix"></div>
+                        </li>
+                        Stemmer ikke dette? Da kan du velge et sted i listen under.
+                    </div>
+                {% endif %}
 
                 <!-- Søkefelt her -->
                 <input type="text" class="form-control input-sm delta-input my-3" name="filtrer" id="filterMonstringer" placeholder="{{ 'geoAction.filterLabel'|trans }}"/>

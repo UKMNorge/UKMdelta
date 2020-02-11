@@ -4,6 +4,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class DefaultController extends Controller
 {
@@ -23,9 +24,21 @@ class DefaultController extends Controller
             $this->wordpressLoginURL = 'https://delta.ukm.no/ukmid/wordpress-connect';
 	    }
 	    
+	    // If lastlocation-URL-parameter is set, we'll set a cookie.
+	    // TODO: Burde vi i stedet bare lagre infoen i session, eller skal Marius bruke den til noe i WP? Da trenger vi heller ikke flere sjekker for å modifisere respons etc.
+	    $request = Request::createFromGlobals();
+	    if ( $request->query->get('lastlocation') ) {
+	    	// TODO: Verify lastlocation is a valid kommune-ID.
+	    	$lastlocationCookie = new Cookie("lastlocation", $request->query->get('lastlocation'));
+	    }
+
 	    $is_granted_user = $this->get('security.authorization_checker')->isGranted('ROLE_USER');
 	    if( $is_granted_user ) {
-		    return $this->redirect( $this->get('router')->generate('ukm_delta_ukmid_homepage') );
+	    	$response = new RedirectResponse( $this->get('router')->generate('ukm_delta_ukmid_homepage') );
+	    	if ( $request->query->get('lastlocation') ) {
+	    		$response->headers->setCookie($lastlocationCookie);
+	    	}
+		    return $response;
 	    }
 	    
 	    $app_id = $this->getParameter('facebook_client_id');
@@ -36,6 +49,10 @@ class DefaultController extends Controller
 	    $view_data['facebookLoginURL'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
         $view_data['wordpressLoginURL'] = $this->wordpressLoginURL;
 
-        return $this->render('UKMDeltaBundle:Default:index.html.twig', $view_data);
+        $response = $this->render('UKMDeltaBundle:Default:index.html.twig', $view_data);
+        if( $request->query->get('lastlocation') ) {
+        	$response->headers->setCookie($lastlocationCookie);
+        }
+        return $response;
     }
 }
