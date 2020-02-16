@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fb2a9c4da3b717c5b04f035832dc984",
+    "content-hash": "1a0c85a66990f4b8d77cece85e55c062",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1010,49 +1010,6 @@
                 "minification"
             ],
             "time": "2016-11-11T18:43:20+00:00"
-        },
-        {
-            "name": "mariusmandal/wpoo",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mariusmandal/WPOO.git",
-                "reference": "eb94b9b41d1e56fd48b7224798522651e1116070"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mariusmandal/WPOO/zipball/eb94b9b41d1e56fd48b7224798522651e1116070",
-                "reference": "eb94b9b41d1e56fd48b7224798522651e1116070",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "WPOO_": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marius Mandal",
-                    "email": "mariusmandal@gmail.com",
-                    "homepage": "http://mariusmandal.no",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Helper classes for object-oriented wordpress themes",
-            "homepage": "https://github.com/mariusmandal/WPOO",
-            "keywords": [
-                "themes",
-                "wordpress"
-            ],
-            "time": "2017-08-31T17:46:13+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2481,23 +2438,30 @@
             "time": "2019-11-11T16:49:32+00:00"
         },
         {
-            "name": "ukmnorge/designbundle",
+            "name": "ukmnorge/design",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/UKMNorge/UKMresponsive.git",
-                "reference": "313ff428b1fef14bf0753e6467dcd37391e3f008"
+                "url": "https://github.com/UKMNorge/UKMDesign.git",
+                "reference": "4019ccf4946a115fab7ded8425847ad766cc138e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UKMNorge/UKMDesign/zipball/4019ccf4946a115fab7ded8425847ad766cc138e",
+                "reference": "4019ccf4946a115fab7ded8425847ad766cc138e",
+                "shasum": ""
             },
             "require": {
-                "mariusmandal/wpoo": "^1.0",
-                "symfony/yaml": ">=2.0"
+                "symfony/yaml": ">=2.0",
+                "twig/twig": "~1.0 || ^3.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "UKMNorge\\DesignBundle\\": "UKMNorge\\DesignBundle"
+                    "UKMNorge\\Design\\": "Class/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Asgeir Stavik Hustad",
@@ -2511,8 +2475,49 @@
                 }
             ],
             "description": "Felles design for UKM.no og undersider",
-            "homepage": "http://github.com/UKMNorge/UKMresponsive",
-            "time": "2019-10-29T19:18:54+00:00"
+            "homepage": "https://github.com/UKMNorge/UKMDesign",
+            "time": "2020-02-15T20:08:53+00:00"
+        },
+        {
+            "name": "ukmnorge/designsymfony2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UKMNorge/UKMDesignSymfony2.git",
+                "reference": "f3c8217a2d7965603a0ccbd9c96bf0e35c173be6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UKMNorge/UKMDesignSymfony2/zipball/f3c8217a2d7965603a0ccbd9c96bf0e35c173be6",
+                "reference": "f3c8217a2d7965603a0ccbd9c96bf0e35c173be6",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/yaml": ">=2.0",
+                "ukmnorge/design": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "UKMNorge\\TemplateEngine\\": "TemplateEngine/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Asgeir Stavik Hustad",
+                    "email": "asgeirsh@ukmmedia.no",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Marius Mandal",
+                    "email": "mariusmandal@ukm.no",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Wrapper for UKM Design, brukt med Symfony 2x-rammeverket",
+            "homepage": "https://github.com/UKMNorge/UKMDesignSymfony2",
+            "time": "2020-02-13T21:39:58+00:00"
         }
     ],
     "packages-dev": [
@@ -2562,14 +2567,15 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2015-03-17T06:36:52+00:00"
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-        "ukmnorge/designbundle": 20
+        "ukmnorge/designsymfony2": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -1,6 +1,6 @@
-ukm_designbundle:
-    resource: "@UKMDesignBundle/Resources/config/routing.yml"
-    prefix:   /
+#ukm_designbundle:
+#    resource: "@UKMDesignBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 ukmapi:
     resource: "@UKMAPIBundle/Resources/config/routing.yml"
