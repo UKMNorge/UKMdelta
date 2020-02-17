@@ -4,6 +4,3 @@ services:
         public: false
         tags:
             - { name: twig.extension }
-#    ukm_design.example:
-#        class: UKMNorge\DesignBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
