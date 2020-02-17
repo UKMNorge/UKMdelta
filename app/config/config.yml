@@ -36,13 +36,12 @@ twig:
         resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    paths: 
+        "%kernel.root_dir%/../vendor/ukmnorge/design/Resources/views/UKMDesign": UKMDesign
     globals:
+        UKMDesign: @UKMDesign #ukmdesign #ukmdesign definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
         UKM_HOSTNAME: %UKM_HOSTNAME%
-        SEO: "@ukmdesign.seo"
-        Sitemap: "@ukmdesign.sitemap"
-        THEME: "%UKMresponsive.theme%"
-        section: "%UKMresponsive.section%"
-        menu: "@ukm_delta.menu"
+#        menu: "@ukm_delta.menu"
 
 # Assetic Configuration
 assetic:
