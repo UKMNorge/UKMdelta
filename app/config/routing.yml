@@ -22,6 +22,10 @@ ukm_design:
     resource: "@UKMDeltaDesignBundle/Resources/config/routing.yml"
     prefix:   /
 
+ukm_designsymfony:
+    resource: "@UKMDesignBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
