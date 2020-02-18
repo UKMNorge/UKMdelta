@@ -1,7 +1,7 @@
 {% extends '@UKMDesign/Layout/base.html.twig' %}
-{# {% extends '@ukmdesign/Layout/base.html.twig' %} #}
 
 {% block javascripts %}
+	{% set deltamenu = DeltaMenu.get() %}
 	{% block additional_js %}{% endblock %}
     {% javascripts 
         '@UKMDeltaDesignBundle/Resources/public/js/ukmdesignbundle.js'

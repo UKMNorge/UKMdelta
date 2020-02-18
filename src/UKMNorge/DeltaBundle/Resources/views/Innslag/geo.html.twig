@@ -94,7 +94,7 @@
                         <p class="bold mb-0 fylkeHeader mt-4 mb-2" id="header_{{ fylke.getId() }}">{{ fylke.getNavn()|upper }}</p>
                         <ul data-fylke="{{ fylke.getId() }}" class="list list-unstyled list-group">
                             {% for kommune in fylke.getKommuner().getAll() %}
-                                <li class="list-group-item click kommune" data-action="{{ kommune.getAttr('action') }}" data-filter="{{ include("@UKMDesign/Kommune/Filternavn-v1.html.twig"|UKMpath|oneline) }} {{ fylke.getNavn() }}" data-link="{{ kommune.getAttr('link') }}"> {# Trenger vi UKMpath() nå? #}
+                                <li class="list-group-item click kommune" data-action="{{ kommune.getAttr('action') }}" data-filter="{{ include("@UKMDesign/Kommune/Filternavn-v1.html.twig"|UKMpath|oneline) }} {{ fylke.getNavn() }}" data-link="{{ kommune.getAttr('link') }}">
                                     {% include "UKMDeltaBundle:Geo:"~ kommune.getAttr('action') ~".html.twig" %}
                                     <div class="clearfix"></div>
                                 </li>

@@ -39,9 +39,9 @@ twig:
     paths: 
         "%kernel.root_dir%/../vendor/ukmnorge/design/Resources/views/UKMDesign": UKMDesign
     globals:
-        UKMDesign: @UKMDesign #ukmdesign #ukmdesign definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
+        UKMDesign: @UKMDesign # Definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
         UKM_HOSTNAME: %UKM_HOSTNAME%
-#        menu: "@ukm_delta.menu"
+        DeltaMenu: '@delta_menu'
 
 # Assetic Configuration
 assetic:
