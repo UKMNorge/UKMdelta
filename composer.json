@@ -6,12 +6,7 @@
     "autoload": {
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
-    "repositories": [
-	     {
-	         "url": "https://github.com/UKMNorge/UKMresponsive.git",
-	         "type": "git"
-	     }
-	],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.*",
@@ -26,10 +21,10 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "ukmnorge/designbundle": "dev-master"
+        "ukmnorge/designsymfony2": "dev-master"
     },
     "require-dev": {
-	    "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3"
     },
     "scripts": {
         "post-root-package-install": [
