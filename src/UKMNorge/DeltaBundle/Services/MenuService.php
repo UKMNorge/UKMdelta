@@ -13,23 +13,30 @@ class MenuService {
 
 		public function __construct($container) {
             $this->container = $container;
-			$this->section = new Section(
+        }
+        
+        public function getPages() {
+            if( is_null($this->section)) {
+                $this->_loadSection();
+            }
+            return $this->section->getPages();
+        }
+
+        private function _loadSection() {
+            $this->section = new Section(
                 'site_extras',
                 'https://delta.ukm.no/ukmid/',
                 'Din side',
                 $this->_loadPages()
             );
         }
-        
-        public function getPages() {
-            return $this->section->getPages();
-        }
 
 		private function _loadPages() {
 			$userManager = $this->container->get('ukm_user');
 			$user = $userManager->getCurrentUser();
 			$router = $this->container->get('router');
-			
+            
+            $menu = [];
 			// Kun vis disse knappene dersom brukeren er logget inn.
 			if( is_object( $user ) && $user !== null ) {
 				if( date('m') < 8 && date('m') > 3 ) {

@@ -2702,12 +2702,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMDesign.git",
-                "reference": "5df19da00d1078828463e3a7c888ace21786ff10"
+                "reference": "fe039f4061e248a84d32589829728ae5daf402db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKMNorge/UKMDesign/zipball/5df19da00d1078828463e3a7c888ace21786ff10",
-                "reference": "5df19da00d1078828463e3a7c888ace21786ff10",
+                "url": "https://api.github.com/repos/UKMNorge/UKMDesign/zipball/fe039f4061e248a84d32589829728ae5daf402db",
+                "reference": "fe039f4061e248a84d32589829728ae5daf402db",
                 "shasum": ""
             },
             "require": {
@@ -2735,7 +2735,7 @@
             ],
             "description": "Felles design for UKM.no og undersider",
             "homepage": "https://github.com/UKMNorge/UKMDesign",
-            "time": "2020-02-19T14:10:31+00:00"
+            "time": "2020-02-19T16:41:24+00:00"
         },
         {
             "name": "ukmnorge/designsymfony2",
@@ -2743,12 +2743,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMDesignSymfony2.git",
-                "reference": "f3c8217a2d7965603a0ccbd9c96bf0e35c173be6"
+                "reference": "f62fec7a5da002b9eb6cdcfd92e1df11762e1d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKMNorge/UKMDesignSymfony2/zipball/f3c8217a2d7965603a0ccbd9c96bf0e35c173be6",
-                "reference": "f3c8217a2d7965603a0ccbd9c96bf0e35c173be6",
+                "url": "https://api.github.com/repos/UKMNorge/UKMDesignSymfony2/zipball/f62fec7a5da002b9eb6cdcfd92e1df11762e1d45",
+                "reference": "f62fec7a5da002b9eb6cdcfd92e1df11762e1d45",
                 "shasum": ""
             },
             "require": {
@@ -2758,7 +2758,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "UKMNorge\\TemplateEngine\\": "TemplateEngine/"
+                    "UKMNorge\\DesignBundle\\": "DesignBundle/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2776,7 +2776,7 @@
             ],
             "description": "Wrapper for UKM Design, brukt med Symfony 2x-rammeverket",
             "homepage": "https://github.com/UKMNorge/UKMDesignSymfony2",
-            "time": "2020-02-13T21:39:58+00:00"
+            "time": "2020-02-19T14:14:06+00:00"
         }
     ],
     "packages-dev": [
