@@ -8,45 +8,32 @@ use stdClass;
 
 class MenuService {
 
-		private $menu = null;
+        private $section = null;
+        private $container;
 
-		public function __construct($container, $ukmdesign) {
-			$this->container = $container;
-			$this->ukmdesign = $ukmdesign;
-			$this->log = $container->get('logger');
-			$this->log->info("Initialized Delta MenuService");
-		}
+		public function __construct($container) {
+            $this->container = $container;
+			$this->section = new Section(
+                'site_extras',
+                'https://delta.ukm.no/ukmid/',
+                'Din side',
+                $this->_loadPages()
+            );
+        }
+        
+        public function getPages() {
+            return $this->section->getPages();
+        }
 
-		public function get() {
-			$this->log->info("Getting Delta Menu from MenuService");
-
-			if( null == $this->menu ) {
-				$this->_load();
-			}
-			
-			$section = new Section('extra', $this->menu['url'], $this->menu['title'], $this->menu);
-			$this->log->info("Adding Delta Menu to sitemap sections");
-			$this->ukmdesign->getSitemap()->addSection( $section );
-
-			return $section;
-		}
-
-		private function _load() {
-			$this->log->info("Loading Delta Menu");
+		private function _loadPages() {
 			$userManager = $this->container->get('ukm_user');
 			$user = $userManager->getCurrentUser();
 			$router = $this->container->get('router');
-			$menu = [
-				'url' => '//delta.ukm.no',
-				'title' => 'Din side',
-				'pages' => []
-			];
-
+			
 			// Kun vis disse knappene dersom brukeren er logget inn.
 			if( is_object( $user ) && $user !== null ) {
-
 				if( date('m') < 8 && date('m') > 3 ) {
-					$menu['pages'][] = [
+                    $menu['pages'][] = [
 						'id' => 'sjekk',
 						'url' => $router->generate('ukm_sjekk_create'),
 						'title' => 'Sjekk info'
@@ -85,6 +72,6 @@ class MenuService {
 				}
 			}
 			
-			$this->menu = $menu;
+			return $menu;
 		}
 }

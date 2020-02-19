@@ -1,6 +1,0 @@
-services:
-    app.twig_extension:
-        class: UKMNorge\UKMDeltaDesignBundle\Twig\DatoExtension
-        public: false
-        tags:
-            - { name: twig.extension }

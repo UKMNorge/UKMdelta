@@ -31,17 +31,17 @@ framework:
 # Twig Configuration
 twig:
     form_themes:
-        - 'UKMDeltaDesignBundle:Form:fields.html.twig'
+        - 'UKMDeltaBundle:Form:fields.html.twig'
     form:
         resources: ['bootstrap_3_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    paths: 
-        "%kernel.root_dir%/../vendor/ukmnorge/design/Resources/views/UKMDesign": UKMDesign
+    paths:
+        "%kernel.root_dir%/../vendor/ukmnorge/design/Resources/views": ~
     globals:
-        UKMDesign: @UKMDesign # Definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
-        UKM_HOSTNAME: %UKM_HOSTNAME%
-        DeltaMenu: '@delta_menu'
+        UKMDesign: "@UKMDesign" # Definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
+        UKM_HOSTNAME: "%UKM_HOSTNAME%"
+        sitemap_extras: '@delta_menu'
 
 # Assetic Configuration
 assetic:

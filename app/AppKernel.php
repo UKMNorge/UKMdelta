@@ -17,7 +17,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
-            new UKMNorge\DeltaDesignBundle\UKMDeltaDesignBundle(),
             new UKMNorge\DesignBundle\UKMDesignBundle(), # Loaded from ukmnorge/designsymfony2
             new UKMNorge\DeltaBundle\UKMDeltaBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
