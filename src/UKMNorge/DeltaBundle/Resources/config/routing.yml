@@ -280,6 +280,11 @@ ukm_nominasjon:
     defaults: { _controller: UKMDeltaBundle:Nominasjon:velg }
     methods: [GET]
 
+ukm_nominasjon_finn_skjema:
+    path: /ukmid/nominasjon/{id}/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:finnSkjema }
+    methods: [GET]
+
 # ALIAS FOR TING SOM BENYTTER $innslag->getType()->getKey()
 ukm_nominasjon_nettredaksjon:
     path: /ukmid/nominasjon/media/

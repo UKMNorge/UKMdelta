@@ -23,17 +23,101 @@ class NominasjonController extends Controller
 	/**
 	 * VelgAction
 	 *
-	 * Brukeren velger media eller arrangør
+	 * Brukeren velger nominert innslag.
 	**/
 	public function velgAction() {
+
+		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+		$nominerte_innslag = array();
+		foreach($alle_innslag as $innslag) {
+			if ( $innslag->getNominasjoner()->getAntall() > 0 ) {
+				$nominerte_innslag[] = $innslag;
+			}
+		}
+
+		if( count($nominerte_innslag) == 1 ) {
+			// TODO: Videresend direkte til den ène nomimasjonen de har.
+		}
+
 		$view_data = array(
-			'translationDomain' => 'nominasjon'
+			'translationDomain' => 'nominasjon',
+			'nominerte_innslag' => $nominerte_innslag			
 		);
+
 		return $this->render('UKMDeltaBundle:Nominasjon:velg.html.twig', $view_data );
 	}
 
 	/**
-	 * ArrangørInfoAction
+	 * Brukeren har valgt hvilken nominasjon han vil fylle ut skjema for. 
+	 *
+	 */
+	public function finnSkjemaAction(Request $request, int $id) {
+		$view_data = [
+			'translationDomain' => 'nominasjon'
+		];
+
+		// Verifiser at nominasjonen tilhører denne brukeren.
+		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+
+		$nominert_innslag = null;
+		$nominasjon = null;
+		foreach($alle_innslag as $innslag) {
+			foreach ( $innslag->getNominasjoner()->getAll() as $nominasjon_i ) {
+				if( $nominasjon_i->getId() == $id) {
+					$nominert_innslag = $innslag;
+					$nominasjon = $nominasjon_i;
+				}
+			}
+		}
+
+		$view_data['nominasjon'] = $nominasjon;
+
+		if( null == $nominert_innslag || null == $nominasjon) {
+			throw new Exception("Fant ikke denne nominasjonen!");
+		}
+
+		// Velg skjmea ut fra nominasjons type og destinasjon
+		if($nominasjon->getTilArrangement()->getType() == 	'land') {
+			if($nominasjon->getType() == 'arrangor') {
+				// Redirect til ekstraordinær info for festival-deltakerne
+				return $this->redirectToRoute('ukm_nominasjon_arrangor');
+			} 
+		}
+
+		// Arrangører og media på andre enn landsfestivalen behandles likt.
+		if($nominasjon->getType() == 'arrangor') 
+		{
+			if( is_array( $this->get('session')->get('form-data') ) ) {
+				$view_data = array_merge( $view_data, $this->get('session')->get('form-data') );
+				$this->get('session')->remove('form-data');
+			}
+
+			return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
+		}
+		elseif ($nominasjon->getType() == 'nettredaksjon' || $nominasjon->getType() == 'media') 
+		{	
+			$omrader = [
+			'tekst' => 'Tekst',
+			'foto' => 'Foto',
+			'film' => 'Film',
+			'flerkamera-regi' => 'Flerkamera, regi',
+			'flerkamera-kamera' => 'Flerkamera, kameraoperatør',
+			'design' => 'Design',
+			'some' => 'Sosiale medier (instagram og facebook)',
+			'programmering' => 'Programmering (HTML/JS/CSS/PHP)'
+#			'annet' => 'Er det noe annet du kan, som du vil gjøre?',
+		];
+		
+		
+		$view_data['omrader'] = $omrader;
+		return $this->render('UKMDeltaBundle:Nominasjon:media.html.twig', $view_data );
+		} else {
+			throw new Exception("Vi fant ikke en nominasjon for denne typen påmelding.");
+		}
+	}
+
+	/**
+	 * ArrangørInfoAction - kun for festivalen
 	 *
 	 * Vis brukeren info om hva nominasjon og arrangør er.
 	 * Brukeren må ta stilling til om h*n kan delta på både planleggingshelg og festival
