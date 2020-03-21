@@ -1,6 +1,6 @@
-ukm_designbundle:
-    resource: "@UKMDesignBundle/Resources/config/routing.yml"
-    prefix:   /
+#ukm_designbundle:
+#    resource: "@UKMDesignBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 ukmapi:
     resource: "@UKMAPIBundle/Resources/config/routing.yml"
@@ -18,12 +18,12 @@ ukm_delta:
     resource: "@UKMDeltaBundle/Resources/config/routing.yml"
     prefix:   /
 
-ukm_design:
-    resource: "@UKMDeltaDesignBundle/Resources/config/routing.yml"
+ukm_designsymfony:
+    resource: "@UKMDesignBundle/Resources/config/routing.yml"
     prefix:   /
 
 app:
-    resource: @AppBundle/Controller/
+    resource: "@AppBundle/Controller/"
     type:     annotation
 
 # app/config/routing.yml

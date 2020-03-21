@@ -29,18 +29,6 @@ parameters:
     ukmdelta.sms.validation.text: "#code er din engangskode for å opprette UKM-bruker."
     ukmdelta.sms.password.reset_text: "Trykk på lenken for å resette ditt passord. #link"
     ukmdelta.sms.password.created: "Din UKM-bruker er opprettet! Neste gang du skal logge inn, bruker du passordet #code"
-    UKM_HOSTNAME:
-    facebook_client_id:
-    facebook_client_secret:
-
-    UKMresponsive.theme: ''
-    UKMresponsive.section:
-        title: Delta på UKM
-        url: //delta.ukm.no
-
-    SEOdefaultsApp:
-        title: Delta
-        canonical: //delta.ukm.no
-        description: Meld deg på UKM
-        siteName: UKM Delta
-        section: delta
+    UKM_HOSTNAME: 'ukm.dev'
+    facebook_client_id: 
+    facebook_client_secret: 

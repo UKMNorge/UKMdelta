@@ -234,11 +234,13 @@ class UKMIDController extends Controller
             $postnummer = $request->request->get('postnummer');
             $poststed = $request->request->get('poststed'); 
             */
-            $fodselsdato = WritePerson::fodselsdatoFraAlder($request->request->get('age')); // Alder
+            $fodselsdato = WritePerson::fodselsdatoFraAlder($request->request->get('alder')); // Alder
             
             // Oppdater bruker
             if( $fodselsdato != 0 ) {
-                $user->setBirthdate($fodselsdato);
+                $dateTimeDato = new DateTime('now');
+                $dateTimeDato->setTimestamp($fodselsdato);
+                $user->setBirthdate($dateTimeDato);
             }
             /*
             $user->setPostNumber($postnummer); 
