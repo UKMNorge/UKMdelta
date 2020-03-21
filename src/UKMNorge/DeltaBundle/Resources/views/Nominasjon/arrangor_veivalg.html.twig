@@ -1,7 +1,7 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block delta_content %}	
-	<form method="POST" action="{{ url('ukm_nominasjon_arrangor_veivalg_save') }}" id="nominasjonsskjema">
+	<form method="POST" action="{{ url('ukm_nominasjon_arrangor_veivalg_save', {id: nominasjon.getId()}) }}" id="nominasjonsskjema">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
