@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="col-12">
 				<h1>Fortell oss mer om din lydtekniker-erfaring</h1>
-				<form method="POST" action="{{ url('ukm_nominasjon_arrangor_detaljer_save', {type:'lydtekniker'} ) }}" id="nominasjonsskjema">
+				<form method="POST" action="{{ url('ukm_nominasjon_arrangor_detaljer_save', {type:'lydtekniker', id: nominasjon.getId()} ) }}" id="nominasjonsskjema">
 					<div class="form-group">
 						<label>
 							Hva slags erfaring har du fra før? Hvilke miksere har du brukt?

@@ -1,22 +1,20 @@
 {% extends "UKMDeltaBundle::layout.html.twig" %}
 
 {% block delta_content %}	
-	<form method="POST" action="{{ url('ukm_nominasjon_arrangor_veivalg_save') }}" id="nominasjonsskjema">
+	<form method="POST" action="{{ url('ukm_nominasjon_arrangor_veivalg_save', {id: nominasjon.getId()}) }}" id="nominasjonsskjema">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-					<h1>Hva har du mest lyst til å jobbe med?</h1>
-					
-					<p class="lead">
-						Unge Arrangører kommer til å jobbe med flere arrangement på festivalen og få ulike oppgaver. 
+					<p class="mt-4 lead">
+						At du er nominert betyr at din arrangør ønsker at du skal være med til {{ nominasjon.getTilArrangement().getNavn() }}, 
+						men det er dessverre ikke alltid nok oppgaver til alle...
 					</p>
 					<p>
-						Alle får opplæring og hjelp av mentorer, 
-						både på planleggingshelgen og på UKM-festivalen. 
+						{{ nominasjon.getTilArrangement().getNavn() }} velger ut nominerte til et team som skal fylle alle rollene med flinke og motiverte folk. Derfor trenger vi at du fyller ut skjemaet og forteller oss hva du kan og hva du har lyst til å gjøre.
 					</p>
 					
 					<p>
-						For å skape en best mulig festival, har vi alle ansvar for å hjelpe hverandre
+						For å skape en best mulig festival, har vi alle ansvar for å hjelpe hverandre.
 					</p>
 					
 					<h2>
@@ -29,7 +27,7 @@
 							Kjører lyd og lys på unge arrangørers egne arrangement.
 						</li>
 						<li class="list-group-item">
-							Er stagehands på hovedforestillinger.
+							Er stagehands på forestillinger.
 						</li>
 						<li class="list-group-item">
 							Bidrar på rigging og tekniske oppgaver.
@@ -39,7 +37,7 @@
 					<h3>Vertskap</h3>
 					<ol class="list-group">
 						<li class="list-group-item">
-							Er festivalens informasjonssenter og ansikt utad.
+							{{ nominasjon.getTilArrangement.getNavn() }} sitt informasjonssenter og ansikt utad.
 						</li>
 						<li class="list-group-item">
 							Har ansvar for sekretariat. 
@@ -64,10 +62,10 @@
 							Er bindeledd for alle som jobber med arrangementet. 
 						</li>
 						<li class="list-group-item">
-							Har både skriftlig planleggingsarbeid i forkant og praktiske oppgaver underveis.
+							Har ofte skriftlig planleggingsarbeid i forkant og praktiske oppgaver underveis.
 						</li>
 					</ol>					
-					<h2>Velg hva du vil jobbe med på UKM-festivalen</h2>
+					<h2>Velg hva du vil jobbe med på {{ nominasjon.getTilArrangement().getNavn() }}</h2>
 					
 					<ol class="list-group">
 						<li class="list-group-item">
@@ -112,7 +110,7 @@
 					</div>
 
 					<div class="form-group">
-						<label>Hvordan har du jobbet på lokalmønstring/fylkesfestival, og hva kan du innenfor områdene du har krysset av for (lyd/lys/vertskap/produsent)?</label>
+						<label>Hvordan har du jobbet på {{ nominasjon.getFraArrangement().getNavn() }}, og hva kan du innenfor områdene du har krysset av for (lyd/lys/vertskap/produsent)?</label>
 						<textarea rows="4" name="erfaring" class="form-control" required="true">{{ form_erfaring is defined ? form_erfaring : '' }}</textarea>
 					</div>
 

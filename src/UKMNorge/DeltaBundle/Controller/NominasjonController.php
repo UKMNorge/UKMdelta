@@ -10,8 +10,8 @@ use person;
 use person_v2;
 use innslag_v2;
 use nominasjon;
-use write_nominasjon;
-use nominasjon_media;
+use UKMNorge\Innslag\Nominasjon\Write as NominasjonWrite;
+use UKMNorge\Log\Logger;
 use write_nominasjon_media;
 use monstringer_v2;
 use UKMmail;
@@ -23,24 +23,126 @@ class NominasjonController extends Controller
 	/**
 	 * VelgAction
 	 *
-	 * Brukeren velger media eller arrangør
+	 * Brukeren velger nominert innslag.
 	**/
 	public function velgAction() {
+
+		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+		$nominerte_innslag = array();
+		foreach($alle_innslag as $innslag) {
+			if ( $innslag->getNominasjoner()->getAntall() > 0 ) {
+				$nominerte_innslag[] = $innslag;
+			}
+		}
+
+		// Ved kun ett skjema å fylle ut, kan vi sende brukeren rett dit så lenge fristen ikke er gått ut og brukeren ikke har fylt det ut enda.
+		if( count($nominerte_innslag) == 1 && $nominerte_innslag[0]->getNominasjoner()->getAntall() == 1 ) {
+			$innslag = $nominerte_innslag[0];
+			$nominasjon = $innslag->getNominasjoner()->getAll()[0];
+
+			if(
+				date("now") < $nominasjon->getTilArrangement()->getFrist(1) &&
+				!$nominasjon->harDeltakerSkjema() ) 
+			{
+				return $this->redirectToRoute( 'ukm_nominasjon_finn_skjema', ['id' => $nominasjon->getId()] );
+			}
+		}
+
 		$view_data = array(
-			'translationDomain' => 'nominasjon'
+			'translationDomain' => 'nominasjon',
+			'nominerte_innslag' => $nominerte_innslag			
 		);
+
 		return $this->render('UKMDeltaBundle:Nominasjon:velg.html.twig', $view_data );
 	}
 
 	/**
-	 * ArrangørInfoAction
+	 * Hent nominasjonen fra id, og sjekk at den tilhører denne brukeren.
+	 *
+	 *
+	 */
+	private function getNominasjon( $nominasjons_id ) {
+		// Verifiser at nominasjonen tilhører denne brukeren.
+		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+
+		$nominert_innslag = null;
+		$nominasjon = null;
+		foreach($alle_innslag as $innslag) {
+			foreach ( $innslag->getNominasjoner()->getAll() as $nominasjon_i ) {
+				if( $nominasjon_i->getId() == $nominasjons_id) {
+					$nominasjon = $nominasjon_i;
+				}
+			}
+		}
+
+		if( null == $nominasjon) {
+			throw new Exception("Fant ikke denne nominasjonen!");
+		}
+
+		return $nominasjon;
+	}
+
+	/**
+	 * Brukeren har valgt hvilken nominasjon han vil fylle ut skjema for. 
+	 *
+	 */
+	public function finnSkjemaAction(Request $request, int $id) {
+		$nominasjon = $this->getNominasjon($id);
+
+		$view_data = [
+			'translationDomain' => 'nominasjon',
+			'nominasjon' => $nominasjon
+		];
+
+		// Velg skjmea ut fra nominasjons type og destinasjon
+		if($nominasjon->getTilArrangement()->getType() == 'land') {
+			if($nominasjon->getType() == 'arrangor') {
+				// Redirect til ekstraordinær info for festival-deltakerne
+				return $this->redirectToRoute('ukm_nominasjon_arrangor');
+			} 
+		}
+
+		// Arrangører og media på andre enn landsfestivalen behandles likt.
+		if($nominasjon->getType() == 'arrangor') 
+		{
+			if( is_array( $this->get('session')->get('form-data') ) ) {
+				$view_data = array_merge( $view_data, $this->get('session')->get('form-data') );
+				$this->get('session')->remove('form-data');
+			}
+
+			return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
+		}
+		elseif ($nominasjon->getType() == 'nettredaksjon' || $nominasjon->getType() == 'media') 
+		{	
+			$omrader = [
+			'tekst' => 'Tekst',
+			'foto' => 'Foto',
+			'film' => 'Film',
+			'flerkamera-regi' => 'Flerkamera, regi',
+			'flerkamera-kamera' => 'Flerkamera, kameraoperatør',
+			'design' => 'Design',
+			'some' => 'Sosiale medier (instagram og facebook)',
+			'programmering' => 'Programmering (HTML/JS/CSS/PHP)'
+#			'annet' => 'Er det noe annet du kan, som du vil gjøre?',
+		];
+		
+		$view_data['omrader'] = $omrader;
+		return $this->render('UKMDeltaBundle:Nominasjon:media.html.twig', $view_data );
+		} else {
+			throw new Exception("Vi fant ikke en nominasjon for denne typen påmelding.");
+		}
+	}
+
+	/**
+	 * ArrangørInfoAction - kun for festivalen
 	 *
 	 * Vis brukeren info om hva nominasjon og arrangør er.
 	 * Brukeren må ta stilling til om h*n kan delta på både planleggingshelg og festival
 	**/
-	public function arrangorInfoAction() {
+	public function arrangorInfoAction(Request $request, $id) {
 		$view_data = [
 			'translationDomain' => 'nominasjon',
+			'nominasjon' => $this->getNominasjon($id)
 		];
 		return $this->render('UKMDeltaBundle:Nominasjon:arrangor.html.twig', $view_data );
 	}
@@ -51,23 +153,20 @@ class NominasjonController extends Controller
 	 * NO: render: sorry
 	 * YES: redirectTo veivalg
 	**/
-	public function arrangorInfoSaveAction( Request $request ) {
+	public function arrangorInfoSaveAction( Request $request, $id ) {
 		$view_data = [
 			'translationDomain' => 'nominasjon',
+			'nominasjon' => $this->getNominasjon($id)
 		];
+		
+		$nominasjon = $this->getNominasjon($id);
 
 		$planhelg = $request->request->get('planhelg');
 		$festival = $request->request->get('festival');
 
 		if( $planhelg == 'ja' && $festival == 'ja' ) {
-			// Hvis ikke brukeren er videresendt, stopp allerede her.
-			try {
-				$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
-			} catch( Exception $e ) {
-				return $this->_sendMissingUserEmail();
-			}
-			
-			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
+			// Send videre i prosessen
+			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg', ['id' => $id]);
 		}
 		
 		/**
@@ -82,15 +181,7 @@ class NominasjonController extends Controller
 			$flagg = 'festivalen';
 		}
 		
-		// Hvis brukeren ikke er videresendt til fylket hverken kan eller trenger
-		// vi å flagge vedkommende
-		try {
-			$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
-			write_nominasjon::saveSorry( $nominasjon, $flagg);
-		} catch( Exception $e ) {
-			// Do nothing
-		}
-
+		NominasjonWrite::saveSorry( $nominasjon, $flagg);
 		return $this->render('UKMDeltaBundle:Nominasjon:sorry.html.twig', $view_data);
 	}
 	
@@ -99,9 +190,10 @@ class NominasjonController extends Controller
 	 *
 	 *
 	**/
-	public function arrangorVeivalgAction(){
+	public function arrangorVeivalgAction(Request $request, $id){
 		$view_data = [
 			'translationDomain' => 'nominasjon',
+			'nominasjon' => $this->getNominasjon($id)
 		];
 		
 		if( is_array( $this->get('session')->get('form-data') ) ) {
@@ -112,7 +204,9 @@ class NominasjonController extends Controller
 		return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
 	}
 	
-	public function arrangorVeivalgSaveAction( Request $request ) {
+	public function arrangorVeivalgSaveAction( Request $request, $id ) {
+		$user = $this->get('ukm_user')->getCurrentUser();
+
 		$lydtekniker = $request->request->get('lydtekniker') == 'true';
 		$lystekniker = $request->request->get('lystekniker') == 'true';
 		$vertskap = $request->request->get('vertskap') == 'true';
@@ -144,7 +238,8 @@ class NominasjonController extends Controller
 		
 		$this->get('session')->set('nominasjon_arrangor_step', $step);
 		
-		$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
+		$nominasjon = $this->getNominasjon($id);
+
 		$nominasjon->setLydtekniker( $lydtekniker );
 		$nominasjon->setLystekniker( $lystekniker );
 		$nominasjon->setProdusent( $produsent );
@@ -155,14 +250,16 @@ class NominasjonController extends Controller
 		$nominasjon->setSuksesskriterie( $request->request->get('suksesskriterie') );
 		$nominasjon->setAnnet( $request->request->get('annet') );
 		
-		write_nominasjon::saveArrangor( $nominasjon );
+		Logger::setID('delta', $user->getId(), $nominasjon->getTilArrangement()->getId());
+		NominasjonWrite::saveArrangor( $nominasjon );
 		
-		return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer');
+		return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer', ['id' => $id]);
 	}
 	
-	public function arrangorDetaljerAction( $type ) {
+	public function arrangorDetaljerAction( $type, $id ) {
 		$view_data = [
 			'translationDomain' => 'nominasjon',
+			'nominasjon' => $this->getNominasjon($id)
 		];
 
 		switch( $type ) {
@@ -177,7 +274,7 @@ class NominasjonController extends Controller
 					$next = array_shift( $steps );
 					$this->get('session')->set('nominasjon_arrangor_step', $steps);
 					
-					return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer', ['type' => $next] );
+					return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer', ['id' => $id, 'type' => $next] );
 				} else {
 					$this->get('session')->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
 					
@@ -186,12 +283,9 @@ class NominasjonController extends Controller
 		}
 	}
 	
-	public function arrangorDetaljerSaveAction( Request $request, $type ) {
-		try {
-			$nominasjon = $this->_loadOrCreateNominasjon( 'arrangor' );
-		} catch( Exception $e ) {
-			return $this->_sendMissingUserEmail();
-		}
+	public function arrangorDetaljerSaveAction( Request $request, $id, $type ) {
+		$user = $this->get('ukm_user')->getCurrentUser();
+		$nominasjon = $this->getNominasjon($id);
 
 		switch( $type ) {
 			case 'lydtekniker':
@@ -209,12 +303,13 @@ class NominasjonController extends Controller
 			default: 
 				throw new Exception('Beklager, prøvde å lagre arrangør-erfaring av ukjent type, og det går ikke.');
 		}
-		
-		write_nominasjon::saveArrangor( $nominasjon );
-		return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer');
+
+		Logger::setID('delta', $user->getId(), $nominasjon->getTilArrangement()->getId());
+		NominasjonWrite::saveArrangor( $nominasjon );
+		return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer', ['id' => $id]);
 	}
 
-	public function mediaAction() {
+	public function mediaAction(Request $request, $id) {
 		$omrader = [
 			'tekst' => 'Tekst',
 			'foto' => 'Foto',
@@ -229,23 +324,24 @@ class NominasjonController extends Controller
 		
 		$view_data = [
 			'translationDomain' => 'nominasjon',
+			'nominasjon' => $this->getNominasjon($id),
 			'omrader' => $omrader,
 		];
 		return $this->render('UKMDeltaBundle:Nominasjon:media.html.twig', $view_data );
 	}
 
-	public function mediaSaveAction( Request $request ) {
-		try {
-			$nominasjon = $this->_loadOrCreateNominasjon( 'media' );
-		} catch( Exception $e ) {
-			return $this->_sendMissingUserEmail();
-		}
+	public function mediaSaveAction( Request $request, $id ) {
+		$nominasjon = $this->getNominasjon($id);
+		$user = $this->get('ukm_user')->getCurrentUser();
+
 		$nominasjon->setPri1( $request->request->get('pri-1') );
 		$nominasjon->setPri2( $request->request->get('pri-2') );
 		$nominasjon->setPri3( $request->request->get('pri-3') );
 		$nominasjon->setAnnet( $request->request->get('annet') );
 		$nominasjon->setBeskrivelse( $request->request->get('beskrivelse') );
-		write_nominasjon::saveMedia( $nominasjon );
+
+		Logger::setID('delta', $user->getId(), $nominasjon->getTilArrangement()->getId());
+		NominasjonWrite::saveMedia( $nominasjon );
 		
 		$this->get('session')->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
 		
@@ -269,85 +365,6 @@ class NominasjonController extends Controller
 		  ->ok();
 
 		return $this->render('UKMDeltaBundle:Nominasjon:ingenbruker.html.twig', [] );
-	}
-
-	
-	private function _loadOrCreateNominasjon( $type ) {
-		require_once('UKM/logger.class.php');
-		require_once('UKM/innslag.class.php');
-		require_once('UKM/monstringer.class.php');
-		require_once('UKM/nominasjon_media.class.php');
-		require_once('UKM/write_nominasjon.class.php');
-
-		$user = $this->get('ukm_user')->getCurrentUser();
-		
-		// Hvis brukeren ikke har tilknyttet UKM-person
-		if( null === $user->getPameldUser() ) {
-			$person_objekt = null;
-			try {
-				require_once('UKM/person.class.php');
-				// Sjekk om vi har denne personen i participant-tabellen
-				$person = person_v2::loadFromData( $user->getFirstname(), $user->getLastname(), $user->getPhone() );
-
-				// Oppdater delta-brukeren
-                $userManager = $this->container->get('fos_user.user_manager');
-                $user->setPameldUser( $person->getId() );
-                $userManager->updateUser($user);
-                
-                // Oppdater WP-innloggingsbruker med delta-ID om p_id finnes i tabellen.
-                // Ettersom denne Delta-brukeren ikke har en tilknyttet UKM-person fra før, vil delta_ID uansett ikke ligge der.
-                $personService = $this->container->get('ukm_api.person');
-                $personService->addDeltaIDToWordpressLoginUser($person->getId(), $user->getId());
-				
-				// Last inn V1-bruker da UKMdelta benytter APIv1
-				$person_objekt = new person( $person->getId() );
-			} catch( Exception $e ) {
-				if( $e->getCode() == 109004 ) {
-					$person = null;
-				}
-				throw $e;
-			}
-		}
-		// Hent brukerobjektet dersom det finnes
-		else {
-			$personService = $this->get('ukm_api.person');
-			$person_objekt = $personService->hent( $user->getPameldUser() );
-		}
-
-		$innslagService = $this->get('ukm_api.innslag');
-		$innslagsliste = $innslagService->hentInnslagFraKontaktperson($person_objekt->get('p_id'), $user->getId());
-
-		$nominert = false;
-		$type_compare = $type == 'media' ? 'nettredaksjon' : $type; // korriger for nettredaksjon/media
-		foreach( $innslagsliste['fullstendig'] as $container ) {
-			$loop_innslag = new innslag_v2( $container->innslag->id );
-			if( $loop_innslag->getType()->getKey() == $type_compare && $loop_innslag->erVideresendt() ) {
-				$nominert = $loop_innslag;
-			}
-		}
-		
-		if( !$nominert ) {
-			throw new Exception(
-				'Beklager, akkurat nå krever systemet at du har en påmelding på fylkesfestivalen før du kan nomineres. '.
-				'Vi jobber med å rette problemet, men send en epost til support@ukm.no om at du sliter med nominasjonen, så skal vi hjelpe deg'
-				,
-				1
-			);
-		}
-		
-		$fylke_monstring = monstringer_v2::fylke( $nominert->getKommune()->getFylke(), $this->get('ukm_delta.season')->getActive() );
-		
-		UKMlogger::setID( 'delta', $user->getPameldUser(), $fylke_monstring->getId() );
-		
-		// CREATE OR SELECT EXISTING
-		$nominasjon = write_nominasjon::create( 
-			$nominert->getId(),								// Innslag ID
-			$this->get('ukm_delta.season')->getActive(), 	// Sesong
-			'land', 										// TODOondemand: støtt også nominasjon fra lokal til fylke
-			$nominert->getKommune(), 						// Innslagets kommune
-			$type											// Type nominasjon
-		);
-		return $nominasjon;
 	}
 }
 ?>

@@ -280,51 +280,56 @@ ukm_nominasjon:
     defaults: { _controller: UKMDeltaBundle:Nominasjon:velg }
     methods: [GET]
 
+ukm_nominasjon_finn_skjema:
+    path: /ukmid/nominasjon/{id}/
+    defaults: { _controller: UKMDeltaBundle:Nominasjon:finnSkjema }
+    methods: [GET]
+
 # ALIAS FOR TING SOM BENYTTER $innslag->getType()->getKey()
 ukm_nominasjon_nettredaksjon:
-    path: /ukmid/nominasjon/media/
+    path: /ukmid/nominasjon/{id}/media/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:media }
     methods: [GET]
 
 ukm_nominasjon_media:
-    path: /ukmid/nominasjon/media/
+    path: /ukmid/nominasjon/{id}/media/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:media }
     methods: [GET]
     
 ukm_nominasjon_media_save:
-    path: /ukmid/nominasjon/media/
+    path: /ukmid/nominasjon/{id}/media/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:mediaSave }
     methods: [POST]
     
 ukm_nominasjon_arrangor:
-    path: /ukmid/nominasjon/arrangor/
+    path: /ukmid/nominasjon/{id}/arrangor/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorInfo }
     methods: [GET]
     
 ukm_nominasjon_arrangor_info_save:
-    path: /ukmid/nominasjon/arrangor/
+    path: /ukmid/nominasjon/{id}/arrangor/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorInfoSave }
     methods: [POST]
     
 ukm_nominasjon_arrangor_veivalg:
-    path: /ukmid/nominasjon/arrangor/rolle/
+    path: /ukmid/nominasjon/{id}/arrangor/rolle/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorVeivalg }
     methods: [GET]
 
 ukm_nominasjon_arrangor_veivalg_save:
-    path: /ukmid/nominasjon/arrangor/rolle/
+    path: /ukmid/nominasjon/{id}/arrangor/rolle/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorVeivalgSave }
     methods: [POST]
 
 ukm_nominasjon_arrangor_detaljer:
-    path: /ukmid/nominasjon/arrangor/detaljer/{type}/
+    path: /ukmid/nominasjon/{id}/arrangor/detaljer/{type}/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorDetaljer, type: 'sjekk' }
     requirements:
         type: ([a-z]+)
     methods: [GET]
 
 ukm_nominasjon_arrangor_detaljer_save:
-    path: /ukmid/nominasjon/arrangor/detaljer/{type}/
+    path: /ukmid/nominasjon/{id}/arrangor/detaljer/{type}/
     defaults: { _controller: UKMDeltaBundle:Nominasjon:arrangorDetaljerSave }
     requirements:
         type: ([a-z]+)
