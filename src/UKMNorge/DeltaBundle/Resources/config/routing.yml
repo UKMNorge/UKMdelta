@@ -3,6 +3,12 @@ ukm_delta_homepage:
     path:     /
     defaults: { _controller: UKMDeltaBundle:Default:index }
 
+# LAST LOCATION - Foreslått kommune
+ukm_delta_lastlocation:
+    path:     /lastlocation/{kommune_id}/
+    defaults: { _controller: UKMDeltaBundle:Default:lastLocation }
+
+# FACEBOOK LINK URL
 ukm_fb_connect:
     path:     /ukmid/fbconnect/
     defaults: { _controller: UKMDeltaBundle:UKMID:fbconnect }

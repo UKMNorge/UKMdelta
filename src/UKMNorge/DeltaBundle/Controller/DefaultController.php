@@ -4,7 +4,11 @@ namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
+
+require_once('UKM/Autoloader.php');
+use UKMNorge\Geografi\Kommune;
 
 class DefaultController extends Controller
 {
@@ -23,24 +27,7 @@ class DefaultController extends Controller
             $this->deltaFBLoginURL = 'https://delta.ukm.no/fblogin';
             $this->wordpressLoginURL = 'https://delta.ukm.no/ukmid/wordpress-connect';
 	    }
-	    
-	    // If lastlocation-URL-parameter is set, we'll set a cookie.
-	    // TODO: Burde vi i stedet bare lagre infoen i session, eller skal Marius bruke den til noe i WP? Da trenger vi heller ikke flere sjekker for å modifisere respons etc.
-	    $request = Request::createFromGlobals();
-	    if ( $request->query->get('lastlocation') ) {
-	    	// TODO: Verify lastlocation is a valid kommune-ID.
-	    	$lastlocationCookie = new Cookie("lastlocation", $request->query->get('lastlocation'));
-	    }
-
-	    $is_granted_user = $this->get('security.authorization_checker')->isGranted('ROLE_USER');
-	    if( $is_granted_user ) {
-	    	$response = new RedirectResponse( $this->get('router')->generate('ukm_delta_ukmid_homepage') );
-	    	if ( $request->query->get('lastlocation') ) {
-	    		$response->headers->setCookie($lastlocationCookie);
-	    	}
-		    return $response;
-	    }
-	    
+	    	    
 	    $app_id = $this->getParameter('facebook_client_id');
 	   
         $redirectURL = $this->deltaFBLoginURL;
@@ -54,5 +41,36 @@ class DefaultController extends Controller
         	$response->headers->setCookie($lastlocationCookie);
         }
         return $response;
+    }
+
+    /**
+     * Setter en cookie med en kommune-ID, for å foreslå påmeldingskommune til brukeren.
+     * Kommer som AJAX-request fra 
+     *
+     */
+    public function lastLocationAction(Request $request, $kommune_id) {
+
+    	$response = new JsonResponse();
+    	$response->headers->set('Access-Control-Allow-Headers', 'true');
+    	$response->headers->set('Access-Control-Allow-Origin', 'https://'.$this->getParameter('UKM_HOSTNAME'));
+    	$response->headers->set('Access-Control-Allow-Credentials', 'true');
+
+    	$json = array();
+    	try {
+	    	$kommune = new Kommune($kommune_id);
+	    	if($kommune->getId() != false) {
+	    		$response->headers->setCookie( new Cookie("lastlocation", $kommune->getId()) );
+		    	$json['success'] = true;	
+	    	} else {
+	    		$json['success'] = false;	
+	    	}
+    	} catch (Exception $e) {
+    		$json['success'] = false;
+    		$json['error'] = $e->getCode();
+    		$json['message'] = $e->getMessage();
+    	}
+    	
+    	$response->setData($json);
+    	return $response;
     }
 }
