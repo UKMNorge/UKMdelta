@@ -2,6 +2,9 @@
 
 namespace UKMNorge\SMSBundle\Entity;
 
+use UKMNorge\Database\SQL\Insert;
+use UKMNorge\Database\SQL\Update;
+
 /**
  * SMS
  *
@@ -10,12 +13,6 @@ namespace UKMNorge\SMSBundle\Entity;
  * $SMS->text($message)->to($recipients_csv_or_single)->from($sender)->ok();
  *
  */
-
-
-
-#require_once('UKMconfig.inc.php');
-#require_once('UKM/sql.class.php');
-#require_once('UKM/curl.class.php');
 
 class SMS {
 	var $price = 0.40;
@@ -118,7 +115,7 @@ class SMS {
 	}
 	
 	private function _send_status($recipient, $status) {
-		$transaction_recipient_update = new SQLins('log_sms_transaction_recipients',
+		$transaction_recipient_update = new Update('log_sms_transaction_recipients',
 													array('t_id' => $this->transaction_id,
 														  'tr_recipient' => $recipient));
 		$transaction_recipient_update->add('tr_status', $status);
@@ -156,7 +153,7 @@ class SMS {
 	private function _add_recipients() {
 		// ADD RECIPIENTS
 		foreach($this->recipients as $recipient) {
-			$recipient_add = new SQLins('log_sms_transaction_recipients');
+			$recipient_add = new Insert('log_sms_transaction_recipients');
 			$recipient_add->add('t_id', 		$this->transaction_id);
 			$recipient_add->add('tr_recipient', $recipient);
 			$recipient_add->add('tr_status', 	'queued');
@@ -166,7 +163,7 @@ class SMS {
 	
 	private function _create_transaction() {
 		// CREATE TRANSACTION
-		$transaction = new SQLins('log_sms_transactions');
+		$transaction = new Insert('log_sms_transactions');
 		$transaction->add('pl_id', 		$this->id_place);
 		$transaction->add('t_system', 	$this->id_system);
 		$transaction->add('wp_username',$this->id_user);
