@@ -14,7 +14,7 @@ use UKMNorge\Database\SQL\Query;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 
-require_once('UKM/monstring.class.php');
+require_once('UKM/Autoloader.php');
 
 class SjekkController extends Controller {
 
