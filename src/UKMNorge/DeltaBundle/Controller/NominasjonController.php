@@ -6,17 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Exception;
 
-use person;
-use person_v2;
-use innslag_v2;
-use nominasjon;
 use UKMNorge\Innslag\Nominasjon\Write as NominasjonWrite;
 use UKMNorge\Log\Logger;
-use write_nominasjon_media;
-use monstringer_v2;
 use UKMmail;
-
-use UKMlogger;
 
 class NominasjonController extends Controller
 {

@@ -5,7 +5,9 @@ namespace UKMNorge\APIBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use SQL;
+use UKMNorge\Database\SQL\Query;
+
+require_once('UKM/Autoloader.php');
 
 class DefaultController extends Controller
 {
@@ -15,11 +17,10 @@ class DefaultController extends Controller
     }
 
     public function poststedAction($postnummer) {
-		require_once('UKM/sql.class.php');
         $response = new JsonResponse();
 
 
-		$qry = new SQL("SELECT `postalplace` FROM `smartukm_postalplace` WHERE `postalcode` = #code", array("code" => $postnummer));
+		$qry = new Query("SELECT `postalplace` FROM `smartukm_postalplace` WHERE `postalcode` = #code", array("code" => $postnummer));
 		$place = $qry->run('field', 'postalplace');
 		$place = utf8_encode($place);
 		if(empty($place)) {

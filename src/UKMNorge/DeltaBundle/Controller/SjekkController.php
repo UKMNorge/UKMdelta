@@ -8,23 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Exception;
 
 # UKMapi
-use SQL;
-use SQLins;
-use innslag;
-use monstring;
 use landsmonstring;
-use person;
+use UKMNorge\Database\SQL\Insert;
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Person;
 
-require_once('UKM/sql.class.php');
-require_once('UKM/innslag.class.php');
-require_once('UKM/monstring.class.php');
+require_once('UKM/Autoloader.php');
 
 class SjekkController extends Controller {
 
 	public function indexAction($mobile, $hash) {
 		$view_data = array();
 
-		$sql = new SQL("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $mobile));
+		$sql = new Query("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $mobile));
 		#echo 'Debug:<br>';
 		#echo $sql->debug();
 		#$sql->error(); // Turn on errors
@@ -54,7 +51,7 @@ class SjekkController extends Controller {
 		$view_data['pl_id'] = $landsmonstring->info['pl_id'];
 
 		# Personer med dette mobilnummeret:
-		$qry = new SQL("SELECT * FROM `smartukm_participant`
+		$qry = new Query("SELECT * FROM `smartukm_participant`
 						WHERE `p_phone` = '#mobile'", array('mobile' => $mobile)
 					);
 		$res = $qry->run();
@@ -62,8 +59,8 @@ class SjekkController extends Controller {
 		if(!$res) {
 			throw new Exception('Systemfeil: Noe gikk feil i tilkoblingen til databasen. Prøv igjen, eller kontakt UKM Norge Support.');
 		}
-		while ($r = SQL::fetch($res)) {
-			$persons[] = new person($r['p_id']);
+		while ($r = Query::fetch($res)) {
+			$persons[] = new Person($r['p_id']);
 		}
 		$videresendte_innslag = array();
 		
@@ -73,7 +70,7 @@ class SjekkController extends Controller {
 			foreach($p_innslag as $pinn) {
 				# Hvis innslaget er videresendt til festivalen:
 				if (in_array($pinn, $m_innslag_id)) {
-					$innslaget = new innslag($pinn);
+					$innslaget = new Innslag($pinn);
 					$innslaget->loadGEO();
 					$videresendte_innslag[] = $innslaget;
 					$har_innslag = true;
@@ -97,7 +94,7 @@ class SjekkController extends Controller {
 		$NUMBER = $user->getPhone();
 
 		# HVIS NUMMER ALLEREDE FINNES I DATABASEN
-		$qry = new SQL("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $NUMBER));
+		$qry = new Query("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $NUMBER));
 		$res = $qry->run('array');
 		if ($res) {
 			#$url = 'https://delta.ukm.no/sjekk/'.$NUMBER.'/'.$res['hash'];
@@ -109,7 +106,7 @@ class SjekkController extends Controller {
 			$hash = hash("sha256", $data);
 			$hash = substr($hash, 32, 8);
 			## Lagre mobilnummer og hash i databasen
-			$qry = new SQLins("ukm_sjekk");
+			$qry = new Insert("ukm_sjekk");
 			$qry->add('phone', $NUMBER);
 			$qry->add('hash', $hash);
 			$res = $qry->run();
