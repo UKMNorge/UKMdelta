@@ -29,6 +29,8 @@ class InnslagController extends Controller
      */
     public function geoAction()
     {
+        $request = Request::createFromGlobals();
+
         $filter = new Filter();
         $filter->harPamelding();
 
@@ -39,6 +41,7 @@ class InnslagController extends Controller
         $view_data['fylker'] = Fylker::getAll();
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
 
+        
         // Last inn alle arrangementer (med påmelding) per kommune
         foreach ($view_data['fylker'] as $fylke) {
             foreach ($fylke->getKommuner()->getAll() as $kommune) {
@@ -74,6 +77,52 @@ class InnslagController extends Controller
                 }
                 $kommune->setAttr('action', $action);
                 $kommune->setAttr('link', $link);
+            }
+        }
+
+        // Prøv å laste inn den forhåndsvalgte kommunen.
+        if( $request->cookies->has("lastlocation") ) {
+            try {
+                $kommune = new Kommune($request->cookies->get("lastlocation"));
+
+                $arrangementer = Load::forKommune(
+                    $season,
+                    $kommune,
+                    $filter
+                );
+
+                $kommune->setAttr(
+                    'arrangementer',
+                    $arrangementer
+                );
+
+                if( $arrangementer->getAntall() == 0 ) {
+                    $action = 'visIngenArrangement';
+                    $link = '';
+                } elseif( $arrangementer->getAntall() > 1 ) {
+                    $action = 'visArrangementer';
+                    $link = '';
+                } elseif( $arrangementer->getAntall() == 1 && $arrangementer->getFirst()->erFellesmonstring() ) {
+                    $action = 'visKommuner';
+                    $link = '';
+                } else {
+                    $action = 'visDirektelenke';
+                    $link = $this->generateUrl(
+                        'ukm_delta_ukmid_pamelding_hva',
+                        [
+                            'k_id' => $kommune->getId(),
+                            'pl_id' => $arrangementer->getFirst()->getId()
+                        ]
+                    );
+                }
+                $kommune->setAttr('action', $action);
+                $kommune->setAttr('link', $link);
+
+                $view_data['suggested_kommune'] = $kommune;
+                $view_data['suggested_fylke'] = $kommune->getFylke();
+            }
+            catch(Exception $e) {
+                // Ikke advar om feil, foreslått kommune er "bonus-feature".
             }
         }
 

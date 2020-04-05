@@ -22,7 +22,6 @@ class DefaultController extends Controller
 
 		$qry = new Query("SELECT `postalplace` FROM `smartukm_postalplace` WHERE `postalcode` = #code", array("code" => $postnummer));
 		$place = $qry->run('field', 'postalplace');
-		$place = utf8_encode($place);
 		if(empty($place)) {
             $response->setData(array('sted' => false)); 
         }

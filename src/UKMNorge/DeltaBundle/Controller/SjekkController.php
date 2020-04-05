@@ -7,7 +7,6 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Exception;
 
-# UKMapi
 use landsmonstring;
 use UKMNorge\Database\SQL\Insert;
 use UKMNorge\Database\SQL\Query;
@@ -25,7 +24,7 @@ class SjekkController extends Controller {
 		#echo 'Debug:<br>';
 		#echo $sql->debug();
 		#$sql->error(); // Turn on errors
-		$res = $sql->run('array');
+		$res = $sql->getArray();
 		#echo '<br>mysql-ping: '.(mysql_ping() ? 'true' : 'false');
 		#echo '<br>$res: '; 
 		#var_dump($res); 
@@ -60,7 +59,7 @@ class SjekkController extends Controller {
 			throw new Exception('Systemfeil: Noe gikk feil i tilkoblingen til databasen. Prøv igjen, eller kontakt UKM Norge Support.');
 		}
 		while ($r = Query::fetch($res)) {
-			$persons[] = new Person($r['p_id']);
+			$persons[] = new Person(intval($r['p_id']));
 		}
 		$videresendte_innslag = array();
 		
@@ -95,7 +94,7 @@ class SjekkController extends Controller {
 
 		# HVIS NUMMER ALLEREDE FINNES I DATABASEN
 		$qry = new Query("SELECT * FROM `ukm_sjekk` WHERE `phone` = '#mobile'", array('mobile' => $NUMBER));
-		$res = $qry->run('array');
+		$res = $qry->getArray();
 		if ($res) {
 			#$url = 'https://delta.ukm.no/sjekk/'.$NUMBER.'/'.$res['hash'];
 			$hash = $res['hash'];

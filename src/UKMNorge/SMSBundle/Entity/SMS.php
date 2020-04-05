@@ -13,7 +13,6 @@ use UKMNorge\Database\SQL\Update;
  * $SMS->text($message)->to($recipients_csv_or_single)->from($sender)->ok();
  *
  */
-
 class SMS {
 	var $price = 0.40;
 	var $bogus = array(44444444, 99999999);
