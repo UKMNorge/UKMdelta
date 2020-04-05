@@ -37,9 +37,6 @@ class DefaultController extends Controller
         $view_data['wordpressLoginURL'] = $this->wordpressLoginURL;
 
         $response = $this->render('UKMDeltaBundle:Default:index.html.twig', $view_data);
-        if( $request->query->get('lastlocation') ) {
-        	$response->headers->setCookie($lastlocationCookie);
-        }
         return $response;
     }
 
