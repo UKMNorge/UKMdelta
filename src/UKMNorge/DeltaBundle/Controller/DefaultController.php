@@ -16,6 +16,11 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
+        $user = $this->get('ukm_user')->getCurrentUser();
+        if( is_object($user)) {
+            return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+        }
+
         if ($this->getParameter('UKM_HOSTNAME') == 'ukm.dev') {
             $this->ambURL = 'https://ambassador.ukm.dev/app_dev.php/dip/login';
             $this->ambDipURL = 'https://ambassador.ukm.dev/app_dev.php/dip/receive/';
