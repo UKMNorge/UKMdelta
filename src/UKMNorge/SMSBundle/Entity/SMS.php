@@ -10,13 +10,6 @@ namespace UKMNorge\SMSBundle\Entity;
  * $SMS->text($message)->to($recipients_csv_or_single)->from($sender)->ok();
  *
  */
-
-
-
-#require_once('UKMconfig.inc.php');
-#require_once('UKM/sql.class.php');
-#require_once('UKM/curl.class.php');
-
 class SMS {
 	var $price = 0.40;
 	var $bogus = array(44444444, 99999999);
