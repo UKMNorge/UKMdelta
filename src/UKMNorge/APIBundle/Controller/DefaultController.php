@@ -5,8 +5,9 @@ namespace UKMNorge\APIBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use SQL;
 use UKMNorge\Database\SQL\Query;
+
+require_once('UKM/Autoloader.php');
 
 class DefaultController extends Controller
 {
@@ -16,7 +17,6 @@ class DefaultController extends Controller
     }
 
     public function poststedAction($postnummer) {
-		require_once('UKM/Autoloader.php');
         $response = new JsonResponse();
 
 
