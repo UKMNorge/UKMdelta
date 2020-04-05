@@ -48,29 +48,39 @@ class DefaultController extends Controller
      * Kommer som AJAX-request fra 
      *
      */
-    public function lastLocationAction(Request $request, $kommune_id) {
+    public function lastLocationAction(Request $request, $kommune_id)
+    {
 
-    	$response = new JsonResponse();
-    	$response->headers->set('Access-Control-Allow-Headers', 'true');
-    	$response->headers->set('Access-Control-Allow-Origin', 'https://'.$this->getParameter('UKM_HOSTNAME'));
-    	$response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Headers', 'true');
+        $response->headers->set('Access-Control-Allow-Origin', 'https://' . $this->getParameter('UKM_HOSTNAME'));
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
 
-    	$json = array();
-    	try {
-	    	$kommune = new Kommune($kommune_id);
-	    	if($kommune->getId() != false) {
-	    		$response->headers->setCookie( new Cookie("lastlocation", $kommune->getId()) );
-		    	$json['success'] = true;	
-	    	} else {
-	    		$json['success'] = false;	
-	    	}
-    	} catch (Exception $e) {
-    		$json['success'] = false;
-    		$json['error'] = $e->getCode();
-    		$json['message'] = $e->getMessage();
-    	}
-    	
-    	$response->setData($json);
-    	return $response;
+        $json = ['kommune' => $kommune_id];
+        try {
+            $kommune = new Kommune(intval($kommune_id));
+            if ($kommune->getId() != false) {
+                $response->headers->setCookie(
+                    new Cookie(
+                        "lastlocation",
+                        $kommune->getId(),
+                        time() + (2 * 365 * 24 * 60 * 60),
+                        '/',
+                        $this->getParameter('UKM_HOSTNAME'),
+                        false
+                    )
+                );
+                $json['success'] = true;
+            } else {
+                $json['success'] = false;
+            }
+        } catch (Exception $e) {
+            $json['success'] = false;
+            $json['error'] = $e->getCode();
+            $json['message'] = $e->getMessage();
+        }
+
+        $response->setData($json);
+        return $response;
     }
 }
