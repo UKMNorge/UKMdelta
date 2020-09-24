@@ -12,7 +12,7 @@ use DateTime;
 use stdClass;
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Arrangement\Filter;
-use UKMNorge\Arrangement\Load;
+use UKMNorge\Arrangement\Kommende;
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
@@ -45,8 +45,7 @@ class InnslagController extends Controller
         // Last inn alle arrangementer (med påmelding) per kommune
         foreach ($view_data['fylker'] as $fylke) {
             foreach ($fylke->getKommuner()->getAll() as $kommune) {
-                $arrangementer = Load::forKommune(
-                    $season,
+                $arrangementer = Kommende::forKommune(
                     $kommune,
                     $filter
                 );
@@ -85,8 +84,7 @@ class InnslagController extends Controller
             try {
                 $kommune = new Kommune($request->cookies->get("lastlocation"));
 
-                $arrangementer = Load::forKommune(
-                    $season,
+                $arrangementer = Kommende::forKommune(
                     $kommune,
                     $filter
                 );
