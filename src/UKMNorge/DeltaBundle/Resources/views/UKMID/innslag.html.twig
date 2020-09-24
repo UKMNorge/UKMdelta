@@ -15,7 +15,8 @@
             <small>
                 {{ innslag.getType().getNavn() }} 
                 | 
-                {{ innslag.getHome().getNavn() }}
+                {{ innslag.getHome().getNavn() }},
+                {{ innslag.getHome().getStart()|dato('j. M Y')}}
             </small>
             {# TODO: implementer nominasjon! #}
             {# https://github.com/UKMNorge/UKMapi/issues/41 #}
