@@ -33,9 +33,7 @@ class InnslagController extends Controller
 
         $filter = new Filter();
         $filter->harPamelding();
-
-        $season = $this->container->get('ukm_delta.season')->getActive();
-
+        
         $view_data['translationDomain'] = 'innslag';
 
         $view_data['fylker'] = Fylker::getAll();
