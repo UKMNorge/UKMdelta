@@ -228,6 +228,7 @@ class InnslagService
         } else {
             $p_id = 0;
         }
+        
         $context = Context::createKontaktperson($p_id);
         $alle_innslag = new Samling($context);
 
