@@ -59,11 +59,15 @@
 	
 				<div class="form-group">    
 					<div class="input-group">
-						<span class="input-group-addon no-border-bottom-radius" style="border-bottom:none;"><i class="icon icon-phone"></i></span>
+						<div class="input-group-prepend no-border-bottom-radius" style="border-bottom:none;">
+                            <div class="input-group-text"><i class="icon icon-phone"></i></div>
+                        </div>
 					    <input class="form-control input-lg no-border-bottom-radius" type="tel" maxlength="8" id="username" name="_username" value="{{ last_username }}" placeholder="Mobilnummer (bare tall) " required="required" style="border-bottom: 0px;" />
 					</div>
 					<div class="input-group">    
-						<span class="input-group-addon no-border-top-radius"><i class="icon icon-lock"></i></span>
+						<div class="input-group-prepend no-border-top-radius">
+                            <div class="input-group-text"><i class="icon icon-lock"></i></div>
+                        </div>
 					    <input class="form-control input-lg no-border-top-radius" type="password" id="password" name="_password" placeholder="Passord" required="required" />
 					</div>
 				</div>
