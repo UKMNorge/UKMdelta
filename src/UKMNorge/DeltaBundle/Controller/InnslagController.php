@@ -37,6 +37,9 @@ class InnslagController extends Controller
         $view_data['translationDomain'] = 'innslag';
 
         $view_data['fylker'] = Fylker::getAll();
+        if( date('Y') == '2020' ) {
+            $view_data['fylker'][] = Fylker::getById(33);
+        }
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
 
         
