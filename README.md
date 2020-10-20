@@ -46,7 +46,7 @@ For utstilling, hvor man i utgangspunktet melder på kun én tittel, må man ogs
 
 ### Ulike typer titler
 | Type | Navn | Varighet | Selvlaget | Tilleggsfelt |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | Musikk | X | X | X | - Tekst / instrumental<br />- Melodi av<br />- Tekst av |
 | Dans | X | X | X | - Koreografi av |
 | Teater | X | X | X | - Manus av |
