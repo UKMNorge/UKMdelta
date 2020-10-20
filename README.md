@@ -14,6 +14,7 @@ CRON URL: https://delta.ukm.dev/cron/designbundle/sync_sitemap/
 
 
 ![Midlertidig flytskjema](Flytskjema.png?raw=true)
+[rediger flytskjema](https://app.diagrams.net/)
 
 
 # Innslagssidens ulike skjema 
