@@ -196,15 +196,14 @@ class InnslagService
      *
      * @param Type $type
      * @param Arrangement $arrangement
-     * @param Person $person
      * @return Innslag
      * @throws Exception found none
      */
-    public function hentEnkeltPersonInnslag(Type $type, Arrangement $arrangement, Person $person)
+    public function hentEnkeltPersonInnslag(Type $type, Arrangement $arrangement)
     {
-        $alle_innslag = $this->hentInnslagFraKontaktperson($person->getId());
+        $alle_innslag = $this->hentInnslagFraKontaktperson();
         foreach ($alle_innslag->getAll() as $innslag) {
-            if ($innslag->getType()->getId() == $type->getId() && $innslag->getHome()->getId() == $arrangement->getId()) {
+            if ($innslag->getType()->getKey() == $type->getKey() && $innslag->getHome()->getId() == $arrangement->getId()) {
                 return $this->hent($innslag->getId()); // Bruker hent for å sjekke rettigheter
             }
         }
@@ -214,13 +213,11 @@ class InnslagService
     /**
      * Hent alle innslag denne kontaktpersonen har
      *
-     * @param Int $contact_id
      * @return Samling
      */
     public function hentInnslagFraKontaktperson()
     {
         $user = $this->hentCurrentUser();
-        $sesong = $this->container->get('ukm_delta.season')->getActive();
 
         if ($user->getPameldUser() != null) {
             $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());

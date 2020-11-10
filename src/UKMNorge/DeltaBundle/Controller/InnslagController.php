@@ -233,7 +233,7 @@ class InnslagController extends Controller
         // i denne _tittelløse_ kategorien, gå til redigering
         if ($type->erEnkeltPerson()) {
             try {
-                $innslag = $innslagService->hentEnkeltPersonInnslag($type, $arrangement, $person);
+                $innslag = $innslagService->hentEnkeltPersonInnslag($type, $arrangement);
             } catch (Exception $e) {
                 // Hvis personen ikke er påmeldt fra før, opprett en ved å fortsette.
                 // Ignorerer derfor Exception $e
