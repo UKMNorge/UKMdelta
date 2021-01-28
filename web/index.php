@@ -39,14 +39,20 @@ class IDAuth
 }
 
 
+if( isset($_GET['logout'])) {
+    unset($_SESSION['accessToken']);
+    echo 'Du er nå logget ut. <br />'.
+        '<a href="/">Logg inn</a>';
+}
 // Brukeren er logget inn
-if (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
+elseif (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
     echo 'Har token aka er logget inn.';
     
     echo '<pre>';
     echo json_decode( $_SESSION['accessToken'] );
     echo '</pre>';
 
+    echo '<a href="?logout=true">Logg ut</a>';
 } 
 // Brukeren er ikke logget inn, men vi har fått en kode
 // tilbake fra ID
