@@ -1,5 +1,9 @@
 <?php
 
+// CLIENT-IMPLEMENTATION FOR
+// UKM-ID:
+// https://bshaffer.github.io/oauth2-server-php-docs/grant-types/authorization-code/
+
 use UKMNorge\Http\Curl;
 
 error_reporting(E_ALL);
