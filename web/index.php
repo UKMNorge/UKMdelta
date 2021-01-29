@@ -40,9 +40,12 @@ class IDAuth
         return urlencode(static::RETURN_URL);
     }
 
-    public static function getAccessTokenUrl()
+    public static function getAccessTokenUrl($code)
     {
-        return static::URL_TOKEN;
+        return static::URL_TOKEN .
+            '?client_id='. static::APP_ID .
+            '&code=' . $code
+            ;
     }
 }
 
@@ -67,18 +70,15 @@ elseif (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
 elseif (isset($_GET['code'])) {
     $request = new Curl();
     $request->timeout(4);
-    $request->post([
-        'client_id' => IDAuth::APP_ID,
-        'code' => $_GET['code']
-    ]);
-    $response = $request->process(IDAuth::getAccessTokenUrl());
+    $response = $request->process(IDAuth::getAccessTokenUrl($_GET['code']));
 
     $_SESSION['accessToken'] = json_encode($response);
 
-    echo 'Fikk svar fra ID ('. IDAuth::getAccessTokenUrl() .'): ' .
-        '<pre>' .
+    echo 'Fikk svar fra ID ('. IDAuth::getAccessTokenUrl($_GET['code']) .'): ' .
+        '<b>Dette er responsen fra CURL delta sendte til ID: 👇</b>'.
+        '<code><pre>' .
         var_export($response, true) .
-        '</pre>'.
+        '<code></pre>'.
         '<p><a href="/">Refresh siden for å være logget inn</a></p>';
 } 
 // Brukeren er ikke logget inn. Start innlogging
