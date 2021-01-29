@@ -48,6 +48,38 @@ class IDAuth
     }
 }
 
+class IDAPI {
+
+    const URL_AUTH =  'https://id.' . UKM_HOSTNAME . '/api/';
+
+    private static $accessToken;
+
+    public static function setAccessToken( String $accessToken ) {
+        static::$accessToken = $accessToken;
+    }
+
+    private static function request( String $endpoint, Array $data = null ) {
+        $request = new Curl();
+        $request->timeout(4);
+        return $request->process(
+            static::URL_AUTH .
+            $endpoint .
+            '?access_token='. static::getAccessToken()
+        );
+    }
+
+    public static function getAccessToken() {
+        if( is_null(static::$accessToken)) {
+            throw new Exception('Kan ikke spørre API uten accessToken');
+        }
+        return static::$accessToken;
+    }
+
+    public static function getCurrentUser() {
+        return static::request('me/');
+    }
+}
+
 
 if( isset($_GET['logout'])) {
     unset($_SESSION['accessToken']);
@@ -58,9 +90,14 @@ if( isset($_GET['logout'])) {
 elseif (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
     echo 'Har token aka er logget inn.';
     
+    $tokendata = json_decode( $_SESSION['accessToken'] );
     echo '<pre>';
-    var_dump(json_decode($_SESSION['accessToken']));
+    var_dump($tokendata);
     echo '</pre>';
+
+    // Hent info om brukeren
+    IDAPI::setAccessToken($tokendata['access_token']);
+    var_dump(IDAPI::getCurrentUser());
 
     echo '<a href="?logout=true">Logg ut</a>';
 } 
