@@ -23,12 +23,16 @@ class IDAuth
     const APP_ID = 'delta';
     const APP_SECRET = 'deltaSecret';
 
+    const SCOPE = 'identify';
 
     public static function getAuthUrl()
     {
         return static::URL_AUTH .
             '?redirect_uri=' . static::getReturnUrl() .
-            '&client_id=' . static::APP_ID;
+            '&client_id=' . static::APP_ID .
+            '&scope=' . static::SCOPE .
+            '&state=' . substr(uniqid('', true), -5)
+            ;
     }
 
     public static function getReturnUrl()
