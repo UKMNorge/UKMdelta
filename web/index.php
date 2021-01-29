@@ -70,15 +70,21 @@ elseif (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
 elseif (isset($_GET['code'])) {
     $request = new Curl();
     $request->timeout(4);
+    $request->user(IDAuth::APP_ID.':'.IDAuth::APP_SECRET);
+    $request->post([
+        'code' => $_GET['code']
+    ]);
     $response = $request->process(IDAuth::getAccessTokenUrl($_GET['code']));
 
     $_SESSION['accessToken'] = json_encode($response);
 
     echo 'Fikk svar fra ID ('. IDAuth::getAccessTokenUrl($_GET['code']) .'): ' .
-        '<b>Dette er responsen fra CURL delta sendte til ID: 👇</b>'.
+        '<p>' .
+        '<b>Dette er responsen fra CURL delta sendte til ID: 👇</b>'
         '<code><pre>' .
         var_export($response, true) .
         '<code></pre>'.
+        '</p>'.
         '<p><a href="/">Refresh siden for å være logget inn</a></p>';
 } 
 // Brukeren er ikke logget inn. Start innlogging
