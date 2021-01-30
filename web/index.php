@@ -76,7 +76,7 @@ class IDAPI {
     }
 
     public static function getCurrentUser() {
-        return static::request('me/');
+        return static::request('me.php');
     }
 }
 
@@ -96,7 +96,7 @@ elseif (isset($_SESSION['accessToken']) && !isset($_GET['code'])) {
     echo '</pre>';
 
     // Hent info om brukeren
-    IDAPI::setAccessToken($tokendata['access_token']);
+    IDAPI::setAccessToken($tokendata->access_token);
     var_dump(IDAPI::getCurrentUser());
 
     echo '<a href="?logout=true">Logg ut</a>';
