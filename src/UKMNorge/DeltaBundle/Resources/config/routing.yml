@@ -102,6 +102,12 @@ ukm_delta_ukmid_pamelding_v2_opprett:
     pl_id: ([0-9]{1,4})
     type:  ([a-z]+)
 
+ukm_delta_ukmid_pamelding_fylke:
+    path:     /ukmid/pamelding/fylke-{pl_id}/
+    defaults: { _controller: UKMDeltaBundle:Innslag:fylkePreType }
+    requirements:
+        pl_id: ([0-9]{1,5})
+
 
 ukm_delta_ukmid_meld_av:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/fjern/

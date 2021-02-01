@@ -1,10 +1,15 @@
 geoAction:
     overskrift: Hvor skal du melde deg på?
     topptekst: Velg hvor du vil delta på UKM.
-    vi_tror: Vi tror dette er ditt nærmeste UKM
-    tok_vi_feil: Tok vi feil? Søk opp din kommune / bydel i listen nedenfor
+    vi_tror: Vi tror du vil melde deg på i
+    tok_vi_feil: Stemmer ikke dette? Da kan du velge et sted i listen under.
     filterLabel: Skriv her for å filtrere listen...
     fellesmonstringLabel: Hvilken kommune/bydel representerer du?
+
+fromGeoAction:
+    overskrift: Hvilken kommune er du fra?
+    topptekst: ''
+    vi_tror: Vi tror kanskje du er herfra?
 
 typeAction:
     overskrift: Hva vil du melde på?
