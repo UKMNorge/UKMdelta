@@ -91,7 +91,7 @@
                 {% endif %}
                 {% if suggested_kommune is defined %}
                     <div id="suggested">
-                        {{ 'geoAction.vi_tror'|trans }}
+                        {{ (translationGroup~'.vi_tror')|trans }}
                         <li class="list-group-item click kommune" data-action="{{ suggested_kommune.getAttr('action') }}" data-link="{{ suggested_kommune.getAttr('link') }}">
                             {% include "UKMDeltaBundle:Geo:"~ suggested_kommune.getAttr('action') ~".html.twig" with { kommune: suggested_kommune, fylke: suggested_fylke } %}
                             <div class="clearfix"></div>
