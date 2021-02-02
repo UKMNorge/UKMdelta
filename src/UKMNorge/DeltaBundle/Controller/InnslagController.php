@@ -13,6 +13,9 @@ use stdClass;
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Arrangement\Filter;
 use UKMNorge\Arrangement\Kommende;
+use UKMNorge\Arrangement\Skjema\Skjema;
+use UKMNorge\Arrangement\Skjema\SvarSett;
+use UKMNorge\Arrangement\Skjema\Write;
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
@@ -373,6 +376,9 @@ class InnslagController extends Controller
         $innslagService->sjekk($innslag);
         #$innslagService->sjekkBandtype($innslag, $type); // Vil printe RedirectResponse og kaste Exception
 
+        /** @var Arrangement $arrangement */
+        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -383,7 +389,7 @@ class InnslagController extends Controller
             'user' => $user,
             'innslag' => $innslag,
             'kommune' => $this->get('ukm_api.geografi')->hentKommune($k_id),
-            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id)
+            'arrangement' => $arrangement
         ];
 
         // Enkeltperson-påmeldinger har enklere skjema
@@ -391,6 +397,19 @@ class InnslagController extends Controller
             // Hvis det er et enkeltperson-innslag, som hverken har
             // beskrivelse eller funksjoner, så har vi alt da. Tut og kjør, du er påmeldt!
             if (!$type->harBeskrivelse() && !$type->harFunksjoner()) {
+
+                // Hvis arrangementet trenger et ekstra-skjema
+                if ($arrangement->harDeltakerSkjema()) {
+                    return $this->redirectToRoute(
+                        'ukm_delta_ukmid_pamelding_extras',
+                        [
+                            'k_id' => $k_id,
+                            'pl_id' => $pl_id,
+                            'type' => $type->getKey(),
+                            'b_id' => $b_id
+                        ]
+                    );
+                }
                 return $this->redirectToRoute(
                     'ukm_delta_ukmid_pamelding_' . ($innslag->erPameldt() ? 'pameldt' : 'status'),
                     [
@@ -407,6 +426,109 @@ class InnslagController extends Controller
         return $this->render('UKMDeltaBundle:Innslag:oversikt.html.twig', $view_data);
     }
 
+    /**
+     * Lagre skjema med ekstra spørsmål fra arrangøren
+     * _@route: POST (lagre) <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/extras/>
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function extraSaveAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $innslagService = $this->get('ukm_api.innslag');
+        /** @var Innslag $innslag */
+        $innslag = $innslagService->hent($b_id);
+        /** @var Person $kontaktperson */
+        $kontaktperson = $innslag->getKontaktperson();
+        /** @var Arrangement $arrangement */
+        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+
+        // Skjema som skal fylles ut
+        $skjema = $arrangement->getDeltakerSkjema();
+        $svarsett = $this->getSvarsett($skjema, $kontaktperson);
+
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, 'sporsmal_') === 0) {
+                @list($trash, $id, $field) = explode('_', $key);
+                $svarsett->setSvar($id, $value);
+            }
+        }
+
+        Write::saveSvarSett($svarsett);
+
+        return $this->redirectToRoute(
+            'ukm_delta_ukmid_pamelding_' . ($innslag->erPameldt() ? 'pameldt' : 'status'),
+            [
+                'k_id' => $k_id,
+                'pl_id' => $pl_id,
+                'type' => $type,
+                'b_id' => $b_id
+            ]
+        );
+    }
+
+    /**
+     * Vis skjema med ekstra spørsmål fra arrangøren
+     * _@route: GET <ukmid/pamelding/$k_id-$pl_id/$type/$b_id/extras/>
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function extraAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
+    {
+        $innslagService = $this->get('ukm_api.innslag');
+        /** @var Innslag $innslag */
+        $innslag = $innslagService->hent($b_id);
+        /** @var Person $kontaktperson */
+        $kontaktperson = $innslag->getKontaktperson();
+        /** @var Arrangement $arrangement */
+        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+
+        // Skulle ikke vært her, da arrangementet ikke bruker
+        // skjema. Videresend til statussiden.
+        if (!$arrangement->harDeltakerSkjema()) {
+            return $this->redirectToRoute(
+                'ukm_delta_ukmid_pamelding_' . ($innslag->erPameldt() ? 'pameldt' : 'status'),
+                [
+                    'k_id' => $k_id,
+                    'pl_id' => $pl_id,
+                    'type' => $type,
+                    'b_id' => $b_id
+                ]
+            );
+        }
+
+        // Hent skjema
+        $skjema = $arrangement->getDeltakerSkjema();
+        $svarsett = $this->getSvarsett($skjema, $kontaktperson);
+
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'type' => $type,
+            'b_id' => $b_id,
+            'arrangement' => $arrangement,
+            'svarsett' => $svarsett
+        ];
+
+        return $this->render('UKMDeltaBundle:Innslag:extras.html.twig', $view_data);
+    }
+
+    /**
+     * Hent svarsett for gitt person
+     * 
+     * @param Skjema $skjema
+     * @param Person $person
+     * @return SvarSett
+     */
+    private function getSvarSett(Skjema $skjema, Person $person)
+    {
+        $svarsett = $skjema->getSvarSettForPerson($person->getId());
+        $svarsett->getAll();
 
     /**
      * Lagrer alle endringer i et innslag

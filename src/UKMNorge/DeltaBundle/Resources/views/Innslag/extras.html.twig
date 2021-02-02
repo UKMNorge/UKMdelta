@@ -1,0 +1,55 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+{% trans_default_domain 'extras' %}
+
+{% block delta_content %}
+	<div class="container mt-0">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="mt-0 mb-4">
+					{{ 'extras.overskrift'|trans }}
+				</h2>
+                <form method="post">
+                    {% for sporsmal in arrangement.getSkjema().getSporsmal() %}
+                        <div class="form-group">
+                            <label class="bold">{{ sporsmal.getTittel() }}</label>
+                            {% if sporsmal.getType() == 'janei' %}
+                                <div class="row">
+                                    <div class="col-5 col-sm-4">
+                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="true" {{ svarsett.getSvar(sporsmal.getId()).getValue() == 'true' ? 'checked' : '' }}> {{ 'extras.ja'|trans }}
+                                    </div>
+                                    <div class="col-5 col-sm-4">
+                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="false" {{ svarsett.getSvar(sporsmal.getId()).getValue() == 'false' ? 'checked' : '' }}> {{ 'extras.nei'|trans }}
+                                    </div>
+                                </div>
+                            {% elseif sporsmal.getType() == 'kort_tekst' %}
+                                <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="{{ svarsett.getSvar(sporsmal.getId()).getValue() }}">
+                            {% elseif sporsmal.getType() == 'lang_tekst' %}
+                                <textarea type="text autogrow" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}">{{ svarsett.getSvar(sporsmal.getId()).getValue() }}</textarea>
+                            {% elseif sporsmal.getType() == 'kontakt' %}
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-4">
+                                        <label for="sporsmal_{{ sporsmal.getId() }}_navn">{{ 'extras.navn'|trans }}</label>
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_navn" name="sporsmal_{{ sporsmal.getId() }}[navn]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('navn') }}">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <label for="sporsmal_{{ sporsmal.getId() }}_mobil">{{ 'extras.mobil'|trans }}</label>
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_mobil" name="sporsmal_{{ sporsmal.getId() }}[mobil]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('mobil') }}">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <label for="sporsmal_{{ sporsmal.getId() }}_epost">{{ 'extras.epost'|trans }}</label>
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_epost" name="sporsmal_{{ sporsmal.getId() }}[epost]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('epost') }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <p class="text-muted help">{{ sporsmal.getTekst() }}</p>
+                        </div>
+                    {% endfor %}
+
+                    <div>
+                        <button type="submit" class="btn btn-block btn-outline-primary">{{ 'lagre'|trans({},'base') }}</a>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -126,6 +126,25 @@ ukm_delta_ukmid_pamelding_innslag_oversikt:
               pl_id: ([0-9]{1,5})
               type: ([a-z]+)
               b_id: ([0-9]{1,11})
+ukm_delta_ukmid_pamelding_extras:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/extras/
+    defaults: { _controller: UKMDeltaBundle:Innslag:extra }
+    requirements:
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+    methods:  [GET]
+
+ukm_delta_ukmid_pamelding_extras_save:
+    path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/extras/
+    defaults: { _controller: UKMDeltaBundle:Innslag:extraSave }
+    requirements:
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+    methods:  [POST]
 
 ukm_delta_ukmid_pamelding_status:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/status/
