@@ -113,19 +113,20 @@ ukm_delta_ukmid_meld_av:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/fjern/
     defaults: { _controller: UKMDeltaBundle:Innslag:remove }
     requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              type: ([a-z]+)
-              b_id: ([0-9]{1,11})
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
 
 ukm_delta_ukmid_pamelding_innslag_oversikt:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/
     defaults: { _controller: UKMDeltaBundle:Innslag:overview }
     requirements:
-              k_id: ([0-9]{1,4})
-              pl_id: ([0-9]{1,5})
-              type: ([a-z]+)
-              b_id: ([0-9]{1,11})
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+
 ukm_delta_ukmid_pamelding_extras:
     path:     /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/extras/
     defaults: { _controller: UKMDeltaBundle:Innslag:extra }

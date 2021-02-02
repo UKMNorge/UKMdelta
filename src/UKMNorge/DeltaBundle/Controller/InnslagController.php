@@ -176,7 +176,7 @@ class InnslagController extends Controller
         ];
 
         $arrangement = new Arrangement($pl_id);
-        if( $arrangement->getMetaValue('nedslagsfelt') == 'fylke' ) {
+        if ($arrangement->getMetaValue('nedslagsfelt') == 'fylke') {
             $view_data['fylker'] = [$arrangement->getFylke()];
         } else {
             $view_data['fylker'] = Fylker::getAll();
@@ -189,35 +189,33 @@ class InnslagController extends Controller
 
         // Foreslå kommune basert på siste påmelding deltakeren hadde
         $mine_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
-        
-        if( $mine_innslag->getAntall() > 0 ) {
+
+        if ($mine_innslag->getAntall() > 0) {
             $innslagene = [];
-            foreach( $mine_innslag->getAll() as $innslag ) {
+            foreach ($mine_innslag->getAll() as $innslag) {
                 /**
                  * @var Innslag $innslag 
                  */
-                $innslagene[ $innslag->getId() ] = $innslag->getKommune();
+                $innslagene[$innslag->getId()] = $innslag->getKommune();
             }
             $kommune = array_pop($innslagene);
             // Hvis arrangementet tillater påmelding kun i fylket, kan vi kun
             // foreslå kommuner i det fylket
-            if( 
-                $arrangement->getMetaValue('nedslagsfelt') == 'land' || 
-                (
-                    $arrangement->getMetaValue('nedslagsfelt') == 'fylke' && 
-                    $kommune->getFylke()->getId() == $arrangement->getFylke()->getId() 
-                )
+            if (
+                $arrangement->getMetaValue('nedslagsfelt') == 'land' ||
+                ($arrangement->getMetaValue('nedslagsfelt') == 'fylke' &&
+                    $kommune->getFylke()->getId() == $arrangement->getFylke()->getId())
             ) {
-                $this->setKommuneLinkActionAttrFylke( $kommune, $pl_id );
+                $this->setKommuneLinkActionAttrFylke($kommune, $pl_id);
                 $view_data['suggested_kommune'] = $kommune;
                 $view_data['suggested_fylke'] = $kommune->getFylke();
             }
-        }       
+        }
 
         // Last inn alle arrangementer (med påmelding) per kommune
         foreach ($view_data['fylker'] as $fylke) {
             foreach ($fylke->getKommuner()->getAll() as $kommune) {
-                $this->setKommuneLinkActionAttrFylke( $kommune, $pl_id );
+                $this->setKommuneLinkActionAttrFylke($kommune, $pl_id);
             }
         }
 
@@ -230,7 +228,8 @@ class InnslagController extends Controller
      * Brukes av geoAction-listen, når deltakeren melder seg på til et
      * fylkesarrangement.
      */
-    private function setKommuneLinkActionAttrFylke( Kommune $kommune, Int $arrangement_id ) {
+    private function setKommuneLinkActionAttrFylke(Kommune $kommune, Int $arrangement_id)
+    {
         $kommune->setAttr(
             'link',
             $this->generateUrl(
@@ -410,6 +409,7 @@ class InnslagController extends Controller
                         ]
                     );
                 }
+
                 return $this->redirectToRoute(
                     'ukm_delta_ukmid_pamelding_' . ($innslag->erPameldt() ? 'pameldt' : 'status'),
                     [
@@ -529,6 +529,8 @@ class InnslagController extends Controller
     {
         $svarsett = $skjema->getSvarSettForPerson($person->getId());
         $svarsett->getAll();
+        return $svarsett;
+    }
 
     /**
      * Lagrer alle endringer i et innslag
