@@ -196,9 +196,19 @@ class InnslagController extends Controller
                 $innslagene[ $innslag->getId() ] = $innslag->getKommune();
             }
             $kommune = array_pop($innslagene);
-            $this->setKommuneLinkActionAttrFylke( $kommune, $pl_id );
-            $view_data['suggested_kommune'] = $kommune;
-            $view_data['suggested_fylke'] = $kommune->getFylke();
+            // Hvis arrangementet tillater påmelding kun i fylket, kan vi kun
+            // foreslå kommuner i det fylket
+            if( 
+                $arrangement->getMetaValue('nedslagsfelt') == 'land' || 
+                (
+                    $arrangement->getMetaValue('nedslagsfelt') == 'fylke' && 
+                    $kommune->getFylke()->getId() == $arrangement->getFylke()->getId() 
+                )
+            ) {
+                $this->setKommuneLinkActionAttrFylke( $kommune, $pl_id );
+                $view_data['suggested_kommune'] = $kommune;
+                $view_data['suggested_fylke'] = $kommune->getFylke();
+            }
         }       
 
         // Last inn alle arrangementer (med påmelding) per kommune
