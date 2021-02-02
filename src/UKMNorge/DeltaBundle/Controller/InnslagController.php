@@ -512,7 +512,8 @@ class InnslagController extends Controller
             'type' => $type,
             'b_id' => $b_id,
             'arrangement' => $arrangement,
-            'svarsett' => $svarsett
+            'svarsett' => $svarsett,
+            'skjema' => $skjema
         ];
 
         return $this->render('UKMDeltaBundle:Innslag:extras.html.twig', $view_data);

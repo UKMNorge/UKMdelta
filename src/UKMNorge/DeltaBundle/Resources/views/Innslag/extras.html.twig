@@ -9,7 +9,7 @@
 					{{ 'extras.overskrift'|trans }}
 				</h2>
                 <form method="post">
-                    {% for sporsmal in arrangement.getSkjema().getSporsmal() %}
+                    {% for sporsmal in skjema.getSporsmal() %}
                         <div class="form-group">
                             <label class="bold">{{ sporsmal.getTittel() }}</label>
                             {% if sporsmal.getType() == 'janei' %}
