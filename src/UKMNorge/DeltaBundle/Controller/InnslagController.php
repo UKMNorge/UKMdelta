@@ -184,13 +184,6 @@ class InnslagController extends Controller
 
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
 
-
-        // TODO: sjekk om vedkommende er påmeldt
-        $user = $this->hentCurrentUser();
-        if ($user->getPameldUser() !== null) {
-
-        }
-
         // Foreslå kommune basert på siste påmelding deltakeren hadde
         $mine_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
         
