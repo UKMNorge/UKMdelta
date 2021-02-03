@@ -506,6 +506,7 @@ class InnslagController extends Controller
         $skjema = $arrangement->getDeltakerSkjema();
         $svarsett = $this->getSvarsett($skjema, $kontaktperson);
 
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -528,8 +529,14 @@ class InnslagController extends Controller
      */
     private function getSvarSett(Skjema $skjema, Person $person)
     {
-        $svarsett = $skjema->getSvarSettForPerson($person->getId());
-        $svarsett->getAll();
+        try {
+            $respondent = $skjema->getRespondenter()->get($person->getId());
+            $svarsett = $respondent->getSvar();
+        } catch (Exception $e) {
+            if ($e->getCode() == 163003) {
+                $svarsett = SvarSett::getPlaceholder('person', $person->getId(), $skjema->getId());
+            }
+        }
         return $svarsett;
     }
 

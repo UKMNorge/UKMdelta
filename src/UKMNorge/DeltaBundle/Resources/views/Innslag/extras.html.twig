@@ -9,35 +9,35 @@
 					{{ 'extras.overskrift'|trans }}
 				</h2>
                 <form method="post">
-                    {% for sporsmal in skjema.getSporsmal() %}
+                    {% for sporsmal in skjema.getSporsmal().getAll() %}
                         <div class="form-group">
                             <label class="bold">{{ sporsmal.getTittel() }}</label>
                             {% if sporsmal.getType() == 'janei' %}
                                 <div class="row">
                                     <div class="col-5 col-sm-4">
-                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="true" {{ svarsett.getSvar(sporsmal.getId()).getValue() == 'true' ? 'checked' : '' }}> {{ 'extras.ja'|trans }}
+                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="true" {{ svarsett.get(sporsmal.getId()).getValue() == 'true' ? 'checked' : '' }}> {{ 'extras.ja'|trans }}
                                     </div>
                                     <div class="col-5 col-sm-4">
-                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="false" {{ svarsett.getSvar(sporsmal.getId()).getValue() == 'false' ? 'checked' : '' }}> {{ 'extras.nei'|trans }}
+                                        <input type="radio" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="false" {{ svarsett.get(sporsmal.getId()).getValue() == 'false' ? 'checked' : '' }}> {{ 'extras.nei'|trans }}
                                     </div>
                                 </div>
                             {% elseif sporsmal.getType() == 'kort_tekst' %}
-                                <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="{{ svarsett.getSvar(sporsmal.getId()).getValue() }}">
+                                <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}" value="{{ svarsett.get(sporsmal.getId()).getValue() }}">
                             {% elseif sporsmal.getType() == 'lang_tekst' %}
-                                <textarea type="text autogrow" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}">{{ svarsett.getSvar(sporsmal.getId()).getValue() }}</textarea>
+                                <textarea type="text autogrow" class="form-control" id="sporsmal_{{ sporsmal.getId() }}" name="sporsmal_{{ sporsmal.getId() }}">{{ svarsett.get(sporsmal.getId()).getValue() }}</textarea>
                             {% elseif sporsmal.getType() == 'kontakt' %}
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4">
                                         <label for="sporsmal_{{ sporsmal.getId() }}_navn">{{ 'extras.navn'|trans }}</label>
-                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_navn" name="sporsmal_{{ sporsmal.getId() }}[navn]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('navn') }}">
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_navn" name="sporsmal_{{ sporsmal.getId() }}[navn]" value="{{ svarsett.get(sporsmal.getId()).getValue('navn') }}">
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
                                         <label for="sporsmal_{{ sporsmal.getId() }}_mobil">{{ 'extras.mobil'|trans }}</label>
-                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_mobil" name="sporsmal_{{ sporsmal.getId() }}[mobil]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('mobil') }}">
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_mobil" name="sporsmal_{{ sporsmal.getId() }}[mobil]" value="{{ svarsett.get(sporsmal.getId()).getValue('mobil') }}">
                                     </div>
                                     <div class="col-xs-12 col-sm-4">
                                         <label for="sporsmal_{{ sporsmal.getId() }}_epost">{{ 'extras.epost'|trans }}</label>
-                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_epost" name="sporsmal_{{ sporsmal.getId() }}[epost]" value="{{ svarsett.getSvar(sporsmal.getId()).getValue('epost') }}">
+                                        <input type="text" class="form-control" id="sporsmal_{{ sporsmal.getId() }}_epost" name="sporsmal_{{ sporsmal.getId() }}[epost]" value="{{ svarsett.get(sporsmal.getId()).getValue('epost') }}">
                                     </div>
                                 </div>
                             {% endif %}
