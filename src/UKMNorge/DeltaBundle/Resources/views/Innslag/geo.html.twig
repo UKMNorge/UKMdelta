@@ -84,7 +84,9 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="mt-0">{{ (translationGroup~'.overskrift')|trans }}</h1>
-                {% if (translationGroup~'.topptekst')|trans|length > 0 %}
+                {% if show is defined and show === 'whereyoufrom' %}
+                    {# hopper over topptekst her inntil videre #}
+                {% else %}
                     <p class="lead">
                         {{ (translationGroup~'.topptekst')|trans }}
                     </p>

@@ -8,7 +8,6 @@ geoAction:
 
 fromGeoAction:
     overskrift: Hvilken kommune er du fra?
-    topptekst: ''
     vi_tror: Vi tror kanskje du er herfra?
 
 typeAction:
