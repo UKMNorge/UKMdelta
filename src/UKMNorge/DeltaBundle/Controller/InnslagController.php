@@ -658,25 +658,33 @@ class InnslagController extends Controller
      */
     public function newPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $view_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+            'b_id' => $b_id,
+        ];
         try {
             return $this->render(
                 'UKMDeltaBundle:Innslag:person.html.twig',
-                [
-                    'k_id' => $k_id,
-                    'pl_id' => $pl_id,
+                array_merge($view_data, [
                     'type' => Typer::getByKey($type),
                     'type_key' => $type,
-                    'b_id' => $b_id,
                     'translationDomain' => $type,
                     'friends' => $this->_getVenner(
                         $this->get('ukm_api.innslag')->hent($b_id)
                     )
-                ]
+                ])
             );
         } catch (Exception $e) {
             $this->get('logger')->error("UKMDeltaBundle:Innslag:newPerson - Feil oppsto ved uthenting av data til newPerson! Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage());
             $this->addFlash('danger', "Oops! Klarte ikke å legge til en ny person. Feilkode: " . $e->getCode());
-            return $this->redirectToRoute('ukm_delta_ukmid_pamelding_innslag_oversikt', $view_data);
+
+            return $this->redirectToRoute(
+                'ukm_delta_ukmid_pamelding_innslag_oversikt',
+                array_merge($view_data, [
+                    'type' => $type
+                ])
+            );
         }
     }
 
