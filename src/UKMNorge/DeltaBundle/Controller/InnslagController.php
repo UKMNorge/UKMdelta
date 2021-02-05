@@ -240,7 +240,7 @@ class InnslagController extends Controller
                 ]
             )
         );
-        $kommune->setAttr('action', 'visDirekteLenke');
+        $kommune->setAttr('action', 'visDirektelenke');
     }
 
     /**
