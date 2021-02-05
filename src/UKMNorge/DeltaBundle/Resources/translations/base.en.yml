@@ -10,6 +10,9 @@ person:
     mobil: 
         label: Mobil
         placeholder: Mobil (bare tall, 8 siffer)
+    epost: 
+        label: E-post
+        placeholder: 
     alder:
         label: Alder
         listDefault: Velg riktig alder
@@ -26,6 +29,7 @@ person:
 ja: ja
 nei: nei
 avbryt: avbryt
+lagre: lagre
 fb_share_button: Del at du er påmeldt på UKM
 fb_share: Jeg har meldt meg på UKM i %monstring!
 
