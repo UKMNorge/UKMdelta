@@ -165,6 +165,12 @@ class UKMIDController extends Controller
             }
         }
 
+        if( $this->get('session')->has('checkInfoRedirect') ) {
+            $view_data['k_id'] = $this->get('session')->get('checkInfo_kid');
+            $view_data['pl_id'] = $this->get('session')->get('checkInfo_plid');
+            return $this->redirectToRoute($this->get('session')->get('checkInfoRedirect'), $view_data);
+        }
+
         if( $user->getSamtykke() === null ) {
             return $this->redirectToRoute('ukm_delta_ukmid_personvern');
         }
