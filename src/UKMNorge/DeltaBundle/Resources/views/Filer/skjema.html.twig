@@ -1,0 +1,204 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src='//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js'></script>
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/vendor/jquery.ui.widget.js'></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/vendor/load-image.min.js'></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/vendor/canvas-to-blob.min.js'></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.iframe-transport.js'></script>
+    <!-- The basic File Upload plugin -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.fileupload.js'></script>
+    <!-- The File Upload user interface plugin -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.fileupload-ui.js'></script>
+    <!-- The File Upload processing plugin -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.fileupload-process.js'></script>
+    <!-- The File Upload image preview & resize plugin  -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.fileupload-image.js'></script>
+    <!-- The File Upload validation plugin -->
+    <script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/js/jquery.fileupload-validate.js'></script> 
+
+	<script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMresources/js/UKMresources.js'></script>
+    
+	<script src='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/UKMplayback.js'></script>
+
+
+{% endblock %}
+
+{% block css %}
+	{{ parent() }}
+
+	<link rel='stylesheet' id='blueimp-gallery-css-css' href='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/css/blueimp-gallery.min.css' media='all' />
+	<link rel='stylesheet' id='jquery-fileupload-css-css' href='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/css/jquery.fileupload.css' media='all' />
+	<link rel='stylesheet' id='jquery-fileupload-ui-css-css' href='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMplayback/jqueryuploader/css/jquery.fileupload-ui.css' media='all' />
+
+	<link rel='stylesheet' id='WPbootstrap3_css-css'  href='//{{ UKM_HOSTNAME }}/wp-content/plugins/UKMresources/css/bootstrap3.css' media='all' />
+
+
+{% endblock %}
+
+
+{% block delta_content %}	
+<div class="container">	
+	<div class="row">
+		<div class="col-xs-12">
+			<h1 class="title-innslag ">Mediefiler for {{ innslag.getNavn() }}</h1>
+		</div>
+
+		<div class="videoopplaster col-md-6 col-sm-push-6 col-xs-12">
+			<div class="wrapper">
+				<h3 class="title">Last opp ny fil</h3>
+				<p class="text-muted">
+					<strong>OBS:</strong>
+					Filnavn med spesialtegn som apostrofer osv vil gjøre at opplastingen stopper uten feilmelding.
+				</p>
+				<div id="fileupload_message" style="display:none;"></div>
+
+				<form action="" method="post">
+					<div id="fileupload_container">
+						<div class="alert alert-success bold d-md-block d-sm-none d-none" style="font-size: 1.2em; text-align:center; margin-bottom: .4em;" id="fileupload_dropzone">
+							Slipp filen her
+							<span class="dashicons dashicons-upload"></span>
+						</div>
+
+						<div id="filechooser" style="border: none; max-width: 100%">
+							<p class="mt-0 text-muted center d-md-block d-sm-none d-none">
+								eller
+							</p>
+							<input id="fileupload_playback" name="files[]" type="file" style="border: none;line-height: 1em; max-width: 100%;" class="form-control"/>
+						</div>
+
+						<div id="uploading" style="display:none;">
+							<label>Laster opp fil</label>
+							<progress value="0" max="100" id="uploadprogress" class="progress progress-striped active" style="width: 100%"/>
+						</div>
+					</div>
+
+					<div id="uploaded" class="mb-4" style="display:none;">
+						<label>Filen er lastet opp!</label>
+						<br/>
+						Fyll ut skjemaet nedenfor, og trykk lagre!
+					</div>
+
+					<div class="form-group hide">
+						<label>Innslag</label>
+						<select name="b_id" id="b_id" class="form-control">
+							<option value="{{ innslag.getId() }}">
+								{{ innslag.getNavn() }}
+								({{ innslag.getType().getNavn() }})
+							</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>Tittel</label>
+						<input type="text" name="name" class="form-control" />
+						<p class="text-muted">
+						{% if innslag.getType().harTitler() %}
+						Skriv navnet på {{ innslag.getType().getTekst('titler.entall') }}. {% if innslag.getTitler().getAll()|length > 1 %}Dette er spesielt viktig fordi du har flere {{ innslag.getType().getTekst('titler.flertall') }}.{% endif %}
+						{% else %}
+						Skriv navnet på filen.
+						{% endif %}
+						</p>
+					</div>
+
+					<div class="form-group">
+						<label>Beskrivelse / kommentarer</label>
+						<textarea name="description" class="form-control"></textarea>
+					</div>
+
+					<input type="hidden" name="season" id="season" value="{{ arrangement.getSesong() }}"/>
+					<input type="hidden" name="pl_id" id="pl_id" value="{{ arrangement.getId() }}"/>
+					<input type="hidden" id="filename" value="demofile3.bogus" name="filename"/>
+					<div class="form-group">
+						<input name="submit_playback" class="btn btn-ukm btn-sm btn-success" id="submitbutton" type="submit" value="Last opp" disabled="disabled"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="upload-part col-md-6 col-sm-pull-6 col-xs-12">
+			<h3 class="title-innslag d-block d-sm-block d-md-none">Dine filer</h3>
+			<ol class="list-group files">
+			{% for playback in innslag.getPlayback().getAll() %}
+				<li class="list-group-item file">
+					<div class="info">
+						<p class="title">{{ playback.getNavn() }}</p>
+						<p class="beskrivelse">{{ playback.getBeskrivelse() }}</p>
+					</div>
+					<div class="buttons">
+						<a href="{{ playback.getUrl() }}" target="popup" class="btn btn-ukm btn-sm btn-success">Last ned</a>
+						<a href="delete/{{ playback.getId() }}" class="btn btn-ukm btn-sm btn-danger">Slett</a>
+					</div>
+				</li>
+			{% endfor %}
+			</ol>
+		</div>
+
+		<div class="col-xs-12">
+			<a href="#">Tilbake til din side</a>
+		</div>
+
+	</div>
+</div>
+
+<style>
+
+.title-innslag {
+	margin-bottom: 20px;
+}
+.files .file {
+	display: flex;
+	border-bottom: solid 1px #dddddd;
+	margin-bottom: 0;
+}
+.files .file .info {
+	margin: auto auto auto 0;
+}
+.files .file .info .title {
+	font-weight: bold;
+	margin: 0;
+}
+.files .file .info .beskrivelse {
+	margin: 0;
+}
+.files .file .buttons {
+	margin: auto 0 auto auto;
+}
+.videoopplaster {
+	padding: 0;
+}
+.videoopplaster .wrapper {
+	padding: 15px;
+	border: solid 1px #dddddd;
+}
+.videoopplaster .wrapper .title {
+	margin-top: 5px;
+}
+#fileupload_playback {
+	margin: auto;
+	width: 172px;
+}
+@media(max-width: 768px) {
+	.videoopplaster {
+		padding: 15px;
+	}
+	.videoopplaster .wrapper {
+		padding: 0;
+		border: none;
+	}
+	#fileupload_playback {
+		margin: 5px auto;
+		margin-left: 0;
+	}
+}
+</style>
+				
+{% endblock %}
+
+

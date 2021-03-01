@@ -1,0 +1,21 @@
+{% extends "UKMDeltaBundle::layout.html.twig" %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block css %}
+	{{ parent() }}
+
+{% endblock %}
+
+
+{% block delta_content %}
+
+<script>
+    window.location.replace("/app_dev.php/ukmid/filer/{{ innslag_id }}/");
+</script>
+
+				
+{% endblock %}
