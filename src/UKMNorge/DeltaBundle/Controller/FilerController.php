@@ -93,6 +93,5 @@ class FilerController extends Controller
             ]
         );
     }
-
 }
 
