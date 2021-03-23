@@ -137,7 +137,9 @@ class InnslagController extends Controller
         }
 
         // Verify user data here as well - in case people are coming from direct links
-        if( $this->get('ukm_user')->getCurrentUser()->getBirthdate() == null ) {
+        if( $this->get('ukm_user')->getCurrentUser()->getBirthdate() == null ||
+            $this->get('ukm_user')->getCurrentuser()->getSamtykke() === null
+        ) {
             $this->get('session')->set('checkInfoRedirect', 'ukm_delta_ukmid_pamelding_hva');
             $this->get('session')->set('checkInfo_kid', $k_id);
             $this->get('session')->set('checkInfo_plid', $pl_id);
