@@ -60,7 +60,6 @@ class FilerController extends Controller
         $this->addFlash($status[1] ? "success" : "danger", $status[0]); // Fra Controller super klasse
 
         return $this->skjemaAction($innslag_id);
-        // return $this->render('UKMDeltaBundle:Filer:opplastingsstatus.html.twig', ['status' => $status]);
     }
 
     public function deleteAction($innslag_id, $delete_id) {     
