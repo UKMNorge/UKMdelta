@@ -366,3 +366,22 @@ ukm_nominasjon_arrangor_detaljer_save:
     requirements:
         type: ([a-z]+)
     methods: [POST]
+
+ukm_mediefil_skjema:
+    path: /ukmid/filer/{innslag_id}/
+    defaults: { _controller: UKMDeltaBundle:Filer:skjema }
+    requirements:
+        innslag_id: ([0-9]{1,11})
+    methods: [GET]
+
+ukm_mediefil_save:
+    path: /ukmid/filer/{innslag_id}/
+    defaults: { _controller: UKMDeltaBundle:Filer:save }
+    requirements:
+        innslag_id: ([0-9]{1,11})
+    methods: [POST]
+
+ukm_mediefil_delete:
+    path: /ukmid/filer/{innslag_id}/delete/{delete_id}
+    defaults: { _controller: UKMDeltaBundle:Filer:delete }        
+    methods: [GET]
