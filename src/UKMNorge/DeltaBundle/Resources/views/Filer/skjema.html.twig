@@ -136,6 +136,8 @@
 						<a href="delete/{{ playback.getId() }}" class="btn btn-ukm btn-sm btn-danger">Slett</a>
 					</div>
 				</li>
+			{% else %}
+				<li class="list-group-item">Du har ikke lastet opp noen filer enda</li>
 			{% endfor %}
 			</ol>
 		</div>
