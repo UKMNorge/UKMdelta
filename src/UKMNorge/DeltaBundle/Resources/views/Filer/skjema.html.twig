@@ -50,6 +50,13 @@
 			<h1 class="title-innslag ">Mediefiler for {{ innslag.getNavn() }}</h1>
 		</div>
 
+		{% if status_playback == false %}
+		<div class="col-xs-12">
+			<div class="alert alert-danger">
+				<p>Tjenesten er for tiden ikke tilgjengelig!</p>
+			</div>
+		</div>
+		{% else %}
 		<div class="videoopplaster col-md-6 col-sm-push-6 col-xs-12">
 			<div class="wrapper">
 				<h3 class="title">Last opp ny fil</h3>
@@ -141,6 +148,8 @@
 			{% endfor %}
 			</ol>
 		</div>
+
+		{% endif %}
 
 		<div class="col-xs-12">
 			<a href="/ukmid/">Tilbake til din side</a>
