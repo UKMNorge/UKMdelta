@@ -2,6 +2,8 @@
 
 namespace UKMNorge\DeltaBundle\Controller;
 use UKMNorge\Innslag\Playback\Write;
+use UKMNorge\Http\Curl;
+
 use Exception;
 
 
@@ -21,7 +23,11 @@ class FilerController extends Controller
         $innslag = $innslagService->hent($innslag_id);
         $arrangement = $innslag->getHome();
         
-        return $this->render('UKMDeltaBundle:Filer:skjema.html.twig', ['innslag' => $innslag, 'arrangement' => $arrangement]);
+        $curl_playback = new Curl();
+        $curl_playback->timeout(2);
+        $status_playback = $curl_playback->request('https://playback.' . UKM_HOSTNAME . '/api/status.php');
+
+        return $this->render('UKMDeltaBundle:Filer:skjema.html.twig', ['status_playback' => $status_playback, 'innslag' => $innslag, 'arrangement' => $arrangement]);
     }
 
 
