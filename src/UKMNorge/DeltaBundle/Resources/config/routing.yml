@@ -305,7 +305,12 @@ ukm_campaign_2017_los_bando_send:
     methods: [POST]
     
     
-    
+ukm_nominasjon_redirect:
+    path: /nominasjon/
+    defaults: 
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /ukmid/nominasjon/
+        permanent: true
     
 ukm_nominasjon:
     path: /ukmid/nominasjon/
