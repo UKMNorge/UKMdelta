@@ -18,7 +18,6 @@ class NominasjonController extends Controller
 	 * Brukeren velger nominert innslag.
 	**/
 	public function velgAction() {
-
 		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
 		$nominerte_innslag = array();
 		foreach($alle_innslag as $innslag) {
@@ -114,7 +113,7 @@ class NominasjonController extends Controller
 			'flerkamera-kamera' => 'Flerkamera, kameraoperatør',
 			'design' => 'Design',
 			'some' => 'Sosiale medier (instagram og facebook)',
-			'programmering' => 'Programmering (HTML/JS/CSS/PHP)'
+#			'programmering' => 'Programmering (HTML/JS/CSS/PHP)'
 #			'annet' => 'Er det noe annet du kan, som du vil gjøre?',
 		];
 		

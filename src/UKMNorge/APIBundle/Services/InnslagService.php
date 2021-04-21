@@ -233,9 +233,6 @@ class InnslagService
             foreach( $alle_innslag->getAll() as $innslag ) {
                 try {
                     $innslag->getHome();
-                    if( $innslag->getHome()->erFerdig() ) {
-                        $alle_innslag->fjern($innslag);
-                    }
                 } catch( Exception $e ) {
                     // Workaround for noen få brukere som har slettede innslag.
                     $this->container->get('logger')->notice("UKMID:index - Hopper over et påmeldt innslag på grunn av slettet arrangement! Dette er en bug som ikke skal oppstå etter sesongen 2020. Feilmelding: ".$e->getCode(). ", ".$e->getMessage()."\r\n\tInnslag-id: ".$innslag->getId());

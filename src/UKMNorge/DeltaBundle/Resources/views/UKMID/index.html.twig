@@ -30,7 +30,7 @@
                     {% else %}
                         <h3>{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
 						<ul class="list list-group innslag">
-                            {% for innslag in alle_innslag.getAll()|filter(innslag => innslag.erPameldt()) %}
+                            {% for innslag in alle_innslag.getAll()|filter(innslag => innslag.erPameldt() and not innslag.getHome().erFerdig()) %}
                                 {% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
                             {% else %}
                                 {{ 'indexAction.pameldinger.ingen_fullforte'|trans }}
@@ -39,7 +39,7 @@
 
                         <h3>{{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
 						<ul class="list list-group innslag">
-                            {% for innslag in alle_innslag.getAll()|filter( innslag => not innslag.erPameldt()) %}
+                            {% for innslag in alle_innslag.getAll()|filter( innslag => not innslag.erPameldt() and not innslag.getHome().erFerdig()) %}
                                 {% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
                             {% else %}
                                 {{ 'indexAction.pameldinger.ingen_ikkefullforte'|trans }}

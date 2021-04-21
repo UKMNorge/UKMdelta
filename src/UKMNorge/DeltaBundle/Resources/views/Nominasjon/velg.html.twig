@@ -6,24 +6,24 @@
 			<div class="col-12">
 				<h1>Velg hvilken nominasjon du vil fylle ut</h1>
 				<ul class="list-group">
-				{% for innslag in nominerte_innslag %}
+				{% for innslag in nominerte_innslag|filter( innslag => innslag.getNominasjoner().getAll()|filter( nominasjon => not nominasjon.getTilArrangement().erFerdig() )) %}
 					<li class="list-group-item">
 						<p>
 							<b>{{ innslag.getNavn() }}</b>, {{ innslag.getType().getNavn() }}
 						</p>
 						<ul class="list-group">
-							{% for nominasjon in innslag.getNominasjoner().getAll() %}
+							{% for nominasjon in innslag.getNominasjoner().getAll()|filter( nominasjon => not nominasjon.getTilArrangement().erFerdig() ) %}
 								<a href="{{ path('ukm_nominasjon_finn_skjema', {'id': nominasjon.getId() }) }}" class="list-group-item list-group-item-action {{ nominasjon.harDeltakerSkjema() ? 'disabled' : '' }}">
 									Nominert fra {{ nominasjon.getFraArrangement().getNavn() }} til {{ nominasjon.getTilArrangement().getNavn() }}
 									<br />
 									{% if nominasjon.harDeltakerSkjema() %}
-										Skjema allerede sendt inn.
-									{% elseif nominasjon.getTilArrangement().getFrist(1)|date() < "now"|date() %}
+										<span class="text-success">Skjema allerede sendt inn.</span>
+									{% elseif nominasjon.getTilArrangement().getVideresendingStenger() > date("now") %}
 										Fyll ut nominasjonsskjema
-										<span class="pull-right">frist {{ nominasjon.getTilArrangement().getFrist(1)|dato('d.m') }}
+										<span class="pull-right">frist {{ nominasjon.getTilArrangement().getVideresendingStenger()|dato('d.m') }}
 										</span>
 									{% else %}
-										<b>Fristen for å fylle inn nominasjonsinformasjon utgikk {{ nominasjon.getTilArrangement().getFrist(1)|dato('d.m') }}.</b>
+										<b>Fristen for å fylle inn nominasjonsinformasjon utgikk {{ nominasjon.getTilArrangement().getVideresendingStenger()|dato('d.m.Y') }}.</b>
 									{% endif %}
 								</a>
 							{% endfor %}
