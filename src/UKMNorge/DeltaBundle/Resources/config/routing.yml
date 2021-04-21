@@ -88,6 +88,16 @@ ukm_delta_ukmid_support:
     path:     /ukmid/support/
     defaults: { _controller: UKMDeltaBundle:UKMID:support }
 
+ukm_delta_endre_fotoreservasjon:
+    path:     /ukmid/endrefotoreservasjon/
+    defaults: { _controller: UKMDeltaBundle:UKMID:endrefotoreservasjon }
+
+ukm_delta_lagre_fotoreservasjon:
+    path:     /ukmid/lagrefotoreservasjon/
+    defaults: { _controller: UKMDeltaBundle:UKMID:saveEndrefotoreservasjon }
+    methods:  [POST]
+
+
 ### INNSLAG
 ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/

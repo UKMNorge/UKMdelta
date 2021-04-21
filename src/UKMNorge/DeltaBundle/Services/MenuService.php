@@ -70,6 +70,13 @@ class MenuService {
 					'title' => 'Support',
 				];
 
+				$menu['pages'][] = [
+					'id' => 'endrefotoreservasjon',
+					'url' => $router->generate('ukm_delta_endre_fotoreservasjon'),
+					'title' => 'Endre fotoreservasjon',
+				];
+
+				
 				if( empty( $user->getFacebookId() ) ) {
 					$menu['pages'][] = [
 						'id' => 'facebook',

@@ -8,9 +8,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use DateTime;
 use UKMCurl;
 use Exception;
+use UKMNorge\APIBundle\Services\PersonService;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
 use UKMNorge\Log\Logger;
+use UKMNorge\Innslag\Personer\Kontaktperson;
+use UKMNorge\Samtykke\Person as PersonSamtykke;
+
 
 require_once("UKM/Autoloader.php");
 
@@ -204,6 +208,55 @@ class UKMIDController extends Controller
         }
         return $this->render('UKMDeltaBundle:UKMID:contact.html.twig', $view_data);
     }
+
+    /**
+     * Viser skjema for å endre valget om fotoreservasjon.
+     *
+     * @return void
+     */
+    public function endrefotoreservasjonAction() {      
+        $view_data = [
+			'translationDomain' => 'ukmid',
+		];
+
+		return $this->render('UKMDeltaBundle:UKMID:fotoreservasjon.html.twig', $view_data );
+    }
+    
+
+     /**
+     * Lagre endringer i fororeservasjon
+     *
+     * @return void
+     */
+    public function saveEndrefotoreservasjonAction() {
+        $request = Request::createFromGlobals();
+        $samtykkeFraBruker = $request->request->get('personvern');
+        $samtykkeFraBruker = $samtykkeFraBruker === 'ja' ? true : false;
+        
+        $personService = $this->get('ukm_api.person');
+
+        $user = $this->get('ukm_user')->getCurrentUser();
+        $pameld_user = $user->getPameldUser();
+
+        if( null != $pameld_user ) {
+            $person = new Kontaktperson( $pameld_user );
+            foreach( $person->getInnslag()->getAll() as $innslag ) {
+                try{
+                    // Legger til samtykke til user objektet
+                    $user->setSamtykke($samtykkeFraBruker);
+                    // Opdaterer personvern for bruker med innslag
+                    $personService->oppdaterPersonvern($innslag);
+                } catch(Exception $e) {
+                    $this->addFlash('danger', 'Noe gikk galt med lagring!');
+                    return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+                }
+            }
+        }
+
+        $this->addFlash('success', 'Endringene ble lagret!');
+        return $this->redirectToRoute('ukm_delta_ukmid_homepage');
+    }
+
 
     /**
      * Lagre endringer i kontaktperson
