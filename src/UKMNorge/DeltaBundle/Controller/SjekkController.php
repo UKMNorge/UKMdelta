@@ -112,7 +112,9 @@ class SjekkController extends Controller {
 
 			if($res != 1) {
 				error_log('UKMSJEKK: Klarte ikke å lagre i databasen fra Delta. Nr: '.$NUMBER);
-				die();
+				throw new Exception(
+					'Beklager, på grunn av en databasefeil kan vi ikke vise denne siden'
+				);
 			}
 			#$url = 'https://delta.ukm.no/sjekk/'.$NUMBER.'/'.$hash;
 		}
