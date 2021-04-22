@@ -247,7 +247,7 @@ class UKMIDController extends Controller
                     // Opdaterer personvern for bruker med innslag
                     $personService->oppdaterPersonvern($innslag);
                 } catch(Exception $e) {
-                    $this->addFlash('danger', 'Noe gikk galt med lagring!');
+                    $this->addFlash('danger', 'Fikk ikke lagret for '. $innslag->getNavn() .' (' . $innslag->getType()->getNavn() . ')');
                     return $this->redirectToRoute('ukm_delta_ukmid_homepage');
                 }
             }
