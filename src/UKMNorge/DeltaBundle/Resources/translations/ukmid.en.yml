@@ -98,3 +98,7 @@ supportAction:
         Support kan nås på epost: support@ukm.no
         Eller telefon 464 21 625.
     hjem: Gå til Din Side
+
+endrefotoreservasjonAction:
+    action:
+        knapp: Lagre
