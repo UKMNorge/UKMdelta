@@ -129,7 +129,14 @@ class InnslagController extends Controller
      * @param Int ArrangementID
      */
     public function typeAction(Int $k_id, Int $pl_id)
-    {
+    {   
+        // Hvis kommunen ikke er aktiv, redirect til kommunesiden
+        $kommune = $this->hentKommune($k_id);
+        if(!$kommune->erAktivt()) {
+            header('Location: https:' . $kommune->getOvertattAv()->getLink());
+            exit;
+        }
+
         $arrangement = $this->hentArrangement($pl_id);
 
         if (!$arrangement->erPameldingApen()) {
