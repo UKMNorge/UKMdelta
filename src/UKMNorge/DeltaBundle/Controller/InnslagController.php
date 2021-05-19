@@ -132,7 +132,7 @@ class InnslagController extends Controller
     {   
         // Hvis kommunen ikke er aktiv, redirect til kommunesiden
         $kommune = $this->hentKommune($k_id);
-        if(!$kommune->erAktivt()) {
+        if(!$kommune->erAktiv()) {
             header('Location: https:' . $kommune->getOvertattAv()->getLink());
             exit;
         }
