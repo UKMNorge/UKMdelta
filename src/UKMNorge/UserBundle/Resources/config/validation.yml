@@ -14,6 +14,11 @@ UKMNorge\UserBundle\Entity\User:
     properties:
     # Your custom fields in your user entity, here is an example with FirstName
         first_name:
+            - Regex:
+                pattern: '/^[a-z|øåæ]+$/i'
+                match:   true
+                message: Fornavnet er ikke gyldig. Du kan kun bruke små og store bokstaver
+                groups: [ "UKM_user_registration" ]
             - NotBlank:
                 message: ukm_user.first_name.blank
                 groups: [ "UKM_user_registration" ]
@@ -24,6 +29,11 @@ UKMNorge\UserBundle\Entity\User:
                 maxMessage: ukm_user.first_name.long
                 groups: [ "UKM_user_registration" ]
         last_name:
+            - Regex:
+                pattern: '/^[a-z|øåæ]+$/i'
+                match:   true
+                message: Etternavnet er ikke gyldig. Du kan kun bruke små og store bokstaver
+                groups: [ "UKM_user_registration" ]
             - NotBlank:
                 message: ukm_user.last_name.blank
                 groups: [ "UKM_user_registration" ]
