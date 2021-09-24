@@ -56,7 +56,9 @@ class FilerController extends Controller
             }
         } else {
             try {
-                Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description'], $_POST['user_id']);
+                $user = $this->get('ukm_user')->getCurrentUserAsObject();
+
+                Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description'], $user->getPameldUser());
                 $status = ['Filen er lastet opp!', true];
             } catch( Exception $e ) {
                 $status = ['Kunne ikke laste opp filen:' . $e->getMessage(), false];
