@@ -117,6 +117,21 @@
 						</p>
 					</div>
 
+					{% if arrangement.erKunstgalleri() %}
+					<div class="form-group">
+						<label>Velg kunstverk</label>
+
+						<select name="tittelkunstverk" class="form-control">
+							<option value=""></option>
+							{% for kunstverk in innslag.getTitler().getAll() %}
+								<option value="{{ kunstverk.getId() }}">{{ kunstverk.getTittel() }}</option>
+							{% endfor %}
+						</select>
+						</p>
+					</div>
+					{% endif %}
+					
+
 					<div class="form-group">
 						<label>Beskrivelse / kommentarer</label>
 						<textarea name="description" class="form-control"></textarea>
@@ -135,12 +150,29 @@
 		<div class="upload-part col-md-6 col-sm-pull-6 col-xs-12">
 			<h3 class="title-innslag d-block d-sm-block d-md-none">Dine filer</h3>
 			<ol class="list-group files">
+			
 			{% for playback in innslag.getPlayback().getAll() %}
 				<li class="list-group-item file">
 					<div class="info">
 						<p class="title">{{ playback.getNavn() }}</p>
+						{% if arrangement.erKunstgalleri() %}
+							{% for utstilling in innslag.getTitler().getAll() %}
+								{% if utstilling.getPlaybackId() != "NULL" and utstilling.getPlaybackId() == playback.getId() %}
+									<span><b>Kunstverk:</b> {{ utstilling.getTittel() }}</span>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+						
 						<p class="beskrivelse">{{ playback.getBeskrivelse() }}</p>
 					</div>
+
+					{% if arrangement.erKunstgalleri() and playback.erBilde() %}
+						<div class="kunstverk-bilde">
+							<img src="{{ playback.base_url }}{{ playback.getPath() }}{{ playback.fil }}" />
+						</div>
+					{% endif %}
+					
+
 					<div class="buttons">
 						<a href="{{ playback.getUrl() }}" target="popup" class="btn btn-ukm btn-sm btn-success">Last ned</a>
 						<a href="delete/{{ playback.getId() }}" class="btn btn-ukm btn-sm btn-danger">Slett</a>
@@ -173,6 +205,7 @@
 }
 .files .file .info {
 	margin: auto auto auto 0;
+	width: 50%;
 }
 .files .file .info .title {
 	font-weight: bold;
@@ -183,6 +216,11 @@
 }
 .files .file .buttons {
 	margin: auto 0 auto auto;
+	display: flex;
+}
+.files .file .buttons a {
+	float: right;
+	margin-left: 5px;
 }
 .videoopplaster {
 	padding: 0;
@@ -197,6 +235,16 @@
 #fileupload_playback {
 	margin: auto;
 	width: 172px;
+}
+.kunstverk-bilde {
+	width: 33%;
+	display: flex;
+	padding: 0 5px;
+}
+.kunstverk-bilde img {
+	height: auto;
+	width: auto;
+	margin: auto;
 }
 @media(max-width: 768px) {
 	.videoopplaster {

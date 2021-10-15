@@ -2,6 +2,9 @@
 
 namespace UKMNorge\DeltaBundle\Controller;
 use UKMNorge\Innslag\Playback\Write;
+use UKMNorge\Innslag\Titler\Write as WriteTitler;
+use UKMNorge\Innslag\Titler\Utstilling;
+use UKMNorge\Log\Logger;
 use UKMNorge\Http\Curl;
 
 use Exception;
@@ -56,9 +59,20 @@ class FilerController extends Controller
             }
         } else {
             try {
-                $user = $this->get('ukm_user')->getCurrentUserAsObject();
+                $userId = $this->get('ukm_user')->getCurrentUser()->getId();
+                $this->_setupLogger($userId, $arrangement->getId());
 
-                Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description'], $user->getPameldUser());
+                $playback = Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description']);
+                
+                // Kobling mellom playback og utstilling
+                if($arrangement->erKunstgalleri() && isset($_POST['tittelkunstverk']) && $_POST['tittelkunstverk'] != "") {
+                    $tittelUtstilling = $innslag->getTitler()->get($_POST['tittelkunstverk']);
+
+                    $tittelUtstilling->setPlaybackId($playback->getId());
+
+                    WriteTitler::save($tittelUtstilling);
+                }
+
                 $status = ['Filen er lastet opp!', true];
             } catch( Exception $e ) {
                 $status = ['Kunne ikke laste opp filen:' . $e->getMessage(), false];
@@ -99,6 +113,18 @@ class FilerController extends Controller
                 'innslag_id' => $innslag_id            
             ]
         );
+    }
+
+    /**
+     * Setup UKM Logger
+     *
+     * @param Int $userId
+     * @param Int $arrangement_id
+     * @return void
+     */
+    private function _setupLogger(Int $userId, Int $arrangement_id)
+    {
+        Logger::setID('delta', $userId, $arrangement_id);
     }
 }
 
