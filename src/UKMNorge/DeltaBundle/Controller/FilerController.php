@@ -94,6 +94,25 @@ class FilerController extends Controller
         $arrangement = $innslag->getHome();
         $playback = $innslag->getPlayback()->get($delete_id);
 
+
+        // Fjern kobling på utstilling på bilde og playback
+        if($arrangement->erKunstgalleri()) {
+            if($innslag->getType()->getKey() == 'utstilling') {
+                foreach($innslag->getTitler()->getAll() as $utstilling ){
+                    if($utstilling->getPlaybackId() == $delete_id) {
+                        // Setup logger
+                        $userId = $this->get('ukm_user')->getCurrentUser()->getId();
+                        $this->_setupLogger($userId, $arrangement->getId());
+                        
+                        // Fjern kobling på bilde og playback for Utstilling (Tittel)
+                        $utstilling->setBildeId(-1);
+                        $utstilling->setPlaybackId(-1);
+                        WriteTitler::save($utstilling);
+                    }
+                }
+            }
+        }
+
         $status = ['Filen kan ikke slette filen', false];
         
         if( $playback ) {
