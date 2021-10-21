@@ -67,7 +67,7 @@ class FilerController extends Controller
                 // Kobling mellom playback og utstilling
                 if($arrangement->erKunstgalleri() && isset($_POST['tittelkunstverk']) && $_POST['tittelkunstverk'] != "") {
                     $tittelUtstilling = $innslag->getTitler()->get($_POST['tittelkunstverk']);
-
+                    $tittelUtstilling->setBildeId(-1);
                     $tittelUtstilling->setPlaybackId($playback->getId());
 
                     WriteTitler::save($tittelUtstilling);
