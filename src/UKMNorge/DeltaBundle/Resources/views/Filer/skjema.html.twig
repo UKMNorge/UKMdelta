@@ -158,12 +158,12 @@
 						{% if arrangement.erKunstgalleri() %}
 							{% for utstilling in innslag.getTitler().getAll() %}
 								{% if utstilling.getPlaybackId() != "NULL" and utstilling.getPlaybackId() == playback.getId() %}
-									<span><b>Kunstverk:</b> {{ utstilling.getTittel() }}</span>
+									<span>Kunstverk: {{ utstilling.getTittel() }}</span>
 								{% endif %}
 							{% endfor %}
 						{% endif %}
 						
-						<p class="beskrivelse">{{ playback.getBeskrivelse() }}</p>
+						<p class="beskrivelse small text-muted normal">{{ playback.getBeskrivelse() }}</p>
 					</div>
 
 					{% if arrangement.erKunstgalleri() and playback.erBilde() %}
