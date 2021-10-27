@@ -24,7 +24,7 @@
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ ( type.getKey() not in ['utstilling','matkultur'] ) ? '7' : '6' }}">
+				<div class="col-{{ arrangement.erKunstgalleri() ? '6' : (( type.getKey() not in ['utstilling','matkultur'] ) ? '7' : '9') }}">
 					<p style="line-height:1em">
 						{{ tittel is defined ? tittel.getTittel() }}
 						<br/>
