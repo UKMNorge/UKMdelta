@@ -3,7 +3,7 @@
 
 <ul class="list-group">
 	{% for tittel in innslag.getTitler().getAll() %}
-		<li class="list-group-item click {{ tittel.getPlayback() is not null ? 'triggerLink' : ''}} ">
+		<li class="list-group-item click triggerLink">
 			<div class="row">
 				{% if type.getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
 					<div class="col-2 px-0"></div>
