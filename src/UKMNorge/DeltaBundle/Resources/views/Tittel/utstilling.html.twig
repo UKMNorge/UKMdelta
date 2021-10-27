@@ -19,33 +19,31 @@
 		<p class="help">{{ 'tittel.type.forklaring'|trans }}</p>
 	</div>
 
+
 	<div class="form-group">
 		<label>Kunstverk</label>
-		{% if tittel is defined %}
-		{% if tittel.getBilde() %}
-			<div class="single-bilde">
-				<div>
-					<img src="{{ tittel.getBilde().getSize('original').getUrl() }}"/>
+		<div class="">
+			{% if tittel.getBilde() %}
+				<div class="single-bilde">
+					<div>
+						<img src="{{ tittel.getBilde().getSize('original').getUrl() }}"/>
+					</div>
 				</div>
-			</div>
-		{% elseif tittel.getPlayback() %}
-			{% set playback = tittel.getPlayback() %}
-			<div class="single-bilde">
-				<div>
-					<img src="{{ playback.getUrl() }}"/>
+			{% elseif tittel.getPlayback() %}
+				{% set playback = tittel.getPlayback() %}
+				<div class="single-bilde">
+					<div>
+						<img src="{{ playback.getUrl() }}"/>
+					</div>
 				</div>
-			</div>
-		{% else %}
-			<p class="help">Du har ikke lastet opp noen fil enda</p>
-			<a href="/ukmid/filer/{{ b_id }}/" class="btn btn-sm btn-outline-primary actionLink autoshrink">
-				Gå til filopplastning
-			</a>
-		{% endif %}
-		{% else %}
-			<p class="help">Last opp en fil til dette kunstverket</p>
-			<a href="/ukmid/filer/{{ b_id }}/" class="btn btn-sm btn-outline-primary actionLink autoshrink">
-				Gå til filopplastning
-			</a>
-		{% endif %}
+			{% else %}
+				<p class="help">Du har ikke lastet opp noen fil enda</p>
+				<a href="/ukmid/filer/{{ b_id }}/" class="btn btn-sm btn-outline-primary actionLink autoshrink">
+					Last opp kunstverk
+				</a>
+			{% endif %}
+		</div>
 	</div>
+
+
 {% endblock form_body %}
