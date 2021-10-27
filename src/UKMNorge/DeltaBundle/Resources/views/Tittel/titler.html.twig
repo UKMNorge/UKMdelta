@@ -3,7 +3,7 @@
 
 <ul class="list-group">
 	{% for tittel in innslag.getTitler().getAll() %}
-		<li class="list-group-item click {{ tittel.getPlayback() is not null ? 'triggerLink' : ''}} ">
+			<li class="list-group-item click {{ arrangement.erKunstgalleri() and tittel.getPlayback() is null ? '' : 'triggerLink' }} ">
 			<div class="row">
 				{% if type.getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
 					<div class="col-2 px-0"></div>
@@ -37,7 +37,7 @@
 							{% endif %}
 						</small>
 						<br><br/>
-						{% if innslag.getType().getKey() == 'utstilling' %}
+						{% if arrangement.erKunstgalleri() %}
 							{% set playback = tittel.getPlayback() %}
 							{% if playback is not null %}
 								{% if playback.erGodkjent() %}
@@ -49,7 +49,7 @@
 						{% endif %}
 					</p>
 				</div>
-				{% if innslag.getType().getKey() == 'utstilling' %}
+				{% if arrangement.erKunstgalleri() %}
 					<div class="col-3">
 						{% if tittel.getBilde() %}
 							<div class="single-bilde">
