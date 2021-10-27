@@ -3,27 +3,31 @@
 
 <ul class="list-group">
 	{% for tittel in innslag.getTitler().getAll() %}
-		<li class="list-group-item click triggerLink">
+			<li class="list-group-item click {{ arrangement.erKunstgalleri() and tittel.getPlayback() is null ? '' : 'triggerLink' }} ">
 			<div class="row">
-                {% if type.getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
-                    <div class="col-2 px-0"></div>
+				{% if type.getKey() == 'litteratur' and not tittel.skalLesesOpp() %}
+					<div class="col-2 px-0"></div>
 				{% elseif type.getKey() not in ['utstilling','matkultur'] %}
 					<div class="col-2 px-0">
 						<div class="overunder">
 							{% if tittel is defined %}
-								<div class="over">{{ (tittel.getSekunder()/60)|round(0, 'floor') }} {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-								<div class="under">{{ tittel.getSekunder() % 60 }} {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+								<div class="over">{{ (tittel.getSekunder()/60)|round(0, 'floor') }}
+									{{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+								<div class="under">{{ tittel.getSekunder() % 60 }}
+									{{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
 							{% else %}
-								<div class="over">? {{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
-								<div class="under">? {{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
+								<div class="over">?
+									{{ 'tittel.varighet.min'|trans({}, 'base') }}</div>
+								<div class="under">?
+									{{ 'tittel.varighet.sek'|trans({}, 'base') }}</div>
 							{% endif %}
 						</div>
 					</div>
 				{% endif %}
-				<div class="col-{{ ( type.getKey() not in ['utstilling','matkultur'] ) ? '7' : '9' }}">
+				<div class="col-{{ arrangement.erKunstgalleri() ? '6' : (( type.getKey() not in ['utstilling','matkultur'] ) ? '7' : '9') }}">
 					<p style="line-height:1em">
 						{{ tittel is defined ? tittel.getTittel() }}
-						<br />
+						<br/>
 						<small>
 							{% if (tittel is defined) and not tittel.getParentes() is empty %}
 								{{ tittel.getParentes() }}
@@ -32,8 +36,41 @@
 								<span class="text-danger">{{ 'tittel.info_mangler'|trans({}, 'base' ) }}</span>
 							{% endif %}
 						</small>
+						<br><br/>
+						{% if arrangement.erKunstgalleri() %}
+							{% set playback = tittel.getPlayback() %}
+							{% if playback is not null %}
+								{% if playback.erGodkjent() %}
+									<span class="badge badge-success">Godkjent</span>
+								{% else %}
+									<span class="badge badge-secondary">Registrert</span>
+								{% endif %}
+							{% endif %}
+						{% endif %}
 					</p>
 				</div>
+				{% if arrangement.erKunstgalleri() %}
+					<div class="col-3">
+						{% if tittel.getBilde() %}
+							<div class="single-bilde">
+								<div>
+									<img src="{{ tittel.getBilde().getSize('original').getUrl() }}"/>
+								</div>
+							</div>
+						{% elseif tittel.getPlayback() %}
+							{% set playback = tittel.getPlayback() %}
+							<div class="single-bilde">
+								<div>
+									<img src="{{ playback.getUrl() }}"/>
+								</div>
+							</div>
+						{% else %}
+							<a href="/ukmid/filer/{{ b_id }}/" class="btn btn-block btn-sm btn-outline-primary">
+								Last opp kunstverk
+							</a>
+						{% endif %}
+					</div>
+				{% endif %}
 				<div class="col-3">
 					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type.getKey(), 'b_id': b_id, 't_id': tittel.getId() }) }}" class="btn btn-sm btn-outline-primary actionLink autoshrink" id="editT{{ tittel.getId() }}">
 						{{ 'tittel.rediger'|trans({}, 'base') }}

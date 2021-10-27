@@ -1054,6 +1054,8 @@ class InnslagController extends Controller
      */
     private function _renderTitleAction(array $view_data)
     {
+        $view_data['arrangement'] = $this->get('ukm_api.arrangement')->hent($view_data['pl_id']);
+        
         switch ($view_data['type_key']) {
             case 'musikk':
                 return $this->render('UKMDeltaBundle:Tittel:musikk.html.twig', $view_data);
