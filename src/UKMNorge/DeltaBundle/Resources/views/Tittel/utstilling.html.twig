@@ -19,7 +19,7 @@
 		<p class="help">{{ 'tittel.type.forklaring'|trans }}</p>
 	</div>
 
-	{% if arrangement.erKunstgalleri() %}	
+	{% if arrangement.erKunstgalleri() and tittel is defined %}	
 		<div class="form-group">
 			<label>Kunstverk</label>
 			{% if tittel is defined %}
