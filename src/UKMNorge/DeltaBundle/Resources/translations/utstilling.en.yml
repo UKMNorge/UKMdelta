@@ -16,24 +16,24 @@ overviewAction:
             label: Beskrivelse av kunstner
             placeholder: >
                 Her vil vi vite mer om deg og hvordan du har laget kunstverket.
-                Eks. Jeg liker å holde på med origami, og har i det siste lagd svære origami-montasjer som er mer enn 2 meter høye.
+                F.eks. Jeg liker å holde på med origami, og har i det siste lagd svære origami-montasjer som er mer enn 2 meter høye.
         sammen:
             label: Beskrivelse av kunstner-gruppen
             placeholder: >
                 Her vil vi vite mer om dere og hvordan dere har laget kunstverket.
-                Eks. Vi går ikke på samme skole, men har møttes gjennom ungdomsklubben.
+                F.eks. Vi går ikke på samme skole, men har møttes gjennom ungdomsklubben.
                 Her har vi lært å lage små origamifigurer fra kjente filmer. Vi har planer om å leve av å lage origami.
 tittel:
     type:
         label: Type og teknikk
-        placeholder: Eks. portrettfoto, akvarellmaling, acryl osv...
+        placeholder: F.eks. portrettfoto, akvarellmaling, acryl osv.
         forklaring: >
             Skriv hva du har laget, sånn at vi kan planlegge utstillingen på best mulig måte.
         #Et fotografi trenger f.eks gjerne en vegg å henges på, mens statuer ofte trenger mer gulvplass.
     beskrivelse:
         label: Beskrivelse av verket / utstillingsobjektet
         placeholder: >
-            Eks. Bildet av elgen ble tatt med 50mm, og den så veldig stor ut på så kort avstand.
+            F.eks. Bildet av elgen ble tatt med 50mm, og den så veldig stor ut på så kort avstand.
             Solen sto i en unik vinkel på grunn av måneformørkelsen og det hele er meget merkelig.
 technicalAction:
-    placeholder_teknisk: Eks. Vi trenger en måte å henge opp maleriene, som har kroker på baksiden.
+    placeholder_teknisk: F.eks. Vi trenger en måte å henge opp maleriene, som har kroker på baksiden.
