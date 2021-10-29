@@ -103,7 +103,7 @@ overviewAction:
         endre: legg til / endre
         ingen: Du må legge til minst %pronomen %entall.
         lukk_listen: lukk listen
-        legg_til: Legg til ny %entall
+        legg_til: Legg til %pronomen_adjektiv %entall
     tittel:
         info_mangler: Info mangler
         slett: Slett %entall

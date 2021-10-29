@@ -85,7 +85,7 @@
 	{% endfor %}
 	<li class="list-group-item">
 		<a class="btn btn-block btn-sm btn-outline-primary" href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', {'k_id': k_id, 'pl_id': pl_id, 'type': type.getKey(), 'b_id': b_id }) }}">
-			{{ 'overviewAction.titler.legg_til'|trans({'%entall': type.getTekst('titler.entall')}, 'base') }}
+			{{ 'overviewAction.titler.legg_til'|trans({'%entall': type.getTekst('titler.entall'), '%pronomen_adjektiv': type.getTekst('titler.pronomen_adjektiv')}, 'base') }}
 		</a>
 	</li>
 </ul>
