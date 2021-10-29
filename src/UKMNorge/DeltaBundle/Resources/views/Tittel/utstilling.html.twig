@@ -3,19 +3,52 @@
 
 
 {% block form_body %}
-	<input type="hidden" name="innslagsnavn" value="{{ innslag.getNavn() }}" />
-	<input type="hidden" name="t_id" value="{{ tittel is defined ? tittel.getId() : 'new' }}" />
+	<input type="hidden" name="innslagsnavn" value="{{ innslag.getNavn() }}"/>
+	<input type="hidden" name="t_id" value="{{ tittel is defined ? tittel.getId() : 'new' }}"/>
 
 
 	<div class="form-group">
-        <label>{{ 'tittel.tittel.label'|trans({'%bestemt': type.getTekst('titler.bestemt')|capitalize},'base') }}</label>
-		<input type="text" required name="tittel" class="form-control" placeholder="{{ type.getTekst('titler.placeholder') }}" />
+		<label>{{ 'tittel.tittel.label'|trans({'%bestemt': type.getTekst('titler.bestemt')|capitalize},'base') }}</label>
+		<input type="text" required name="tittel" class="form-control" placeholder="{{ type.getTekst('titler.placeholder') }}"/>
 	</div>
-	
-	
+
+
 	<div class="form-group">
 		<label>{{ 'tittel.type.label'|trans }}</label>
-		<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getType() }}" />
+		<input type="text" required name="type" class="form-control" placeholder="{{ 'tittel.type.placeholder'|trans }}" value="{{ tittel is defined ? tittel.getType() }}"/>
 		<p class="help">{{ 'tittel.type.forklaring'|trans }}</p>
 	</div>
+
+	{% if arrangement.erKunstgalleri() and tittel is defined %}	
+		<div class="form-group">
+			<label>Kunstverk</label>
+			{% if tittel is defined %}
+				{% if tittel.getBilde() %}
+					<br></br>
+					<div class="single-bilde">
+						<div>
+							<img src="{{ tittel.getBilde().getSize('original').getUrl() }}"/>
+						</div>
+					</div>
+					<br></br>
+				{% elseif tittel.getPlayback() %}
+					{% set playback = tittel.getPlayback() %}
+					<br></br>
+					<div class="single-bilde">
+						<div>
+							<img src="{{ playback.getUrl() }}"/>
+						</div>
+					</div>
+					<br></br>
+				{% else %}
+					<p class="help">Du har ikke lastet opp noen fil enda</p>
+				{% endif %}
+			{% else %}
+				<p class="help">Last opp en fil til dette kunstverket</p>
+			{% endif %}
+			<a href="/ukmid/filer/{{ b_id }}/" class="btn btn-sm btn-outline-primary actionLink autoshrink">
+				Gå til filopplasting
+			</a>
+		</div>
+	{% endif %}
 {% endblock form_body %}
