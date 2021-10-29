@@ -1,6 +1,11 @@
 Symfony-app for påmeldingssystemet
 ========================
 
+# Slette cache
+#### Hver gang ny kode skal lanseres må:
+1. Bytt brukeren fra "DIN BRUKER" til ukmdelta ved å bruke `su ukmdelta` på WHM
+2. `bin/console cache:clear --env=dev; bin/console cache:clear --env=prod` skal kjøres på /home/ukmdelta/public_html
+
 # Setup
 Ikke dokumentert
 
