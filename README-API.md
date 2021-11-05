@@ -1,10 +1,6 @@
 # Introduksjon
 
-API for å få tilgang til å opprette, lagre, slette eller modifisere ting på arrangørsystemet. Dette API-et skal brukes fra nytt design.
-
-
-## Test1
-
+API for å få tilgang til å opprette, lagre, slette eller modifisere ting på arrangørsystemet fra brukere på DELTA. Dette API-et skal brukes fra nytt design.
 
 ## Authorization
 
@@ -12,19 +8,19 @@ For å få tilgang til resurser gjennom API kall, må man være logged inn, derf
 
 
 ## Innslag
-```http
+```https
 GET /api/new_innslag/
 ```
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `k_id` | `integer [0-9]{1,4}` | **Required**. kommune id |
-| `k_id` | `integer [0-9]{1,4}` | **Required**. kommune id |
-| `type` | `string [a-z]+` | **Required**. type kan være: 'Musikk' 'Dans' 'Teater' 'Litteratur' 'Annet' 'Utstilling' 'Film' 'Cosplay' 'Dataspill' 'Matkultur' |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
+| `type` | `string [a-z]+` | **Required**. type kan være: 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet', 'Utstilling', 'Film', 'Cosplay', 'Dataspill', 'Matkultur'. |
 
 ## Svar eksempel
 
-Dette er et svar eksempel når et nytt innslag opprettes.
+Dette er ett svar eksempel når ett nytt innslag opprettes.
 
 ```javascript
 {
@@ -158,6 +154,30 @@ Dette er et svar eksempel når et nytt innslag opprettes.
 
 `context` inneholder generelle informasjon om arrangement.
 
+
+<br />
+
+```https
+GET /api/remove_innslag/
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
+| `b_id` | `integer [0-9]{1,11}` | **Required**. innslag id |
+
+## Svar eksempel
+
+Dette er ett svar eksempel når ett innslag fjernes.
+
+```javascript
+{success: "Innslaget \"asg\" ble meldt av."}
+```
+
+
+<br />
+<br />
+<br />
 
 ## Status Codes
 
