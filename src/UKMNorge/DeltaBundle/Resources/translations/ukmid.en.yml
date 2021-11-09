@@ -52,16 +52,16 @@ checkInfoAction:
 indexAction:
     hei: Hei %name!
     ledetekst: |
-        Du er nå logget inn på din side.
-        Her velger du hva du skal delta med på UKM.
+        Vi venter i spenning på å se hva du har å vise oss.
+        Trykk på knappen under for å sette i gang!
     pameldinger:
         overskrift: Dine påmeldinger
         fullforte: Fullførte påmeldinger
-        ikkefullforte: Ikke fullførte påmeldinger
+        ikkefullforte: Ufullstendige påmeldinger
         ingen_fullforte: Du har ingen fullførte påmeldinger
         ingen_ikkefullforte: Du har ingen påmeldinger som ikke er fullført
-        ingen: Du har ingen påmeldinger enda.
-        startny: Start ny påmelding
+        ingen: Du har ingen påmeldte arrangementer.
+        startny: Start en ny påmelding
     rediger: rediger
     last: |
         påmeldingen
