@@ -50,7 +50,7 @@ checkInfoAction:
       mobil: Mobilnummer
 
 indexAction:
-    hei: Hei %name!
+    hei: %name?
     ledetekst: |
         Vi venter i spenning på å se hva du har å vise oss.
         Trykk på knappen under for å sette i gang!

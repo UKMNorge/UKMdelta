@@ -6,14 +6,14 @@
 
 {% block hero_title %}
 	<h1>[Rolle],
-		{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}?</h1>
-	<h8>{{ 'indexAction.ledetekst'|trans|nl2br }}</h8>
+		{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
+	<h3>{{ 'indexAction.ledetekst'|trans|nl2br }}</h3>
 	<div class="background-space"></div>
 {% endblock %}
 
 {% block hero_button %}
 	<div class="front-buttons">
-		<a type="button" class="standard-btn btn-large d-flex justify-content-between btn-blue mt-2" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style="">
+		<a type="button" href="{{ path('ukm_delta_ukmid_checkinfo') }}" class="standard-btn btn-large d-flex justify-content-between btn-blue mt-2">
 			<span>{{ 'indexAction.pameldinger.startny'|trans }}</span>
 			{% include "UKMDesign/SVG/ChevronWhite.html.twig"%}
 		</a>
@@ -55,9 +55,6 @@
 				{% endif %}
 
 			</div>
-			{# <form action="{{ path('ukm_delta_ukmid_checkinfo') }}">
-							<button class="btn btn-block btn-outline-primary my-3" type="submit" value="{{ 'indexAction.pameldinger.startny'|trans }}" style="">{{ 'indexAction.pameldinger.startny'|trans }}</button>
-						</form> #}
 		</div>
 
 		<div class="col-12">
