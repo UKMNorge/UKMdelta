@@ -5,3 +5,6 @@ services:
   delta_menu:
     class: "UKMNorge\DeltaBundle\Services\MenuService"
     arguments: ["@service_container"]
+  ukm_delta.innslagfunctions:
+    class: "UKMNorge\DeltaBundle\Services\InnslagFunctions"
+    arguments: ["@service_container"]

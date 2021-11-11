@@ -52,8 +52,8 @@ checkInfoAction:
 indexAction:
     hei: Hei %name!
     ledetekst: |
-        Du er nå logget inn på din side.
-        Her velger du hva du skal delta med på UKM.
+        Kult å se deg tilbake her igjen! Fortsett der
+        du slapp med å trykke på knappen under!
     pameldinger:
         overskrift: Dine påmeldinger
         fullforte: Fullførte påmeldinger

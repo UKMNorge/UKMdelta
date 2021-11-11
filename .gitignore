@@ -16,4 +16,5 @@
 /web/css/*
 /web/images/*
 /web/error_log
+/DeltaBundle/Resources/views/OnePage/
 *.DS_Store

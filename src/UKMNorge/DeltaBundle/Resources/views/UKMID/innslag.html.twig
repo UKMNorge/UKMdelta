@@ -28,6 +28,7 @@
         </div>
 
         <div class="col-3 right px-0">
+            <button class="fjern-innslag-btn" pl_id="{{ innslag.getHomeId() }}" b_id="{{ innslag.getId() }}">X</button>
             {% if pamelding_apen %}
                 <a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary autoshrink">{{ 'indexAction.rediger'|trans }}</a>
             {% endif %}

@@ -166,3 +166,11 @@
 label {
 	font-weight: normal;
 }
+.round-style-paamelding {
+    border-radius: 28px;
+    padding: 12px 16px;
+    border: none;
+    background: #718096;
+    color: #EDF2F7;
+    font: normal normal 500 14px/21px Poppins;
+}

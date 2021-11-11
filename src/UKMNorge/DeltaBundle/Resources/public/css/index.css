@@ -1,0 +1,45 @@
+.nop {
+    padding: 0;
+}
+#mainContainer {
+    margin-top: -38px;
+    background-color: #f7fafc;
+}
+.round-style-button {
+    padding: 14px 16px;
+    border: none;
+    min-height: 49px;
+    background: #718096;
+    color: #EDF2F7;
+    font: normal normal 500 14px/21px Poppins;
+    box-shadow: 2px 4px 6px #00000027;
+    border-radius: 25px;
+}
+.round-style-button.mini {
+    background-color: #cbd5e0;
+    padding: 12px 13px;
+    height: 49px;
+    width: 49px;
+    display: flex;
+    margin-left: 13px;
+}
+.round-style-button.mini span {
+    font-size: 30px;
+    margin: auto;
+    font-weight: 200;
+}
+.small-button-style {
+    border-radius: 50%;
+    border: none;
+    width: 30px;
+    height: 30px;
+    background: #CBD5E0;
+    color: #fff;
+}
+.mini-label-style {
+    border-radius: 7px;
+    padding: 0px 9px;
+    font-size: 12px;
+    background: #E2E8F0;
+    color: #A0AEC0;
+}

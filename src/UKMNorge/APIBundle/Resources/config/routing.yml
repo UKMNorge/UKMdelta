@@ -8,3 +8,67 @@ ukm_api_poststed:
     defaults: { _controller: UKMAPIBundle:Default:poststed }
     requirements: 
         postnummer: ([0-9]{1,4})
+
+
+
+### ------------------------- Innslag -------------------------
+
+# Opprett innslag
+ukm_api_new_innslag:
+    path: /api/new_innslag/
+    defaults: { _controller: UKMAPIBundle:Default:newInnslag }
+    requirements:
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+    methods: [POST]
+
+# Fjern innslag
+ukm_api_get_innslag:
+    path: /api/remove_innslag/
+    defaults: { _controller: UKMAPIBundle:Default:removeInnslag }
+    requirements: 
+        pl_id: ([0-9]{1,5})
+        b_id: ([0-9]{1,11})
+    methods: [POST]
+
+
+
+
+### ------------------------- Arrangement -------------------------
+
+# Get arrangement
+ukm_api_get_arrangement:
+    path: /api/get_arrangement/{arrangementId}
+    defaults: { _controller: UKMAPIBundle:Default:getArrangement }
+    requirements: 
+        arrangementId: ([0-9]{1,10})
+    methods: [GET]
+
+
+### ------------------------- Fylker -------------------------
+    
+# Get alle fylker
+ukm_api_get_alle_fylker:
+    path: /api/get_all_fylker/
+    defaults: { _controller: UKMAPIBundle:Default:getAlleFylker }
+    methods: [GET]
+
+# Get fylke med id
+ukm_api_get_fylke:
+    path: /api/get_fylke/{fylke_id}
+    defaults: { _controller: UKMAPIBundle:Default:getFylke }
+    requirements: 
+        fylke_id: ([0-9]{1,5})
+    methods: [GET]
+
+
+### ------------------------- Kommune -------------------------
+
+# Get alle fylker
+ukm_api_get_kommuner_i_fylke:
+    path: /api/get_kommuner_i_fylke/{fylke_id}
+    defaults: { _controller: UKMAPIBundle:Default:getAlleKommunerIFylke }
+    requirements: 
+        fylke_id: ([0-9]{1,4})
+    methods: [GET]

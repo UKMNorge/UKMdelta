@@ -6,12 +6,20 @@
         '@UKMDeltaBundle/Resources/public/js/ukmdesignbundle.js'
         '@UKMDeltaBundle/Resources/public/js/h5validate.jquery.js'
         '@UKMDeltaBundle/Resources/public/js/autogrow.jquery.js'
+        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/eventElement.js'
+        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/UKMOnePage.js'
+        '@UKMDeltaBundle/Resources/public/js/deltaOnePage.js'
          %}
         <script src="{{ asset_url }}"></script> 
     {% endjavascripts %}
 {% endblock %}
 
 {% block content %}
+	{% stylesheets
+		'@UKMDeltaBundle/Resources/public/css/index.css' %}
+		<link type="text/css" rel="stylesheet" media="all" href="{{ asset_url }}" />
+	{% endstylesheets %}
+	
 	{% if app.session.flashBag.peekAll()|length > 0 %}
 		<div class="container">
 			<div class="row">

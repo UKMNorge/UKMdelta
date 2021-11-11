@@ -1,0 +1,144 @@
+.main-header-paamelding {
+    position: relative;
+    overflow: hidden;
+}
+.main-header-paamelding .row {
+       width: calc(100% - 100px + 15px) !important;
+}
+.main-header-paamelding .inner {
+    margin-left: -15px;
+    margin-right: -15px;
+    height: 100px;
+    padding-bottom: 135px;
+    background: #a0aec0;
+    margin-bottom: 100px;
+}
+.right-side-img {
+    padding: 0 !important;
+}
+.right-side-img .bolge-img {
+    display: flex;
+}
+.right-side-img .bolge-img {
+    max-height: 230px;
+    margin: auto 0 auto auto;
+}
+.round-bottom-bolge {
+    width: calc(100% + 200px);
+    height: 260px;
+    border-bottom-right-radius: 500%;
+    overflow: hidden;
+    border-bottom-left-radius: 500%;
+    position: absolute;
+    background: #a0aec0;
+    margin-top: -33px;
+    left: -100px;
+    right: -100px;
+}
+.main-header-paamelding .header-content-paamelding {
+    position: absolute;
+    display: flex;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+}
+.main-header-paamelding .header-content-paamelding .info {
+    margin: auto;
+    padding: 0;
+    color: #fff;
+}
+.main-header-paamelding .header-content-paamelding .info h1 {
+    font: normal normal 500 28px/42px Poppins;
+}
+.main-header-paamelding .header-content-paamelding .info .lead {
+    font: normal normal normal 12px/18px Roboto;
+    font-weight: 300;
+}
+.buttons-paamelding {
+    display: flex;
+    position: relative;
+}
+.round-style-paamelding svg {
+    height: 20px;
+}
+.paameldinger {
+    margin-top: 50px;
+}
+.paameldinger .tittle {
+    font: 14px/17px Poppins !important;
+    font-weight: 500;
+    color: #a0aec0;
+    margin: 0;
+    margin-bottom: 25px;
+}
+
+.paamelding-box {
+    width: 100%;
+    padding: 15px;
+    background: #F7FAFC 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 7px 4px #00000029;
+    border-radius: 15px;
+}
+.paamelding-box .header-top {
+    display: flex;
+}
+.paamelding-box .header-top .category-tittel {
+    margin: auto;
+    margin-left: 0;
+    display: flex;
+    margin-top: 0;
+}
+.paamelding-box .header-top .category-tittel .label {
+    margin: auto;
+}
+.paamelding-box .header-top .buttons {
+    margin: auto;
+    margin-right: 0;
+}
+.paamelding-box .header-top .buttons .mini {
+    margin-left: 10px;
+}
+.paamelding-box .inner {
+    margin-top: 60px;
+}
+.paamelding-box .inner .members {
+    display: flex;
+    margin-top: 10px;
+}
+.paamelding-box .inner .members .avatars {
+    margin-right: 10px;
+}
+.paamelding-box .inner .members .avatars .avatar {
+    width: 20px;
+    height: 20px;
+    margin-right: -10px;
+    border: solid 2px #fff;
+    border-radius: 50%;
+}
+
+.paamelding-box .inner .description {
+    margin: 0;
+    color: #A0AEC0;
+    font: normal normal 300 10px/10px Roboto;
+    text-transform:uppercase;
+}
+.paamelding-box .inner .name {
+    margin: 0;
+    font: normal normal 600 15px/20px Poppins;
+}
+.members .total {
+    font-size: 11px;
+    margin: auto;
+    margin-left: 7px;
+    margin-bottom: -3px;
+    color: #718096;
+    font-weight: 100;
+}
+
+
+@media(max-width: 575px) {
+    .main-header-paamelding .header-content-paamelding {
+        margin-left: 100px !important;
+    }
+}

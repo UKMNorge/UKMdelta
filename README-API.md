@@ -9,7 +9,7 @@ For å få tilgang til resurser gjennom API kall, må man være logged inn, derf
 
 ## Innslag
 ```https
-GET /api/new_innslag/
+POST /api/new_innslag/
 ```
 
 | Parameter | Type | Description |
@@ -18,7 +18,7 @@ GET /api/new_innslag/
 | `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
 | `type` | `string [a-z]+` | **Required**. type kan være: 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet', 'Utstilling', 'Film', 'Cosplay', 'Dataspill', 'Matkultur'. |
 
-## Svar eksempel
+### Svar eksempel
 
 Dette er ett svar eksempel når ett nytt innslag opprettes.
 
@@ -158,7 +158,7 @@ Dette er ett svar eksempel når ett nytt innslag opprettes.
 <br />
 
 ```https
-GET /api/remove_innslag/
+POST /api/remove_innslag/
 ```
 
 | Parameter | Type | Description |
@@ -166,12 +166,100 @@ GET /api/remove_innslag/
 | `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
 | `b_id` | `integer [0-9]{1,11}` | **Required**. innslag id |
 
-## Svar eksempel
+### Svar eksempel
 
 Dette er ett svar eksempel når ett innslag fjernes.
 
 ```javascript
 {success: "Innslaget \"asg\" ble meldt av."}
+```
+
+
+## Fylke
+
+```https
+GET /api/get_all_fylker/
+```
+### Svar eksempel
+```javascript
+{
+   "Agder":{
+      "id":42,
+      "link":"agder",
+      "navn":"Agder",
+      "attributes":null,
+      "kommuner":null,
+      "nettverk_omrade":null,
+      "fake":false,
+      "active":true
+   },
+   "Innlandet":{
+      "id":34,
+      "link":"innlandet",
+      "navn":"Innlandet",
+      "attributes":null,
+      "kommuner":null,
+      "nettverk_omrade":null,
+      "fake":false,
+      "active":true
+   },
+   ...
+}
+```
+
+<br>
+<br>
+
+```https
+GET /api/get_fylke/{fylke_id}
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `fylke_id` | `integer [0-9]{1,5}` | **Required**. fylke id |
+
+### Svar eksempel
+```javascript
+{
+   "Agder":{
+      "id":42,
+      "link":"agder",
+      "navn":"Agder",
+      "attributes":null,
+      "kommuner":null,
+      "nettverk_omrade":null,
+      "fake":false,
+      "active":true
+   }
+}
+```
+
+<br>
+<br>
+
+## Kommune
+
+```https
+GET /api/get_kommuner_i_fylke/{fylke_id}
+```
+
+Hent alle kommuner i et fylke
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `fylke_id` | `integer [0-9]{1,5}` | **Required**. fylke id |
+
+```javascript
+[
+   {
+      "id":4203,
+      "navn":"Arendal",
+      "erAktiv":true,
+      "action":false,
+      "link":false
+   },
+   ...
+]
 ```
 
 
