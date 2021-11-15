@@ -18,10 +18,16 @@
 				<div class="right-side-img col-6">
 					<img class="bolge-img" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/header-bolger.png" />
 				</div>
-				
 				<div class="container header-content-paamelding">
 					<div class="col-12 info">
-						<h1 class="mt-0">{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
+						<h1 class="mt-0">
+							<div class="slide-rolle">
+								<span>Forfatteren</span>
+								<span>Regissøren</span>
+								<span>Skuespilleren</span>
+							</div>
+							{# <span>, {{user.getFirstName}}?<span> #}
+						</h1>
 						<p class="lead">
 							{{ 'indexAction.ledetekst'|trans|nl2br }}
 						</p>
