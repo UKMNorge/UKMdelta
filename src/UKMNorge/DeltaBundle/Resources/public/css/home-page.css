@@ -152,7 +152,7 @@
 }
 
 .slide-rolle {
-    display: list-item;
+    height: 40px;
 }
 
 .slide-rolle span {
@@ -174,10 +174,56 @@
   
 @keyframes top-to-bottom {
     0% { opacity: 0; }
-    5% { opacity: 0; transform: translateY(2rem); }
+    5% { opacity: 0; transform: translateY(8px); }
     10% { opacity: 1; transform: translateY(0); }
     25% { opacity: 1; transform: translateY(0); }
-    30% { opacity: 0; transform: translateY(-2rem); }
+    30% { opacity: 0; transform: translateY(-8px); }
     80% { opacity: 0; }
     100% { opacity: 0; }
 }
+
+
+  .note::after {
+      content: '';
+      width: 20%;
+      height: 2px;
+      border-radius: 999px;
+      background-color: #AFAFAF;
+      background: linear-gradient(135deg, rgba(43,171,217,1) 0%, rgba(0,130,200,1) 100%);
+      position: absolute;
+      /* top: -1.8em; */
+      left: 0;
+  }
+  .note {
+      font-size: 0.8em;
+      color: #8A8A8A;
+      position: relative;
+      margin-top: 64px;
+  }
+  
+  /* Scroller styling */
+  .scroller {
+    height: 1.2em;
+    line-height: 1.2em;
+    position: relative;
+    overflow: hidden;
+    width: 10em;
+    display: inline-block;
+  }
+  .scroller > span {
+    position: absolute;
+    top: 0;
+    animation: slide 5s infinite;
+    
+  }
+  @keyframes slide {
+    0% {
+      top: 0;
+    }
+    25% {
+      top: -1.2em;
+    }
+    50% {
+      top: -2.4em;
+    }
+  }

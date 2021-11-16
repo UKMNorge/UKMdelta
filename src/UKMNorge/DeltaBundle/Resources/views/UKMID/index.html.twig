@@ -21,12 +21,14 @@
 				<div class="container header-content-paamelding">
 					<div class="col-12 info">
 						<h1 class="mt-0">
-							<div class="slide-rolle">
-								<span>Forfatteren</span>
-								<span>Regissøren</span>
-								<span>Skuespilleren</span>
+							<div class="scroller">
+								<span>
+								Forfatteren,<br/>
+								Regissøren,<br/>
+								Skuespilleren,<br/>
+								</span>
 							</div>
-							{# <span>, {{user.getFirstName}}?<span> #}
+							<span> {{user.getFirstName}}?<span>
 						</h1>
 						<p class="lead">
 							{{ 'indexAction.ledetekst'|trans|nl2br }}
@@ -85,7 +87,7 @@
 								<img class="avatar" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/avatar-female.png" />
 							</div>
 							<div class="total">
-								<span>3 medlemer</span>
+								<span>3 medlemmer</span>
 							</div>
 						</div>
 					</div>
