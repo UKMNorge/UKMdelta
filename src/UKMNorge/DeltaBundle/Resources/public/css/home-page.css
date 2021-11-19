@@ -142,3 +142,51 @@
         margin-left: 100px !important;
     }
 }
+
+.accordion-by {
+    margin-top: 50px;
+}
+
+.accordion-by .card {
+    border-radius: 5px 5px 0px 0px;
+    background-color: #EDF2F7;
+    font: normal normal 300 14px/16px Roboto;
+    text-align: left;
+    letter-spacing: 0px;
+    border: none;
+    box-shadow: 0px 2px 4px #0000001F;
+}
+
+.accordion-by .card-header {
+    border-radius: 5px;
+    padding: 10px 0;
+    font: normal normal 300 16px/19px Roboto;
+    border: none;
+}
+
+.accordion-by .card-header-fylke .btn-link {
+    color: #A0AEC0;
+    font-weight: 300;
+}
+
+.accordion-by .card-header-fylke .btn-link:hover, .accordion-by .card-header-fylke .btn-link:focus {
+    text-decoration: none;
+}
+
+.accordion-by .card-body-kommune {
+    color: #1A202C;
+    background-color: #F6F8FB;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion-by .card-body-arrangement {
+    color: #1A202C;
+    background-color: #EDF2F7;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion-by span .info-label {
+    color: #A0AEC0;
+}
