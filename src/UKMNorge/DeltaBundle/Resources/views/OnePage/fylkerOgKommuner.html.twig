@@ -1,0 +1,73 @@
+<script>
+var fylkerOgKommunerTemplate = (fylker) => { 
+    var html = '';
+    for(key in fylker) {
+        var fylke = fylker[key];
+
+        html += `
+        <div class="accordion panel-group accordion-by" id="accordionBy">
+            <div class="card panel panel-default">
+                <div class="panel-heading card-header card-header-fylke">
+                    <h1 class="m-0">
+                        <button class="btn btn-link btn-block fylke-btn text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" href="#collapseKommuneForFylke${fylke.id}">
+                            <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
+                                <path d="M9 19L17 12 9 5z"></path>
+                            </svg>
+                            <span class="fylke-navn">${fylke.navn}</span>
+                        </button>
+                    </h1>
+                </div>
+
+                <div id="collapseKommuneForFylke${fylke.id}" class="panel-body fylke-body collapse">
+                    <div class="panel panel-default">`;
+
+                    for(kommune of fylke.kommuner) {
+                        
+                        html += `
+                        <div class="kommune-accordion collapsed" kommune-id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
+                            <div class="panel-heading card-body card-body-kommune">
+                                <span class="kommune-navn">
+                                    ${kommune.navn}
+                                    <br class="info-label">
+                                    <p class="description info-label">Hvilket arrangement vil du melde deg på?</p>
+                                </span>
+                                <svg class="icon" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                                    <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Arrangementer -->
+                        <div id="collapseArrangementer${kommune.id}" class="panel-body panel-body-arrangement collapse">
+                            
+                            <div class="panel-inner phantom-arrangement">
+                                <div class="panel-group" id="accordionKommune">
+                                    <div class="panel panel-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
+                                        <div class="panel-heading card-body card-body-arrangement">
+                                            <span>
+                                                <span class="phantom-loading">Arrangement navn</span>
+                                                <p class="info-label phantom-loading">Onsdag 9. Desember, 2020</p>
+                                            </span>
+                                            <svg class="phantom-loading" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                                                <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                        </div>`;
+                    }
+                    html += 
+                    `</div>
+                </div>
+
+            </div>
+        </div>`;
+    }
+
+    return html;
+};
+</script>
+

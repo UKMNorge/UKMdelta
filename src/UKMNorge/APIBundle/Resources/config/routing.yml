@@ -45,6 +45,22 @@ ukm_api_get_arrangement:
         arrangementId: ([0-9]{1,10})
     methods: [GET]
 
+# Get arrangementer i kommune
+ukm_api_get_arrangementer_i_kommune:
+    path: /api/get_arrangementer_i_kommune/{fylke_id}/{k_id}
+    defaults: { _controller: UKMAPIBundle:Default:getArrangementIKommune }
+    requirements: 
+        fylke_id: ([0-9]{1,5})
+        k_id: ([0-9]{1,4})
+    methods: [GET]
+
+
+### ------------------------- Fylker og Kommune -------------------------
+ukm_api_get_alle_fylker_og_kommuner:
+    path: /api/get_all_fylker_og_kommuner/
+    defaults: { _controller: UKMAPIBundle:Default:getAlleFylkerOgKommuner }
+    methods: [GET]    
+
 
 ### ------------------------- Fylker -------------------------
     

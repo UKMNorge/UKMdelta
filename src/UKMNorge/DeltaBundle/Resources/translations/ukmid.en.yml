@@ -67,6 +67,8 @@ indexAction:
         påmeldingen
         er stengt
     avmeld: meld av
+    medlemer: medlemer
+    medlem: medlem
 
 contactAction:
     overskrift: Rediger din bruker

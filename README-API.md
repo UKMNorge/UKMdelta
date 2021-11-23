@@ -175,6 +175,42 @@ Dette er ett svar eksempel når ett innslag fjernes.
 ```
 
 
+<br>
+<br>
+
+
+## Fylke og kommuner
+
+```https
+GET /api/get_all_fylker_og_kommuner/
+```
+### Svar eksempel
+```javascript
+{
+   "3":{
+      "id":3,
+      "link":"oslo",
+      "navn":"Oslo",
+      "attributes":null,
+      "kommuner":[
+         {
+            "id":316,
+            "navn":"Alna",
+            "erAktiv":true,
+            "action":false,
+            "link":false
+         },
+         ...
+      ],
+      "nettverk_omrade":null,
+      "fake":false,
+      "active":true
+   },
+   ...
+}
+```
+
+
 ## Fylke
 
 ```https
@@ -209,6 +245,7 @@ GET /api/get_all_fylker/
 
 <br>
 <br>
+
 
 ```https
 GET /api/get_fylke/{fylke_id}

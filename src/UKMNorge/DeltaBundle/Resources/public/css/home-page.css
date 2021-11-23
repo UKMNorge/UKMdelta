@@ -64,6 +64,7 @@
 }
 .paameldinger {
     margin-top: 50px;
+    margin-bottom: 60px;
 }
 .paameldinger .tittle {
     font: 14px/17px Poppins !important;
@@ -77,8 +78,12 @@
     width: 100%;
     padding: 15px;
     background: #F7FAFC 0% 0% no-repeat padding-box;
-    box-shadow: 0px 2px 7px 4px #00000029;
+    box-shadow: 0px 2px 7px #00000066;
     border-radius: 15px;
+    margin-bottom: 30px;
+    min-height: 212px;
+    position: relative;
+    overflow: hidden;
 }
 .paamelding-box .header-top {
     display: flex;
@@ -95,16 +100,29 @@
 .paamelding-box .header-top .buttons {
     margin: auto;
     margin-right: 0;
+    display: flex;
+}
+.paamelding-box .header-top .buttons a {
+    display: block;
+    margin-left: 10px;
+}
+.paamelding-box .header-top .buttons a .mini {
+    margin-left: 0;
 }
 .paamelding-box .header-top .buttons .mini {
+    margin: auto;
     margin-left: 10px;
 }
 .paamelding-box .inner {
-    margin-top: 60px;
+    transition: .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .paamelding-box .inner .members {
     display: flex;
-    margin-top: 10px;
+    margin-top: 8px;
+}
+.avatars-div {
+    display: flex;
+    margin-top: 26px;
 }
 .paamelding-box .inner .members .avatars {
     margin-right: 10px;
@@ -115,6 +133,9 @@
     margin-right: -10px;
     border: solid 2px #fff;
     border-radius: 50%;
+}
+.paamelding-box .inner .members .avatars .avatar:last-child {
+    margin-right: 0;
 }
 
 .paamelding-box .inner .description {
@@ -130,15 +151,212 @@
 .members .total {
     font-size: 11px;
     margin: auto;
-    margin-left: 7px;
+    margin-left: 0;
     margin-bottom: -3px;
     color: #718096;
     font-weight: 100;
 }
-
-
+.hide-gently {
+    -ms-transform: scaleY(0); /* IE 9 */
+    transform: scaleY(0);
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+    margin-left: 50px;
+    transition: .2s all;
+    transition-delay: 2s position;
+}
+.innslag-info {
+    margin: auto;
+    margin-bottom: 0;
+    transition: .2s;
+}
+.show-gently {
+    -ms-transform: scaleY(1); /* IE 9 */
+    transform: scaleY(1);
+    visibility: visible;
+    opacity: 1;
+    margin-left: 0px;
+    transition: .2s all;
+    transition-delay: .2s visibility;
+}
+.paamelding-box .inner.make-space .row .innslag-info {
+    margin-bottom: 40px;
+}
+.meld-av-bilde {
+    display: flex;
+    margin-bottom: -21px;
+    margin-top: 35px;
+}
+.meld-av-bilde img {
+    opacity: 1;
+    max-height: 80px;
+    margin: auto;
+    margin-bottom: 0;
+    transition: .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.slett-paamelding-div .slett-paamelding {
+    height: auto;
+    min-height: inherit;
+    padding: 10px 16px;
+    background: #A0AEC0;
+}
+.slett-paamelding-div .slett-paamelding svg {
+    margin-top: -3px;
+}
+.slett-paamelding-div.show-gently {
+    margin-top: -35px;
+    margin-bottom: 36px;
+}
+.slett-beskjed {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #edf2f7;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    display: flex;
+}
+.slett-beskjed .beskjed-box {
+    margin: auto;
+    text-align: center;
+}
+.slett-beskjed .beskjed-box .text {
+    color: #A0AEC0;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.no-innslag-div {
+    display: flex;
+}
+.no-innslag-div img {
+    margin: auto;
+    max-height: 300px;
+}
+.accordion-by {
+    margin-top: 20px;
+}
+.accordion-by .card {
+    border-radius: 5px 5px 0px 0px;
+    background-color: #EDF2F7;
+    font: normal normal 300 14px/16px Roboto;
+    text-align: left;
+    letter-spacing: 0px;
+    border: none;
+}
+.accordion-by .card-header {
+    border-radius: 5px;
+    padding: 10px 0;
+    font: normal normal 300 16px/19px Roboto;
+    border: none;
+    padding: 0 !important;
+}
+.accordion-by .card-header-fylke .btn-link:hover {
+    color: #fff !important;
+}
+.accordion-by .card-header-fylke .btn-link:hover .caret-flip {
+    fill: #fff !important;
+}
+.accordion-by .card-header-fylke .btn-link {
+    color: #A0AEC0;
+    font-weight: 300;
+    padding: 13px 10px;
+}
+.accordion-by .card-header-fylke .btn-link {
+    box-shadow: 0px 2px 4px #0000001f;
+}
+.accordion-by .card-header-fylke .btn-link.collapsed {
+    box-shadow: none;
+}
+.accordion-by .card-header-fylke .btn-link:hover, .accordion-by .card-header-fylke .btn-link:focus {
+    text-decoration: none;
+}
+.accordion-by .card-body-kommune {
+    color: #1A202C;
+    background-color: #F6F8FB;
+    display: flex;
+    justify-content: space-between;
+}
+.accordion-by .card-body-arrangement {
+    color: #1A202C;
+    background-color: #EDF2F7;
+    display: flex;
+    justify-content: space-between;
+    border-left: solid 2px #A0AEC0;
+    margin: 14px;
+    padding: 0;
+    padding-top: 0;
+    margin-top: 0;
+    padding-left: 15px;
+    margin-left: 20px;
+}
+.accordion-by span .info-label {
+    color: #A0AEC0;
+    font-size: 11px;
+    margin: 0;
+    margin-top: 2px;
+}
+.kommune-accordion .card-body-kommune {
+    background: #EDF2F7;
+    transition: .2s background;
+    cursor: pointer;
+}
+.kommune-accordion.collapsed .card-body-kommune {
+    background: #F6F8FB;
+    transition: 1s;
+    transition-delay: .3s;
+}
+.kommune-accordion .panel-heading .description {
+    transition: .2s;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.kommune-accordion.collapsed .panel-heading .description {
+    opacity: 0;
+    margin-top: -10px;
+    margin-bottom: -11px;
+}
+.kommune-accordion .panel-heading .icon {
+    opacity: 0;
+    margin-right: -20px;
+    transition: .2s;
+}
+.kommune-accordion.collapsed .panel-heading .icon {
+    opacity: 1;
+    margin-right: 0;
+}
+.accordion>.card {
+    overflow: inherit;
+}
+.fylke-btn .fylke-navn {
+    vertical-align: middle;
+}
+.fylke-btn .caret-flip {
+    transform: rotate(90deg);
+    transition: .2s transform;
+}
+.fylke-btn.collapsed .caret-flip {
+    transform: rotate(0);
+}
+#alleFylkerOgKommuner {
+    margin-top: 60px;
+}
+.fylke-body {
+    position: relative;
+    box-shadow: 0px 2px 4px #0000001F;
+}
+.panel-body-arrangement.loaded .phantom-arrangement {
+    display: none;
+}
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;
+    }
+    .meld-av-bilde img {
+        max-height: 80px;
+        margin-right: 50px;
+        margin-bottom: 0;
     }
 }

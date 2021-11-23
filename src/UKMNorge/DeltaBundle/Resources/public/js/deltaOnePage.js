@@ -1,4 +1,4 @@
-class DeltaOnePage extends UKMOnePage {
+var DeltaOnePage = class DeltaOnePage extends UKMOnePage {
 
     /**
      * Represents the Delta functionality for one page.

@@ -4,42 +4,61 @@
 
 {% set link_target = path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: innslag.getKommune().getId(), pl_id: innslag.getHome().getId(), type: innslag.getType().getKey(), b_id: innslag.getId() }) %}
 
-<li class="list-group-item {{ pamelding_apen ? 'clickLinkWithin click' }}">
-    <div class="row">
-        <div class="col-9">
-            {% if pamelding_apen %}
-                <a href="{{ link_target }}" class="linkWithin">{{ innslag.getNavn() }}</a>
-            {% else %}
-                {{ innslag.getNavn() }}
-            {% endif %}
-            <small>
-                {{ innslag.getType().getNavn() }} 
-                | 
-                {{ innslag.getHome().getNavn() }},
-                {{ innslag.getHome().getStart()|dato('j. M Y')}}
-            </small>
-            {# TODO: implementer nominasjon! #}
-            {# https://github.com/UKMNorge/UKMapi/issues/41 #}
-            {#% if innslag.getNominasjon( 'land' ).har() and innslag.innslag.getNominasjon('land').harDeltakerskjema() %}
-                <br />
-                <label class="badge badge-success" style="font-weight:normal">Nominasjonsskjema er sendt inn (#{{ innslag.innslag.getNominasjon('land').getId() }})</label>
-            {% endif %#}
-            
-        </div>
-
-        <div class="col-3 right px-0">
-            <button class="fjern-innslag-btn" pl_id="{{ innslag.getHomeId() }}" b_id="{{ innslag.getId() }}">X</button>
-            {% if pamelding_apen %}
-                <a href="{{ link_target }}" class="btn btn-block btn-sm btn-outline-primary autoshrink">{{ 'indexAction.rediger'|trans }}</a>
-            {% endif %}
-            {% if innslag.getType().getKey() in ["nettredaksjon", "media", "arrangor"] %}
-                <a href="{{ path('ukm_delta_ukmid_wordpress_connect')}}" class="btn btn-block btn-sm btn-outline-primary autoshring">logg inn på arrangørside</a>
-            {% endif %}
-            {% if pamelding_apen %}
-                <a href="{{ path('ukm_delta_ukmid_meld_av', { k_id: innslag.getKommune().getId(), pl_id: innslag.getHomeId(), type: innslag.getType().getKey(), b_id: innslag.getId() }) }}" class="btn btn-block btn-sm btn-danger actionLink autoshrink">{{ 'indexAction.avmeld'|trans }}</a>
-            {% else %}
-                <i class="center small">{{ 'indexAction.last'|trans|nl2br }}</i>
-            {% endif %}       
+<div class="paamelding-box">
+    <div class="slett-beskjed hide">
+        <div class="beskjed-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.999 14.413-3.713-3.705L7.7 11.292l2.299 2.295 5.294-5.294 1.414 1.414-6.706 6.706z"></path></svg>
+            <p class="text">Bidraget ble slettet</p>
         </div>
     </div>
-</li>
+
+     <div class="header-top">
+        <div class="category-tittel">
+            <div class="mini-label-style label">
+                <span>{{ innslag.getType().getNavn() }}</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <a href="{{ link_target }}">
+                <button class="small-button-style hover-button-delta mini">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
+                </button>
+            </a>
+            <button class="small-button-style hover-button-delta mini go-to-meld-av">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="2.5 0 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+            </button>
+        </div>
+    </div>
+    <div class="inner">
+        <div class="row">
+            <div class="col-6 innslag-info">
+                <p class="description">Navn på gruppe</p>
+                <h5 class="name nop">{{ innslag.getNavn() }}</h5>
+            </div>
+            <div class="col-6 meld-av-bilde">
+                <img class="opacity-hidden" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/meld-av.png" />
+            </div>
+        </div>
+        <div class="members">
+            <div class="avatars-div show-gently">
+                <div class="avatars">
+
+                    {% for person in innslag.getPersoner().getAll() %}
+                        <img class="avatar" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/avatar-female.png" />
+                    {% endfor %}
+                    {# <img class="avatar" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/avatar-female.png" />  #}
+                </div>
+                {% set medlemer = innslag.getPersoner().getAntall() %}
+                <span class="total"> {{ medlemer }}  {{ medlemer > 1 ? 'indexAction.medlemer'|trans : 'indexAction.medlem'|trans }}</span>
+            </div>
+            <div class="slett-paamelding-div hide-gently">
+                <button class="round-style-button slett-paamelding" pl_id="{{ innslag.getHome().getId() }}" b_id="{{ innslag.getId() }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewbox="0 0 24 24" style="fill: #FFF; margin-right: 0.5rem">
+                        <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path>
+                    </svg>
+                    <span>Meld av</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

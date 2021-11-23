@@ -14,6 +14,8 @@ use UKMNorge\Geografi\Kommune;
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Geografi\Fylker;
+use UKMNorge\Nettverk\Omrade;
+
 
 
 use UKMNorge\DeltaBundle\Controller\InnslagController as InnslagController;
@@ -136,8 +138,71 @@ class DefaultController extends Controller
         $response->setData($arrangement);
         return $response;
     }
+    
+    /**
+     * Hent arrangement
+     *
+     * @param Int $arrangementId
+     * @return JsonResponse
+     */
+    public function getArrangementIKommuneAction(Int $fylke_id, Int $k_id) {
+        $response = new JsonResponse();
+        $omrade = Omrade::getByKommune($k_id);
+        
+        $arrangementer = $omrade->getKommendeArrangementer();
+
+        try{
+            $response->setData($arrangementer->getAll());
+        } catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+    }
 
 
+
+    /* ---------------------------- Fylker og kommuner ---------------------------- */
+    
+    /**
+     * Hent alle fylker og kommuner
+     * @return JsonResponse
+     */
+    public function getAlleFylkerOgKommunerAction() {
+        $response = new JsonResponse();
+
+        $fylker = [];
+
+        foreach(Fylker::getAll() as $fylke) {
+            $fylker[$fylke->getId()] = $fylke;
+
+            $kommuner_arr = [];
+            foreach($fylke->getKommuner()->getAll() as $kommune) {
+
+                $kommuner_arr[] = [
+                    "id" => $kommune->getId(),
+                    "navn" => $kommune->getNavn(),
+                    'erAktiv' => $kommune->erAktiv(),
+                    'action' => $kommune->getAttr('action'),
+                    'link' => $kommune->getAttr('link'),
+                ];
+            }
+
+            $fylker[$fylke->getId()]->kommuner = $kommuner_arr;
+            
+        }
+
+
+        try{
+            return $response->setData($fylker);
+        } catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+    }
     
     /* ---------------------------- Fylker ---------------------------- */
 

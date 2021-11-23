@@ -42,11 +42,21 @@ class UKMIDController extends Controller
             $this->addFlash('danger', "Innlogging feilet i arrangørsystemet. Har du fått lov til å logge inn av arrangøren?");
         }
 
+        $alle_innslag = [];
+
+        // $inside = false
+        foreach($this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll() as $inn) {
+                $alle_innslag[] = $this->get('ukm_api.innslag')->hent($inn->getId());
+              
+
+            // $alle_innslag[] = $this->get('ukm_api.innslag')->hent($inn->getId);
+        }
+
         $view_data = [
             'translationDomain' => 'ukmid',
             'user' => $user,
             'dinside' => true,
-            'alle_innslag' => $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()
+            'alle_innslag' => $alle_innslag
         ];
 
         return $this->render('UKMDeltaBundle:UKMID:index.html.twig', $view_data );
