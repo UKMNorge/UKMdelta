@@ -394,3 +394,6 @@
         margin-bottom: 0;
     }
 }
+button.small-button-style.innslags-type.mini {
+    background-color: hsla(210, 38%, 95%, 1);
+}
