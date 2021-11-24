@@ -18,7 +18,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                     </h1>
                 </div>
 
-                <div id="collapseKommuneForFylke${fylke.id}" class="panel-body fylke-body collapse">
+                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body collapse">
                     <div class="panel panel-default">`;
 
                     for(kommune of fylke.kommuner) {

@@ -37,6 +37,36 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
         if(res) {
             doAfter();
         }
+
+        var callbackFilter = (numShown) => {
+            if($('#searchInput').val().length < 3) {
+                $('.panel-body.fylke-body').collapse('hide');
+            }
+
+            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body')) {
+                if($(el).parent().parent().css('display') != 'none') {
+                    var count = 0;
+                    for(var kommune of $(el).find('.card-body-kommune')) {
+                        if($(kommune).css('display') != 'none') {
+                            count++;
+                        }
+                    }
+                    if(count == 0) {
+                        $(el).find('.card-body-kommune').css('display', 'flex');
+                    }
+                    else if(count > 0 && count < 3) {
+                        $(el).collapse('show');
+
+                    }
+                }
+            }
+        };
+
+        // Filter
+        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .kommune-accordion', {
+            callback: callbackFilter});
+        
+        $('searchInput').blur(callbackFilter)
         
     }catch(err) {
         // Error

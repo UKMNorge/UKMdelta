@@ -15,4 +15,5 @@ $('.input-delta .close-btn').off('click').click((e) => {
 
     $(el.parent()).find('input').val('');
     $('.input-delta input').blur();
+    $('#searchInput').trigger('change');
 });
