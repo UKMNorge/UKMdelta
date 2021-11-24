@@ -55,6 +55,12 @@ var arrangementerIKommune = async (e, response, ukmOnePage, doAfter) => {
         var res = await response;
         el.addClass('loaded');
 
+        if($.isEmptyObject(res)) {
+            el.children('.no-arrangement').removeClass('hide');
+            console.log($(e.currentTarget));
+            $(e.currentTarget).find('.description.info-label').addClass('no-arrangement-hide');
+        }
+
         for(let key in res) {
             el.append(singleArrangementPreviewTemplate(res[key]));
         }

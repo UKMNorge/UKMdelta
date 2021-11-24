@@ -204,7 +204,7 @@ class DefaultController extends Controller
                     "navn" => $kommune->getNavn(),
                     'erAktiv' => $kommune->erAktiv(),
                     'action' => $kommune->getAttr('action'),
-                    'link' => $kommune->getAttr('link'),
+                    'link' => $kommune->getLink(),
                 ];
             }
 
