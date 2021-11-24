@@ -39,7 +39,7 @@
 </div>
 
 <!-- ******* page - pageAllInnslag ******* -->
-<div id="pageAllInnslag" class="container main-container page">
+<div id="pageAllInnslag" class="container main-container page hide">
 	<div class="buttons-paamelding">
 		<button class="round-style-button paamelding">
 			<span class="text">Fortsett der du slapp</span>
@@ -66,7 +66,7 @@
 		</div>
 		
 		{% if not isPaameldingNull %}
-			<div id="paameldingerFullforte innslags-space">
+			<div id="paameldingerFullforte" class="innslags-space">
 				{% if alle_innslag|length == 0 %}
 					<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
 				{% else %}
@@ -118,6 +118,10 @@
 	</div>
 </div>	
 
+<!-- ******* page - pageMeldPaaArrangement ******* -->
+<div id="pageVegAvInnslagType" class="container main-container page hide">
+	<h1>Hei fra innslag type</h1>
+</div>	
 
 
 <!-- One Page Templates -->
@@ -131,6 +135,7 @@
 {# ONE PAGE TEMPLATES #}
 {# {% include "UKMDeltaBundle:OnePage:innslagOnePage.html.twig" %} #}
 {% include "UKMDeltaBundle:OnePage:fylkerOgKommuner.html.twig" %}
+{% include "UKMDeltaBundle:OnePage:singleArrangementPreview.html.twig" %}
 
 
 {{ parent() }}

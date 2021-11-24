@@ -145,14 +145,32 @@ class DefaultController extends Controller
      * @param Int $arrangementId
      * @return JsonResponse
      */
-    public function getArrangementIKommuneAction(Int $fylke_id, Int $k_id) {
+    public function getArrangementIKommuneAction(Int $k_id) {
         $response = new JsonResponse();
         $omrade = Omrade::getByKommune($k_id);
+        $innslagService = $this->get('ukm_api.innslag');
+
         
-        $arrangementer = $omrade->getKommendeArrangementer();
+        $arrangementer = $omrade->getKommendeArrangementer()->getAll();
+        
+        // Hvis det er fellesmønstring, legg til kommuner
+        foreach($arrangementer as $arrangement) {
+            if($arrangement->erFellesmonstring()) {
+                $kommuner = $arrangement->getKommuner()->getAll();
+                foreach($kommuner as $kommune) {
+                    $arrangement->kommuner_fellesmonstring[$kommune->getId()] = array(
+                        'id' => $kommune->getId(),
+                        'navn' => $kommune->getNavn()
+                    );
+                }
+            }
+            else {
+                $arrangement->kommuner_fellesmonstring = null;
+            }
+        }
 
         try{
-            $response->setData($arrangementer->getAll());
+            $response->setData($arrangementer);
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             $response->setData($e->getMessage());

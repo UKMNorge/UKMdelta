@@ -1,0 +1,66 @@
+<script>
+var singleArrangementPreviewTemplate = (arrangement) => { 
+
+    var html = `
+    <div class="panel-inner">
+        <div class="panel-group" id="accordionKommune">
+            <div class="panel panel-default arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
+                <div onclick="director.openPage('pageVegAvInnslagType');" class="panel-heading card-body card-body-arrangement">
+                    <span>
+                        ${arrangement.navn}`
+
+                        let dato = new Date(Date.parse(arrangement.start_datetime.date));
+                        console.log(dato);
+                        html += `
+                        <p class="info-label">${getDayNorwegian(dato.getDay())} ${dato.getDate()}. ${getMonthNorwegian(dato.getMonth())}, ${dato.getFullYear()}</p>
+                    </span>
+                    <svg class="${arrangement.kommuner_fellesmonstring == null ? '' : 'hide'}" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                        <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </div>`
+
+            if(arrangement.kommuner_fellesmonstring != null) {
+                html += `
+                <div class="fellesmonstring-kommuner" data-toggle="collapse" href="#kommuner${arrangement.id}" role="button" aria-expanded="true" aria-controls="kommuner${arrangement.id}">
+                    <div class="info-inactive-button" >
+                        <svg style="height: 18px;width: auto; fill:#A0AEC0; transform: rotate(90deg)" class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M9 19L17 12 9 5z"></path>
+                        </svg>
+                        <span class="info-label">HVILKEN BY ER DU FRA?</span>
+                    </div>               
+                    <div id="kommuner${arrangement.id}" class="collapse show">`
+
+                    for(let key in arrangement.kommuner_fellesmonstring) {
+                        let kommune = arrangement.kommuner_fellesmonstring[key];
+                        html += `
+                        <div class="panel-heading card-body card-body-kommune hover-button-delta fellesmonstring">
+                            <p class="kommune-navn">
+                                ${kommune.navn}
+                            </p>
+                            <svg class="icon" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#718096">
+                                <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>`
+                    }
+
+                    html += `
+                    </div>
+                </div>`
+            }
+            html += `
+            </div>
+        </div>
+    </div>`
+    
+    return html;
+};
+</script>
+
+ <div class="" data-toggle="collapse" href="#kommuner${arrangement.id}" role="button" aria-expanded="false" aria-controls="kommuner${arrangement.id}">
+                        <svg style="height: 10px;width: auto; fill:#A0AEC0; transform: rotate(90deg)" class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M9 19L17 12 9 5z"></path>
+                        </svg>
+                        <span class="info-label">HVILKEN BY ER DU FRA?</span>
+                    </div>
+
+                    <div class="collapse" id="kommuner${arrangement.id}">

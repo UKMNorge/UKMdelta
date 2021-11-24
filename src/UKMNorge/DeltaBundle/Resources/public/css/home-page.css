@@ -279,19 +279,46 @@
     display: flex;
     justify-content: space-between;
 }
+.accordion-by .card-body-kommune.fellesmonstring {
+    background: transparent;
+    padding: 10px 0px;
+    cursor: pointer;
+    transition: .2s;
+    border-radius: 4px;
+}
+.accordion-by .card-body-kommune.fellesmonstring .kommune-navn {
+    font-size: 13px;
+    margin: 0;
+}
+.accordion-by .card-body-kommune.fellesmonstring:hover {
+    padding-left: 10px !important;
+}
+.accordion-by .card-body-kommune.fellesmonstring .icon,
+.accordion-by .card-body-kommune.fellesmonstring .kommune-navn {
+    transition: .2s;
+}
+.accordion-by .card-body-kommune.fellesmonstring:hover .icon,
+.accordion-by .card-body-kommune.fellesmonstring:hover .kommune-navn {
+    color: #fff !important;
+    fill: #fff !important;
+}
 .accordion-by .card-body-arrangement {
     color: #1A202C;
     background-color: #EDF2F7;
     display: flex;
     justify-content: space-between;
-    border-left: solid 2px #A0AEC0;
+    padding: 0;
+}
+.arrangement-default {
     margin: 14px;
+    margin-top: 30px;
+    margin-left: 20px;
+    border-left: solid 2px #A0AEC0;
     padding: 0;
     padding-top: 0;
-    margin-top: 0;
     padding-left: 15px;
-    margin-left: 20px;
 }
+.fellesmonstring-kommuner .info-inactive-button .info-label,
 .accordion-by span .info-label {
     color: #A0AEC0;
     font-size: 11px;
@@ -349,6 +376,13 @@
 }
 .panel-body-arrangement.loaded .phantom-arrangement {
     display: none;
+}
+.fellesmonstring-kommuner .info-inactive-button {
+    margin: 0;
+    margin-top: 7px;
+}
+.fellesmonstring-kommuner.collapsed div .caret-flip {
+    transform: rotate(0deg) !important;
 }
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {

@@ -24,7 +24,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                     for(kommune of fylke.kommuner) {
                         
                         html += `
-                        <div class="kommune-accordion collapsed" kommune-id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
+                        <div class="kommune-accordion collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
                             <div class="panel-heading card-body card-body-kommune">
                                 <span class="kommune-navn">
                                     ${kommune.navn}
@@ -41,7 +41,8 @@ var fylkerOgKommunerTemplate = (fylker) => {
                             
                             <div class="panel-inner phantom-arrangement">
                                 <div class="panel-group" id="accordionKommune">
-                                    <div class="panel panel-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
+                                    <div class="panel panel-default arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
+                                        
                                         <div class="panel-heading card-body card-body-arrangement">
                                             <span>
                                                 <span class="phantom-loading">Arrangement navn</span>
@@ -51,6 +52,11 @@ var fylkerOgKommunerTemplate = (fylker) => {
                                                 <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                             </svg>
                                         </div>
+
+                                        <div class="no-arrangement hide">
+                                            <span>Det er ingen arrangement for tiden</span>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -70,4 +76,3 @@ var fylkerOgKommunerTemplate = (fylker) => {
     return html;
 };
 </script>
-
