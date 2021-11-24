@@ -32,6 +32,14 @@ ukm_api_get_innslag:
         b_id: ([0-9]{1,11})
     methods: [POST]
 
+# Get innslag typer
+ukm_api_get_innslag_types:
+    path: /api/get_innslag_types/{pl_id}
+    defaults: { _controller: UKMAPIBundle:Default:getInnslagTypes }
+    requirements: 
+        pl_id: ([0-9]{1,5})
+    methods: [GET]
+
 
 
 

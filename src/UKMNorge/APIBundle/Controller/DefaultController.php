@@ -115,6 +115,38 @@ class DefaultController extends Controller
         return $response;
     }
 
+
+    /**
+     * Hent innslag typer
+     *
+     * @param Int $pl_id
+     * @return JsonResponse
+     */
+    public function getInnslagTypesAction(Int $pl_id) {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+
+        $types = [];
+        
+        try{
+            $arrangement = $innslagService->hentArrangement($pl_id);
+
+            foreach($arrangement->getInnslagTyper()->getAll() as $type) {
+                $types[] = $type;
+            }
+
+            $response->setData($types);
+
+        } catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+    }
+
+
     /* ---------------------------- Arrangement ---------------------------- */
 
     /**
