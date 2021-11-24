@@ -403,6 +403,9 @@
     background: #798596 !important;
     color: #fff;
 }
+.arrangement-default:nth-child(1) {
+    margin-top: 0;
+}
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;
