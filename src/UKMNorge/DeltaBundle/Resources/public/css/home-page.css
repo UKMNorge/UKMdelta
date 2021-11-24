@@ -239,15 +239,15 @@
     margin-top: 20px;
 }
 .accordion-by .card {
-    border-radius: 5px 5px 0px 0px;
-    background-color: #EDF2F7;
+    border-radius: 5px;
     font: normal normal 300 14px/16px Roboto;
     text-align: left;
     letter-spacing: 0px;
     border: none;
 }
 .accordion-by .card-header {
-    border-radius: 5px;
+    border-radius: 5px 5px 0px 0px !important;
+    background-color: hsla(210, 38%, 95%, 1);
     padding: 10px 0;
     font: normal normal 300 16px/19px Roboto;
     border: none;
