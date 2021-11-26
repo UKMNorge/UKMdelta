@@ -144,6 +144,10 @@ body {
         background-position: 468px 0
     }
 }
+.loaded.phantom,
+.loaded .phantom {
+    display: none;
+}
 .phantom-loading {
     animation-duration: .8s;
     animation-fill-mode: forwards;

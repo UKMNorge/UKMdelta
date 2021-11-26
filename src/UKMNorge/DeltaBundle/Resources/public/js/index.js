@@ -108,12 +108,15 @@ var goToInnslagTypes = async (e, response, ukmOnePage, doAfter) => {
     var el = $('#viseNoeFremTyper');
     
     try{
+        el.html('');
+        $('#viseNoeFremTyperPhantom').removeClass('loaded');
         var res = await response;
         
-        el.html('');
+        $('#viseNoeFremTyperPhantom').addClass('loaded');
         for(type of res) {
             el.append(innslagTypePreviewTemplate(type));
         }
+        
         
         
     }catch(err) {
