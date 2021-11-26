@@ -175,6 +175,64 @@ Dette er ett svar eksempel når ett innslag fjernes.
 ```
 
 
+<br />
+
+```https
+GET /api/get_innslag_types/{pl_id}
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
+
+### Svar eksempel
+
+
+```javascript
+[
+   {
+      "id":1,
+      "key":"dans",
+      "name":"Dans",
+      "tekst":{
+         "rolle.navn":"Rolle",
+         "rolle.placeholder":"F.eks danser, koreograf osv...",
+         "rolle.hjelp":"Skriv inn hva %person gjør i dansenummeret",
+         "rolle.ukjent":"Ukjent rolle.",
+         "titler.pronomen":"en",
+         "titler.pronomen_adjektiv":"ny",
+         "titler.entall":"koreografi / dans",
+         "titler.flertall":"koreografier / danser",
+         "titler.bestemt":"koreografien / dansen",
+         "titler.placeholder":"Eks. Svanesjøen, Love me like you do, Spretten mix osv...",
+         "sjanger.navn":"sjanger",
+         "sjanger.placeholder":"Eks samba, ballett, moderne...",
+         "artistnavn.alene.navn":"Artistnavn / dansegruppe / crew",
+         "artistnavn.alene.placeholder":"Eks. Danse-%fornavn, %fornavn %etternavn, %etternavn dance crew",
+         "artistnavn.sammen.navn":"Dansegruppe / artistnavn / crew",
+         "artistnavn.sammen.placeholder":"Eks. Superdanserne, We Dance, Folkedanserne..."
+      },
+      "type":"gruppe",
+      "frist":1,
+      "er_scene":true,
+      "har_titler":true,
+      "har_sjanger":true,
+      "har_funksjoner":true,
+      "har_tekniske_behov":true,
+      "har_nominasjon":false,
+      "har_filmer":true,
+      "har_bilder":true,
+      "funksjoner":null,
+      "tabell":"smartukm_titles_scene",
+      "autfollow_personer":true,
+      "kategori":"vise",
+      "har_tid":true,
+      "har_beskrivelse":true
+   },
+   ...
+]
+```
+
 <br>
 <br>
 

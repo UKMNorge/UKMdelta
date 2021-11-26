@@ -18,7 +18,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                     </h1>
                 </div>
 
-                <div id="collapseKommuneForFylke${fylke.id}" class="panel-body fylke-body collapse">
+                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body collapse">
                     <div class="panel panel-default">`;
 
                     for(kommune of fylke.kommuner) {
@@ -38,7 +38,10 @@ var fylkerOgKommunerTemplate = (fylker) => {
                         </div>
                         <!-- Arrangementer -->
                         <div id="collapseArrangementer${kommune.id}" class="panel-body panel-body-arrangement collapse">
-                            
+                            <div class="no-arrangement hide">
+                                <p>Beklager, vi har ingen arrangement for ${kommune.navn} enda.</p>
+                                <a class="small-button-style kontakt-oss-btn hover-button-delta" href="${kommune.link}">Kontakt oss</a>
+                            </div>
                             <div class="panel-inner phantom-arrangement">
                                 <div class="panel-group" id="accordionKommune">
                                     <div class="panel panel-default arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
@@ -51,12 +54,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                                             <svg class="phantom-loading" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                 <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                             </svg>
-                                        </div>
-
-                                        <div class="no-arrangement hide">
-                                            <span>Det er ingen arrangement for tiden</span>
-                                        </div>
-                                        
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>

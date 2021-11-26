@@ -239,15 +239,15 @@
     margin-top: 20px;
 }
 .accordion-by .card {
-    border-radius: 5px 5px 0px 0px;
-    background-color: #EDF2F7;
+    border-radius: 5px;
     font: normal normal 300 14px/16px Roboto;
     text-align: left;
     letter-spacing: 0px;
     border: none;
 }
 .accordion-by .card-header {
-    border-radius: 5px;
+    border-radius: 5px 5px 0px 0px !important;
+    background-color: hsla(210, 38%, 95%, 1);
     padding: 10px 0;
     font: normal normal 300 16px/19px Roboto;
     border: none;
@@ -340,6 +340,7 @@
     margin-top: 0;
     margin-bottom: 0;
 }
+.description.info-label.no-arrangement-hide,
 .kommune-accordion.collapsed .panel-heading .description {
     opacity: 0;
     margin-top: -10px;
@@ -383,6 +384,27 @@
 }
 .fellesmonstring-kommuner.collapsed div .caret-flip {
     transform: rotate(0deg) !important;
+}
+.no-arrangement {
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+.no-arrangement p {
+    font-size: 13px;
+}
+.no-arrangement .kontakt-oss-btn {
+    background: #A0AEC0 !important;
+    border-radius: 40px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+.no-arrangement .kontakt-oss-btn:active,
+.no-arrangement .kontakt-oss-btn:hover {
+    background: #798596 !important;
+    color: #fff;
+}
+.arrangement-default:nth-child(1) {
+    margin-top: 0;
 }
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
