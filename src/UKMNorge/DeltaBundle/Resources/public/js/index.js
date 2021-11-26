@@ -94,12 +94,34 @@ var arrangementerIKommune = async (e, response, ukmOnePage, doAfter) => {
         for(let key in res) {
             el.append(singleArrangementPreviewTemplate(res[key]));
         }
+
+        doAfter();
         
     }catch(err) {
         // Error
         console.error(err);
     }
 }
+
+var goToInnslagTypes = async (e, response, ukmOnePage, doAfter) => {
+    director.openPage('pageVelgInnslagType');
+    var el = $('#viseNoeFremTyper');
+    
+    try{
+        var res = await response;
+        
+        el.html('');
+        for(type of res) {
+            el.append(innslagTypePreviewTemplate(type));
+        }
+        
+        
+    }catch(err) {
+        // Error
+        console.error(err);
+    }
+
+};
 
 var eventElements = [];
 
@@ -111,9 +133,15 @@ eventElements.push(
     new EventElement('#testBtnMeldPaa', 'click', addInnslag, 'new_innslag', 'POST', ['k_id', 'pl_id', 'type'])
 );
 
+var meldpaaClick = () => {
+    deltaOnePage.addEventElements([
+        new EventElement('.card-body-arrangement.meldpaa', 'click', goToInnslagTypes, 'get_innslag_types', 'GET', ['pl_id'])        
+    ]);
+}
+
 getArrangementClick = () => {
     deltaOnePage.addEventElements([
-        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'])
+        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], meldpaaClick)
     ]);
 }
 

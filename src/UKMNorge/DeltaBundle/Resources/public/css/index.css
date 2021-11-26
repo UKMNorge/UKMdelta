@@ -158,3 +158,6 @@ body {
     color: #0000 !important;
     fill: #0000 !important;
 }
+.phantom-loading * {
+    fill: transparent;
+}
