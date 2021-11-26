@@ -40,19 +40,19 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
 
         var callbackFilter = (numShown) => {
             if($('#searchInput').val().length < 3) {
-                $('.panel-body.fylke-body').collapse('hide');
+                $('.panel-body.fylke-body.search').collapse('hide');
             }
 
-            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body')) {
+            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
                 if($(el).parent().parent().css('display') != 'none') {
                     var count = 0;
-                    for(var kommune of $(el).find('.card-body-kommune')) {
+                    for(var kommune of $(el).find('.card-body-kommune.search')) {
                         if($(kommune).css('display') != 'none') {
                             count++;
                         }
                     }
                     if(count == 0) {
-                        $(el).find('.card-body-kommune').css('display', 'flex');
+                        $(el).find('.card-body-kommune.search').css('display', 'flex');
                     }
                     else if(count > 0 && count < 3) {
                         $(el).collapse('show');
@@ -63,7 +63,7 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
         };
 
         // Filter
-        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .kommune-accordion', {
+        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .searchKommuner', {
             callback: callbackFilter});
         
         $('searchInput').blur(callbackFilter)

@@ -18,14 +18,14 @@ var fylkerOgKommunerTemplate = (fylker) => {
                     </h1>
                 </div>
 
-                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body collapse">
+                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body search collapse">
                     <div class="panel panel-default">`;
 
                     for(kommune of fylke.kommuner) {
                         
                         html += `
-                        <div class="kommune-accordion collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
-                            <div class="panel-heading card-body card-body-kommune">
+                        <div id="searchKommuner" class="kommune-accordion collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
+                            <div class="panel-heading card-body card-body-kommune search">
                                 <span class="kommune-navn">
                                     ${kommune.navn}
                                     <br class="info-label">
