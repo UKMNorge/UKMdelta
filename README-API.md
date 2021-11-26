@@ -1,6 +1,6 @@
 # Introduksjon
 
-API for å få tilgang til å opprette, lagre, slette eller modifisere ting på arrangørsystemet fra brukere på DELTA. Dette API-et skal brukes fra nytt design.
+API for å få tilgang til å opprette, lagre, slette eller modifisere ting på arrangørsystemet fra DELTA. Dette API-et skal brukes på nytt design.
 
 ## Authorization
 
