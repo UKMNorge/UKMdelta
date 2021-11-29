@@ -52,10 +52,6 @@ body {
     color: #fff;
     transition: .1s;
 }
-.small-button-style.smaller {
-    width: 20px;
-    height: 20px;
-}
 .hover-button-delta {
     transition: .1s;
 }
