@@ -1,0 +1,56 @@
+<div id="pageAllInnslag" class="container main-container page hide">
+	<div class="buttons-paamelding">
+		<button class="round-style-button paamelding">
+			<span class="text">Fortsett der du slapp</span>
+			<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">
+				<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+			</svg>
+		</button>
+		<button onclick='director.openPage("pageMeldPaaArrangement");' class="round-style-button mini">
+			<span class="">+</span>
+		</button>
+	</div>
+
+	{% set fullforte_paameldinger = alle_innslag|filter(innslag => innslag.erPameldt() and not innslag.getHome().erFerdig()) %}
+	{% set ikkeFulforte_paameldinger = alle_innslag|filter( innslag => not innslag.erPameldt() and not innslag.getHome().erFerdig()) %}
+	{% set isPaameldingNull = fullforte_paameldinger|length < 1 and ikkeFulforte_paameldinger|length < 1 %}
+	
+	<div class="paameldinger fullforte">
+		{% if not isPaameldingNull %}
+			<h3 class="tittle">{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
+		{% endif %}
+
+		<div class="no-innslag-div">
+			<img src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/not_found_events.png" class="{{ isPaameldingNull ? '' : 'hide' }}" />
+		</div>
+		
+		{% if not isPaameldingNull %}
+			<div id="paameldingerFullforte" class="innslags-space">
+				{% if alle_innslag|length == 0 %}
+					<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
+				{% else %}
+						{% for innslag in fullforte_paameldinger %}
+							{% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
+						{% else %}
+							{{ 'indexAction.pameldinger.ingen_fullforte'|trans }}
+						{% endfor %}
+				{% endif %}
+			</div>
+		{% endif %}
+		
+	</div>
+
+	{% if not isPaameldingNull %}
+		<div class="paameldinger fullforte">
+			<h3 class="tittle"> {{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
+
+			<div id="paameldingerFullforte innslags-space">
+				{% for innslag in ikkeFulforte_paameldinger %}
+					{% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
+				{% else %}
+					{{ 'indexAction.pameldinger.ingen_ikkefullforte'|trans }}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+</div>

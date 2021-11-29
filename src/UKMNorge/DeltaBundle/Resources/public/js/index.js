@@ -40,19 +40,19 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
 
         var callbackFilter = (numShown) => {
             if($('#searchInput').val().length < 3) {
-                $('.panel-body.fylke-body').collapse('hide');
+                $('.panel-body.fylke-body.search').collapse('hide');
             }
 
-            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body')) {
+            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
                 if($(el).parent().parent().css('display') != 'none') {
                     var count = 0;
-                    for(var kommune of $(el).find('.card-body-kommune')) {
+                    for(var kommune of $(el).find('.card-body-kommune.search')) {
                         if($(kommune).css('display') != 'none') {
                             count++;
                         }
                     }
                     if(count == 0) {
-                        $(el).find('.card-body-kommune').css('display', 'flex');
+                        $(el).find('.card-body-kommune.search').css('display', 'flex');
                     }
                     else if(count > 0 && count < 3) {
                         $(el).collapse('show');
@@ -63,7 +63,7 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
         };
 
         // Filter
-        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .kommune-accordion', {
+        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .searchKommuner', {
             callback: callbackFilter});
         
         $('searchInput').blur(callbackFilter)
@@ -94,12 +94,37 @@ var arrangementerIKommune = async (e, response, ukmOnePage, doAfter) => {
         for(let key in res) {
             el.append(singleArrangementPreviewTemplate(res[key]));
         }
+
+        doAfter();
         
     }catch(err) {
         // Error
         console.error(err);
     }
 }
+
+var goToInnslagTypes = async (e, response, ukmOnePage, doAfter) => {
+    director.openPage('pageVelgInnslagType');
+    var el = $('#viseNoeFremTyper');
+    
+    try{
+        el.html('');
+        $('#viseNoeFremTyperPhantom').removeClass('loaded');
+        var res = await response;
+        
+        $('#viseNoeFremTyperPhantom').addClass('loaded');
+        for(type of res) {
+            el.append(innslagTypePreviewTemplate(type));
+        }
+        
+        
+        
+    }catch(err) {
+        // Error
+        console.error(err);
+    }
+
+};
 
 var eventElements = [];
 
@@ -111,9 +136,15 @@ eventElements.push(
     new EventElement('#testBtnMeldPaa', 'click', addInnslag, 'new_innslag', 'POST', ['k_id', 'pl_id', 'type'])
 );
 
+var meldpaaClick = () => {
+    deltaOnePage.addEventElements([
+        new EventElement('.card-body-arrangement.meldpaa', 'click', goToInnslagTypes, 'get_innslag_types', 'GET', ['pl_id'])        
+    ]);
+}
+
 getArrangementClick = () => {
     deltaOnePage.addEventElements([
-        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'])
+        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], meldpaaClick)
     ]);
 }
 
