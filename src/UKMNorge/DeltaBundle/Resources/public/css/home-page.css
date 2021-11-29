@@ -47,6 +47,8 @@
     margin: auto;
     padding: 0;
     color: #fff;
+    max-width: 400px;
+    margin-left: 0;
 }
 .main-header-paamelding .header-content-paamelding .info h1 {
     font: normal normal 500 28px/42px Poppins;

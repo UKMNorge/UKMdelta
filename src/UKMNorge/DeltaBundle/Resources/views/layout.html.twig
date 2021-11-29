@@ -7,16 +7,17 @@
         '@UKMDeltaBundle/Resources/public/js/h5validate.jquery.js'
         '@UKMDeltaBundle/Resources/public/js/autogrow.jquery.js'
         '@UKMDeltaBundle/Resources/public/js/general.js'
-        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/eventElement.js'
-        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/UKMOnePage.js'
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/eventElement.js'
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/UKMOnePage.js'
         '@UKMDeltaBundle/Resources/public/js/deltaOnePage.js'
-        '@UKMDeltaBundle/Resources/public/js/director.js'
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/director.js'
          %}
         <script src="{{ asset_url }}"></script> 
     {% endjavascripts %}
 {% endblock %}
 
 {% block content %}
+
 	{% stylesheets
 		'@UKMDeltaBundle/Resources/public/css/index.css' %}
 		<link type="text/css" rel="stylesheet" media="all" href="{{ asset_url }}" />
@@ -34,3 +35,4 @@
 
 	{% block delta_content %}Designfil mangler delta_content-block.{% endblock %}
 {% endblock %}
+

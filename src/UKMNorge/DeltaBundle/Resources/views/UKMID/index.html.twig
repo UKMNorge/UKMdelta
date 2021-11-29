@@ -2,48 +2,19 @@
 {% trans_default_domain translationDomain %}
 
 
-
-
 {% block delta_content %}
 {% stylesheets
 	'@UKMDeltaBundle/Resources/public/css/home-page.css' %}
 	<link type="text/css" rel="stylesheet" media="all" href="{{ asset_url }}" />
 {% endstylesheets %}
 
-
-
-
-<!-- Main Header -->
-<div class="container-fluid main-header-paamelding">
-	<div class="inner">
-		
-		<div class="round-bottom-bolge">
-			<div class="row ">
-				<div class="col-6">
-				</div>
-				<div class="right-side-img col-6">
-					<img class="bolge-img" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/header-bolger.png" />
-				</div>
-				
-				<div class="container header-content-paamelding">
-					<div class="col-12 info">
-						<h1 class="mt-0">{{ 'indexAction.hei'|trans({'%name': user.getFirstName} ) }}</h1>
-						<p class="lead">
-							{{ 'indexAction.ledetekst'|trans|nl2br }}
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+{% include "UKMDeltaBundle:OnePagePages:header.html.twig" %}
 
 <!-- ******* page - pageAllInnslag ******* -->
 {% include "UKMDeltaBundle:OnePagePages:allInnslag.html.twig" %}
 
 <!-- ******* page - pageMeldPaaArrangement ******* -->
 {% include "UKMDeltaBundle:OnePagePages:meldPaaArrangement.html.twig" %}
-
 
 <!-- ******* page - pageVelgInnslagType ******* -->
 {% include "UKMDeltaBundle:OnePagePages:velgInnslagType.html.twig" %}
