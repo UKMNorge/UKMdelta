@@ -367,6 +367,10 @@
     transform: rotate(90deg);
     transition: .2s transform;
 }
+.fylke-btn.halv .caret-flip {
+    transform: rotate(45deg);
+    transition: .2s transform;
+}
 .fylke-btn.collapsed .caret-flip {
     transform: rotate(0);
 }

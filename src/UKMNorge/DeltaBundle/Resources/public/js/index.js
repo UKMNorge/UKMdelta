@@ -27,7 +27,6 @@ var addInnslag = async (e, response, ukmOnePage, doAfter) => {
     }
 };
 
-
 var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
     var el = $('#alleFylkerOgKommuner');
 
@@ -42,31 +41,47 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
             if($('#searchInput').val().length < 3) {
                 $('.panel-body.fylke-body.search').collapse('hide');
             }
-
-            for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
-                if($(el).parent().parent().css('display') != 'none') {
-                    var count = 0;
-                    for(var kommune of $(el).find('.card-body-kommune.search')) {
-                        if($(kommune).css('display') != 'none') {
-                            count++;
+            else {
+                for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
+                    if($(el).parent().parent().css('display') != 'none') {
+                        var count = 0;
+                        for(var kommune of $(el).find('.card-body-kommune.search')) {
+                            if($(kommune).css('display') != 'none') {
+                                count++;
+                            }
                         }
-                    }
-                    if(count == 0) {
-                        $(el).find('.card-body-kommune.search').css('display', 'flex');
-                    }
-                    else if(count > 0 && count < 3) {
-                        $(el).collapse('show');
-
+                        if(count == 0) {
+                            $(el).find('.card-body-kommune.search').css('display', 'flex');
+                        }
+                        else if(count > 0 && count < 15) {
+                            $(el).collapse('show');
+                            console.log(el);
+                            $(el).parent().find('.fylke-btn').addClass('halv');
+    
+                        }
                     }
                 }
             }
+
         };
 
         // Filter
-        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .searchKommuner', {
-            callback: callbackFilter});
+        $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .search-kommune', {
+            callback: callbackFilter}
+        );
         
-        $('searchInput').blur(callbackFilter)
+        // Click fylke button
+        $('.card-header-fylke .fylke-btn').click((e) => {
+            var el = $(e.currentTarget);
+            if(el.hasClass('halv')) {
+                el.removeClass('halv');
+                var mainElement = el.parent().parent();
+                mainElement.find('.search-kommune .search').css('display', 'flex');
+                console.log(mainElement.find('.fylke-body.search'));
+                mainElement.find('.fylke-body.search').removeClass(['collapse', 'show']).collapse('show', 1000);
+            }
+        });
+            
         
     }catch(err) {
         // Error

@@ -8,14 +8,12 @@ var fylkerOgKommunerTemplate = (fylker) => {
         <div class="accordion panel-group accordion-by" id="accordionBy">
             <div class="card panel panel-default">
                 <div class="panel-heading card-header card-header-fylke">
-                    <h1 class="m-0">
-                        <button class="btn btn-link btn-block fylke-btn text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" href="#collapseKommuneForFylke${fylke.id}">
-                            <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
-                                <path d="M9 19L17 12 9 5z"></path>
-                            </svg>
-                            <span class="fylke-navn">${fylke.navn}</span>
-                        </button>
-                    </h1>
+                    <button class="btn btn-link btn-block fylke-btn text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" href="#collapseKommuneForFylke${fylke.id}">
+                        <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
+                            <path d="M9 19L17 12 9 5z"></path>
+                        </svg>
+                        <span class="fylke-navn">${fylke.navn}</span>
+                    </button>
                 </div>
 
                 <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body search collapse">
@@ -24,7 +22,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                     for(kommune of fylke.kommuner) {
                         
                         html += `
-                        <div id="searchKommuner" class="kommune-accordion collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
+                        <div class="kommune-accordion search-kommune collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
                             <div class="panel-heading card-body card-body-kommune search">
                                 <span class="kommune-navn">
                                     ${kommune.navn}

@@ -3,19 +3,17 @@
     class="container main-container page hide"
     header-main-text="Hva har du lyst til?" 
     header-under-text="Enten du liker å danse, lage mat eller noe helt annet, så gleder vi oss til å se hva du vil vise frem!">
-    
+
 	<div class="search-alt col-12 nop">
         <div class="accordion panel-group accordion-by m-0" id="accordionBy">
             <div class="card panel panel-default">
                 <div class="panel-heading card-header card-header-fylke">
-                    <h1 class="m-0">
-                        <button class="btn btn-link btn-block fylke-btn text-left hover-button-delta" data-toggle="collapse" aria-expanded="true" data-parent="#accordionBy" href="#collapsePhantomTyper">
-                            <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
-                                <path d="M9 19L17 12 9 5z"></path>
-                            </svg>
-                            <span class="fylke-navn">{{ 'kategori.vise_frem'|trans({},'base') }}</span>
-                        </button>
-                    </h1>
+                    <button class="btn btn-link btn-block fylke-btn text-left hover-button-delta" data-toggle="collapse" aria-expanded="true" data-parent="#accordionBy" href="#collapsePhantomTyper">
+                        <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
+                            <path d="M9 19L17 12 9 5z"></path>
+                        </svg>
+                        <span class="fylke-navn">{{ 'kategori.vise_frem'|trans({},'base') }}</span>
+                    </button>
                 </div>
 				<div id="collapsePhantomTyper" class="collapse show">
 					<div id="viseNoeFremTyperPhantom">
