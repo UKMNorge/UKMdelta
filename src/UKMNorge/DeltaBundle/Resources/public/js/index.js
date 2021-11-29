@@ -39,9 +39,9 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
 
         var callbackFilter = (numShown) => {
             if($('#searchInput').val().length < 3) {
-                $('.panel-body.fylke-body.search').collapse('hide');
+                $('.panel-body.fylke-body.search').removeClass('show');
+                $('.accordion-by .card-header-fylke .btn-link').removeClass('halv');
             }
-            else {
                 for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
                     if($(el).parent().parent().css('display') != 'none') {
                         var count = 0;
@@ -57,11 +57,10 @@ var alleFylkerOgKommuner = async (e, response, ukmOnePage, doAfter) => {
                             $(el).collapse('show');
                             console.log(el);
                             $(el).parent().find('.fylke-btn').addClass('halv');
-    
                         }
                     }
                 }
-            }
+            
 
         };
 
