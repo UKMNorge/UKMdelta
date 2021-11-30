@@ -235,10 +235,7 @@
     margin: auto;
     max-height: 300px;
 }
-.accordion-by {
-    margin-top: 20px;
-}
-.accordion-by .card {
+.accordion-item .card {
     border-radius: 5px 5px 0px 0px;
     background-color: #EDF2F7;
     font: normal normal 300 14px/16px Roboto;
@@ -246,68 +243,114 @@
     letter-spacing: 0px;
     border: none;
 }
-.accordion-by .card-header {
+.accordion-item .card-header {
     border-radius: 5px;
     padding: 10px 0;
     font: normal normal 300 16px/19px Roboto;
     border: none;
     padding: 0 !important;
 }
-.accordion-by .card-header-fylke .btn-link:hover {
+.accordion-item .card-header-root .btn-link:hover {
     color: #fff !important;
 }
-.accordion-by .card-header-fylke .btn-link:hover .caret-flip {
+.accordion-item .card-header-root .btn-link:hover .caret-flip {
     fill: #fff !important;
 }
-.accordion-by .card-header-fylke .btn-link {
+.accordion-item .accordion-header-root .btn-link {
     color: #A0AEC0;
     font-weight: 300;
     padding: 13px 10px;
 }
-.accordion-by .card-header-fylke .btn-link {
+.accordion-item .accordion-header-root .btn-link {
     box-shadow: 0px 2px 4px #0000001f;
 }
-.accordion-by .card-header-fylke .btn-link.collapsed {
+.accordion-item .accordion-header-root .btn-link.collapsed {
     box-shadow: none;
 }
-.accordion-by .card-header-fylke .btn-link:hover, .accordion-by .card-header-fylke .btn-link:focus {
+.accordion-item .accordion-header-root .btn-link:hover, .accordion-item .accordion-header-root .btn-link:focus {
     text-decoration: none;
 }
-.accordion-by .card-body-kommune {
+.accordion-item .accordion-header-sub  {
     color: #1A202C;
     background-color: #F6F8FB;
     display: flex;
     justify-content: space-between;
 }
-.accordion-by .card-body-kommune.fellesmonstring {
+.accordion-item .accordion-header-sub.fellesmonstring {
     background: transparent;
     padding: 10px 0px;
     cursor: pointer;
     transition: .2s;
     border-radius: 4px;
 }
-.accordion-by .card-body-kommune.fellesmonstring .kommune-navn {
+.accordion-item .accordion-header-sub.fellesmonstring .accordion-title-sub {
     font-size: 13px;
     margin: 0;
 }
-.accordion-by .card-body-kommune.fellesmonstring:hover {
+.accordion-item .accordion-header-sub.fellesmonstring:hover {
     padding-left: 10px !important;
 }
-.accordion-by .card-body-kommune.fellesmonstring .icon,
-.accordion-by .card-body-kommune.fellesmonstring .kommune-navn {
+.accordion-item .accordion-header-sub.fellesmonstring .icon,
+.accordion-item .accordion-header-sub.fellesmonstring .accordion-title-sub {
     transition: .2s;
 }
-.accordion-by .card-body-kommune.fellesmonstring:hover .icon,
-.accordion-by .card-body-kommune.fellesmonstring:hover .kommune-navn {
+.accordion-item .accordion-header-sub.fellesmonstring:hover .icon,
+.accordion-item .accordion-header-sub.fellesmonstring:hover .accordion-title-sub {
     color: #fff !important;
     fill: #fff !important;
 }
-.accordion-by .card-body-arrangement {
+.accordion-item .card-body-arrangement {
     color: #1A202C;
     background-color: #EDF2F7;
     display: flex;
     justify-content: space-between;
     padding: 0;
+}
+.btn-accordion-root .fylke-navn {
+    vertical-align: middle;
+}
+.btn-accordion-root .caret-flip {
+    transform: rotate(90deg);
+    transition: .2s transform;
+}
+.btn-accordion-root.collapsed .caret-flip {
+    transform: rotate(0);
+}
+.accordion-body-root {
+    position: relative;
+    box-shadow: 0px 2px 4px #0000001F;
+}
+.accordion-sub .accordion-header-sub {
+    background: #EDF2F7;
+    transition: .2s background;
+    cursor: pointer;
+}
+.accordion-sub.collapsed .accordion-header-sub {
+    background: #F6F8FB;
+    transition: 1s;
+    transition-delay: .3s;
+}
+.accordion-sub .panel-heading .description {
+    transition: .2s;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.accordion-sub.collapsed .panel-heading .description {
+    opacity: 0;
+    margin-top: -10px;
+    margin-bottom: -11px;
+}
+.accordion-sub .panel-heading .icon {
+    opacity: 0;
+    margin-right: -20px;
+    transition: .2s;
+}
+.accordion-sub.collapsed .panel-heading .icon {
+    opacity: 1;
+    margin-right: 0;
+}
+.accordion-by {
+    margin-top: 20px;
 }
 .arrangement-default {
     margin: 14px;
@@ -325,54 +368,11 @@
     margin: 0;
     margin-top: 2px;
 }
-.kommune-accordion .card-body-kommune {
-    background: #EDF2F7;
-    transition: .2s background;
-    cursor: pointer;
-}
-.kommune-accordion.collapsed .card-body-kommune {
-    background: #F6F8FB;
-    transition: 1s;
-    transition-delay: .3s;
-}
-.kommune-accordion .panel-heading .description {
-    transition: .2s;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-.kommune-accordion.collapsed .panel-heading .description {
-    opacity: 0;
-    margin-top: -10px;
-    margin-bottom: -11px;
-}
-.kommune-accordion .panel-heading .icon {
-    opacity: 0;
-    margin-right: -20px;
-    transition: .2s;
-}
-.kommune-accordion.collapsed .panel-heading .icon {
-    opacity: 1;
-    margin-right: 0;
-}
 .accordion>.card {
     overflow: inherit;
 }
-.fylke-btn .fylke-navn {
-    vertical-align: middle;
-}
-.fylke-btn .caret-flip {
-    transform: rotate(90deg);
-    transition: .2s transform;
-}
-.fylke-btn.collapsed .caret-flip {
-    transform: rotate(0);
-}
 #alleFylkerOgKommuner {
     margin-top: 60px;
-}
-.fylke-body {
-    position: relative;
-    box-shadow: 0px 2px 4px #0000001F;
 }
 .panel-body-arrangement.loaded .phantom-arrangement {
     display: none;
