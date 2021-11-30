@@ -306,7 +306,7 @@
     justify-content: space-between;
     padding: 0;
 }
-.btn-accordion-root .fylke-navn {
+.btn-accordion-root .accordion-title-root {
     vertical-align: middle;
 }
 .btn-accordion-root .caret-flip {
