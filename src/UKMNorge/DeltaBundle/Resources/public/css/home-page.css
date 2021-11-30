@@ -1,62 +1,3 @@
-.main-header-paamelding {
-    position: relative;
-    overflow: hidden;
-}
-.main-header-paamelding .row {
-       width: calc(100% - 100px + 15px) !important;
-}
-.main-header-paamelding .inner {
-    margin-left: -15px;
-    margin-right: -15px;
-    height: 100px;
-    padding-bottom: 135px;
-    background: #a0aec0;
-    margin-bottom: 100px;
-}
-.right-side-img {
-    padding: 0 !important;
-}
-.right-side-img .bolge-img {
-    display: flex;
-}
-.right-side-img .bolge-img {
-    max-height: 230px;
-    margin: auto 0 auto auto;
-}
-.round-bottom-bolge {
-    width: calc(100% + 200px);
-    height: 260px;
-    border-bottom-right-radius: 500%;
-    overflow: hidden;
-    border-bottom-left-radius: 500%;
-    position: absolute;
-    background: #a0aec0;
-    margin-top: -33px;
-    left: -100px;
-    right: -100px;
-}
-.main-header-paamelding .header-content-paamelding {
-    position: absolute;
-    display: flex;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 100%;
-}
-.main-header-paamelding .header-content-paamelding .info {
-    margin: auto;
-    padding: 0;
-    color: #fff;
-    max-width: 400px;
-    margin-left: 0;
-}
-.main-header-paamelding .header-content-paamelding .info h1 {
-    font: normal normal 500 28px/42px Poppins;
-}
-.main-header-paamelding .header-content-paamelding .info .lead {
-    font: normal normal normal 12px/18px Roboto;
-    font-weight: 300;
-}
 .buttons-paamelding {
     display: flex;
     position: relative;
@@ -413,9 +354,6 @@
     margin-top: 0;
 }
 @media(max-width: 575px) {
-    .main-header-paamelding .header-content-paamelding {
-        margin-left: 100px !important;
-    }
     .meld-av-bilde img {
         max-height: 80px;
         margin-right: 50px;

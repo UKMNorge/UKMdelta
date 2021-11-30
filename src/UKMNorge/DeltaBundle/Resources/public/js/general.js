@@ -30,3 +30,4 @@ var getDayNorwegian = (dayInt) => {
 
     return day[dayInt];
 }
+

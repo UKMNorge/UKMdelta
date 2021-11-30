@@ -1,0 +1,6 @@
+.input-area {
+    margin-top: 30px;
+}
+.input-area:first-child {
+    margin-top: 0;
+}
