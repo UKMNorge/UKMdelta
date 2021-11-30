@@ -352,7 +352,7 @@
 .accordion-by {
     margin-top: 20px;
 }
-.arrangement-default {
+.accordion-panel-child {
     margin: 14px;
     margin-top: 30px;
     margin-left: 20px;
@@ -374,7 +374,7 @@
 #alleFylkerOgKommuner {
     margin-top: 60px;
 }
-.panel-body-arrangement.loaded .phantom-arrangement {
+.accordion-header-child.loaded .phantom-child {
     display: none;
 }
 .fellesmonstring-kommuner .info-inactive-button {
