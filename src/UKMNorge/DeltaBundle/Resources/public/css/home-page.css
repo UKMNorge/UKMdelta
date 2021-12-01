@@ -362,7 +362,7 @@
     padding-left: 15px;
 }
 .fellesmonstring-kommuner .info-inactive-button .info-label,
-.accordion-by span .info-label {
+.accordion-item span .info-label {
     color: #A0AEC0;
     font-size: 11px;
     margin: 0;
@@ -393,4 +393,8 @@
         margin-right: 50px;
         margin-bottom: 0;
     }
+}
+
+.accordion-item .info-label-title span:last-child {
+    text-transform: lowercase;
 }
