@@ -5,26 +5,26 @@ var fylkerOgKommunerTemplate = (fylker) => {
         var fylke = fylker[key];
 
         html += `
-        <div class="accordion panel-group accordion-by" id="accordionBy">
+        <div class="accordion panel-group accordion-item accordion-by" id="accordionBy">
             <div class="card panel panel-default">
-                <div class="panel-heading card-header card-header-fylke">
-                    <button class="btn btn-link btn-block fylke-btn text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" href="#collapseKommuneForFylke${fylke.id}">
+                <div class="panel-heading card-header accordion-header-root card-header-fylke">
+                    <button class="btn btn-link btn-block fylke-btn btn-accordion-root text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" href="#collapseKommuneForFylke${fylke.id}">
                         <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
                             <path d="M9 19L17 12 9 5z"></path>
                         </svg>
-                        <span class="fylke-navn">${fylke.navn}</span>
+                        <span class="fylke-navn accordion-title-root">${fylke.navn}</span>
                     </button>
                 </div>
 
-                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body fylke-body search collapse">
+                <div id="collapseKommuneForFylke${fylke.id}" f_id="${fylke.id}" class="panel-body accordion-body-root fylke-body search collapse">
                     <div class="panel panel-default">`;
 
                     for(kommune of fylke.kommuner) {
                         
                         html += `
-                        <div class="kommune-accordion search-kommune collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
-                            <div class="panel-heading card-body card-body-kommune search">
-                                <span class="kommune-navn">
+                        <div class="accordion-sub kommune-accordion search-kommune collapsed" k_id="${kommune.id}" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${kommune.id}">
+                            <div class="panel-heading accordion-header-sub card-body card-body-kommune search">
+                                <span class="accordion-title-sub kommune-navn">
                                     ${kommune.navn}
                                     <br class="info-label">
                                     <p class="description info-label">Hvilket arrangement vil du melde deg på?</p>
@@ -35,7 +35,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                             </div>
                         </div>
                         <!-- Arrangementer -->
-                        <div id="collapseArrangementer${kommune.id}" class="panel-body panel-body-arrangement collapse">
+                        <div id="collapseArrangementer${kommune.id}" class="panel-body accordion-child panel-body-arrangement collapse">
                             <div class="no-arrangement hide">
                                 <p>Beklager, vi har ingen arrangement for ${kommune.navn} enda.</p>
                                 <a class="small-button-style kontakt-oss-btn hover-button-delta" href="${kommune.link}">Kontakt oss</a>
@@ -44,7 +44,7 @@ var fylkerOgKommunerTemplate = (fylker) => {
                                 <div class="panel-group" id="accordionKommune">
                                     <div class="panel panel-default arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
                                         
-                                        <div class="panel-heading card-body card-body-arrangement">
+                                        <div class="panel-heading card-body accordion-header-child card-body-arrangement">
                                             <span>
                                                 <span class="phantom-loading">Arrangement navn</span>
                                                 <p class="info-label phantom-loading">Onsdag 9. Desember, 2020</p>

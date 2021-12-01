@@ -20,13 +20,13 @@ var getMonthNorwegian = (monthInt) => {
 
 var getDayNorwegian = (dayInt) => {
     let day = [];
+    day[0]="Søndag";
     day[1]="Mandag";
     day[2]="Tirsdag";
     day[3]="Onsdag";
     day[4]="Torsdag";
     day[5]="Fredag";
     day[6]="Lørdag";
-    day[7]="Søndag";
 
     return day[dayInt];
 }
