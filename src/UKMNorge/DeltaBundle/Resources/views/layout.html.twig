@@ -2,17 +2,17 @@
 
 {% block javascripts %}
 	{% block additional_js %}{% endblock %}
-    {% javascripts 
+	{% javascripts
         '@UKMDeltaBundle/Resources/public/js/ukmdesignbundle.js'
         '@UKMDeltaBundle/Resources/public/js/h5validate.jquery.js'
         '@UKMDeltaBundle/Resources/public/js/autogrow.jquery.js'
         '@UKMDeltaBundle/Resources/public/js/general.js'
-        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/eventElement.js'
-        '@UKMDeltaBundle/Resources/public/js/one_page_ukm/UKMOnePage.js'
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/eventElement.js'
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/UKMOnePage.js'
         '@UKMDeltaBundle/Resources/public/js/deltaOnePage.js'
-        '@UKMDeltaBundle/Resources/public/js/director.js'
-         %}
-        <script src="{{ asset_url }}"></script> 
+        '%kernel.root_dir%/../vendor/ukmnorge/spa/director.js'
+        %}
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
