@@ -28,6 +28,23 @@
     max-width: 400px;
     margin-left: 0;
 }
+.main-header .header-content-paamelding .info .tilbake-button:hover {
+    color: #fff;
+}
+.main-header .header-content-paamelding .info .tilbake-button:hover svg {
+    fill: #fff !important;
+}
+.main-header .header-content-paamelding .info .tilbake-button {
+    background: transparent;
+    border: none;
+    color: #CBD5E0;
+    font: normal normal 300 14px/16px Poppins;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+.main-header .header-content-paamelding .info .tilbake-button svg {
+    margin-right: -4px;
+}
 .main-header .header-content-paamelding .info h1 {
     font: normal normal 500 28px/42px Poppins;
 }

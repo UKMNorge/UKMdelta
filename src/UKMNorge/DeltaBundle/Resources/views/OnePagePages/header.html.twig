@@ -7,7 +7,6 @@
 
 <div class="container-fluid main-header">
 	<div class="inner">
-		
 		<div class="round-bottom-bolge">
 			<div class="row ">
 				<div class="col-6">
@@ -18,6 +17,9 @@
 				
 				<div class="container header-content-paamelding">
 					<div class="col-12 info">
+						<button class="tilbake-button" onclick="window.history.back();">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="8 0 24 24" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg>
+						Tilbake</button>
 						<h1 id="headerMainText" class="mt-0">{{headerMainText is defined ? headerMainText : " "}}</h1>
 						<p id="headerUnderText" class="lead">{{headerUnderText is defined ? headerUnderText : " "}}</p>
 					</div>
