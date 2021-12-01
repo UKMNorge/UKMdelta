@@ -181,6 +181,13 @@
     margin: auto;
     max-height: 300px;
 }
+.accordion-item.with-shadow {
+    box-shadow: 0px 3px 6px #0000004a;
+}
+.accordion-item.with-radius {
+    border-radius: 5px;
+    overflow: hidden;
+}
 .accordion-item .card {
     border-radius: 5px;
     font: normal normal 300 14px/16px Roboto;

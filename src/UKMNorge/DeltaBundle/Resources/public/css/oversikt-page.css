@@ -1,6 +1,120 @@
 .input-area {
-    margin-top: 30px;
+    margin-bottom: 30px;
 }
-.input-area:first-child {
-    margin-top: 0;
+.hr-info {
+    display: flex;
+    margin: auto;
+    width: 240px;
+    margin-bottom: 10px;
+}
+.main-container .nop .hr-info {
+    margin-top: -20px;
+}
+.hr-info .line {
+    border-color: #CBD5E0;
+    width: 100%;
+    margin: auto;
+}
+.hr-info .text {
+    margin: 0;
+    margin: auto;
+    text-align: center;
+    width: fit-content;
+    font: normal normal bold 11px/16px Poppins;
+    color: #CBD5E0;
+    white-space: nowrap;
+    padding: 0 13px;
+}
+#collapseUsers {
+    background: #edf2f7;
+}
+.accordion-body-root .persons {
+    display: block !important;
+    padding: 0 !important;
+}
+.accordion-body-root .persons .person {
+    display: flex;
+    padding: 0.75rem 1.25rem;
+}
+.accordion-body-root .persons .person.new-person {
+    display: block;
+}
+.accordion-body-root .persons .person.new-person .user-empty {
+    display: flex;
+}
+.accordion-body-root .persons .person.new-person {
+    padding-left: 40px;
+    padding-right: 40px;
+    background: #edf2f7;
+}
+.collapse:not(.show) {
+    display: none !important;
+}
+.accordion-body-root .persons .person .avatar img.avatar{
+    width: 24px;
+}
+.accordion-body-root .persons .person .user-info {
+    margin-left: 10px;
+}
+.accordion-body-root .persons .person .buttons {
+    margin: auto;
+    margin-right: -25px;
+}
+.accordion-body-root .persons .person .buttons button {
+    width: 25px;
+    height: 25px;
+}
+.accordion-body-root .persons .person.new-person .user-info {
+    display: flex;
+}
+.accordion-body-root .persons .person .user-info p {
+    margin: 0;
+}
+.accordion-body-root .persons .person .user-info .rolle {
+    text-transform: uppercase !important;
+    color: #718096;
+    font: normal normal 300 9px/11px Roboto;
+    margin-bottom: 2px;
+}
+.accordion-body-root .persons .person.new-person .user-info .name {
+    margin: auto;
+}
+.accordion-body-root .persons .person .user-info .name {
+    color: #1A202C;
+    font: normal normal 300 13px/15px Roboto;
+}
+.new-member-div {
+    display: flex;
+}
+.new-member {
+    background: #c9cdd1 !important;
+    border-radius: 25px;
+    padding: 5px 10px;
+    text-decoration: none !important;
+    margin: 10px auto;
+    width: auto;
+    height: auto;
+    box-shadow: 0px 0px 6px 1px #00000027;
+    color: #718096;
+    font: normal normal 600 10px/16px Poppins;
+}
+.new-member svg {
+    margin-left: 5px;
+}
+.new-member:hover,
+.new-member:focus {
+    color: #fff;
+}
+.new-member:hover svg,
+.new-member:focus svg {
+    fill: #fff !important;
+}
+
+.form-new-user .input-delta{
+    margin-top: 25px;
+}
+.form-new-user .input-delta,
+.form-new-user .input-delta .input,
+.form-new-user .input-delta .overlay {
+    background: #F7FAFC !important;
 }

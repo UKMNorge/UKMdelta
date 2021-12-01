@@ -3,7 +3,9 @@
 
 {% block delta_content %}
 	{% stylesheets
-		'@UKMDeltaBundle/Resources/public/css/oversikt-page.css' %}
+		'@UKMDeltaBundle/Resources/public/css/oversikt-page.css' 
+		'@UKMDeltaBundle/Resources/public/css/home-page.css' 
+		%}
 		<link type="text/css" rel="stylesheet" media="all" href="{{ asset_url }}" />
 	{% endstylesheets %}
 
@@ -11,6 +13,12 @@
 
 	<div class="container main-container">
 		<div class="col-12 nop">
+
+			<div class="hr-info">
+				<div class="line"></div>
+				<p class="text">OM DEG / DERE</p>
+				<div class="line"></div>
+			</div>
 
 			<div class="input-area">
 				<div class="input-delta {{ innslag.getNavn() ? 'open' : '' }}">
@@ -63,11 +71,144 @@
 			</div>
 
 		</div>
+	
+
+
+
+
+
+
+
+		<div class="accordion-item with-shadow with-radius">
+			<div class="panel-default">
+				<div class="card-header accordion-header-root">
+					<button class="btn btn-link btn-block btn-accordion-root text-left hover-button-delta collapsed" data-toggle="collapse" href="#collapseUsers" aria-expanded="true">
+						<svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill:#A0AEC0;">
+							<path d="M9 19L17 12 9 5z"></path>
+						</svg>
+						<span class="accordion-title-root">{{ innslag.getPersoner().getAntall() }} meldem</span>
+					</button>
+				</div>
+
+				<div id="collapseUsers" class="panel-body accordion-body-root collapse show">
+					<div class="accordion-header-sub card-body persons">
+						{% for person in innslag.getPersoner().getAll() %}
+						<div class="person">
+							<div class="avatar">
+								<img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+							</div>
+							<div class="user-info">
+								<p class="rolle">{{ person.getRolle() is not empty ? person.getRolle() : 'Ukjent rolle' }}</p>
+								<p class="name">{{ person.getNavn() }}</p>
+							</div>
+						</div>
+						{% endfor %}
+						<div id="newUserCollapse" class="collapse">
+							<div class="person new-person">
+								<div class="user-empty">
+									<div class="avatar">
+										<img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+									</div>
+									<div class="user-info">
+										<p class="name">Legger til nytt medlem</p>
+									</div>
+									<div class="buttons">
+										<button class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" href="#newUserCollapse" aria-expanded="true">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+										</button>
+									</div>
+								</div>
+							
+								<div class="form-new-user">
+									
+									{# Fornavn #}
+									<div class="input-delta">
+										<div class="overlay">
+											<div class="info">
+												<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+												<span class="text">Fornavn</span>
+											</div>
+										</div>
+										<input type="text" class="input" name="fornavn">
+									</div>
+
+									{# Etternavn #}
+									<div class="input-delta">
+										<div class="overlay">
+											<div class="info">
+												<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+												<span class="text">Etternavn</span>
+											</div>
+										</div>
+										<input type="text" class="input" name="etternavn">
+									</div>
+
+									{# Alder #}
+									<div class="input-delta">
+										<div class="overlay">
+											<div class="info">
+												<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
+												<span class="text">Alder</span>
+											</div>
+										</div>
+										<input type="text" class="input" name="alder">
+									</div>
+
+									{# Mobilnummer #}
+									<div class="input-delta">
+										<div class="overlay">
+											<div class="info">
+												<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
+												<span class="text">Mobilnummer</span>
+											</div>
+										</div>
+										<input type="text" class="input" name="mobilnummer">
+									</div>
+
+									{# Rolle #}
+									<div class="input-delta">
+										<div class="overlay">
+											<div class="info">
+												<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
+												<span class="text">Rolle i gruppa</span>
+											</div>
+										</div>
+										<input type="text" class="input" name="rolle_i_gruppa">
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+
+					<div class="new-member-div">
+						<button class="small-button-style new-member hover-button-delta" data-toggle="collapse" href="#newUserCollapse" aria-expanded="false">
+							Legg til person
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #718096; transform: ;msFilter:;"><path d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5zM19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2z"></path></svg>
+						</button>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+
+
+
 	</div>
 
 
-
-
+	<div class="hr-info">
+		<div class="line"></div>
+		<p class="text">OM BIDRAGET</p>
+		<div class="line"></div>
+	</div>
 
 	<br>
 	<br>
