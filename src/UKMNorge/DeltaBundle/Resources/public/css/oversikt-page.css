@@ -7,6 +7,9 @@
     width: 240px;
     margin-bottom: 10px;
 }
+.hr-info.with-space {
+    margin: 60px auto;
+}
 .main-container .nop .hr-info {
     margin-top: -20px;
 }
@@ -85,6 +88,7 @@
 }
 .new-member-div {
     display: flex;
+    background: #edf2f7;
 }
 .new-member {
     background: #c9cdd1 !important;
@@ -97,6 +101,13 @@
     box-shadow: 0px 0px 6px 1px #00000027;
     color: #718096;
     font: normal normal 600 10px/16px Poppins;
+
+}
+.new-member.add-new{
+    display: none;
+}
+.new-member.collapsed {
+    display: block;
 }
 .new-member svg {
     margin-left: 5px;
@@ -110,8 +121,9 @@
     fill: #fff !important;
 }
 
+
 .form-new-user .input-delta{
-    margin-top: 25px;
+    margin-top: 30px;
 }
 .form-new-user .input-delta,
 .form-new-user .input-delta .input,

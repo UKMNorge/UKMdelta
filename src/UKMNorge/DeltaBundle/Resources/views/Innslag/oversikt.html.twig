@@ -82,7 +82,7 @@
 		<div class="accordion-item with-shadow with-radius">
 			<div class="panel-default">
 				<div class="card-header accordion-header-root">
-					<button class="btn btn-link btn-block btn-accordion-root text-left hover-button-delta collapsed" data-toggle="collapse" href="#collapseUsers" aria-expanded="true">
+					<button class="btn btn-link btn-block btn-accordion-root text-left hover-button-delta" onclick="toggleShadows(this)" data-toggle="collapse" href="#collapseUsers" aria-expanded="true">
 						<svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill:#A0AEC0;">
 							<path d="M9 19L17 12 9 5z"></path>
 						</svg>
@@ -178,13 +178,18 @@
 
 								</div>
 							</div>
-						</div>
 
+							<div class="new-member-div">
+								<button class="small-button-style new-member hover-button-delta">
+									Fullfør og legg til
+								</button>
+							</div>
+						</div>
 
 					</div>
 
 					<div class="new-member-div">
-						<button class="small-button-style new-member hover-button-delta" data-toggle="collapse" href="#newUserCollapse" aria-expanded="false">
+						<button class="small-button-style new-member add-new hover-button-delta collapsed" data-toggle="collapse" href="#newUserCollapse" aria-expanded="false">
 							Legg til person
 							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #718096; transform: ;msFilter:;"><path d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5zM19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2z"></path></svg>
 						</button>
@@ -204,7 +209,7 @@
 	</div>
 
 
-	<div class="hr-info">
+	<div class="hr-info with-space">
 		<div class="line"></div>
 		<p class="text">OM BIDRAGET</p>
 		<div class="line"></div>
@@ -274,6 +279,18 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		var toggleShadows = (e) => {
+			if($(e).hasClass('collapsed')) {
+				$($(e).parent().parent().parent()).addClass('with-shadow');
+			}
+			else {
+				$($(e).parent().parent().parent()).removeClass('with-shadow');
+			}
+		}
+	</script>
+
 
 	{{ parent() }}
 	
