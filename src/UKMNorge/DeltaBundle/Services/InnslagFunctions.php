@@ -2,6 +2,10 @@
 namespace UKMNorge\DeltaBundle\Services;
 
 use Exception;
+use DateTime;
+
+use Symfony\Component\HttpFoundation\Request;
+
 
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Geografi\Kommune;
@@ -120,6 +124,60 @@ class InnslagFunctions {
 
         return $route_data;
     }
+
+
+    public function saveNewPerson(Int $k_id, Int $pl_id, String $type, Int $b_id, String $fornavn, String $etternavn, Int $alder, Int $mobil, String $rolle, $_this, $logger) {
+        $request = Request::createFromGlobals();
+        $innslagService = $_this->get('ukm_api.innslag');
+        $personService = $_this->get('ukm_api.person');
+
+        try {
+
+            $innslag = $innslagService->hent($b_id);
+            $arrangement = new Arrangement($pl_id);
+            $kommune = new Kommune($k_id);
+
+            try {
+                // Opprett personen
+                $person = $personService->opprett(
+                    $fornavn,
+                    $etternavn,
+                    $mobil,
+                    $kommune,
+                    $arrangement
+                );
+            } catch (Exception $e) {
+                // Får vi ikke til å opprette personen, returnerer vi en exception og sender en error til loggen
+                $logger->error(
+                    "UKMDeltaBundle:Innslag:saveNewPerson - Klarte ikke å opprette person på innslag " . $b_id . ". Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage() . ".\n\nData: ",
+                    [$request->request->get('fornavn'), $request->request->get('etternavn'), $mobil, $kommune, $arrangement]
+                );
+                
+                throw new Exception("danger", "Klarte ikke å lagre " . $request->request->get('fornavn'));
+            }
+
+            // Legg til i innslaget, sett rolle
+            $person->setRolle($rolle);
+
+            // Sett alder
+            $person->setFodselsdato(new DateTime(((int) date('Y') - $request->request->get('alder')) . '-01-01'));
+
+            $innslagService->leggTilPerson($innslag, $person);
+
+        } catch (Exception $e) {
+            $logger->error("Klarte ikke å legge til " . $person->getNavn() . " i innslag " . $innslag->getNavn() . ". Feil: " . $e->getMessage());
+            throw new Exception("danger", "Klarte ikke å legge til " . $person->getNavn() . " i innslaget! Feilkode: " . $e->getCode());
+        }
+
+        return array(
+            'fornavn' => $fornavn,
+            'etternavn' => $etternavn,
+            'alder' => $alder,
+            'mobil' => $mobil,
+            'rolle' => $rolle,
+        );
+    }
+    
 
 
 }

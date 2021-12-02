@@ -24,7 +24,7 @@ ukm_api_new_innslag:
     methods: [POST]
 
 # Fjern innslag
-ukm_api_get_innslag:
+ukm_api_remove_innslag:
     path: /api/remove_innslag/
     defaults: { _controller: UKMAPIBundle:Default:removeInnslag }
     requirements: 
@@ -95,3 +95,23 @@ ukm_api_get_kommuner_i_fylke:
     requirements: 
         fylke_id: ([0-9]{1,4})
     methods: [GET]
+
+
+### ------------------------- Personer -------------------------
+
+# Get alle fylker
+ukm_api_new_person:
+    path: /api/new_person/
+    defaults: { _controller: UKMAPIBundle:Default:createNewPerson }
+    requirements: 
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+        fornavn: ([^0-9]+)
+        etternavn: ([^0-9]+)
+        alder: ([0-9]{1,2})
+        mobil: ([0-9]{8})
+        rolle: ([^0-9]+)
+        
+    methods: [POST]

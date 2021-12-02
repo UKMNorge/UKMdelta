@@ -14,9 +14,9 @@ POST /api/new_innslag/
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `k_id` | `integer [0-9]{1,4}` | **Required**. kommune id |
-| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
-| `type` | `string [a-z]+` | **Required**. type kan være: 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet', 'Utstilling', 'Film', 'Cosplay', 'Dataspill', 'Matkultur'. |
+| `k_id` | `integer [0-9]{1,4}` | **Required**: kommune id |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**: arrangement id |
+| `type` | `string [a-z]+` | **Required**: type kan være: 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet', 'Utstilling', 'Film', 'Cosplay', 'Dataspill', 'Matkultur'. |
 
 ### Svar eksempel
 
@@ -163,8 +163,8 @@ POST /api/remove_innslag/
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
-| `b_id` | `integer [0-9]{1,11}` | **Required**. innslag id |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**: arrangement id |
+| `b_id` | `integer [0-9]{1,11}` | **Required**: innslag id |
 
 ### Svar eksempel
 
@@ -183,7 +183,7 @@ GET /api/get_innslag_types/{pl_id}
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `pl_id` | `integer [0-9]{1,5}` | **Required**. arrangement id |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**: arrangement id |
 
 ### Svar eksempel
 
@@ -311,7 +311,7 @@ GET /api/get_fylke/{fylke_id}
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `fylke_id` | `integer [0-9]{1,5}` | **Required**. fylke id |
+| `fylke_id` | `integer [0-9]{1,5}` | **Required**: fylke id |
 
 ### Svar eksempel
 ```javascript
@@ -342,7 +342,7 @@ Hent alle kommuner i et fylke
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `fylke_id` | `integer [0-9]{1,5}` | **Required**. fylke id |
+| `fylke_id` | `integer [0-9]{1,5}` | **Required**: fylke id |
 
 ```javascript
 [
@@ -357,6 +357,41 @@ Hent alle kommuner i et fylke
 ]
 ```
 
+<br>
+<br>
+
+## Innslag
+```https
+POST /api/new_person/
+```
+
+Legg til en person i innslag
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `k_id` | `integer ([0-9]{1,4}`) | **Required**: kommune id |
+| `pl_id` | `integer [0-9]{1,5}` | **Required**: arrangement id |
+| `type` | `string [a-z]+` | **Required**: type kan være: 'Musikk', 'Dans', 'Teater', 'Litteratur', 'Annet', 'Utstilling', 'Film', 'Cosplay', 'Dataspill', 'Matkultur'. |
+| `b_id` | `integer ([0-9]{1,11}`) | **Required**: Innslag id |
+| `fornavn` | `string ([^0-9]+`) | **Required**: person fornavn |
+| `etternavn` | `string ([^0-9]+`) | **Required**: person etternavn |
+| `alder` | `integer ([0-9]{1,2}`) | **Required**: person alder |
+| `mobil` | `integer ([0-9]{8}`) | **Required**: person mobilnummer |
+| `rolle` | `string ([^0-9]+`) | **Required**: person rolle |
+
+### Svar eksempel
+
+Dette er ett svar eksempel når en ny person legges til i innslaget.
+
+```javascript
+{
+   "fornavn" : "Ola",
+   "etternavn" : "Normann",
+   "alder" : 15,
+   "mobil" : 12345678,
+   "rolle" : "Tegner"
+}
+```
 
 <br />
 <br />
