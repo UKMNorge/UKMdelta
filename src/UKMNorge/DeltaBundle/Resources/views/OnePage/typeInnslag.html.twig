@@ -3,7 +3,7 @@ var innslagTypePreviewTemplate = (type) => {
     var html = `
     <div id="collapseKommuneForFylke${type.key}" class="panel-body">
         <div class="panel panel-default">
-            <div class="accordion-sub" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${type.key}">
+            <div class="accordion-sub collapsed" data-toggle="collapse" data-parent="#accordionKommune" href="#collapseArrangementer${type.key}">
                 <div class="panel-heading accordion-header-sub card-body">
                     <div>
                         <button class="small-button-style innslags-type mini">
@@ -18,7 +18,7 @@ var innslagTypePreviewTemplate = (type) => {
                         <button class="small-button-style hover-button-delta mini smaller" style="margin-right: 8px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="6 0 24 24" style="fill: #fff;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
                         </button>
-                        <svg class="icon" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                        <svg style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                             <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                         </svg>
                     </div>
