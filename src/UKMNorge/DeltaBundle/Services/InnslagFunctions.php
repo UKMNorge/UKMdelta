@@ -170,6 +170,7 @@ class InnslagFunctions {
         }
 
         return array(
+            'p_id' => $person->getId(),
             'fornavn' => $fornavn,
             'etternavn' => $etternavn,
             'alder' => $alder,

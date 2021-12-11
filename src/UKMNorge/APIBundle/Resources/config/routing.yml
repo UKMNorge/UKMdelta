@@ -115,3 +115,16 @@ ukm_api_new_person:
         rolle: ([^0-9]+)
         
     methods: [POST]
+
+
+# Get alle fylker
+ukm_api_remove_person:
+    path: /api/remove_person/
+    defaults: { _controller: UKMAPIBundle:Default:removePerson }
+    requirements: 
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+        p_id: ([0-9]{1,11})
+    methods: [POST]

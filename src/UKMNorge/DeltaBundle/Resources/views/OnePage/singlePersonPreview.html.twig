@@ -1,0 +1,15 @@
+<script>
+var singlePersonPreviewTemplate = (fornavn, etternavn, rolle, phantom=false) => { return `
+
+<div id="phantom${fornavn}" class="person">
+    <div class="avatar">
+        <img class="avatar ${phantom ? 'phantom-loading' : ''}" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+    </div>
+    <div class="user-info">
+        <p class="rolle ${phantom ? 'phantom-loading' : ''}">${rolle ? rolle : 'Ukjent rolle'}</p>
+        <p class="name ${phantom ? 'phantom-loading' : ''}">${fornavn} ${etternavn}</p>
+    </div>
+</div>`
+
+};
+</script>
