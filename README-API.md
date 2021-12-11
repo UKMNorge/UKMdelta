@@ -360,7 +360,66 @@ Hent alle kommuner i et fylke
 <br>
 <br>
 
-## Innslag
+## Personer
+
+```https
+GET /api/new_person/{b_id}
+```
+
+Hent alle personer i et innslag
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `b_id` | `integer [0-9]{1,5}` | **Required**: innslag id |
+
+```javascript
+[
+  {
+    "context": {
+      "type": "monstring",
+      "sesong": null,
+      "monstring": {
+        "id": 3870,
+        "type": "kommune",
+        "sesong": 2022,
+        "kommuner": [
+          5441
+        ],
+        "fylke": 54
+      },
+      "innslag": {
+        "id": 94092,
+        "type": "video"
+      },
+      "forestilling": null,
+      "videresend_til": false,
+      "kontaktperson": null,
+      "delta_user_id": null
+    },
+    "id": "107554",
+    "fornavn": "A",
+    "etternavn": "E",
+    "mobil": "45878200",
+    "rolle": "aa",
+    "rolleObject": null,
+    "epost": "",
+    "fodselsdato": "1072911600",
+    "adresse": null,
+    "postnummer": null,
+    "poststed": null,
+    "attributes": [],
+    "pameldt_til": [
+      "3870"
+    ],
+    "kommune_id": 5441,
+    "kommune": null
+  },
+  ...
+]
+```
+
+
+
 ```https
 POST /api/new_person/
 ```

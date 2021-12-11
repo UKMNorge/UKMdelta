@@ -118,10 +118,10 @@
 				</div>
 
 				<div id="collapseUsers" class="panel-body accordion-body-root collapse show">
-					<div id="allPersons" class="accordion-header-sub card-body persons">
-						{% for person in innslag.getPersoner().getAll() %}
+					<div id="allPersons" b_id="{{ b_id }}" class="accordion-header-sub card-body persons">
+						{# {% for person in innslag.getPersoner().getAll() %} #}
 						{# GET DYNAMIC #}
-						<div class="person" p_id="{{ person.getId() }}">
+						{# <div class="person" p_id="{{ person.getId() }}">
 							<div class="avatar">
 								<img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
 							</div>
@@ -134,8 +134,8 @@
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
 								</button>
 							</div>
-						</div>
-						{% endfor %}
+						</div> #}
+						{# {% endfor %} #}
 						<div id="newUserCollapse" class="collapse">
 							<div class="person new-person">
 								<div class="user-empty">

@@ -158,7 +158,7 @@ var meldpaaClick = () => {
 
 getArrangementClick = () => {
     deltaOnePage.addEventElements([
-        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], meldpaaClick)
+        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], null meldpaaClick)
     ]);
 }
 

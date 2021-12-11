@@ -1,13 +1,28 @@
 <script>
-var singlePersonPreviewTemplate = (fornavn, etternavn, rolle, phantom=false) => { return `
+var singlePersonPreviewTemplate = (person, phantom=false) => { 
 
-<div id="phantom${fornavn}" class="person">
+if (phantom == true) {
+    person.p_id = 'loadingNewPerson';
+    person.fornavn = 'fornavn';
+    person.etternavn = 'etternavn';
+}
+    
+return `
+
+
+<div id="phantom${person.p_id}" class="person">
     <div class="avatar">
         <img class="avatar ${phantom ? 'phantom-loading' : ''}" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
     </div>
     <div class="user-info">
-        <p class="rolle ${phantom ? 'phantom-loading' : ''}">${rolle ? rolle : 'Ukjent rolle'}</p>
-        <p class="name ${phantom ? 'phantom-loading' : ''}">${fornavn} ${etternavn}</p>
+        <p class="rolle ${phantom ? 'phantom-loading' : ''}">${person.rolle ? person.rolle : 'Ukjent rolle'}</p>
+        <p class="name ${phantom ? 'phantom-loading' : ''}">${person.fornavn} ${person.etternavn}</p>
+    </div>
+
+    <div class="buttons">
+        <button class="${phantom ? 'phantom-loading' : ''} small-button-style hover-button-delta mini remove-person-button" k_id="{{ k_id }}" pl_id="{{ pl_id }}" type="{{ type_key }}" b_id="{{ b_id }}" p_id="${ person.p_id }">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+        </button>
     </div>
 </div>`
 

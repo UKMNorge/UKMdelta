@@ -1,16 +1,43 @@
 var eventElements = [];
 
+
+// ALLE PERSONER -----
+var getAllPersons = async (e, response, ukmOnePage, doAfter) => {
+    try{
+        var persons = await response;
+        
+        for(var person of persons) {
+            $(singlePersonPreviewTemplate(person)).append($('#allPersons'));
+        }
+        
+    }catch(err) {
+        // Error
+        console.error(err);
+    }
+}
+
+var b_id = $('#allPersons').attr('b_id');
+eventElements.push(
+    new EventElement(window, 'load', getAllPersons, 'get_all_persons/'+b_id, 'GET', [])
+);
+
+
+
+
+// NY PERSON -----
 var createNewPerson = async (e, response, ukmOnePage, doAfter) => {
 
     // Adding phantom
-    $(singlePersonPreviewTemplate('loadingNavn', 'etternavn', 'rolle', true)).insertBefore($('#allPersons #newUserCollapse'));
+    $(singlePersonPreviewTemplate({person : null}, true)).insertBefore($('#allPersons #newUserCollapse'));
+
+    console.log('here');
 
     try{
-        var res = await response;
+        var person = await response;
         
         // Remove phantom
-        $('#phantomloadingNavn').detach();
-        $(singlePersonPreviewTemplate(res.fornavn, res.etternavn, res.rolle)).insertBefore($('#allPersons #newUserCollapse'));
+        $('#phantomloadingNewPerson').detach();
+        $(singlePersonPreviewTemplate(person)).insertBefore($('#allPersons #newUserCollapse'));
         
     }catch(err) {
         // Error
@@ -35,8 +62,6 @@ var createNewPersonBefore = () => {
 var createNewPersonAfter = () => {
     
 }
-
-
 
 eventElements.push(
     new EventElement(

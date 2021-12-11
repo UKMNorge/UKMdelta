@@ -326,6 +326,34 @@ class DefaultController extends Controller
     /* ---------------------------- Person ---------------------------- */
     
     /**
+     * Hent alle personer i ett innslag
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAllPersonsAction($b_id) {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+        
+        try{
+            $innslag = $innslagService->hent($b_id);
+
+            $personer = $innslag->getPersoner()->getAll();
+
+            $response->setData($personer);
+
+        } catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+
+    }
+
+
+    /**
      * Opprett ny person
      * 
      * @param Request $request
