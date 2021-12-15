@@ -24,40 +24,15 @@
 	
 	<div class="paameldinger fullforte">
 		{% if not isPaameldingNull %}
-			<h3 class="tittle">{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
-		{% endif %}
 
-		<div class="no-innslag-div">
-			<img src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/not_found_events.png" class="{{ isPaameldingNull ? '' : 'hide' }}" />
-		</div>
-		
-		{% if not isPaameldingNull %}
-			<div id="paameldingerFullforte" class="innslags-space">
-				{% if alle_innslag|length == 0 %}
-					<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
-				{% else %}
-						{% for innslag in fullforte_paameldinger %}
-							{% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
-						{% else %}
-							{{ 'indexAction.pameldinger.ingen_fullforte'|trans }}
-						{% endfor %}
-				{% endif %}
-			</div>
 		{% endif %}
-		
+		<innslag-component></innslag-component>
 	</div>
-
-	{% if not isPaameldingNull %}
-		<div class="paameldinger fullforte">
-			<h3 class="tittle"> {{ 'indexAction.pameldinger.ikkefullforte'|trans }}</h3>
-
-			<div id="paameldingerFullforte innslags-space">
-				{% for innslag in ikkeFulforte_paameldinger %}
-					{% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
-				{% else %}
-					{{ 'indexAction.pameldinger.ingen_ikkefullforte'|trans }}
-				{% endfor %}
-			</div>
-		</div>
-	{% endif %}
 </div>
+
+{% javascripts 
+	'@UKMDeltaBundle/Resources/public/js/vue-object-pages/allInnslag.js'
+%}
+	<script src="{{ asset_url }}" type="text/javascript"></script> 
+{% endjavascripts %}
+

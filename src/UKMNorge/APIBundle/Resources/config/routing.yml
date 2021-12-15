@@ -13,6 +13,12 @@ ukm_api_poststed:
 
 ### ------------------------- Innslag -------------------------
 
+# Get innslag typer
+ukm_api_get_innslag_types:
+    path: /api/get_all_innslag
+    defaults: { _controller: UKMAPIBundle:Default:getAllInnslag }
+    methods: [GET]
+
 # Opprett innslag
 ukm_api_new_innslag:
     path: /api/new_innslag/

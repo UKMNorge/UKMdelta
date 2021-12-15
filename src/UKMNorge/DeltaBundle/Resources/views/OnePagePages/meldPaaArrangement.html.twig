@@ -20,7 +20,12 @@
 		</div>
 	</div>
 	
-	<div id="alleFylkerOgKommuner" class="alle-fylker">
-		
-	</div>
-</div>	
+	<fylker-kommuner-component></fylker-kommuner-component>
+
+</div>
+
+{% javascripts 
+	'@UKMDeltaBundle/Resources/public/js/vue-object-pages/meldPaaArrangement.js'
+%}
+	<script src="{{ asset_url }}" type="text/javascript"></script> 
+{% endjavascripts %}

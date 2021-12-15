@@ -158,14 +158,14 @@ var meldpaaClick = () => {
 
 getArrangementClick = () => {
     deltaOnePage.addEventElements([
-        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], null meldpaaClick)
+        new EventElement('.kommune-accordion.collapsed', 'click', arrangementerIKommune, 'get_arrangementer_i_kommune', 'GET', ['k_id'], null, meldpaaClick)
     ]);
 }
 
 // Hent alle fylker og kommuner
-eventElements.push(
-    new EventElement(window, 'load', alleFylkerOgKommuner, 'get_all_fylker_og_kommuner', 'GET', [], getArrangementClick)
-);
+// eventElements.push(
+//     new EventElement(window, 'load', alleFylkerOgKommuner, 'get_all_fylker_og_kommuner', 'GET', [], getArrangementClick)
+// );
 
 
 const deltaOnePage = new DeltaOnePage('/app_dev.php/api/', eventElements);

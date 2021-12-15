@@ -31,3 +31,8 @@ var getDayNorwegian = (dayInt) => {
     return day[dayInt];
 }
 
+var getCurrentDomain = () => {
+    var hostname = window.location.hostname;
+    return hostname.split('.')[1] + '.' + hostname.split('.')[2];
+}
+

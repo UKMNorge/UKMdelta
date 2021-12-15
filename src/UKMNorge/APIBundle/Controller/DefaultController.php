@@ -51,6 +51,55 @@ class DefaultController extends Controller
     /* ---------------------------- Innslag ---------------------------- */
     
     /**
+     * _@route: <api/get_all_innslag/>
+     * hent alle innslag
+     * 
+     * @return JsonResponse
+     */
+    public function getAllInnslagAction(){
+        $response = new JsonResponse(); 
+        $innslagService = $this->get('ukm_api.innslag');
+
+        // Hent data
+        try{
+            $alle_innsag = $innslagService->hentInnslagFraKontaktperson()->innslag;
+            
+            $fullforte_innslag = [];
+            $ikke_fullforte_innslag = [];
+            foreach($alle_innsag as $innslag) {
+                $personer = [];
+                $innslag->getPersoner()->getAll();
+                foreach($innslag->getPersoner() as $p) {
+                    $personer[] = $p;
+                }
+
+                if($innslag->getHome()->erFerdig()) {
+                    // Do nothing
+                }
+                else if($innslag->erPameldt()) {
+                    $fullforte_innslag[] = array('innslag' => $innslag, 'personer' => $personer);
+                }
+                else if(!$innslag->erPameldt()) {
+                    $ikke_fullforte_innslag[] = array('innslag' => $innslag, 'personer' => $personer);
+                }
+            }
+            $response->setData([
+                'fullforte' => $fullforte_innslag ,
+                'ikke_fullforte' => $ikke_fullforte_innslag]
+            );
+
+
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+       
+    }
+    
+    /**
      * _@route: <api/new_innslag/>
      * Opprett innslag
      * 
@@ -184,7 +233,7 @@ class DefaultController extends Controller
 
         
         $arrangementer = $omrade->getKommendeArrangementer()->getAll();
-        
+        $arrangementer_arr = [];
         // Hvis det er fellesmønstring, legg til kommuner
         foreach($arrangementer as $arrangement) {
             if($arrangement->erFellesmonstring()) {
@@ -199,10 +248,12 @@ class DefaultController extends Controller
             else {
                 $arrangement->kommuner_fellesmonstring = null;
             }
+
+            $arrangementer_arr[] = $arrangement;
         }
 
         try{
-            $response->setData($arrangementer);
+            $response->setData($arrangementer_arr);
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             $response->setData($e->getMessage());
@@ -226,7 +277,7 @@ class DefaultController extends Controller
         $fylker = [];
 
         foreach(Fylker::getAll() as $fylke) {
-            $fylker[$fylke->getId()] = $fylke;
+            $fylker[] = $fylke;
 
             $kommuner_arr = [];
             foreach($fylke->getKommuner()->getAll() as $kommune) {
@@ -237,10 +288,12 @@ class DefaultController extends Controller
                     'erAktiv' => $kommune->erAktiv(),
                     'action' => $kommune->getAttr('action'),
                     'link' => $kommune->getLink(),
+                    'arrangementer_loaded' => false,
+                    'arrangementer' => []
                 ];
             }
 
-            $fylker[$fylke->getId()]->kommuner = $kommuner_arr;
+            $fylke->kommuner = $kommuner_arr;
             
         }
 
