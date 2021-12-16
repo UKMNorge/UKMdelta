@@ -360,6 +360,9 @@
 .accordion-panel-child:nth-child(1) {
     margin-top: 0;
 }
+.accordion-child .panel-inner {
+    cursor: pointer;
+}
 @media(max-width: 575px) {
     .meld-av-bilde img {
         max-height: 80px;
@@ -369,4 +372,7 @@
 }
 .accordion-item .info-label-title span:last-child {
     text-transform: lowercase;
+}
+.accordion-sub button.small-button-style.innslags-type.mini {
+    background-color: #EDF2F7;
 }

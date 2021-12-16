@@ -1,0 +1,30 @@
+overViewAction:
+  medlemmer:
+    entall: medlem
+    flertall: medlemmer
+  velg_by:
+    header: I hvilken by bor du?
+    ledetekst: Finn lokale UKM arrangementer nær der du bor. Du kan søke på byen din i søkefeltet under.
+    sok: I hvilken by skal du delta? #TODO: Finn en bedre beskrivelse
+    geolocation: Skal du delta i %by?
+    velg_arrangement: Hvilket arrangement vil du melde deg på?
+    flere_byer: HVILKEN BY ER DU FRA?
+  velg_paamelding:
+    header: Hva har du lyst til?
+    ledetekst: Enten du liker å danse, lage mat eller noe helt annet, så gleder vi oss til å se hva du vil vise frem!
+    innslagstype_label: Vise frem noe på UKM
+    jobbe_som_label: Jobbe på UKM
+  innslaget:
+    header: Om innslaget
+    ledetekst: Skriv litt om dere selv og hva dere har tenkt å vise frem på UKM.
+  personer:
+    label: om deg/dere
+    placeholder_navn: Artistnavn / Gruppenavn
+    placeholder_beskrivelse: Beskriv deg / dere selv
+  om_innslaget:
+    label: om bidraget
+    legg_til: Legger til nytt innslag
+
+indexAction:
+  slett_medlem: Bekreft sletting
+  legg_til_medlem: Legg til person

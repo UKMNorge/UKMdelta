@@ -4,7 +4,7 @@
     class="container main-container page hide" 
     alone="true" 
     header-main-text="Hei, {{ user.getFirstName }}" 
-    header-under-text="Kult å se deg tilbake her igjen! Fortsett der du slapp med å trykke på knappen under!">
+    header-under-text="{{ 'indexAction.paameldinger.fullforte'|trans }}">
 	
     <div class="buttons-paamelding">
 		<button class="round-style-button paamelding">
@@ -24,7 +24,7 @@
 	
 	<div class="paameldinger fullforte">
 		{% if not isPaameldingNull %}
-			<h3 class="tittle">{{ 'indexAction.pameldinger.fullforte'|trans }}</h3>
+			<h3 class="tittle">{{ 'indexAction.paameldinger.fullforte'|trans }}</h3>
 		{% endif %}
 
 		<div class="no-innslag-div">
@@ -34,12 +34,12 @@
 		{% if not isPaameldingNull %}
 			<div id="paameldingerFullforte" class="innslags-space">
 				{% if alle_innslag|length == 0 %}
-					<p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
+					<p>{{ 'indexAction.paameldinger.ingen'|trans }}</p>
 				{% else %}
 						{% for innslag in fullforte_paameldinger %}
 							{% include "UKMDeltaBundle:UKMID:innslag.html.twig" %}
 						{% else %}
-							{{ 'indexAction.pameldinger.ingen_fullforte'|trans }}
+							{{ 'indexAction.paameldinger.ingen_fullforte'|trans }}
 						{% endfor %}
 				{% endif %}
 			</div>
