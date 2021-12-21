@@ -49,6 +49,28 @@ class DefaultController extends Controller
 
 
     /* ---------------------------- Innslag ---------------------------- */
+
+    /**
+     * _@route: <api/innslag/>
+     * hent 1 innslag ved bruke av innslag id
+     * 
+     * @return JsonResponse
+     */
+    public function getSingleInnslagAction($innslag_id) {
+        $response = new JsonResponse(); 
+        $innslagService = $this->get('ukm_api.innslag');
+
+        // Hent data
+        try{
+            $response->setData($innslagService->hent($innslag_id));
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+        return $response;
+    }
+
     
     /**
      * _@route: <api/get_all_innslag/>
@@ -56,7 +78,7 @@ class DefaultController extends Controller
      * 
      * @return JsonResponse
      */
-    public function getAllInnslagAction(){
+    public function getAllInnslagAction() {
         $response = new JsonResponse(); 
         $innslagService = $this->get('ukm_api.innslag');
 

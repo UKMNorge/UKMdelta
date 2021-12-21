@@ -13,9 +13,15 @@ ukm_api_poststed:
 
 ### ------------------------- Innslag -------------------------
 
+# Get single innslag
+ukm_api_get_innslag:
+    path: /api/get_innslag/{innslag_id}
+    defaults: { _controller: UKMAPIBundle:Default:getSingleInnslag }
+    methods: [GET]
+
 # Get innslag typer
 ukm_api_get_innslag_types:
-    path: /api/get_all_innslag
+    path: /api/get_all_innslag/
     defaults: { _controller: UKMAPIBundle:Default:getAllInnslag }
     methods: [GET]
 
@@ -106,7 +112,7 @@ ukm_api_get_kommuner_i_fylke:
 ### ------------------------- Personer -------------------------
 
 # Get alle personer i ett innslag
-ukm_api_get_all_persons_i_innslag:
+ukm_api_get_all_persons:
     path: /api/get_all_persons/{b_id}
     defaults: { _controller: UKMAPIBundle:Default:getAllPersons }
     requirements: 
