@@ -30,6 +30,11 @@ body {
     box-shadow: 2px 4px 6px #00000027;
     border-radius: 25px;
 }
+.round-style-button.mini-size {
+    font-size: 12px;
+    padding: 7px 16px;
+    min-height: 30px;
+}
 .round-style-button.mini {
     background-color: #cbd5e0;
     padding: 12px 13px;

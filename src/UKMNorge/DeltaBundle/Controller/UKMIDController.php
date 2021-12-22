@@ -52,7 +52,7 @@ class UKMIDController extends Controller
             // $alle_innslag[] = $this->get('ukm_api.innslag')->hent($inn->getId);
         }
 
-        $view_data = [
+    $view_data = [
             'translationDomain' => 'ukmid',
             'user' => $user,
             'dinside' => true,

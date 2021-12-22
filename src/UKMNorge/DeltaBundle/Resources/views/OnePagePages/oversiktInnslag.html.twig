@@ -1,4 +1,4 @@
-<div id="pageOversiktInnslag" class="container main-container">
+<div id="pageOversiktInnslag" innslag_id="{{ innslag.id }}" class="container main-container">
     <div class="col-12 nop">
 
         <div class="hr-info">
@@ -7,18 +7,18 @@
             <div class="line"></div>
         </div>
         <h1>
-        #{navn}
+            #{innslag.navn}
         </h1>
 
         <div class="input-area">
-            <div class="input-delta {{ innslag.getNavn() ? 'open' : '' }}">
+            <div :class="{ open : innslag.navn}" class="input-delta">
                 <div class="overlay">
                     <div class="info">
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
                         <span class="text">Artistnavn / Gruppenavn</span>
                     </div>
                 </div>
-                <input type="text" class="input" value="{{ innslag.getNavn() }}">
+                <input type="text" class="input" v-model:value="innslag.navn">
                 <button class="button-right hover-button-delta" data-toggle="collapse" href="#innslagNavnInfo" role="button" aria-expanded="false" aria-controls="innslagNavnInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0.5 -1 28 28" style="fill: #fff ;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
                 </button>
@@ -38,14 +38,14 @@
     {# BESKRIVELSE #}
     {% if type.harBeskrivelse() %}
         <div class="input-area">
-            <div class="input-delta {{ innslag.getBeskrivelse() ? 'open' : '' }}">
+            <div :class="{ open : innslag.beskrivelse }" class="input-delta">
                 <div class="overlay">
                     <div class="info">
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0 ;transform: ;msFilter:;"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
                         <span class="text">Beskriv deg / dere selv</span>
                     </div>
                 </div>
-                <textarea type="text" class="input" style="height: auto">{{ innslag.getBeskrivelse() }}</textarea>
+                <textarea v-model="innslag.beskrivelse" type="text" class="input" style="height: auto"></textarea>
                 <button class="button-right hover-button-delta" data-toggle="collapse" href="#innslagBeskrivelseInfo" role="button" aria-expanded="false" aria-controls="innslagBeskrivelseInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0.5 -1 28 28" style="fill: #fff ;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
                 </button>
@@ -66,14 +66,14 @@
     {# SJANGER #}
     {% if type.harSjanger() %}
         <div class="input-area">
-            <div class="input-delta {{ innslag.getSjanger() ? 'open' : '' }}">
+            <div :class="open : innslag.sjanger" class="input-delta">
                 <div class="overlay">
                     <div class="info">
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
                         <span class="text">Sjanger</span>
                     </div>
                 </div>
-                <input type="text" class="input" value="{{ innslag.getSjanger() }}">
+                <input v-model="innslag.sjanger" type="text" class="input">
                 <button class="button-right hover-button-delta" data-toggle="collapse" href="#innslagSjangerInfo" role="button" aria-expanded="false" aria-controls="innslagSjangerInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0.5 -1 28 28" style="fill: #fff ;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
                 </button>
@@ -108,7 +108,9 @@
             </div>
 
             <div id="collapseUsers" class="panel-body accordion-body-root collapse show">
-                <div id="allPersons" b_id="{{ b_id }}" class="accordion-header-sub card-body persons">
+                <div id="allPersons" class="accordion-header-sub card-body persons">
+                    <innslag-persons></innslag-persons>
+
                     {# {% for person in innslag.getPersoner().getAll() %} #}
                     {# GET DYNAMIC #}
                     {# <div class="person" p_id="{{ person.getId() }}">
@@ -203,7 +205,7 @@
                         </div>
 
                         <div class="new-member-div">
-                            <button id="createNewPerson" k_id="{{ k_id }}" pl_id="{{ pl_id }}" type="{{ type_key }}" b_id="{{ b_id }}" class="small-button-style new-member hover-button-delta">
+                            <button id="createNewPerson" class="small-button-style new-member hover-button-delta">
                                 Fullfør og legg til
                             </button>
                         </div>

@@ -53,6 +53,13 @@
 .collapse:not(.show) {
     display: none !important;
 }
+.accordion-body-root .persons .person.remove-mode .avatar,
+.accordion-body-root .persons .person.remove-mode .user-info {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    transition: .2s;
+}
 .accordion-body-root .persons .person .avatar img.avatar{
     width: 24px;
 }
@@ -88,6 +95,30 @@
 .accordion-body-root .persons .person .user-info .name {
     color: #1A202C;
     font: normal normal 300 13px/15px Roboto;
+}
+.accordion-body-root .persons .person .remove-button-show-hide {
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: .4s;
+}
+.round-style-button.mini-size {
+    max-height: 35px !important;
+}
+.accordion-body-root .persons .person.remove-mode .remove-button-show-hide {
+    width: 100%;
+    visibility: visible;
+    opacity: 1;
+    transition: .4s;
+    margin-left: 10px;
+}
+.accordion-body-root .persons .person .remove-button-show-hide .round-style-button span {
+    font-size: 0;
+    transition: .4s;
+}
+.accordion-body-root .persons .person.remove-mode .remove-button-show-hide .round-style-button span {
+    font-size: inherit;
+    transition: .4s;
 }
 .new-member-div {
     display: flex;
