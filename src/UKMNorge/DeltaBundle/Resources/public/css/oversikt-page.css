@@ -60,7 +60,7 @@
     position: absolute;
     transition: .2s;
 }
-.accordion-body-root .persons .person .avatar img.avatar{
+.accordion-body-root .persons .person .avatar img.avatar {
     width: 24px;
 }
 .accordion-body-root .persons .person .user-info {
@@ -76,6 +76,19 @@
 .accordion-body-root .persons .person .buttons button {
     width: 25px;
     height: 25px;
+}
+.accordion-body-root .persons .person.remove-mode .buttons .edit-user-info.collapsed {
+    position: absolute;
+}
+.accordion-body-root .persons .person.remove-mode .buttons .edit-user-info.collapsed,
+.accordion-body-root .persons .person .buttons .edit-user-info {
+    visibility: hidden;
+    opacity: 0;
+}
+.accordion-body-root .persons .person .buttons .edit-user-info.collapsed {
+    visibility: visible;
+    opacity: 1;
+    transition: .5s;
 }
 .accordion-body-root .persons .person.new-person .user-info {
     display: flex;
