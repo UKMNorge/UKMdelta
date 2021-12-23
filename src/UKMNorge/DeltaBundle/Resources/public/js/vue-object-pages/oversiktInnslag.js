@@ -16,8 +16,20 @@ var allePersoner = Vue.component('innslag-persons', {
             this.closeAllOpenForms();
             $(e.currentTarget).parent().parent().toggleClass('remove-mode');
         },
-        removePerson : function(person) {
-            this.personer.splice(this.personer.indexOf(person), 1);
+        removePerson : async function(person) {
+            var innslag = this.$parent.innslag;
+
+            var removedPerson = await spaInteraction.runAjaxCall('remove_person/', 'POST', {
+                k_id : innslag.kommune_id,
+                pl_id : innslag.context.monstring.id, 
+                type : innslag.type.key,
+                b_id : innslag.id,
+                p_id : person.id
+            });
+            
+            if(removedPerson.p_id == person.id) {
+                this.personer.splice(this.personer.indexOf(person), 1);
+            }
         },
         toggleShadows : (e) => {
 			if($(e.currentTarget).hasClass('collapsed')) {
@@ -30,7 +42,7 @@ var allePersoner = Vue.component('innslag-persons', {
         closeAllOpenForms() {
             $('.edit-user-form, .new-user-form').collapse('hide');
         },
-        createNewPerson : function() {
+        createNewPerson : async function() {
             console.log('createNewPerson');
             var fornavn = $('#fornavnNewPerson').val();
             var etternavn = $('#etternavnNewPerson').val();
@@ -44,11 +56,23 @@ var allePersoner = Vue.component('innslag-persons', {
             // Close all open forms
             this.closeAllOpenForms();
 
-            console.log(fornavn);
-            console.log(etternavn);
-            console.log(alder);
-            console.log(mobil);
-            console.log(rolle);
+            // Innslag from parent
+            var innslag = this.$parent.innslag;
+
+            var newPerson = await spaInteraction.runAjaxCall('new_person/', 'POST', {
+                k_id : innslag.kommune_id,
+                pl_id : innslag.context.monstring.id, 
+                type : innslag.type.key,
+                b_id : innslag.id,
+                fornavn : fornavn,
+                etternavn : etternavn,
+                alder : alder,
+                mobil : mobil,
+                rolle : rolle,
+            });
+            newPerson.id = newPerson.p_id;
+
+            this.personer.push(newPerson);
         }
     },
     template : `
@@ -133,7 +157,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fodselsdato" type="text" class="input" name="alder">
+                                <input v-model:value="person.fodselsdato" maxlength="8" type="text" class="input" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -220,7 +244,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input id="alderNewPerson" type="text" class="input input-new-person" name="alder">
+                                <input id="alderNewPerson" type="text" maxlength="8" class="input input-new-person" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->

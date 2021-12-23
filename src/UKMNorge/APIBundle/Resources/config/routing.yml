@@ -119,7 +119,7 @@ ukm_api_get_all_persons:
         b_id: ([0-9]{1,11})
     methods: [GET]
 
-# Get alle fylker
+# New person
 ukm_api_new_person:
     path: /api/new_person/
     defaults: { _controller: UKMAPIBundle:Default:createNewPerson }
@@ -137,7 +137,7 @@ ukm_api_new_person:
     methods: [POST]
 
 
-# Get alle fylker
+# Remove person from innslag
 ukm_api_remove_person:
     path: /api/remove_person/
     defaults: { _controller: UKMAPIBundle:Default:removePerson }
