@@ -50,6 +50,8 @@ var allePersoner = Vue.component('innslag-persons', {
             var mobil = $('#mobilNewPerson').val();
             var rolle = $('#rolleNewPerson').val();
 
+            rolle = rolle ? rolle : "Ukjent rolle";
+
             // Empty fields
             $('.input-new-person').val('').blur();
 
@@ -86,7 +88,7 @@ var allePersoner = Vue.component('innslag-persons', {
                 etternavn : person.etternavn,
                 alder : person.fodselsdato,
                 mobil : person.mobil,
-                rolle : person.rolle,
+                rolle : person.rolle ? person.rolle : 'Ukjent Rolle',
             });
 
             console.log(newPerson);
@@ -136,7 +138,7 @@ var allePersoner = Vue.component('innslag-persons', {
                     <div class="person new-person">
                         <div class="user-empty">
                             <div class="buttons">
-                                <button class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
+                                <button class="small-button-style hover-button-delta mini go-to-meld-av" @click="editPerson(person)" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
                                 </button>
                             </div>
@@ -152,7 +154,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fornavn" @input="editPerson(person)" type="text" class="input" name="fornavn">
+                                <input v-model:value="person.fornavn" type="text" class="input" name="fornavn">
                             </div>
 
                             <!-- Etternavn -->
@@ -163,7 +165,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Etternavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.etternavn" @input="editPerson(person)" type="text" class="input" name="etternavn">
+                                <input v-model:value="person.etternavn" type="text" class="input" name="etternavn">
                             </div>
 
                             <!-- Alder -->
@@ -174,7 +176,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fodselsdato" @input="editPerson(person)" maxlength="2" type="text" class="input" name="alder">
+                                <input v-model:value="person.fodselsdato" maxlength="2" type="text" class="input" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -185,7 +187,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.mobil" @input="editPerson(person)" type="text" maxlength="8" class="input" name="mobil">
+                                <input v-model:value="person.mobil" type="text" maxlength="8" class="input" name="mobil">
                             </div>
 
                             <!-- Rolle -->
@@ -196,16 +198,10 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Rolle i gruppa</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.rolle" @input="editPerson(person)" type="text" class="input" name="rolle">
+                                <input v-model:value="person.rolle" type="text" class="input" name="rolle">
                             </div>
 
                         </div>
-                    </div>
-
-                    <div class="new-member-div">
-                        <button class="small-button-style new-member hover-button-delta">
-                            Lagre
-                        </button>
                     </div>
                 </div>
 
@@ -311,8 +307,7 @@ var oversiktInnslag = new Vue({
     delimiters: ['#{', '}'], // For å bruke det på Twig
     el: '#pageOversiktInnslag',
     data: {
-        innslag_id : null,
-        innslag : {navn : '2'}
+        innslag : {}
     },
     created() {
         console.log('created')
@@ -323,8 +318,13 @@ var oversiktInnslag = new Vue({
         this.innslag = innslag;
     },
     methods : {
-        addNew : function() {
-            this.items.push({text : 'four'})
+        editInnslag : async function() {
+            console.log(this.innslag);
+            var newPerson = await spaInteraction.runAjaxCall('edit_innslag/', 'PATCH', {
+                b_id : this.innslag.id,
+                navn : this.innslag.navn,
+                beskrivelse : this.innslag.beskrivelse ? this.innslag.beskrivelse : null
+            });
         }
     },
     components : {

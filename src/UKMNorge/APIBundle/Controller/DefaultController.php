@@ -152,7 +152,38 @@ class DefaultController extends Controller
         return $response;
     }
 
-    
+    /**
+     * _@route: <api/edit_innslag/>
+     * Opprett innslag
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function editInnslagAction(Request $request) {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+
+        // Hent data
+        try{
+            $data_arr = $this->getData($request, ['b_id', 'navn'], ['beskrivelse']);
+            
+            $innslag = $innslagService->hent($data_arr['b_id']);
+
+            $innslag->setNavn($data_arr['navn']);
+            $innslag->setBeskrivelse($data_arr['beskrivelse']);
+
+            $res = $innslagService->lagre($innslag);
+            $response->setData($res);
+
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+    }
+
     /**
      * _@route: <api/get_innslag/>
      * Opprett innslag
@@ -551,7 +582,7 @@ class DefaultController extends Controller
      * @param array $arr_key
      * @return array
      */
-    private function getData($request, $arr_key) {
+    private function getData($request, $arr_key, $arr_key_optional = []) {
         $arr_data = [];
         foreach ($arr_key as $key) {
             $data = $request->request->get($key);
@@ -560,6 +591,12 @@ class DefaultController extends Controller
             }
             $arr_data[$key] = $data;
         }
+
+        foreach ($arr_key_optional as $optional_key) {
+            $data = $request->request->get($optional_key);
+            $arr_data[$optional_key] = empty($data) ? null : $data;
+        }
+        
 
         return $arr_data;
     }

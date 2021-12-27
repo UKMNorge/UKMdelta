@@ -35,6 +35,16 @@ ukm_api_new_innslag:
         type: ([a-z]+)
     methods: [POST]
 
+# Edit innslag
+ukm_api_edit_innslag:
+    path: /api/edit_innslag/
+    defaults: { _controller: UKMAPIBundle:Default:editInnslag }
+    requirements: 
+        b_id: ([0-9]{1,11})
+        navn: ([^0-9]+) 
+        beskrivelse: ([^0-9]+) 
+    methods: [PATCH]
+
 # Fjern innslag
 ukm_api_remove_innslag:
     path: /api/remove_innslag/
@@ -51,8 +61,6 @@ ukm_api_get_innslag_types:
     requirements: 
         pl_id: ([0-9]{1,5})
     methods: [GET]
-
-
 
 
 ### ------------------------- Arrangement -------------------------
