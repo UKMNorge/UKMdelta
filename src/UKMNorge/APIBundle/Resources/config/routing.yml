@@ -137,6 +137,21 @@ ukm_api_new_person:
     methods: [POST]
 
 
+# Edit person
+ukm_api_edit_person:
+    path: /api/edit_person/
+    defaults: { _controller: UKMAPIBundle:Default:editPerson }
+    requirements: 
+        b_id: ([0-9]{1,11})
+        p_id: ([0-9]{1,5})
+        fornavn: ([^0-9]+)
+        etternavn: ([^0-9]+)
+        alder: ([0-9]{1,2})
+        mobil: ([0-9]{8})
+        rolle: ([^0-9]+)
+    methods: [PATCH]
+
+
 # Remove person from innslag
 ukm_api_remove_person:
     path: /api/remove_person/

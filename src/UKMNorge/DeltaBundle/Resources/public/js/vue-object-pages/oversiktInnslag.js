@@ -68,11 +68,28 @@ var allePersoner = Vue.component('innslag-persons', {
                 etternavn : etternavn,
                 alder : alder,
                 mobil : mobil,
-                rolle : rolle,
+                rolle : rolle, // check if rolle exists
             });
             newPerson.id = newPerson.p_id;
 
             this.personer.push(newPerson);
+        },
+        editPerson : async function(person) {
+            var innslag = this.$parent.innslag;
+
+            console.log(person);
+
+            var newPerson = await spaInteraction.runAjaxCall('edit_person/', 'PATCH', {
+                b_id : innslag.id,
+                p_id : person.id,
+                fornavn : person.fornavn,
+                etternavn : person.etternavn,
+                alder : person.fodselsdato,
+                mobil : person.mobil,
+                rolle : person.rolle,
+            });
+
+            console.log(newPerson);
         }
     },
     template : `
@@ -135,7 +152,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fornavn" type="text" class="input" name="fornavn">
+                                <input v-model:value="person.fornavn" @input="editPerson(person)" type="text" class="input" name="fornavn">
                             </div>
 
                             <!-- Etternavn -->
@@ -146,7 +163,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Etternavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.etternavn" type="text" class="input" name="etternavn">
+                                <input v-model:value="person.etternavn" @input="editPerson(person)" type="text" class="input" name="etternavn">
                             </div>
 
                             <!-- Alder -->
@@ -157,7 +174,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fodselsdato" maxlength="8" type="text" class="input" name="alder">
+                                <input v-model:value="person.fodselsdato" @input="editPerson(person)" maxlength="2" type="text" class="input" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -168,7 +185,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.mobil" type="text" class="input" name="mobil">
+                                <input v-model:value="person.mobil" @input="editPerson(person)" type="text" maxlength="8" class="input" name="mobil">
                             </div>
 
                             <!-- Rolle -->
@@ -179,7 +196,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Rolle i gruppa</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.rolle" type="text" class="input" name="rolle">
+                                <input v-model:value="person.rolle" @input="editPerson(person)" type="text" class="input" name="rolle">
                             </div>
 
                         </div>
@@ -244,7 +261,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input id="alderNewPerson" type="text" maxlength="8" class="input input-new-person" name="alder">
+                                <input id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -255,7 +272,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input id="mobilNewPerson" type="text" class="input input-new-person" name="mobil">
+                                <input id="mobilNewPerson" type="text" maxlength="8" class="input input-new-person" name="mobil">
                             </div>
 
                             <!-- Rolle -->

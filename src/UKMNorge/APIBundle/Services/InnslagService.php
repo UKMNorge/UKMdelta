@@ -300,6 +300,22 @@ class InnslagService
         return true;
     }
 
+    public function editPerson($b_id, $p_id, $fornavn, $etternavn, $alder, $mobil, $rolle) {
+        $fodselsdato = $alder; // Convert to DateTime
+
+        $person = $this->container->get('ukm_api.person')->hent($p_id, $b_id);
+        $person->setFornavn($fornavn);
+        $person->setEtternavn($etternavn);
+        $person->setMobil($mobil);
+        $person->setMobil($mobil);
+        $person->setFodselsdato($fodselsdato);
+        $person->setRolle($rolle);
+
+        $person = $this->container->get('ukm_api.person')->lagre($person, $b_id);
+        
+        return $person;
+    }
+
     /**
      * Sjekk at alt er ok (Frist og tilgang)
      *
