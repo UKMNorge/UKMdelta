@@ -15,7 +15,7 @@
                 <div class="overlay">
                     <div class="info">
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
-                        <span class="text">Artistnavn / Gruppenavn</span>
+                        <span class="text">{{ type.getTekst('artistnavn.' ~ ( innslag.getPersoner().getAntall() == 1 ? 'alene' : 'sammen' ) ~ '.navn') }}</span>
                     </div>
                 </div>
                 <input type="text" class="input" @blur="editInnslag" v-model:value="innslag.navn">
@@ -66,14 +66,14 @@
     {# SJANGER #}
     {% if type.harSjanger() %}
         <div class="input-area">
-            <div :class="open : innslag.sjanger" class="input-delta">
+            <div :class="{open : innslag.sjanger}" class="input-delta">
                 <div class="overlay">
                     <div class="info">
                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
                         <span class="text">Sjanger</span>
                     </div>
                 </div>
-                <input v-model="innslag.sjanger" type="text" class="input">
+                <input v-model="innslag.sjanger" @blur="editInnslag" type="text" class="input">
                 <button class="button-right hover-button-delta" data-toggle="collapse" href="#innslagSjangerInfo" role="button" aria-expanded="false" aria-controls="innslagSjangerInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0.5 -1 28 28" style="fill: #fff ;transform: ;msFilter:;"><path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
                 </button>
@@ -107,6 +107,17 @@
 
             </div>
         </div>
+    </div>
+
+    <!-- titler -->
+    <div>
+        <innslag-titler></innslag-titler>
+    </div>
+
+
+    <!-- tekniske behov -->
+    <div>
+        <innslag-tekniske-behov></innslag-tekniske-behov>
     </div>
 </div>
 

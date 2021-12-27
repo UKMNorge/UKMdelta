@@ -165,12 +165,16 @@ class DefaultController extends Controller
 
         // Hent data
         try{
-            $data_arr = $this->getData($request, ['b_id', 'navn'], ['beskrivelse']);
+            $data_arr = $this->getData($request, ['b_id', 'navn'], ['beskrivelse', 'sjanger']);
             
             $innslag = $innslagService->hent($data_arr['b_id']);
 
             $innslag->setNavn($data_arr['navn']);
             $innslag->setBeskrivelse($data_arr['beskrivelse']);
+            
+            if($data_arr['sjanger']) {
+                $innslag->setSjanger($data_arr['sjanger']);
+            }
 
             $res = $innslagService->lagre($innslag);
             $response->setData($res);

@@ -1,4 +1,4 @@
-// Components
+// Component
 var allePersoner = Vue.component('innslag-persons', { 
     delimiters: ['#{', '}'], // For å bruke det på Twig
     data : function() {
@@ -8,6 +8,7 @@ var allePersoner = Vue.component('innslag-persons', {
     },
     async mounted() {
         var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+
         var personer = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
         this.personer = personer;
     },
@@ -302,6 +303,55 @@ var allePersoner = Vue.component('innslag-persons', {
 })
 
 
+
+
+// Component
+var tekniskeBehov = Vue.component('innslag-tekniske-behov', { 
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+        }
+    },
+    async mounted() {
+        var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+        <h1>Tekniske Behov</h1>
+    </div>
+    `
+});
+
+// Components
+var alleTitler = Vue.component('innslag-titler', { 
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+        }
+    },
+    async mounted() {
+        var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+        <h1>Titler</h1>
+    </div>
+    `
+})
+
+
 // The app
 var oversiktInnslag = new Vue({
     delimiters: ['#{', '}'], // For å bruke det på Twig
@@ -323,11 +373,14 @@ var oversiktInnslag = new Vue({
             var newPerson = await spaInteraction.runAjaxCall('edit_innslag/', 'PATCH', {
                 b_id : this.innslag.id,
                 navn : this.innslag.navn,
-                beskrivelse : this.innslag.beskrivelse ? this.innslag.beskrivelse : null
+                beskrivelse : this.innslag.beskrivelse,
+                sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
             });
         }
     },
     components : {
-        allePersoner
+        allePersoner,
+        alleTitler,
+        tekniskeBehov
     }
 })

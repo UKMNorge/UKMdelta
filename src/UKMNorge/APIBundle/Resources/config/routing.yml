@@ -43,6 +43,7 @@ ukm_api_edit_innslag:
         b_id: ([0-9]{1,11})
         navn: ([^0-9]+) 
         beskrivelse: ([^0-9]+) 
+        sjanger: ([^0-9]+)
     methods: [PATCH]
 
 # Fjern innslag
@@ -171,3 +172,14 @@ ukm_api_remove_person:
         b_id: ([0-9]{1,11})
         p_id: ([0-9]{1,11})
     methods: [POST]
+
+
+### ------------------------- Personer -------------------------
+
+# Get alle titler i ett innslag
+ukm_api_get_all_titler:
+    path: /api/get_all_titler/{b_id}
+    defaults: { _controller: UKMAPIBundle:Default:getAllTitler }
+    requirements: 
+        b_id: ([0-9]{1,11})
+    methods: [GET]
