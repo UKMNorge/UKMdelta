@@ -174,7 +174,7 @@ ukm_api_remove_person:
     methods: [POST]
 
 
-### ------------------------- Personer -------------------------
+### ------------------------- Titler -------------------------
 
 # Get alle titler i ett innslag
 ukm_api_get_all_titler:

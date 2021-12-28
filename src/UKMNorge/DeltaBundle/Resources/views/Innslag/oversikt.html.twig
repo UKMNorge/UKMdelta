@@ -89,8 +89,21 @@
 		</div>
 	</div>
 
+	<!-- TEST -->
+	<div>
+		<h5>Test</h5>
+		{{ dump(innslag.getType().harTid()) }}
+	</div>
+
 	<script>
-		
+		var toggleShadows = (e) => {
+			if($(e).hasClass('collapsed')) {
+				$($(e).parent().parent().parent()).addClass('with-shadow');
+			}
+			else {
+				$($(e).parent().parent().parent()).removeClass('with-shadow');
+			}
+		}
 	</script>
 
 

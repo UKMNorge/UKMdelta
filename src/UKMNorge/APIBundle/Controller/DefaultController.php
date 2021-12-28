@@ -572,6 +572,35 @@ class DefaultController extends Controller
     }
 
 
+    /* ---------------------------- Tittel ---------------------------- */
+    
+    /**
+     * Hent alle personer i ett innslag
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAlltitlerAction($b_id) {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+        
+        try{
+            $innslag = $innslagService->hent($b_id);
+
+            $titler = $innslag->getTitler()->getAll();
+
+            $response->setData($titler);
+
+        } catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+
+    }
+
     /* ---------------------------- Other Methods ---------------------------- */
 
     public function hentCurrentUser()

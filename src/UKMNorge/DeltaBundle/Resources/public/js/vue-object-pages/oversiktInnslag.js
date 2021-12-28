@@ -106,10 +106,10 @@ var allePersoner = Vue.component('innslag-persons', {
         </button>
     </div>
     <div id="collapseUsers" class="panel-body accordion-body-root collapse show">
-        <div id="allPersons" class="accordion-header-sub card-body persons">
+        <div id="allPersons" class="accordion-header-sub card-body items-oversikt">
             <div v-for="person in personer">
                 
-                <div class="person">
+                <div class="item">
                     <div class="avatar">
                         <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
                     </div>
@@ -136,7 +136,7 @@ var allePersoner = Vue.component('innslag-persons', {
                     </div>
                 </div>
                 <div :id="['editUser' + person.id ]" class="collapse edit-user-form">
-                    <div class="person new-person">
+                    <div class="item new-person">
                         <div class="user-empty">
                             <div class="buttons">
                                 <button class="small-button-style hover-button-delta mini go-to-meld-av" @click="editPerson(person)" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
@@ -211,7 +211,7 @@ var allePersoner = Vue.component('innslag-persons', {
             <!-- NEW PERSON -->
 
             <div id="newUserCollapse" class="collapse new-user-form">
-                    <div class="person new-person">
+                    <div class="item new-person">
                         <div class="user-empty">
                         <div class="avatar">
                             <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
@@ -328,29 +328,6 @@ var tekniskeBehov = Vue.component('innslag-tekniske-behov', {
     `
 });
 
-// Components
-var alleTitler = Vue.component('innslag-titler', { 
-    delimiters: ['#{', '}'], // For å bruke det på Twig
-    data : function() {
-        return {
-            titler : [],
-        }
-    },
-    async mounted() {
-        var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
-    },
-    methods : {
-    
-    },
-    template : `
-    <div>
-        <h1>Titler</h1>
-    </div>
-    `
-})
-
 
 // The app
 var oversiktInnslag = new Vue({
@@ -380,7 +357,6 @@ var oversiktInnslag = new Vue({
     },
     components : {
         allePersoner,
-        alleTitler,
         tekniskeBehov
     }
 })
