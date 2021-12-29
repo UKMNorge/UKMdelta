@@ -63,6 +63,15 @@
 .accordion-body-root .items-oversikt .item.titel .user-info {
     margin-left: 0;
 }
+.accordion-body-root .items-oversikt .item.titel .user-info.varighet {
+    min-width: 70px;
+}
+.accordion-body-root .items-oversikt .item.titel .title-name {
+    margin: auto;
+    margin-left: 20px;
+    color: #1A202C;
+    font: normal normal 300 14px/16px Roboto;
+}
 .accordion-body-root .items-oversikt .item.titel .user-info .name .varighet {
     color: #718096;
 }

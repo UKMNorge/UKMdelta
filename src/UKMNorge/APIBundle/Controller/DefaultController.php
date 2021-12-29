@@ -580,16 +580,13 @@ class DefaultController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function getAlltitlerAction($b_id) {
+    public function getAllTitlerAction($b_id) {
         $response = new JsonResponse();
         $innslagService = $this->get('ukm_api.innslag');
         
         try{
             $innslag = $innslagService->hent($b_id);
-
-            $titler = $innslag->getTitler()->getAll();
-
-            $response->setData($titler);
+            $response->setData($innslag->getTitler()->getAll());
 
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
