@@ -184,11 +184,22 @@
 }
 
 
-.form-new-user .input-delta{
+.form-new-user .input-delta,
+.form-new-user .radio-input-delta {
     margin-top: 30px;
 }
 .form-new-user .input-delta,
 .form-new-user .input-delta .input,
 .form-new-user .input-delta .overlay {
     background: #F7FAFC !important;
+}
+.input-delta .input-group-horizontal .input-info {
+    z-index: 1;
+    margin: auto 0;
+    margin-bottom: 8px;
+    color: #A0AEC0;
+    font: normal normal 300 16px/18px Roboto;
+}
+.input-delta .input-group-horizontal input {
+    max-width: 150px;
 }

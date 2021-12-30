@@ -586,6 +586,15 @@ class DefaultController extends Controller
         
         try{
             $innslag = $innslagService->hent($b_id);
+            
+            $typeKey = $innslag->getType()->getKey();
+            // Check if Innslag Type is available for Tittel
+            if($typeKey == 'cosplay' || $typeKey == 'dataspillgruppe') {
+                $response->setData(null);
+                return $response;
+            }
+          
+
             $response->setData($innslag->getTitler()->getAll());
 
         } catch(Exception $e) {

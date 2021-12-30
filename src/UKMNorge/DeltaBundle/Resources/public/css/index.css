@@ -96,6 +96,36 @@ body {
     font: normal normal 300 16px/19px Roboto;
     resize: none !important;
 }
+.input-delta .input-group-horizontal {
+    display: flex;
+}
+.input-delta .input-group-horizontal input {
+    width: 25%;
+    text-align: right;
+    margin-right: 10px;
+}
+.radio-input-delta .description {
+    color: #A0AEC0;
+    font: normal normal 300 16px/18px Roboto;
+}
+.radio-input-delta .inputs {
+    display: inline;
+}
+.radio-input-delta .inputs .input-div {
+    display: flex;
+    margin: 10px 0;
+}
+.radio-input-delta .inputs .input-div input {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    margin-right: 20px;
+    margin-left: 0;
+}
+.radio-input-delta .inputs .input-div span {
+    color: #1A202C;
+    font: normal normal 300 16px/18px Roboto;
+}
 .input-delta:not(.open) textarea.input {
     height: 25px !important;
 }
