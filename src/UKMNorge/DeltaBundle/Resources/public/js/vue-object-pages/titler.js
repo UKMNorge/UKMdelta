@@ -16,215 +16,8 @@ var skjema = {
     }
 }
 
-
-
-// Component
-var musikkComponent = Vue.component('musikk-component', { 
-    mixins : [skjema], // Parent
-    delimiters: ['#{', '}'], // For å bruke det på Twig
-    data : function() {
-        return {
-            titler : [],
-            tekstOrInstrumental : null,
-        }
-    },
-    async mounted() {
-        setTimeout(() => {
-            this.hello ='Helloooo!99';
-            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        }, 5000);
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
-    },
-    methods : {
-    
-    },
-    template : `
-    <div>
-
-    <div class="radio-input-delta">
-        <p class="description">Har låten tekst, eller er det en instrumental?</p>
-        <div class="inputs">
-			<div class="input-div">
-                <input type="radio" name="sangtype" value="sang" v-model="tekstOrInstrumental" required="" data-form-type="other">
-                <span>Tekst</span>
-            </div>
-			<div class="input-div">
-                <input type="radio" name="sangtype" value="instrumental" v-model="tekstOrInstrumental" required="" data-form-type="other">
-                <span>Instrumental</span>
-            </div>
-		</div>
-	</div>
-
-    <!-- TEKST ELLER INSTRUMENTAL -->
-    <div class="radio-input-delta">
-        <p class="description">Har du/dere laget låten selv?</p>
-        <div class="inputs">
-			<div class="input-div">
-                <input type="radio" name="selvlaget" value="1" required="" data-form-type="other">
-                <span>Ja</span>
-            </div>
-			<div class="input-div">
-                <input type="radio" name="selvlaget" value="0" required="" data-form-type="other">
-                <span>Nei</span>
-            </div>
-		</div>
-	</div>
-
-    <!-- TESKTEN SKREVET AV -->
-    <div v-if="tekstOrInstrumental != 'instrumental'" class="input-delta">
-        <div class="overlay">
-            <div class="info">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
-                <span class="text">Hvem har skrevet teksten?</span>
-            </div>
-        </div>
-        <input type="text" class="input" name="tekst_av">
-    </div> 
-
-    <!-- MELODI LAGET AV -->
-    <div class="input-delta">
-        <div class="overlay">
-            <div class="info">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
-                <span class="text">Hvem har laget melodien?</span>
-            </div>
-        </div>
-        <input type="text" class="input" name="tekst_av">
-    </div> 
-
-    </div>
-    `
-});
-
-// Component
-var dansComponent = Vue.component('dans-component', { 
-    mixins : [skjema], // Parent
-    delimiters: ['#{', '}'], // For å bruke det på Twig
-    data : function() {
-        return {
-            titler : [],
-            tekstOrInstrumental : null,
-        }
-    },
-    async mounted() {
-        setTimeout(() => {
-            this.hello ='Helloooo!99';
-            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        }, 5000);
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
-    },
-    methods : {
-    
-    },
-    template : `
-    <div>
-
-    <div class="radio-input-delta">
-        <p class="description">Har du/dere laget koreografien / dansen selv?</p>
-        <div class="inputs">
-			<div class="input-div">
-                <input type="radio" name="danstype" value="ja" v-model="tekstOrInstrumental" required="" data-form-type="other">
-                <span>Ja</span>
-            </div>
-			<div class="input-div">
-                <input type="radio" name="danstype" value="nei" v-model="tekstOrInstrumental" required="" data-form-type="other">
-                <span>Nei</span>
-            </div>
-		</div>
-	</div>
-
-    <!-- Hvem har koreografert dansen? -->
-    <div  class="input-delta">
-        <div class="overlay">
-            <div class="info">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
-                <span class="text">Hvem har koreografert dansen?</span>
-            </div>
-        </div>
-        <input type="text" class="input" name="koreografert_dansen?">
-    </div> 
-
-    </div>
-    `
-});
-
-
-// Component
-var litteraturComponent = Vue.component('litteratur-component', { 
-    mixins : [skjema], // Parent
-    delimiters: ['#{', '}'], // For å bruke det på Twig
-    data : function() {
-        return {
-            titler : [],
-            leseOpp : null,
-        }
-    },
-    async mounted() {
-        setTimeout(() => {
-            this.hello ='Helloooo!99';
-            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        }, 5000);
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
-    },
-    methods : {
-    
-    },
-    template : `
-    <div>
-
-    <!-- Medforfater -->
-    <div class="input-delta open">
-        <div class="overlay">
-            <div class="info">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
-                <span class="text">Medforfater</span>
-            </div>
-        </div>
-        <input type="text" class="input" name="tittel">
-    </div>
-
-    <div class="radio-input-delta">
-        <p class="description">Har du/dere laget koreografien / dansen selv?</p>
-        <div class="inputs">
-			<div class="input-div">
-                <input type="radio" v-model="leseOpp" name="danstype" value="ja" required="" data-form-type="other">
-                <span>Ja</span>
-            </div>
-			<div class="input-div">
-                <input type="radio" v-model="leseOpp" name="danstype" value="nei" required="" data-form-type="other">
-                <span>Nei</span>
-            </div>
-		</div>
-	</div>
-
-    <!-- Tid for å lese opp -->
-    <div v-if="leseOpp != 'nei'" class="input-delta open">
-        <div class="overlay">
-            <div class="info">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
-                <span class="text">Varighet på fremføringen</span>
-            </div>
-        </div>
-
-        <div class="input-group-horizontal">
-            <input value="1" type="text" class="input" name="minutter">
-            <span class="input-info">minutter</span>
-            <input value="1" type="text" class="input" name="sekunder">
-            <span class="input-info">sekunder</span>
-        </div>
-    </div>
-
-    </div>
-    `
-});
-
-
-
-// Component
-var titlerComponent = Vue.component('titler-component', { 
+// MAIN - Component
+var mainComponent = Vue.component('titler-component', { 
     delimiters: ['#{', '}'], // For å bruke det på Twig
     data : function() {
         return {
@@ -237,7 +30,9 @@ var titlerComponent = Vue.component('titler-component', {
         this.titler = titler;
     },
     methods : {
-    
+        saveChanges : function() {
+            alert('saveChanges');
+        }
     },
     template : `
     <div>
@@ -251,6 +46,7 @@ var titlerComponent = Vue.component('titler-component', {
           <span class="accordion-title-root">#{titler.length + ' fremføring' + (titler.length > 1 ? 'er' : '')}</span>
        </button>
     </div>
+    <button @click="saveChanges">saveChanges</button>
     <div v-for="tittel in titler" id="collapseTitler" class="panel-body accordion-body-root collapse show">
        <div class="accordion-header-sub card-body items-oversikt">
           <div>
@@ -337,8 +133,14 @@ var titlerComponent = Vue.component('titler-component', {
                         
                         <!-- litteratur type -->
                         <litteratur-component v-if="tittel.context.innslag.type == 'litteratur'"></litteratur-component>
+                        
+                        <!-- teater type -->
+                        <teater-component v-if="tittel.context.innslag.type == 'teater'"></teater-component>
+                        
+                        <!-- utstilling type -->
+                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling'" :typeOgTeknikk="tittel.type" ></utstilling-component>
 
-
+                        
                    </div>
                 </div>
              </div>
@@ -378,6 +180,294 @@ var titlerComponent = Vue.component('titler-component', {
     `
 });
 
+
+// Component
+var musikkComponent = Vue.component('musikk-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+            tekstOrInstrumental : null,
+        }
+    },
+    async mounted() {
+        setTimeout(() => {
+            this.hello ='Helloooo!99';
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        }, 5000);
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+
+    <div class="radio-input-delta">
+        <p class="description">Har låten tekst, eller er det en instrumental?</p>
+        <div class="inputs">
+			<div class="input-div">
+                <input type="radio" name="sangtype" value="sang" v-model="tekstOrInstrumental" required="" data-form-type="other">
+                <span>Tekst</span>
+            </div>
+			<div class="input-div">
+                <input type="radio" name="sangtype" value="instrumental" v-model="tekstOrInstrumental" required="" data-form-type="other">
+                <span>Instrumental</span>
+            </div>
+		</div>
+	</div>
+
+    <!-- TEKST ELLER INSTRUMENTAL -->
+    <div class="radio-input-delta">
+        <p class="description">Har du/dere laget låten selv?</p>
+        <div class="inputs">
+			<div class="input-div">
+                <input type="radio" name="selvlaget" value="1" required="" data-form-type="other">
+                <span>Ja</span>
+            </div>
+			<div class="input-div">
+                <input type="radio" name="selvlaget" value="0" required="" data-form-type="other">
+                <span>Nei</span>
+            </div>
+		</div>
+	</div>
+
+    <!-- TESKTEN SKREVET AV -->
+    <div v-if="tekstOrInstrumental != 'instrumental'" class="input-delta">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Hvem har skrevet teksten?</span>
+            </div>
+        </div>
+        <input type="text" class="input" name="tekst_av">
+    </div> 
+
+    <!-- MELODI LAGET AV -->
+    <div class="input-delta">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Hvem har laget melodien?</span>
+            </div>
+        </div>
+        <input type="text" class="input" name="tekst_av">
+    </div> 
+
+    </div>
+    `
+});
+
+// Component
+var dansComponent = Vue.component('dans-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+            tekstOrInstrumental : null,
+        }
+    },
+    async mounted() {
+        setTimeout(() => {
+            this.hello ='Helloooo!99';
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        }, 5000);
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+
+    <div class="radio-input-delta">
+        <p class="description">Har du/dere laget koreografien / dansen selv?</p>
+        <div class="inputs">
+			<div class="input-div">
+                <input type="radio" name="danstype" value="ja" v-model="tekstOrInstrumental" required="" data-form-type="other">
+                <span>Ja</span>
+            </div>
+			<div class="input-div">
+                <input type="radio" name="danstype" value="nei" v-model="tekstOrInstrumental" required="" data-form-type="other">
+                <span>Nei</span>
+            </div>
+		</div>
+	</div>
+
+    <!-- Hvem har koreografert dansen? -->
+    <div  class="input-delta">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Hvem har koreografert dansen?</span>
+            </div>
+        </div>
+        <input type="text" class="input" name="koreografert_dansen">
+    </div> 
+
+    </div>
+    `
+});
+
+
+// Component
+var litteraturComponent = Vue.component('litteratur-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+            leseOpp : null,
+        }
+    },
+    async mounted() {
+        setTimeout(() => {
+            this.hello ='Helloooo!99';
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        }, 5000);
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+
+    <!-- Medforfater -->
+    <div class="input-delta open">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Medforfatter</span>
+            </div>
+        </div>
+        <input type="text" class="input" name="tittel">
+    </div>
+
+    <div class="radio-input-delta">
+        <p class="description">Har du/dere laget koreografien / dansen selv?</p>
+        <div class="inputs">
+			<div class="input-div">
+                <input type="radio" v-model="leseOpp" name="danstype" value="ja" required="" data-form-type="other">
+                <span>Ja</span>
+            </div>
+			<div class="input-div">
+                <input type="radio" v-model="leseOpp" name="danstype" value="nei" required="" data-form-type="other">
+                <span>Nei</span>
+            </div>
+		</div>
+	</div>
+
+    <!-- Tid for å lese opp -->
+    <div v-if="leseOpp != 'nei'" class="input-delta open">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Varighet på fremføringen</span>
+            </div>
+        </div>
+
+        <div class="input-group-horizontal">
+            <input value="1" type="text" class="input" name="minutter">
+            <span class="input-info">minutter</span>
+            <input value="1" type="text" class="input" name="sekunder">
+            <span class="input-info">sekunder</span>
+        </div>
+    </div>
+
+    </div>
+    `
+});
+
+
+// Component
+var dansComponent = Vue.component('teater-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            titler : [],
+            tekstOrInstrumental : null,
+        }
+    },
+    async mounted() {
+        setTimeout(() => {
+            this.hello ='Helloooo!99';
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+        }, 5000);
+        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        // this.titler = titler;
+    },
+    methods : {
+    
+    },
+    template : `
+    <div>
+
+    <div class="radio-input-delta">
+        <p class="description">Har du/dere laget sketsjen/stykket selv?</p>
+        <div class="inputs">
+			<div class="input-div">
+                <input type="radio" name="danstype" value="ja" required="" data-form-type="other">
+                <span>Ja</span>
+            </div>
+			<div class="input-div">
+                <input type="radio" name="danstype" value="nei" required="" data-form-type="other">
+                <span>Nei</span>
+            </div>
+		</div>
+	</div>
+
+    <!-- Hvem har skrevet manus? -->
+    <div class="input-delta">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Hvem har skrevet manus?</span>
+            </div>
+        </div>
+        <input type="text" class="input" name="manus">
+    </div> 
+
+    </div>
+    `
+});
+
+
+// Component
+var dansComponent = Vue.component('utstilling-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    props: {
+        typeOgTeknikk: String
+    },
+    methods : {
+        saveChangesComponent : function() {
+            // this.saveChanges(type=true);
+        }
+    },
+    template : `
+    <div>
+    <button @click="saveChangesLocal">saveChangesUtstilling</button>
+    <!-- Type og teknikk -->
+    <div class="input-delta open">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Type og teknikk</span>
+            </div>
+        </div>
+        <input type="text" v-model="typeOgTeknikk" class="input" name="type_og_teknikk">
+    </div> 
+
+    </div>
+    `
+});
 
 
 // APP
