@@ -65,10 +65,11 @@
 }
 .accordion-body-root .items-oversikt .item.titel .user-info.varighet {
     min-width: 70px;
+    margin-right: 20px;
 }
 .accordion-body-root .items-oversikt .item.titel .title-name {
     margin: auto;
-    margin-left: 20px;
+    margin-left: 0;
     color: #1A202C;
     font: normal normal 300 14px/16px Roboto;
 }
