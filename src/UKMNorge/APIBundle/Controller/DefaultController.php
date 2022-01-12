@@ -604,6 +604,103 @@ class DefaultController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * Legg til en ny tittel
+     * Handler for POST (lagre for)
+     *
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param String $type
+     * @param Int $b_id
+     */
+    public function createOrEditTittelAction(Request $request) {
+        $response = new JsonResponse();
+
+        try {
+            $data_arr = $this->getData($request, ['b_id', 't_id', 'tittel'], ['lengde', 'selvlaget', 'melodiforfatter', 'sangtype', 'tekstforfatter', 'koreografi', 'leseopp', 'type']);
+            
+            $b_id = $data_arr['b_id']; // innslag id
+            $t_id = $data_arr['t_id']; // tittel id (if 'new' - create Tittel)
+            $tittel = $data_arr['tittel']; // tittel string
+            $lengde = $data_arr['lengde']; // varighet           
+            $selvlaget = $data_arr['selvlaget'];
+            $melodiforfatter = $data_arr['melodiforfatter'];
+            $sangtype = $data_arr['sangtype'];
+            $tekstforfatter = $data_arr['tekstforfatter'];
+            $koreografi = $data_arr['koreografi'];
+            $leseopp = $data_arr['leseopp']; // 0 or 1 (false, true)
+            $type = $data_arr['type'];
+
+            $request = Request::createFromGlobals();
+            $innslagService = $this->get('ukm_api.innslag');
+            $innslag = $innslagService->hent($b_id);
+
+            // Opprett tittel
+            if ($t_id == 'new') {
+                $tittel = $innslagService->opprettTittel($innslag);
+            }
+            // Hent tittel
+            else {
+                $tittel = $innslag->getTitler()->get($t_id);
+            }
+
+            // Sett standard-info
+            $tittel->setTittel($tittel);
+            if ($innslag->getType()->harTid()) {
+                $tittel->setVarighet($lengde);
+            }
+
+            switch ($innslag->getType()->getKey()) {
+                    // Musikk
+                case 'musikk':
+                    $tittel->setSelvlaget($selvlaget == '1');
+                    $tittel->setMelodiAv($melodiforfatter);
+
+                    if ($sangtype == 'instrumental') {
+                        $tittel->setInstrumental(true);
+                    } else {
+                        $tittel->setInstrumental(false);
+                        $tittel->setTekstAv($tekstforfatter);
+                    }
+                    break;
+                    // Teater
+                case 'teater':
+                    $tittel->setSelvlaget($selvlaget == '1');
+                    $tittel->setTekstAv($tekstforfatter);
+                    break;
+                    // Dans
+                case 'dans':
+                    $tittel->setSelvlaget($selvlaget == '1');
+                    $tittel->setKoreografi($koreografi);
+                    break;
+                    // Litteratur
+                case 'litteratur':
+                    $tittel->setTekstAv($tekstforfatter);
+                    if ($leseopp == '1') {
+                        $tittel->setLesOpp(true);
+                    } else {
+                        $tittel->setLesOpp(false);
+                        $tittel->setVarighet(0);
+                    }
+                    break;
+                    // Utstilling
+                case 'utstilling':
+                    $tittel->setType($type);
+                    break;
+            }
+
+            $innslagService->lagreTitler($innslag, $tittel);
+            
+        } catch (Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        $response->setData(array($tittel));
+        return $response;
 
     }
 

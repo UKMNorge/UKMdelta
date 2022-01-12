@@ -30,8 +30,64 @@ var mainComponent = Vue.component('titler-component', {
         this.titler = titler;
     },
     methods : {
-        saveChanges : function() {
-            alert('saveChanges');
+        createNew : function() {
+
+        },
+        saveChanges : async function(tittel) {
+            console.log(tittel);
+            var data = {
+                b_id : this.innslag_id,
+                t_id : tittel.id, // 'new' for ny tittel
+                tittel : tittel.tittel,
+            };
+
+            if(typeof tittel.selvlaget !== 'undefined') {
+                data.selvlaget = tittel.selvlaget ? '1' : '0';
+            }
+
+            if(typeof tittel.sekunder !== 'undefined') {
+                data.lengde = String(tittel.sekunder);
+            }
+
+            if(typeof tittel.melodi_av !== 'undefined') {
+                data.melodiforfatter = tittel.melodi_av;
+            }
+
+            if(typeof tittel.instrumental !== 'undefined') {
+                data.sangtype = tittel.instrumental ? 'instrumental' : 'tekst';
+            }
+
+            if(typeof tittel.tekst_av !== 'undefined') {
+                data.tekstforfatter = tittel.tekst_av;
+            }
+
+            if(typeof tittel.koreografi_av !== 'undefined') {
+                data.koreografi = tittel.koreografi_av;
+            }
+
+            if(typeof tittel.litteratur_read !== 'undefined') {
+                data.leseopp = tittel.litteratur_read ? '1' : '0';
+            }
+
+            if(typeof tittel.type !== 'undefined') {
+                data.type = tittel.type;
+            }
+
+            console.log(data);
+
+            var innslag = await spaInteraction.runAjaxCall(
+                'create_or_edit_tittel/', 
+                'POST', 
+                {
+                    b_id : this.innslag_id,
+                    innslagsnavn : "Innslag uten navn",
+                    t_id : tittel.id,
+                    tittel : "tittleaA",
+                    lengde : "10",
+                    selvlaget : "0",
+                    koreografi : "koreografiA"
+                }
+            );
         }
     },
     template : /*html*/`
@@ -46,7 +102,7 @@ var mainComponent = Vue.component('titler-component', {
           <span class="accordion-title-root">#{titler.length + ' fremføring' + (titler.length > 1 ? 'er' : '')}</span>
        </button>
     </div>
-    <button @click="saveChanges">saveChanges</button>
+
     <div v-for="tittel in titler" id="collapseTitler" class="panel-body accordion-body-root collapse show">
        <div class="accordion-header-sub card-body items-oversikt">
           <div>
@@ -103,7 +159,7 @@ var mainComponent = Vue.component('titler-component', {
                                     <span class="text">Navn</span>
                                 </div>
                             </div>
-                            <input v-model:value="tittel.tittel" type="text" class="input" name="tittel">
+                            <input @blur="saveChanges(tittel)" v-model:value="tittel.tittel" type="text" class="input" name="tittel">
                         </div>
 
                         <!-- Varighet -->

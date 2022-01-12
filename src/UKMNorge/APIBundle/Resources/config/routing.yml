@@ -183,3 +183,14 @@ ukm_api_get_all_titler:
     requirements: 
         b_id: ([0-9]{1,11})
     methods: [GET]
+
+
+# Create or edit tittel
+ukm_api_create_or_edit_tittel:
+    path: /api/create_or_edit_tittel/
+    defaults: { _controller: UKMAPIBundle:Default:createOrEditTittel }
+    requirements: 
+        b_id: ([0-9]{1,11})
+        t_id: ([0-9]{1,4})
+        tittel: ([^0-9]+)
+    methods: [POST]
