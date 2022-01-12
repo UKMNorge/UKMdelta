@@ -58,7 +58,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                 <div class="card panel panel-default">
                     <div class="panel-heading card-header accordion-header-root card-header-fylke">
                         <button class="btn btn-link btn-block fylke-btn btn-accordion-root text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" v-bind:href="['#collapseKommuneForFylke' + fylke.id]">
-                            <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
+                            <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: rgb(160, 174, 192);">
                                 <path d="M9 19L17 12 9 5z"></path>
                             </svg>
                             <span class="fylke-navn accordion-title-root">#{ fylke.navn }</span>
