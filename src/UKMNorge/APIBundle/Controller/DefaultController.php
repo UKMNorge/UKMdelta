@@ -623,7 +623,7 @@ class DefaultController extends Controller
             
             $b_id = $data_arr['b_id']; // innslag id
             $t_id = $data_arr['t_id']; // tittel id (if 'new' - create Tittel)
-            $tittel = $data_arr['tittel']; // tittel string
+            $tittelTekst = $data_arr['tittel']; // tittel string
             $lengde = $data_arr['lengde']; // varighet           
             $selvlaget = $data_arr['selvlaget'];
             $melodiforfatter = $data_arr['melodiforfatter'];
@@ -647,7 +647,7 @@ class DefaultController extends Controller
             }
 
             // Sett standard-info
-            $tittel->setTittel($tittel);
+            $tittel->setTittel($tittelTekst);
             if ($innslag->getType()->harTid()) {
                 $tittel->setVarighet($lengde);
             }
@@ -655,6 +655,7 @@ class DefaultController extends Controller
             switch ($innslag->getType()->getKey()) {
                     // Musikk
                 case 'musikk':
+                    var_dump($melodiforfatter);
                     $tittel->setSelvlaget($selvlaget == '1');
                     $tittel->setMelodiAv($melodiforfatter);
 

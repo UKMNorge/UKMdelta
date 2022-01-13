@@ -42,7 +42,8 @@ var mainComponent = Vue.component('titler-component', {
             };
 
             if(typeof tittel.selvlaget !== 'undefined') {
-                data.selvlaget = tittel.selvlaget ? '1' : '0';
+                tittel.selvlaget = (tittel.selvlaget === 'true' || tittel.selvlaget === true);
+                data.selvlaget = tittel.selvlaget ? 1 : 0;
             }
 
             if(typeof tittel.sekunder !== 'undefined') {
@@ -53,8 +54,10 @@ var mainComponent = Vue.component('titler-component', {
                 data.melodiforfatter = tittel.melodi_av;
             }
 
+            
             if(typeof tittel.instrumental !== 'undefined') {
-                data.sangtype = tittel.instrumental ? 'instrumental' : 'tekst';
+                tittel.instrumental = (tittel.instrumental === 'true' || tittel.instrumental === true);
+                data.sangtype = tittel.instrumental || tittel.instrumental == 'true' ? 'instrumental' : 'tekst';
             }
 
             if(typeof tittel.tekst_av !== 'undefined') {
@@ -66,28 +69,23 @@ var mainComponent = Vue.component('titler-component', {
             }
 
             if(typeof tittel.litteratur_read !== 'undefined') {
-                data.leseopp = tittel.litteratur_read ? '1' : '0';
+                tittel.litteratur_read = (tittel.litteratur_read === 'true' || tittel.litteratur_read === true);
+                data.leseopp = tittel.litteratur_read ? 1 : 0;
             }
 
             if(typeof tittel.type !== 'undefined') {
                 data.type = tittel.type;
             }
 
-            console.log(data);
-
-            var innslag = await spaInteraction.runAjaxCall(
-                'create_or_edit_tittel/', 
-                'POST', 
-                {
-                    b_id : this.innslag_id,
-                    innslagsnavn : "Innslag uten navn",
-                    t_id : tittel.id,
-                    tittel : "tittleaA",
-                    lengde : "10",
-                    selvlaget : "0",
-                    koreografi : "koreografiA"
-                }
-            );
+            try{
+                var innslag = await spaInteraction.runAjaxCall(
+                    'create_or_edit_tittel/', 
+                    'POST', 
+                    data
+                );
+            } catch(e) {
+                console.log(e);
+            }
         }
     },
     template : /*html*/`
@@ -152,7 +150,7 @@ var mainComponent = Vue.component('titler-component', {
                    <div class="form-new-user">
 
                         <!-- Title (Title name) -->
-                        <div v-if="tittel.tittel" class="input-delta open">
+                        <div class="input-delta open">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -182,12 +180,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- musikk type -->
-                        <musikk-component v-if="tittel.context.innslag.type == 'musikk'" 
-                            :instrumental="tittel.instrumental"
-                            :melodi_av="tittel.melodi_av"
-                            :selvlaget="tittel.selvlaget"
-                            :tekst_av="tittel.tekst_av" >
-                        </musikk-component>
+                        <musikk-component v-if="tittel.context.innslag.type == 'musikk'" :tittel="tittel" ></musikk-component>
 
                         <!-- dans type -->
                         <dans-component v-if="tittel.context.innslag.type == 'dans'" 
@@ -259,81 +252,79 @@ var musikkComponent = Vue.component('musikk-component', {
     mixins : [mainComponent], // Parent
     delimiters: ['#{', '}'], // For å bruke det på 
     props: {
-        instrumental: Boolean,
-        melodi_av: String,
-        selvlaget: Boolean,
-        tekst_av: String,
+        tittel : {}
     },
     data : function() {
         return {
-            instrumental_data: this.instrumental ? 'true' : 'false',
-            melodi_av_data: this.melodi_av,
-            selvlaget_data: this.selvlaget,
-            tekst_av_data: this.tekst_av,
+            tittelObj: this.tittel
         }
     },
     async mounted() {
         
     },
     methods : {
-    
+        saveChangesLocal : async function(tittel) {
+            var nyTittel = await this.saveChanges(tittel);
+        }
     },
     template : /*html*/`
     <div>
-    <div>
-
-        <div class="radio-input-delta">
-            <p class="description">Har låten tekst, eller er det en instrumental?</p>
-            <div class="inputs">
-                <div class="input-div">
-                    <input type="radio"
-                    value="false"
-                    v-model="instrumental_data"
-                    checked>
-                    <span>Tekst</span>
-                </div>
-                <div class="input-div">
-                    <input type="radio"
-                    value="true"
-                    v-model="instrumental_data"
-                    :checked="!instrumental_data">
-                    <span>Instrumental</span>
-                </div>
-            </div>
-        </div>
-
-	</div>
 
     <!-- TEKST ELLER INSTRUMENTAL -->
+    <div class="radio-input-delta">
+        <p class="description">Har låten tekst, eller er det en instrumental?</p>
+        <div class="inputs">
+            <div class="input-div">
+                <input type="radio"
+                @change="saveChangesLocal(tittel)"
+                value="false"
+                v-model="tittelObj.instrumental"
+                checked>
+                <span>Tekst</span>
+            </div>
+            <div class="input-div">
+                <input type="radio"
+                @change="saveChangesLocal(tittel)"
+                value="true"
+                v-model="tittelObj.instrumental"
+                :checked="!tittelObj.instrumental">
+                <span>Instrumental</span>
+            </div>
+        </div>
+    </div>
+
+
     <div class="radio-input-delta">
         <p class="description">Har du/dere laget låten selv?</p>
         <div class="inputs">
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="true"
-                v-model="selvlaget_data"
+                v-model="tittelObj.selvlaget"
                 checked>
                 <span>Ja</span>
             </div>
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="false"
-                v-model="selvlaget_data"
-                :checked="!selvlaget_data">
+                v-model="tittelObj.selvlaget"
+                :checked="!tittelObj.selvlaget">
                 <span>Nei</span>
             </div>
         </div>
     </div>
 
     <!-- TESKTEN SKREVET AV -->
-    <div v-if="instrumental_data == 'false'" class="input-delta open">
+    <div v-if="tittel.instrumental == false || tittel.instrumental == 'false'" class="input-delta open">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                 <span class="text">Hvem har skrevet teksten?</span>
             </div>
         </div>
-        <input type="text" v-model="tekst_av_data" class="input" name="tekst_av">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.tekst_av" class="input" name="tekst_av">
     </div> 
 
     <!-- MELODI LAGET AV -->
@@ -344,7 +335,7 @@ var musikkComponent = Vue.component('musikk-component', {
                 <span class="text">Hvem har laget melodien?</span>
             </div>
         </div>
-        <input type="text" v-model="melodi_av_data" class="input" name="tekst_av">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.melodi_av" class="input" name="tekst_av">
     </div> 
 
     </div>
