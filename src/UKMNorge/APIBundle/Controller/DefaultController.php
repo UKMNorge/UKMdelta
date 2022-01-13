@@ -655,7 +655,6 @@ class DefaultController extends Controller
             switch ($innslag->getType()->getKey()) {
                     // Musikk
                 case 'musikk':
-                    var_dump($melodiforfatter);
                     $tittel->setSelvlaget($selvlaget == '1');
                     $tittel->setMelodiAv($melodiforfatter);
 
