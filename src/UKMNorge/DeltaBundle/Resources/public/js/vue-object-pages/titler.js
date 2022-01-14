@@ -47,6 +47,12 @@ var mainComponent = Vue.component('titler-component', {
             }
 
             if(typeof tittel.sekunder !== 'undefined') {
+                var min = parseInt($('#' + tittel.id + 'tittelMin').val());
+                var sec = parseInt($('#' + tittel.id + 'tittelSec').val());
+                if(!isNaN(min) && !isNaN(sec)) {
+                    tittel.sekunder = (min * 60) + sec;
+                }
+
                 data.lengde = String(tittel.sekunder);
             }
 
@@ -170,9 +176,9 @@ var mainComponent = Vue.component('titler-component', {
                             </div>
 
                             <div class="input-group-horizontal">
-                                <input :value="Math.floor(tittel.sekunder/60)" type="text" class="input" name="minutter">
+                                <input @blur="saveChanges(tittel)" :id="[ tittel.id + 'tittelMin' ]" :value="Math.floor(tittel.sekunder/60)" type="number" min="0" class="input" name="minutter">
                                 <span class="input-info">minutter</span>
-                                <input :value="tittel.sekunder % 60" type="text" class="input" name="sekunder">
+                                <input @blur="saveChanges(tittel)" :id="[ tittel.id + 'tittelSec' ]" :value="tittel.sekunder % 60" type="number" max="59" min="0" class="input" name="sekunder">
                                 <span class="input-info">sekunder</span>
 
                             </div>
@@ -183,54 +189,95 @@ var mainComponent = Vue.component('titler-component', {
                         <musikk-component v-if="tittel.context.innslag.type == 'musikk'" :tittel="tittel" ></musikk-component>
 
                         <!-- dans type -->
-                        <dans-component v-if="tittel.context.innslag.type == 'dans'" 
-                            :selvlaget="tittel.selvlaget" 
-                            :koreografi_av="tittel.koreografi_av" >
-                        </dans-component>
+                        <dans-component v-if="tittel.context.innslag.type == 'dans'" :tittel="tittel"></dans-component>
                         
                         <!-- litteratur type -->
-                        <litteratur-component v-if="tittel.context.innslag.type == 'litteratur'" 
-                            :tekst_av="tittel.tekst_av" 
-                            :litteratur_read="tittel.litteratur_read" 
-                            :sekunder="tittel.sekunder" >
-                        </litteratur-component>
+                        <litteratur-component v-if="tittel.context.innslag.type == 'litteratur'" :tittel="tittel"></litteratur-component>
                         
                         <!-- teater type -->
-                        <teater-component v-if="tittel.context.innslag.type == 'teater'" 
-                            :selvlaget="tittel.selvlaget" 
-                            :tekst_av="tittel.tekst_av" >
-                        </teater-component>
+                        <teater-component v-if="tittel.context.innslag.type == 'teater'" :tittel="tittel"></teater-component>
                         
                         <!-- utstilling type -->
-                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling'" 
-                            :typeOgTeknikk="tittel.type" >
-                        </utstilling-component>
+                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling'" :tittel="tittel" ></utstilling-component>
 
                         
                    </div>
                 </div>
              </div>
           </div>
+          
+          <!-- NY FREMFØRING -->
           <div id="newTittelCollapse" class="new-user-form collapse" style="">
-             <div class="item new-tittel">
-               <div class="user-empty">
-                   <div class="buttons">
-                      <button data-toggle="collapse" href="#newTittelCollapse" aria-expanded="false" class="small-button-style hover-button-delta mini go-to-meld-av collapsed">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: rgb(255, 255, 255);">
+             
+            <div :id="[ 'editTittel' + tittel.id ]" class="edit-user-form">
+                <div class="item new-person">
+                <div class="user-empty">
+                    <div class="buttons">
+                        <button data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: rgb(255, 255, 255);">
                             <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
-                         </svg>
-                      </button>
-                   </div>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-               <div class="form-new-user">
-                   <p>TYPE HER</p>
-               </div>
-               <button class="small-button-style new-member hover-button-delta">
-                Fullfør og legg til
+                <div class="form-new-user">
+                        <!-- tittel navn ny Tittel -->
+                        <div class="input-delta open">
+                            <div class="overlay">
+                                <div class="info">
+                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                                    <span class="text">Navn</span>
+                                </div>
+                            </div>
+                            <input type="text" class="input" name="tittel">
+                        </div>
+
+                        <!-- varighet ny Tittel -->
+                        <div v-if="tittel.sekunder && tittel.context.innslag.type != 'litteratur'" class="input-delta open">
+                            <div class="overlay">
+                                <div class="info">
+                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                                    <span class="text">Varighet på fremføringen</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group-horizontal">
+                                <input id='nyTittelMin' type="number" min="0" class="input" name="minutter">
+                                <span class="input-info">minutter</span>
+                                <input id='nyTittelSec' type="number" max="59" min="0" class="input" name="sekunder">
+                                <span class="input-info">sekunder</span>
+                            </div>
+                        </div>
+
+                        <!-- ALLE TYPER -->
+
+                        <!-- musikk type -->
+                        <musikk-component v-if="tittel.context.innslag.type == 'musikk'" tittel="new" ></musikk-component>
+
+                        <!-- dans type -->
+                        <dans-component v-if="tittel.context.innslag.type == 'dans'" tittel="new"></dans-component>
+                        
+                        <!-- litteratur type -->
+                        <litteratur-component v-if="tittel.context.innslag.type == 'litteratur'" tittel="new"></litteratur-component>
+                        
+                        <!-- teater type -->
+                        <teater-component v-if="tittel.context.innslag.type == 'teater'" tittel="new"></teater-component>
+                        
+                        <!-- utstilling type -->
+                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling'" tittel="new" ></utstilling-component>
+
+                    </div>
+                </div>
+            </div>
+
+               
+            <div class="new-member-div">
+                <button class="small-button-style new-member hover-button-delta">
+                    Fullfør og legg til
                 </button>
-             </div>
-          </div>
+            </div>
        </div>
+    </div>
     </div>
     <div class="new-member-div">
         <button data-toggle="collapse" href="#newTittelCollapse" aria-expanded="false" class="small-button-style new-member add-new hover-button-delta collapsed" data-form-type="other">
@@ -275,15 +322,24 @@ var musikkComponent = Vue.component('musikk-component', {
         <p class="description">Har låten tekst, eller er det en instrumental?</p>
         <div class="inputs">
             <div class="input-div">
-                <input type="radio"
+                <input v-if="tittelObj == 'new'" type="radio"
+                value="false"
+                name="instrumental">
+
+                <input v-else type="radio"
                 @change="saveChangesLocal(tittel)"
                 value="false"
                 v-model="tittelObj.instrumental"
                 checked>
+
                 <span>Tekst</span>
             </div>
             <div class="input-div">
-                <input type="radio"
+                <input v-if="tittelObj == 'new'" type="radio"
+                value="true"
+                name="instrumental">
+
+                <input v-else type="radio"
                 @change="saveChangesLocal(tittel)"
                 value="true"
                 v-model="tittelObj.instrumental"
@@ -298,11 +354,16 @@ var musikkComponent = Vue.component('musikk-component', {
         <p class="description">Har du/dere laget låten selv?</p>
         <div class="inputs">
             <div class="input-div">
-                <input type="radio"
+                <input v-if="tittelObj == 'new'" type="radio"
+                value="true"
+                name="selvlaget">
+                
+                <input v-else type="radio"
                 @change="saveChangesLocal(tittel)"
                 value="true"
                 v-model="tittelObj.selvlaget"
                 checked>
+                
                 <span>Ja</span>
             </div>
             <div class="input-div">
@@ -324,7 +385,9 @@ var musikkComponent = Vue.component('musikk-component', {
                 <span class="text">Hvem har skrevet teksten?</span>
             </div>
         </div>
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.tekst_av" class="input" name="tekst_av">
+        
+        <input v-if="tittelObj == 'new'" type="text" class="input" name="tekst_av">
+        <input v-else @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.tekst_av" class="input" name="tekst_av">
     </div> 
 
     <!-- MELODI LAGET AV -->
@@ -335,7 +398,9 @@ var musikkComponent = Vue.component('musikk-component', {
                 <span class="text">Hvem har laget melodien?</span>
             </div>
         </div>
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.melodi_av" class="input" name="tekst_av">
+
+        <input v-if="tittelObj == 'new'" type="text" class="input" name="tekst_av">
+        <input v-else @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.melodi_av" class="input" name="tekst_av">
     </div> 
 
     </div>
@@ -348,25 +413,20 @@ var dansComponent = Vue.component('dans-component', {
     mixins : [mainComponent], // Parent
     delimiters: ['#{', '}'], // For å bruke det på Twig
     props: {
-        selvlaget: Boolean,
-        koreografi_av: String,
+        tittel : {}
     },
     data : function() {
         return {
-            selvlaget_data : this.selvlaget,
-            koreografi_av_data : this.koreografi_av,
+            tittelObj: this.tittel
         }
     },
     async mounted() {
-        setTimeout(() => {
-            this.hello ='Helloooo!99';
-            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        }, 5000);
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
+        
     },
     methods : {
-    
+        saveChangesLocal : async function(tittel) {
+            var nyTittel = await this.saveChanges(tittel);
+        }
     },
     template : /*html*/`
     <div>
@@ -376,16 +436,18 @@ var dansComponent = Vue.component('dans-component', {
         <div class="inputs">
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="true"
-                v-model="selvlaget_data"
+                v-model="tittelObj.selvlaget"
                 checked>
                 <span>Ja</span>
             </div>
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="false"
-                v-model="selvlaget_data"
-                :checked="!selvlaget_data">
+                v-model="tittelObj.selvlaget"
+                :checked="!tittelObj.selvlaget">
                 <span>Nei</span>
             </div>
 		</div>
@@ -399,7 +461,7 @@ var dansComponent = Vue.component('dans-component', {
                 <span class="text">Hvem har koreografert dansen?</span>
             </div>
         </div>
-        <input type="text" class="input" :value="koreografi_av_data" name="koreografi_av_data">
+        <input @blur="saveChangesLocal(tittel)" type="text" class="input" v-model="tittelObj.koreografi_av" name="koreografi_av">
     </div> 
 
     </div>
@@ -412,28 +474,20 @@ var litteraturComponent = Vue.component('litteratur-component', {
     mixins : [mainComponent], // Parent
     delimiters: ['#{', '}'], // For å bruke det på Twig
     props: {
-        tekst_av: String,
-        litteratur_read: Boolean,
-        sekunder: Number,
+        tittel : {}
     },
-    
     data : function() {
         return {
-            tekst_av_data: this.tekst_av,
-            litteratur_read_data: this.litteratur_read ? 'true' : 'false',
-            sekunder_data: this.sekunder,
+            tittelObj: this.tittel
         }
     },
     async mounted() {
-        setTimeout(() => {
-            this.hello ='Helloooo!99';
-            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        }, 5000);
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
+       
     },
     methods : {
-        
+        saveChangesLocal : async function(tittel) {
+            var nyTittel = await this.saveChanges(tittel);
+        }
     },
     template : /*html*/`
     <div>
@@ -446,7 +500,7 @@ var litteraturComponent = Vue.component('litteratur-component', {
                 <span class="text">Medforfatter</span>
             </div>
         </div>
-        <input type="text" v-model="tekst_av_data" class="input" name="tittel">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.tekst_av" class="input" name="tittel">
     </div>
 
     <div class="radio-input-delta">
@@ -454,23 +508,25 @@ var litteraturComponent = Vue.component('litteratur-component', {
         <div class="inputs">
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="true"
-                v-model="litteratur_read_data"
+                v-model="tittelObj.litteratur_read"
                 checked>
                 <span>Ja</span>
             </div>
             <div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="false"
-                v-model="litteratur_read_data"
-                :checked="!litteratur_read_data">
+                v-model="tittelObj.litteratur_read"
+                :checked="!tittelObj.litteratur_read">
                 <span>Nei</span>
             </div>
 		</div>
 	</div>
 
     <!-- Tid for å lese opp -->
-    <div v-if="litteratur_read_data == 'true'" class="input-delta open">
+    <div v-if="tittelObj.litteratur_read == 'true' || tittelObj.litteratur_read == true" class="input-delta open">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -479,9 +535,9 @@ var litteraturComponent = Vue.component('litteratur-component', {
         </div>
 
         <div class="input-group-horizontal">
-            <input :value="Math.floor(sekunder_data/60)" type="text" class="input" name="minutter">
+            <input @blur="saveChangesLocal(tittel)" :id="[ tittelObj.id + 'tittelMin' ]" :value="Math.floor(tittelObj.sekunder/60)" type="number" min="0" class="input" name="minutter">
             <span class="input-info">minutter</span>
-            <input :value="sekunder_data % 60" type="text" class="input" name="sekunder">
+            <input @blur="saveChangesLocal(tittel)" :id="[ tittelObj.id + 'tittelSec' ]" :value="tittelObj.sekunder % 60" type="number" max="59" min="0" class="input" name="sekunder">
             <span class="input-info">sekunder</span>
 
         </div>
@@ -497,21 +553,20 @@ var dansComponent = Vue.component('teater-component', {
     mixins : [mainComponent], // Parent
     delimiters: ['#{', '}'], // For å bruke det på Twig
     props: {
-        selvlaget: Boolean,
-        tekst_av: String,
-        tittel: {}
+        tittel : {}
     },
-    data () {
+    data : function() {
         return {
-            selvlaget_data: this.selvlaget,
-            tekst_av_data: this.tekst_av
+            tittelObj: this.tittel
         }
     },
-    // async mounted() {
-    //     alert('aaaa');
-    // },
+    async mounted() {
+       
+    },
     methods : {
-    
+        saveChangesLocal : async function(tittel) {
+            var nyTittel = await this.saveChanges(tittel);
+        }
     },
     template : /*html*/`
     <div>
@@ -521,16 +576,18 @@ var dansComponent = Vue.component('teater-component', {
         <div class="inputs">
 			<div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="true"
-                v-model="selvlaget_data"
+                v-model="tittelObj.selvlaget"
                 checked>
                 <span>Ja</span>
             </div>
 			<div class="input-div">
                 <input type="radio"
+                @change="saveChangesLocal(tittel)"
                 value="false"
-                v-model="selvlaget_data"
-                :checked="!selvlaget_data">
+                v-model="tittelObj.selvlaget"
+                :checked="!tittelObj.selvlaget">
                 <span>Nei</span>
             </div>
 		</div>
@@ -544,7 +601,7 @@ var dansComponent = Vue.component('teater-component', {
                 <span class="text">Hvem har skrevet manus?</span>
             </div>
         </div>
-        <input type="text" v-model="tekst_av_data" class="input" name="manus">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.tekst_av" class="input" name="manus">
     </div>
 
     </div>
@@ -557,21 +614,24 @@ var dansComponent = Vue.component('utstilling-component', {
     mixins : [mainComponent], // Parent
     delimiters: ['#{', '}'], // For å bruke det på Twig
     props: {
-        typeOgTeknikk: String
+        tittel : {}
     },
-    data () {
+    data : function() {
         return {
-            typeOgTeknikkData: this.typeOgTeknikk,
+            tittelObj: this.tittel
         }
+    },
+    async mounted() {
+       
     },
     methods : {
-        saveChangesComponent : function() {
-            // this.saveChanges(type=true);
+        saveChangesLocal : async function(tittel) {
+            var nyTittel = await this.saveChanges(tittel);
         }
     },
-    template : `
+    template : /*html*/`
     <div>
-    <button @click="saveChangesComponent">saveChangesUtstilling</button>
+
     <!-- Type og teknikk -->
     <div class="input-delta open">
         <div class="overlay">
@@ -580,7 +640,7 @@ var dansComponent = Vue.component('utstilling-component', {
                 <span class="text">Type og teknikk</span>
             </div>
         </div>
-        <input type="text" v-model="typeOgTeknikkData" class="input" name="type_og_teknikk">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittelObj.type" class="input" name="type_og_teknikk">
     </div> 
 
     </div>
