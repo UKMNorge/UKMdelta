@@ -704,6 +704,31 @@ class DefaultController extends Controller
 
     }
 
+    public function lagreTekniskeBehov(Request $request) {
+        try {
+            $data_arr = $this->getData($request, ['b_id', 'teknisk']);
+            
+            $b_id = $data_arr['b_id']; // innslag id
+            $teknisk = $data_arr['teknisk']; // teknisk
+
+            $request = Request::createFromGlobals();
+
+            $innslagService = $this->get('ukm_api.innslag');
+            $innslag = $innslagService->hent($b_id);
+            
+            // Set teknisk
+            $innslag->setTekniskeBehov($teknisk);
+            $innslagService->lagre($innslag);
+
+        } catch (Exception $e) {
+            $this->get('logger')->errror("UKMDeltaBundle:Innslag:saveTechnical - Klarte ikke å lagre tekniske behov. Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage(), $route_data);
+            $this->addFlash("danger", "Klarte ikke å lagre tekniske behov");
+        }
+
+        return null;
+    }
+
+
     /* ---------------------------- Other Methods ---------------------------- */
 
     public function hentCurrentUser()

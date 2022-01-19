@@ -305,28 +305,29 @@ var allePersoner = Vue.component('innslag-persons', {
 
 
 
-// Component
-var tekniskeBehov = Vue.component('innslag-tekniske-behov', { 
-    delimiters: ['#{', '}'], // For å bruke det på Twig
-    data : function() {
-        return {
-            titler : [],
-        }
-    },
-    async mounted() {
-        var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-        // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        // this.titler = titler;
-    },
-    methods : {
+// // Component
+// var tekniskeBehov = Vue.component('innslag-tekniske-behov', { 
+//     delimiters: ['#{', '}'], // For å bruke det på Twig
+//     data : function() {
+//         return {
+//             titler : [],
+//         }
+//     },
+//     async mounted() {
+//         var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+//         // var titler = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+//         // this.titler = titler;
+//     },
+//     methods : {
     
-    },
-    template : `
-    <div>
-        <h1>Tekniske Behov</h1>
-    </div>
-    `
-});
+//     },
+//     template : `
+//     <div>
+//         <h1>Tekniske Behov</h1>
+//         <input value="t b" type="text">
+//     </div>
+//     `
+// });
 
 
 // The app
@@ -338,6 +339,9 @@ var oversiktInnslag = new Vue({
     },
     created() {
         console.log('created')
+    },
+    updated() {
+        inputDeltaFix();
     },
     async mounted() {
         this.innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
@@ -356,7 +360,6 @@ var oversiktInnslag = new Vue({
         }
     },
     components : {
-        allePersoner,
-        tekniskeBehov
+        allePersoner
     }
 })

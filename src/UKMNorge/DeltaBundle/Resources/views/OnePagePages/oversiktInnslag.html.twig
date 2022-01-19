@@ -115,19 +115,61 @@
         </div>
     </div>
 
+    <div class="hr-info with-space">
+		<div class="line"></div>
+		<p class="text">OM BIDRAGET</p>
+		<div class="line"></div>
+	</div>
+
     <!-- titler -->
-    <div id="alleTitler" style="margin-top: 100px;">
-        
-        
-    
-            <titler-component></titler-component>
-</div>
-
-
+    <div id="alleTitler">
+        <titler-component></titler-component>
+    </div>
 
     <!-- tekniske behov -->
-    <div>
-        <innslag-tekniske-behov></innslag-tekniske-behov>
+    <div 
+        v-if="innslag && innslag.type"
+        id="tekniskeBehovDiv">
+        <div 
+          v-if="
+            innslag.type.key == 'musikk' ||
+            innslag.type.key == 'teater' ||
+            innslag.type.key == 'litteratur' ||
+            innslag.type.key == 'scene'"
+          class="input-area">
+            <div :class="{ open : innslag.tekniske_behov }" class="input-delta">
+                <div class="overlay">
+                    <div class="info">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0 ;transform: ;msFilter:;">
+                            <path d="m21.512 6.112-3.89 3.889-3.535-3.536 3.889-3.889a6.501 6.501 0 0 0-8.484 8.486l-6.276 6.275a.999.999 0 0 0 0 1.414l2.122 2.122a.999.999 0 0 0 1.414 0l6.275-6.276a6.501 6.501 0 0 0 7.071-1.414 6.504 6.504 0 0 0 1.414-7.071z"></path>
+                        </svg>
+                        <span class="text">Tekniske behov</span>
+                    </div>
+                </div>
+                <textarea v-model="innslag.tekniske_behov" @blur="editInnslag" type="text" class="input" style="height: auto"></textarea>
+                <button class="button-right hover-button-delta" data-toggle="collapse" href="#innslagTekniskeBehov" role="button" aria-expanded="false" aria-controls="innslagTekniskeBehov">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0.5 -1 28 28" style="fill: #fff ;transform: ;msFilter:;">
+                        <path d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path></svg>
+                </button>
+                
+            </div>
+            <div id="innslagTekniskeBehov" class="beskrivelse-under-input-delta collapse">
+                <div class="space">
+                    <div class="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #edf2f7; transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg>
+                    </div>
+                    <span>
+                        Her lurer vi på ting som vil gjøre det enklere for teknikerne å gjøre jobben sin. Fyller du inn dette grundig vil vi kunne gi deg en bedre opplevelse.
+                        <br>
+                        <br>
+                        For eksempel:
+                        <br>
+                        <br>
+                        Skal to av dere synge? Skriv opp to vokalmikrofoner. Vil du helst ha et flygel om det er tilgjengelig, eller et el-piano? Spiller du el-gitar eller akustisk gitar? Og trenger den mikrofon eller forsterker? Ønsker dere noe spesielt av lysdesign?
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

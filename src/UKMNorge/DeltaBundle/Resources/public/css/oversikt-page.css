@@ -76,6 +76,9 @@
 .accordion-body-root .items-oversikt .item.titel .user-info .name .varighet {
     color: #718096;
 }
+.accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.inactive {
+    color: #71809657;
+}
 .accordion-body-root .items-oversikt .item .avatar img.avatar {
     width: 24px;
 }
@@ -183,7 +186,9 @@
 .new-member:focus svg {
     fill: #fff !important;
 }
-
+#alleTitler {
+    margin-bottom: 40px;
+}
 
 .form-new-user .input-delta,
 .form-new-user .radio-input-delta {
