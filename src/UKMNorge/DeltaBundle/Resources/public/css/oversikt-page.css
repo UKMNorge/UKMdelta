@@ -54,11 +54,17 @@
     display: none !important;
 }
 .accordion-body-root .items-oversikt .item.remove-mode .avatar,
+.accordion-body-root .items-oversikt .item.remove-mode .title-name,
 .accordion-body-root .items-oversikt .item.remove-mode .user-info {
     visibility: hidden;
     opacity: 0;
     position: absolute;
     transition: .2s;
+}
+.accordion-body-root .items-oversikt .item.moving .avatar,
+.accordion-body-root .items-oversikt .item.moving .title-name,
+.accordion-body-root .items-oversikt .item.moving .user-info {
+    display: none;
 }
 .accordion-body-root .items-oversikt .item.titel .user-info {
     margin-left: 0;
@@ -88,6 +94,11 @@
 .accordion-body-root .items-oversikt .item .buttons {
     margin: auto;
     margin-right: 0;
+    min-width: 70px;
+    text-align: right;
+}
+.accordion-body-root .items-oversikt .item.item.remove-mode .buttons {
+    min-width: auto
 }
 .accordion-body-root .items-oversikt .item-new-person .buttons {
     margin-right: -25px;

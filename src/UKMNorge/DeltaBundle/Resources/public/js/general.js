@@ -36,3 +36,11 @@ var getCurrentDomain = () => {
     return hostname.split('.')[1] + '.' + hostname.split('.')[2];
 }
 
+var deltaStyleShowRemoveButton = (e) => {
+    var cTarget = $(e.currentTarget).parent().parent();
+    cTarget.toggleClass('remove-mode').addClass('moving');
+    
+    setTimeout(function() {
+        cTarget.removeClass('moving');
+    }, 200);
+}

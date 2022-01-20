@@ -15,7 +15,7 @@ var allePersoner = Vue.component('innslag-persons', {
     methods : {
         showRemoveButton : function(e) {
             this.closeAllOpenForms();
-            $(e.currentTarget).parent().parent().toggleClass('remove-mode');
+            deltaStyleShowRemoveButton(e);
         },
         removePerson : async function(person) {
             var innslag = this.$parent.innslag;
