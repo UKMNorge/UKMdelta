@@ -356,6 +356,7 @@ var oversiktInnslag = new Vue({
                 navn : this.innslag.navn,
                 beskrivelse : this.innslag.beskrivelse,
                 sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
+                tekniske_behov : typeof this.innslag.tekniske_behov !== 'undefined' ? this.innslag.tekniske_behov : null,
             });
         }
     },
