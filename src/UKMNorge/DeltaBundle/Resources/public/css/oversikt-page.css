@@ -66,6 +66,9 @@
 .accordion-body-root .items-oversikt .item.moving .user-info {
     display: none;
 }
+.accordion-body-root .items-oversikt .item.moving .buttons button {
+    display: none;
+}
 .accordion-body-root .items-oversikt .item.titel .user-info {
     margin-left: 0;
 }

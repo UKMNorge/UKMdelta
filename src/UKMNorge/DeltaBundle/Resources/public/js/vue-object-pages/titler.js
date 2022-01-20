@@ -15,6 +15,10 @@ var mainComponent = Vue.component('titler-component', {
         var titler = await spaInteraction.runAjaxCall('get_all_titler/'+this.innslag_id, 'GET', {});
         
         this.innslag = innslag;
+        
+        for(var t of titler) {
+            t.phantom = false;
+        }
         this.titler = titler;
     },
     updated() {
@@ -22,23 +26,31 @@ var mainComponent = Vue.component('titler-component', {
     },
     methods : {
         showRemoveButton : function(e) {
-            this.closeAllOpenForms();
             deltaStyleShowRemoveButton(e);
+            this.closeAllOpenForms();
         },
         closeAllOpenForms() {
             $('.edit-user-form, .new-user-form').collapse('hide');
         },
+        closeAllDeleteButtons() {
+            $('.accordion-body-root .items-oversikt .item').removeClass('remove-mode')
+        },
         addNewTittel : async function() {
+            $('.edit-tittel-form').collapse('hide');
+            var phantomTittel = this._nullTittel('phantom', true);
+            this.titler.push(phantomTittel);
+
             var newT = await this.saveChanges(this.newTittel);
+            newT[0].phantom = false;
+
+            // remove phantom Tittel and add new Tittel
+            this.titler.splice(this.titler.indexOf(phantomTittel), 1);
             this.titler.push(newT[0]);
 
-            console.log('aaa');
             // Empty newTittel
             this.newTittel = this._nullTittel();
 
             console.warn(this.newTittel);
-
-            $('.edit-tittel-form').collapse('hide');
         },
         // Save changes
         // if sid == 'new' -> new tittel
@@ -102,9 +114,27 @@ var mainComponent = Vue.component('titler-component', {
                 console.log(e);
             }
         },
-        _nullTittel : function() {
+        deleteTittel : async function(tittel) {
+            this.closeAllDeleteButtons();
+            tittel.phantom = true;
+
+            var res = await spaInteraction.runAjaxCall(
+                'delete_tittel/', 
+                'DELETE', 
+                {
+                    b_id : this.innslag.id,
+                    t_id : tittel.id,
+                }
+            );
+
+            if(res == true) {
+                this.titler.splice(this.titler.indexOf(tittel), 1);
+            }
+
+        },
+        _nullTittel : function(id = 'new', phantom = false) {
             return {
-                id : 'new',
+                id : id,
                 instrumental : false,
                 melodi_av : null,
                 sekunder : 20,
@@ -114,6 +144,12 @@ var mainComponent = Vue.component('titler-component', {
                 koreografi_av : null,
                 litteratur_read : false,
                 type : null,
+                phantom : phantom,
+                context : {
+                    innslag : {
+                        id : -1
+                    }
+                }
             };
         }
     },
@@ -131,6 +167,7 @@ var mainComponent = Vue.component('titler-component', {
     </div>
 
     <div v-for="tittel in titler" id="collapseTitler" class="panel-body accordion-body-root collapse show">
+
        <div class="accordion-header-sub card-body items-oversikt">
           <div>
              <div class="item titel">
@@ -138,27 +175,27 @@ var mainComponent = Vue.component('titler-component', {
                    <p class="rolle">Varighet</p>
                    <p class="name">
                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 30 30" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M12.25 2c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10zM18 13h-6.75V6h2v5H18v2z"></path></svg>
-                       <span v-if="tittel.sekunder" class="varighet">#{ Math.floor(tittel.sekunder/60) > 0 ? Math.floor(tittel.sekunder/60) + 'm ' : ''} #{ tittel.sekunder % 60 > 0 ? tittel.sekunder % 60 + 's' : ''}</span>
+                       <span v-if="tittel.sekunder" :class="{ 'phantom-loading' : tittel.phantom }" class="varighet">#{ Math.floor(tittel.sekunder/60) > 0 ? Math.floor(tittel.sekunder/60) + 'm ' : ''} #{ tittel.sekunder % 60 > 0 ? tittel.sekunder % 60 + 's' : ''}</span>
                        <!-- No varighet -->
                        <span v-else class="varighet inactive">- -</span>
                    </p>
                 </div>
-                <p class="title-name">#{ tittel.tittel }</p>
+                <p class="title-name" :class="{ 'phantom-loading' : tittel.phantom }">#{ tittel.tittel }</p>
                 <div class="buttons">
-                   <button data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
+                   <button :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: rgb(255, 255, 255);">
                          <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
                          <path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path>
                       </svg>
                    </button>
-                   <button @click="showRemoveButton" class="small-button-style hover-button-delta mini remove-person-button" data-form-type="other">
+                   <button :class="{ 'phantom-loading' : tittel.phantom }" @click="showRemoveButton" class="small-button-style hover-button-delta mini remove-person-button" data-form-type="other">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: rgb(255, 255, 255);">
                          <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
                       </svg>
                    </button>
                 </div>
                 <div class="remove-button-show-hide">
-                   <button innslag-id="94100" class="round-style-button mini-size slett-paamelding">
+                   <button :class="{ 'phantom-loading' : tittel.phantom }" @click="deleteTittel(tittel)" class="round-style-button mini-size slett-paamelding">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" style="fill: rgb(255, 255, 255);">
                          <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path>
                       </svg>

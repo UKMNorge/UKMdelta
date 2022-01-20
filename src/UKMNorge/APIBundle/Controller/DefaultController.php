@@ -253,6 +253,30 @@ class DefaultController extends Controller
         return $response;
     }
 
+    public function lagreTekniskeBehov(Request $request) {
+        try {
+            $data_arr = $this->getData($request, ['b_id', 'teknisk']);
+            
+            $b_id = $data_arr['b_id']; // innslag id
+            $teknisk = $data_arr['teknisk']; // teknisk
+
+            $request = Request::createFromGlobals();
+
+            $innslagService = $this->get('ukm_api.innslag');
+            $innslag = $innslagService->hent($b_id);
+            
+            // Set teknisk
+            $innslag->setTekniskeBehov($teknisk);
+            $innslagService->lagre($innslag);
+
+        } catch (Exception $e) {
+            $this->get('logger')->errror("UKMDeltaBundle:Innslag:saveTechnical - Klarte ikke å lagre tekniske behov. Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage(), $route_data);
+            $this->addFlash("danger", "Klarte ikke å lagre tekniske behov");
+        }
+
+        return null;
+    }
+
 
     /* ---------------------------- Arrangement ---------------------------- */
 
@@ -607,15 +631,6 @@ class DefaultController extends Controller
         return $response;
     }
 
-    /**
-     * Legg til en ny tittel
-     * Handler for POST (lagre for)
-     *
-     * @param Int $k_id
-     * @param Int $pl_id
-     * @param String $type
-     * @param Int $b_id
-     */
     public function createOrEditTittelAction(Request $request) {
         $response = new JsonResponse();
 
@@ -705,29 +720,63 @@ class DefaultController extends Controller
 
     }
 
-    public function lagreTekniskeBehov(Request $request) {
-        try {
-            $data_arr = $this->getData($request, ['b_id', 'teknisk']);
+
+    /**
+     * Slett en tittel fra innslaget
+     */
+    public function deleteTitleAction(Request $request)
+    {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+        
+        // Hent data
+        try{
+            $data_arr = $this->getData($request, ['b_id', 't_id']);
             
-            $b_id = $data_arr['b_id']; // innslag id
-            $teknisk = $data_arr['teknisk']; // teknisk
+            $b_id = $data_arr['b_id'];
+            $t_id = $data_arr['t_id'];
 
-            $request = Request::createFromGlobals();
-
-            $innslagService = $this->get('ukm_api.innslag');
+            // Hent tittel
             $innslag = $innslagService->hent($b_id);
-            
-            // Set teknisk
-            $innslag->setTekniskeBehov($teknisk);
-            $innslagService->lagre($innslag);
-
+        }
+        catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+        
+        
+        // Fix #309 - brukere har fått "Finner ikke tittel XX i innslaget"-feil. Mulig fordi den allerede er slettet i en tidligere request.
+        // Vi feiler gracefully her, med å late som om det var en vellykka sletting
+        // Dersom noen tror de er lurere enn oss og prøver å fjerne en tittel fra et annet innslag vil det stå at det funka, men ikke gjøre det 😈
+        // Vi logger denne feilen litt hardere, for å se om vi finner andre feil enn "Klarte ikke å finne tittel xx i innslag."
+        try {
+            $tittel = $innslag->getTitler()->get($t_id);
         } catch (Exception $e) {
-            $this->get('logger')->errror("UKMDeltaBundle:Innslag:saveTechnical - Klarte ikke å lagre tekniske behov. Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage(), $route_data);
-            $this->addFlash("danger", "Klarte ikke å lagre tekniske behov");
+            $this->get('logger')->error("Innslag:deleteTitle - Klarte ikke å hente tittel for sletting. Dette kan være at tittelen allerede er slettet, eller en grovere systemfeil. Brukeren har fått en hyggelig beskjed om at sletting funket. Feilkode: " . $e->getCode() . ", melding: " . $e->getMessage() . ".");
+            
+            $response->setStatusCode(JsonResponse::HTTP_OK);
+            $response->setData($e->getMessage() . ' - Klarte ikke å hente tittel for sletting');
         }
 
-        return null;
+        // Fjern tittelen
+        try {
+            $res = $innslagService->fjernTittel($innslag, $tittel);
+            $response->setData(true);
+            return $response;
+
+        } catch (Exception $e) {
+            $msg = "Klarte ikke å fjerne tittel " . $t_id . " fra innslag " . $b_id . ". Feilmelding: " . $e->getCode() . " - " . $e->getMessage();
+            $this->get('logger')->error($msg);
+            
+            $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $response->setData($msg);
+            return $response;
+        }
+
+        return $response;
     }
+
 
 
     /* ---------------------------- Other Methods ---------------------------- */

@@ -184,7 +184,6 @@ ukm_api_get_all_titler:
         b_id: ([0-9]{1,11})
     methods: [GET]
 
-
 # Create or edit tittel
 ukm_api_create_or_edit_tittel:
     path: /api/create_or_edit_tittel/
@@ -194,3 +193,13 @@ ukm_api_create_or_edit_tittel:
         t_id: ([0-9]{1,4})
         tittel: ([^0-9]+)
     methods: [POST]
+
+# delete tittel
+ukm_api_delete_tittel:
+    path: /api/delete_tittel/
+    defaults: { _controller: UKMAPIBundle:Default:deleteTitle }
+    requirements: 
+        b_id: ([0-9]{1,11})
+        t_id: ([0-9]{1,4})
+    methods: [DELETE]
+    
