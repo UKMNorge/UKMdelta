@@ -50,7 +50,8 @@ var mainComponent = Vue.component('titler-component', {
             // Empty newTittel
             this.newTittel = this._nullTittel();
 
-            console.warn(this.newTittel);
+            // Empty varighet
+            $('#newtittelMin, #newtittelSec').val('');
         },
         // Save changes
         // if sid == 'new' -> new tittel
@@ -137,7 +138,7 @@ var mainComponent = Vue.component('titler-component', {
                 id : id,
                 instrumental : false,
                 melodi_av : null,
-                sekunder : 20,
+                sekunder : 0,
                 selvlaget : true,
                 tekst_av : null,
                 tittel : null,
@@ -613,7 +614,6 @@ var litteraturComponent = Vue.component('litteratur-component', {
             <span class="input-info">minutter</span>
             <input @blur="saveChangesLocal(tittel)" :id="[ tittel.id + 'tittelSec' ]" :value="tittel.sekunder % 60" type="number" max="59" min="0" class="input" name="sekunder">
             <span class="input-info">sekunder</span>
-
         </div>
     </div>
 
