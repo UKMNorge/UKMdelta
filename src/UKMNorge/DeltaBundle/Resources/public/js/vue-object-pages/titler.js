@@ -18,6 +18,7 @@ var mainComponent = Vue.component('titler-component', {
         
         for(var t of titler) {
             t.phantom = false;
+            t.isOpen = false;
         }
         this.titler = titler;
     },
@@ -31,6 +32,9 @@ var mainComponent = Vue.component('titler-component', {
         },
         closeAllOpenForms() {
             $('.edit-user-form, .new-user-form').collapse('hide');
+            for(var t of this.titler) {
+                t.isOpen = false;
+            }
         },
         closeAllDeleteButtons() {
             $('.accordion-body-root .items-oversikt .item').removeClass('remove-mode')
@@ -171,7 +175,7 @@ var mainComponent = Vue.component('titler-component', {
 
        <div class="accordion-header-sub card-body items-oversikt">
           <div>
-             <div class="item titel">
+             <div :class="{ 'open-item' : tittel.isOpen }" class="item titel">
                 <div class="user-info varighet">
                    <p class="rolle">Varighet</p>
                    <p class="name">
@@ -182,8 +186,8 @@ var mainComponent = Vue.component('titler-component', {
                    </p>
                 </div>
                 <p class="title-name" :class="{ 'phantom-loading' : tittel.phantom }">#{ tittel.tittel }</p>
-                <div class="buttons">
-                   <button :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
+                <div :class="{ 'hide' : tittel.isOpen }" class="buttons">
+                   <button @click="closeAllOpenForms(); tittel.isOpen = true;" :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: rgb(255, 255, 255);">
                          <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
                          <path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path>
@@ -207,12 +211,10 @@ var mainComponent = Vue.component('titler-component', {
 
              <div :id="[ 'editTittel' + tittel.id ]" class="collapse edit-user-form edit-tittel-form">
                 <div class="item new-person">
-                   <div class="user-empty">
+                   <div class="user-not-empty">
                       <div class="buttons">
-                         <button data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: rgb(255, 255, 255);">
-                               <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
-                            </svg>
+                         <button @click="tittel.isOpen = false;" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: rgb(255, 255, 255);"><path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path></svg>
                          </button>
                       </div>
                    </div>
@@ -280,11 +282,15 @@ var mainComponent = Vue.component('titler-component', {
     <div id="newTittleForm" class="edit-user-form edit-tittel-form collapse">
         <div class="item new-person">
         <div class="user-empty">
+            <div class="avatar">
+                <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+            </div>
+            <div class="user-info">
+                <p class="name">Legger til ny fremføring</p>
+            </div>
             <div class="buttons">
                 <button data-toggle="collapse" href="#newTittleForm" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: rgb(255, 255, 255);">
-                    <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
-                    </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: rgb(255, 255, 255);"><path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path></svg>
                 </button>
             </div>
         </div>
@@ -354,7 +360,7 @@ var mainComponent = Vue.component('titler-component', {
 
 
     <div class="new-member-div">
-        <button data-toggle="collapse" onclick="$('.edit-tittel-form').collapse('hide');" href="#newTittleForm" aria-expanded="false" class="small-button-style new-member add-new hover-button-delta collapsed" data-form-type="other">
+        <button @click="closeAllOpenForms();" data-toggle="collapse" onclick="$('.edit-tittel-form').collapse('hide');" href="#newTittleForm" aria-expanded="false" class="small-button-style new-member add-new hover-button-delta collapsed" data-form-type="other">
             Legg til fremføring
             <svg xmlns="http://www.w3.org/2000/svg" wwidth="18" height="18" viewBox="0 0 24 24" style="fill: rgb(113, 128, 150); transform: ;msFilter:;">
                 <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>

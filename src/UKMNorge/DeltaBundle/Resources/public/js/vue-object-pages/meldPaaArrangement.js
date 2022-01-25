@@ -12,6 +12,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
     },
     updated() {
         this.initFilter();
+        inputDeltaFix();
     },
     methods : {
         initFilter : () => {

@@ -39,16 +39,24 @@
     display: flex;
     padding: 0.75rem 1.25rem;
 }
+.accordion-body-root .items-oversikt .item.open-item {
+    background: #edf2f6;
+}
 .accordion-body-root .items-oversikt .item.new-person {
     display: block;
 }
 .accordion-body-root .items-oversikt .item.new-person .user-empty {
     display: flex;
+    margin-top: 15px;
+}
+.accordion-body-root .items-oversikt .item.new-person .user-not-empty {
+    margin-top: -55px;
 }
 .accordion-body-root .items-oversikt .item.new-person {
     padding-left: 40px;
     padding-right: 40px;
     background: #edf2f7;
+    padding-bottom: 30px;
 }
 .collapse:not(.show) {
     display: none !important;

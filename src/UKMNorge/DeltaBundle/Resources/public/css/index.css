@@ -14,7 +14,7 @@ body {
     background-color: #f7fafc;
 }
 .main-container {
-    margin-top: -38px;
+    margin-top: -50px;
 }
 .main-container.hiden {
     visibility: hidden;

@@ -15,13 +15,6 @@
 	<!-- ******* page - pageAllInnslag ******* -->
 	{% include "UKMDeltaBundle:OnePagePages:oversiktInnslag.html.twig" %}
 
-
-	<div class="hr-info with-space">
-		<div class="line"></div>
-		<p class="text">OM BIDRAGET</p>
-		<div class="line"></div>
-	</div>
-
 	<br>
 	<br>
 	<br>
@@ -30,11 +23,11 @@
 
 
 	{# OLD -------------------------------------------------------------------------------------- #}
-	<div class="container">
+	{# <div class="container">
 		<div class="row">
 			<div class="col-12">
 				<form class="form-group delta-form" id="overview_mainform" method="POST" action="{{ path('ukm_delta_ukmid_pamelding_lagre', { k_id: k_id, pl_id: pl_id, type: type_key, b_id: b_id }) }}">
-					<input type="hidden" name="path" id="deltapath" value="" autocomplete="off" />
+					<input type="hidden" name="path" id="deltapath" value="" autocomplete="off" /> #}
 
 					{# <div class="form-group">
 						<label>{{ type.getTekst('artistnavn.' ~ ( innslag.getPersoner().getAntall() == 1 ? 'alene' : 'sammen' ) ~ '.navn') }}</label>
@@ -64,14 +57,14 @@
 					</div> #}
 					
                     {# TITLER #}
-                    <div class="my-3">
+                    {# <div class="my-3">
                     	{% if type.harTitler() %}
 							{% include 'UKMDeltaBundle:Tittel:titler.html.twig' %}
 						{% endif %}
-					</div>
+					</div> #}
 
                     {# TEKNISKE BEHOV #}
-					<div class="my-3">
+					{# <div class="my-3">
 						{% if type.harTekniskeBehov() %}
 							{% include 'UKMDeltaBundle:Innslag:tekniskebehov.html.twig' %}
 						{% endif %}
@@ -87,12 +80,12 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div> #}
 
 	<!-- TEST -->
-	<div>
+	{# <div>
 		<h5>Test</h5>
-	</div>
+	</div> #}
 
 	<script>
 		var toggleShadows = (e) => {
@@ -114,7 +107,6 @@
 	
 	{% javascripts 
 		'@UKMDeltaBundle/Resources/public/js/innslag.js'
-		'@UKMDeltaBundle/Resources/public/js/input-field.js'
 		'@UKMDeltaBundle/Resources/public/js/triggerlink.js'
 		'@UKMDeltaBundle/Resources/public/js/videresend.js' 
 		'@UKMDeltaBundle/Resources/public/js/one-page/oversikt.js'

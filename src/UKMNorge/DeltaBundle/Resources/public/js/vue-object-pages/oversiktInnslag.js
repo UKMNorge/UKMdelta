@@ -4,12 +4,17 @@ var allePersoner = Vue.component('innslag-persons', {
     data : function() {
         return {
             personer : [],
+            newPerson : this._nullTittel(),
         }
     },
     async mounted() {
         var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
 
         var personer = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+        for(var p of personer) {
+            p.phantom = false;
+            p.isOpen = false;
+        }
         this.personer = personer;
     },
     methods : {
@@ -41,20 +46,13 @@ var allePersoner = Vue.component('innslag-persons', {
 			}
 		},
         closeAllOpenForms() {
+            for(var p of this.personer) {
+                p.isOpen = false;
+            }
             $('.edit-user-form, .new-user-form').collapse('hide');
         },
         createNewPerson : async function() {
-            console.log('createNewPerson');
-            var fornavn = $('#fornavnNewPerson').val();
-            var etternavn = $('#etternavnNewPerson').val();
-            var alder = $('#alderNewPerson').val();
-            var mobil = $('#mobilNewPerson').val();
-            var rolle = $('#rolleNewPerson').val();
-
-            rolle = rolle ? rolle : "Ukjent rolle";
-
-            // Empty fields
-            $('.input-new-person').val('').blur();
+            // Show loading
 
             // Close all open forms
             this.closeAllOpenForms();
@@ -62,20 +60,23 @@ var allePersoner = Vue.component('innslag-persons', {
             // Innslag from parent
             var innslag = this.$parent.innslag;
 
-            var newPerson = await spaInteraction.runAjaxCall('new_person/', 'POST', {
+            console.log(this.newPerson);
+
+            var p = await spaInteraction.runAjaxCall('new_person/', 'POST', {
                 k_id : innslag.kommune_id,
                 pl_id : innslag.context.monstring.id, 
                 type : innslag.type.key,
                 b_id : innslag.id,
-                fornavn : fornavn,
-                etternavn : etternavn,
-                alder : alder,
-                mobil : mobil,
-                rolle : rolle, // check if rolle exists
+                fornavn : this.newPerson.fornavn,
+                etternavn : this.newPerson.etternavn,
+                alder : this.newPerson.alder,
+                mobil : this.newPerson.mobil,
+                rolle : this.newPerson.rolle ? this.newPerson.rolle : "Ukjent rolle", // check if rolle exists
             });
-            newPerson.id = newPerson.p_id;
+            p.id = p.p_id;
 
-            this.personer.push(newPerson);
+            this.personer.push(p);
+            this.newPerson = this._nullTittel();
         },
         editPerson : async function(person) {
             var innslag = this.$parent.innslag;
@@ -91,11 +92,20 @@ var allePersoner = Vue.component('innslag-persons', {
                 mobil : person.mobil,
                 rolle : person.rolle ? person.rolle : 'Ukjent Rolle',
             });
-
-            console.log(newPerson);
-        }
+        },
+        _nullTittel : function(id = 'new', phantom = false) {
+            return {
+                id : id,
+                fornavn : null,
+                etternavn : null,
+                mobil : null,
+                alder : null,
+                rolle : null,
+                phantom : phantom,
+            };
+        },
     },
-    template : `
+    template : /*html*/`
     <div>
     <div class="card-header accordion-header-root">
         <button class="btn btn-link btn-block btn-accordion-root text-left hover-button-delta" @click="toggleShadows" data-toggle="collapse" href="#collapseUsers" aria-expanded="true">
@@ -109,7 +119,7 @@ var allePersoner = Vue.component('innslag-persons', {
         <div id="allPersons" class="accordion-header-sub card-body items-oversikt">
             <div v-for="person in personer">
                 
-                <div class="item">
+                <div :class="{ 'open-item' : person.isOpen }"class="item">
                     <div class="avatar">
                         <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
                     </div>
@@ -117,8 +127,8 @@ var allePersoner = Vue.component('innslag-persons', {
                         <p class="rolle">#{ person.rolle ? person.rolle : 'Ukjent rolle' }</p>
                         <p class="name">#{person.fornavn + ' ' + person.etternavn}</p>
                     </div>
-                    <div class="buttons">
-                        <button class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
+                    <div :class="{ 'hide' : person.isOpen }" class="buttons">
+                        <button @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
                         </button>
                         
@@ -137,10 +147,12 @@ var allePersoner = Vue.component('innslag-persons', {
                 </div>
                 <div :id="['editUser' + person.id ]" class="collapse edit-user-form">
                     <div class="item new-person">
-                        <div class="user-empty">
+                        <div class="user-not-empty">
                             <div class="buttons">
-                                <button class="small-button-style hover-button-delta mini go-to-meld-av" @click="editPerson(person)" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="5 1 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: #fff; transform: ;msFilter:;">
+                                        <path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -155,7 +167,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fornavn" type="text" class="input" name="fornavn">
+                                <input v-model:value="person.fornavn" @blur="editPerson(person)" type="text" class="input" name="fornavn">
                             </div>
 
                             <!-- Etternavn -->
@@ -166,7 +178,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Etternavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.etternavn" type="text" class="input" name="etternavn">
+                                <input v-model:value="person.etternavn" @blur="editPerson(person)" type="text" class="input" name="etternavn">
                             </div>
 
                             <!-- Alder -->
@@ -177,7 +189,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fodselsdato" maxlength="2" type="text" class="input" name="alder">
+                                <input v-model:value="person.fodselsdato" @blur="editPerson(person)" maxlength="2" type="text" class="input" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -188,7 +200,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.mobil" type="text" maxlength="8" class="input" name="mobil">
+                                <input v-model:value="person.mobil" @blur="editPerson(person)" type="text" maxlength="8" class="input" name="mobil">
                             </div>
 
                             <!-- Rolle -->
@@ -199,7 +211,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Rolle i gruppa</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.rolle" type="text" class="input" name="rolle">
+                                <input v-model:value="person.rolle" @blur="editPerson(person)" type="text" class="input" name="rolle">
                             </div>
 
                         </div>
@@ -210,7 +222,7 @@ var allePersoner = Vue.component('innslag-persons', {
 
             <!-- NEW PERSON -->
 
-            <div id="newUserCollapse" class="collapse new-user-form">
+            <div id="newUserCollapse" class="collapse edit-user-form new-user-form">
                     <div class="item new-person">
                         <div class="user-empty">
                         <div class="avatar">
@@ -236,7 +248,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
+                                <input v-model="newPerson.fornavn" id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
                             </div>
 
                             <!-- Etternavn -->
@@ -247,7 +259,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Etternavn</span>
                                     </div>
                                 </div>
-                                <input id="etternavnNewPerson" type="text" class="input input-new-person" name="etternavn">
+                                <input v-model="newPerson.etternavn" id="etternavnNewPerson" type="text" class="input input-new-person" name="etternavn">
                             </div>
 
                             <!-- Alder -->
@@ -258,7 +270,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
+                                <input v-model="newPerson.alder" id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
@@ -269,7 +281,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input id="mobilNewPerson" type="text" maxlength="8" class="input input-new-person" name="mobil">
+                                <input v-model="newPerson.mobil" id="mobilNewPerson" type="text" maxlength="8" class="input input-new-person" name="mobil">
                             </div>
 
                             <!-- Rolle -->
@@ -280,7 +292,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Rolle i gruppa</span>
                                     </div>
                                 </div>
-                                <input id="rolleNewPerson" type="text" class="input input-new-person" name="rolle">
+                                <input v-model="newPerson.rolle" id="rolleNewPerson" type="text" class="input input-new-person" name="rolle">
                             </div>
 
                         </div>
@@ -297,6 +309,12 @@ var allePersoner = Vue.component('innslag-persons', {
             </div>
         </div>
         
+        <div class="new-member-div">
+            <button @click="closeAllOpenForms();" onclick="$('.edit-user-form').collapse('hide');" class="small-button-style new-member add-new hover-button-delta collapsed" data-toggle="collapse" href="#newUserCollapse" aria-expanded="false">
+                Legg til person
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #718096; transform: ;msFilter:;"><path d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5zM19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2z"></path></svg>
+            </button>
+        </div>
     </div>
     </div>
     `
