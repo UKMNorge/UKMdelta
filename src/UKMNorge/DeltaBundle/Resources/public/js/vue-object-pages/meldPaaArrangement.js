@@ -4,6 +4,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
     data : function() {
         return {
             fylker : [],
+            director : director,
         }
     },
     async mounted() {
@@ -52,7 +53,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             kommune.arrangementer_loaded = true;            
         }
     },
-    template : `
+    template : /*html*/`
     <div>
         <div id="alleFylkerOgKommuner" class="alle-fylker">
             <div v-for="fylke in fylker" class="accordion panel-group accordion-item accordion-by" id="accordionBy">
@@ -89,7 +90,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                         <div v-if="arrangement" class="panel-inner">
                                             <div class="panel-group" id="accordionKommune">
                                                 <div class="panel panel-default accordion-panel-child arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
-                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa">
+                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa" @click="director.openPage('pageVelgInnslagType'); director.addParam('pl_id', arrangement.id);">
                                                         <span>
                                                             #{ arrangement.navn }
                                                             <p class="info-label"></p>

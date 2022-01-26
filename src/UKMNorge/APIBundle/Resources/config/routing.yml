@@ -20,7 +20,7 @@ ukm_api_get_innslag:
     methods: [GET]
 
 # Get innslag typer
-ukm_api_get_innslag_types:
+ukm_api_get_all_innslag:
     path: /api/get_all_innslag/
     defaults: { _controller: UKMAPIBundle:Default:getAllInnslag }
     methods: [GET]
