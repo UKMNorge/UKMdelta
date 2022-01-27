@@ -1,0 +1,33 @@
+.innslag-type-object {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    background: #edf2f7;
+}
+.accordion-sub .accordion-header-sub {
+    background: #f7f8fb;
+    transition: .2s background;
+    cursor: pointer;
+}
+.accordion-sub .accordion-header-sub .type-info-left {
+    display: flex;
+}
+.accordion-sub .accordion-header-sub .type-info-left .innslags-type-navn {
+    margin: auto;
+    margin-left: 8px;
+}
+.accordion-sub .accordion-header-sub .type-info-right {
+    margin: auto;
+    margin-right: 0;
+}
+.accordion-sub .accordion-header-sub .type-info-right .icon {
+opacity: 1;
+    margin: auto !important;
+}
+#innslagAllTypes {
+    border-bottom: solid 2px #e6eaee;
+}
+.vise-noe-frem .item-type .panel .accordion-sub .accordion-header-sub:hover {
+    background: #e6eaee !important;
+}

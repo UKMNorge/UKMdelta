@@ -44,7 +44,7 @@ var innslagComponent = Vue.component('innslag-component', {
             }
         }
     },
-    template : `
+    template : /*html*/`
     <div>
         <div v-for="innslagCategory in alle_innslag">
             
