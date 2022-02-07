@@ -95,6 +95,7 @@ class InnslagController extends Controller
             $view_data['fylker'][] = Fylker::getById(33);
         }
         $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+        $view_data['pameldUserId'] = $this->hentCurrentUser()->getPameldUser();
 
 
         // Last inn alle arrangementer (med påmelding) per kommune
@@ -366,6 +367,64 @@ class InnslagController extends Controller
             'ukm_delta_ukmid_pamelding_innslag_oversikt',
             $route_data
         );
+    }
+
+    /**
+     * Legg til bruker i venteliste
+     * _@route: </ukmid/pamelding/{k_id}-{pl_id}/venteliste/>
+     * 
+     * Videresender til rediger innslag etter oppretting
+     * @param Int $k_id
+     * @param Int $pl_id
+     */
+    public function ventelisteAction(Int $k_id, Int $pl_id)
+    {
+        $personService = $this->get('ukm_api.person');
+
+        $route_data = [
+            'k_id' => $k_id,
+            'pl_id' => $pl_id,
+        ];
+
+        $arrangement = new Arrangement($pl_id);
+        $kommune = new Kommune($k_id);
+
+        $user = $this->hentCurrentUser();
+
+        // Hvis brukeren ikke er registrert i systemet fra før
+        if ($user->getPameldUser() === null) {
+            // Opprett person
+            $person = $personService->opprett(
+                $user->getFirstname(),
+                $user->getLastname(),
+                $user->getPhone(),
+                $kommune,
+                $arrangement
+            );
+            // Sett alder og e-post basert på user-bundle-alder
+            $person->setFodselsdato($user->getBirthdate());
+            $person->setEpost($user->getEmail());
+
+            // Oppdater verdier i UserBundle
+            $user->setPameldUser($person->getId());
+            $this->container->get('fos_user.user_manager')->updateUser($user);
+
+            // Se om brukeren har fått tildelt en Wordpress-innloggingsbruker (via UKMusers etc), og prøv å koble den.
+            $personService = $this->container->get('ukm_api.person');
+            $personService->addDeltaIDToWordpressLoginUser($person->getId(), $user->getId());
+        }
+        // Hvis brukeren er registrert i systemet fra før
+        else {
+            $person = $personService->hent($user->getPameldUser());
+        }
+
+        $arrangement->getVenteliste()->addPerson($person, $kommune);
+
+        return $this->redirectToRoute(
+            'ukm_delta_ukmid_pamelding',
+            $route_data
+        );
+
     }
 
     public function create_tittellosAction($k_id, $pl_id, $type)
@@ -1249,6 +1308,7 @@ class InnslagController extends Controller
             }
 
             $view_data['innslag'] = $innslag;
+            
 
             return $this->render('UKMDeltaBundle:Innslag:fjern.html.twig', $view_data);
         } catch (Exception $e) {

@@ -15,6 +15,7 @@ use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Samling;
 use UKMNorge\Innslag\Titler\Tittel;
 use UKMNorge\Innslag\Typer\Type;
+use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;
@@ -73,12 +74,22 @@ class InnslagService
      *
      * @param Innslag $innslag
      * @return void
+     * @throws Exception
      */
     public function lagre(Innslag $innslag)
     {
         $this->_setupLogger($innslag->getHomeId());
         $this->sjekkTilgang($innslag);
-        return WriteInnslag::save($innslag);
+        
+        // Lagre bare hvis arrangement ikke har antall begrensning eller det er ledig plass
+        $arrangement = $this->hentArrangement($innslag->context->monstring->id);
+        if($arrangement->erMaksAntallAktivert()) {
+            if($arrangement->getMaksAntallDeltagere() <= $arrangement->getAntallPersoner()) {
+                throw new Exception('Det er ikke ledig plass på: ' . $arrangement->getNavn());
+            }
+        }
+    
+        return WriteInnslag::save($innslag);;
     }
 
     /**
@@ -180,11 +191,28 @@ class InnslagService
     {
         $this->_setupLogger($arrangementID);
         $innslag = $this->hent($innslagID);
+        $arrangement = $this->hentArrangement($innslag->context->monstring->id);
 
         // Sjekk at mønstringen tillater av- og påmeldinger
         $this->sjekkFrist($innslag);
 
         WriteInnslag::meldAv($innslag);
+
+        // Hvis arrangement har venteliste og en bruker er meld av
+        if($arrangement->erMaksAntallAktivert()) {
+            // Hent første brukeren som venter i venteliste
+            $vePerson = $arrangement->getVenteliste()->hentFirstPerson();
+            if($vePerson != null) {
+                $kommuneId = $vePerson->getKommune()->getId();
+                $personId = $vePerson->getPerson()->getId();
+                
+                // Hvis brukeren (venteliste brukeren) er meldt paa, fjern det fra venteliste
+                if($this->meldPaaFraVenteliste($kommuneId, $arrangementID, $personId) == true) {
+                    $arrangement->getVenteliste()->removePerson($vePerson);
+                }
+            }
+        }
+        
         return true;
     }
 
@@ -385,4 +413,50 @@ class InnslagService
     {
         Logger::setID('delta', $this->hentCurrentUser()->getId(), $arrangement_id);
     }
+
+
+    /**
+     * Oppretter innslaget for en person fra venteliste
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     * @param Int $p_id
+     * @return bool
+     */
+    public function meldPaaFraVenteliste(Int $k_id, Int $pl_id, Int $p_id)
+    {
+        $innslagService = $this->container->get('ukm_api.innslag');
+        $personService = $this->container->get('ukm_api.person');
+        
+        $type = Typer::getByKey('enkeltperson');
+        $person = $personService->hent($p_id);
+
+        // Hent arrangement og sjekk at det er mulig å melde på innslag
+        $arrangement = new Arrangement($pl_id);
+        if (!$arrangement->erPameldingApen($type->getFrist())) {
+            return false;
+        }
+
+        // Opprett nytt innslag
+        $innslag = $innslagService->opprett(
+            new Kommune($k_id),
+            $arrangement,
+            $type,
+            $person
+        );
+
+        $this->_setupLogger($innslag->getHomeId());
+
+        
+        // Sjekk hvis det fortsatt er ledig plass for å legge til brukeren (venteliste brukeren)
+        if($arrangement->getMaksAntallDeltagere() > $arrangement->getAntallPersoner()) {
+            WriteInnslag::save($innslag);
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 }
