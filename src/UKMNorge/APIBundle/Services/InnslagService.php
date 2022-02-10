@@ -198,19 +198,9 @@ class InnslagService
 
         WriteInnslag::meldAv($innslag);
 
-        // Hvis arrangement har venteliste og en bruker er meld av
+        // Hvis arrangement har venteliste og denne brukeren er meld av
         if($arrangement->erMaksAntallAktivert()) {
-            // Hent første brukeren som venter i venteliste
-            $vePerson = $arrangement->getVenteliste()->hentFirstPerson();
-            if($vePerson != null) {
-                $kommuneId = $vePerson->getKommune()->getId();
-                $personId = $vePerson->getPerson()->getId();
-                
-                // Hvis brukeren (venteliste brukeren) er meldt paa, fjern det fra venteliste
-                if($this->meldPaaFraVenteliste($kommuneId, $arrangementID, $personId) == true) {
-                    $arrangement->getVenteliste()->removePerson($vePerson);
-                }
-            }
+            $arrangement->getVenteliste()->updatePersoner();
         }
         
         return true;
@@ -413,50 +403,5 @@ class InnslagService
     {
         Logger::setID('delta', $this->hentCurrentUser()->getId(), $arrangement_id);
     }
-
-
-    /**
-     * Oppretter innslaget for en person fra venteliste
-     * 
-     * @param Int $k_id
-     * @param Int $pl_id
-     * @param Int $p_id
-     * @return bool
-     */
-    public function meldPaaFraVenteliste(Int $k_id, Int $pl_id, Int $p_id)
-    {
-        $innslagService = $this->container->get('ukm_api.innslag');
-        $personService = $this->container->get('ukm_api.person');
-        
-        $type = Typer::getByKey('enkeltperson');
-        $person = $personService->hent($p_id);
-
-        // Hent arrangement og sjekk at det er mulig å melde på innslag
-        $arrangement = new Arrangement($pl_id);
-        if (!$arrangement->erPameldingApen($type->getFrist())) {
-            return false;
-        }
-
-        // Opprett nytt innslag
-        $innslag = $innslagService->opprett(
-            new Kommune($k_id),
-            $arrangement,
-            $type,
-            $person
-        );
-
-        $this->_setupLogger($innslag->getHomeId());
-
-        
-        // Sjekk hvis det fortsatt er ledig plass for å legge til brukeren (venteliste brukeren)
-        if($arrangement->getMaksAntallDeltagere() > $arrangement->getAntallPersoner()) {
-            WriteInnslag::save($innslag);
-            return true;
-        }
-
-        return false;
-    }
-
-
 
 }

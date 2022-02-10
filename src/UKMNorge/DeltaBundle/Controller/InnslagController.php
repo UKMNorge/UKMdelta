@@ -387,6 +387,18 @@ class InnslagController extends Controller
         ];
 
         $arrangement = new Arrangement($pl_id);
+        $venteliste = $arrangement->getVenteliste();
+
+        // Hvis det er ledig plass på arrangementet så stopp prosessen.
+        // Eksempel: Brukeren trykker knappen 'set meg i venteliste', mens en annen bruker er meld av og da blir ledig plass og trenger ikke brukeren å være i venteliste
+        if($arrangement->getAntallPersoner() < $arrangement->getMaksAntallDeltagere()) {
+            $this->addFlash('danger', "Oops! noe gikk feil! Prøv igjen");
+            return $this->redirectToRoute(
+                'ukm_delta_ukmid_pamelding',
+                $route_data
+            );    
+        }
+
         $kommune = new Kommune($k_id);
 
         $user = $this->hentCurrentUser();
@@ -418,10 +430,15 @@ class InnslagController extends Controller
             $person = $personService->hent($user->getPameldUser());
         }
 
-        $arrangement->getVenteliste()->addPerson($person, $kommune);
+        try {
+            $venteliste->addPerson($person, $kommune);
+        } catch(Exception $e) {
+            $this->get('logger')->error("UKMDeltaBundle:Innslag:venteliste - Feil oppsto i forbindelse med lagring av person i venteliste! Feilkode: " . $e->getCode() . ". Melding: " . $e->getMessage());
+            $this->addFlash('danger', "Oops! Klarte ikke å lagre endringene. Feilkode: " . $e->getCode());
+        }
 
         return $this->redirectToRoute(
-            'ukm_delta_ukmid_pamelding',
+            'ukm_delta_homepage',
             $route_data
         );
 
