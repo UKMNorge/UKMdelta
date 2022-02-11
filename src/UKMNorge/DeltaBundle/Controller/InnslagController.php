@@ -57,7 +57,7 @@ class InnslagController extends Controller
         if ($arrangementer->getAntall() == 0) {
             $action = 'visIngenArrangement';
             $link = '';
-        } elseif ($arrangementer->getAntall() > 1) {
+        } elseif ($arrangementer->getAntall() > 0) {
             $action = 'visArrangementer';
             $link = '';
         } elseif ($arrangementer->getAntall() == 1 && $arrangementer->getFirst()->erFellesmonstring()) {
