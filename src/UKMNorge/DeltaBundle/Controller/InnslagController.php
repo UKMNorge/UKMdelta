@@ -275,6 +275,7 @@ class InnslagController extends Controller
      */
     public function createAction(Int $k_id, Int $pl_id, String $type)
     {
+        
         $route_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -291,6 +292,15 @@ class InnslagController extends Controller
         $arrangement = new Arrangement($pl_id);
         if (!$arrangement->erPameldingApen($type->getFrist())) {
             throw new Exception('Påmeldingsfristen er ute!');
+        }
+
+        // Hvis arrangement
+        if(!$innslagService->ledigPlassPaaArrangement($arrangement)) {
+            $this->addFlash('danger', "Oops! Desverre er det ikke ledig plass lenger!");
+            return $this->redirectToRoute(
+                'ukm_delta_homepage',
+                $route_data
+            );
         }
 
         $kommune = new Kommune($k_id);
@@ -360,7 +370,16 @@ class InnslagController extends Controller
         // Enkeltpersoner kan potensielt være ferdig påmeldt nå.
         // Ved å trigge lagre, trigges også evalueringen av mangler.
         if ($type->erEnkeltPerson()) {
-            $innslagService->lagre($innslag);
+            try{
+                $innslagService->lagre($innslag);
+            }catch(Exception $e) {
+                if($e->getCode() == 584000) {
+                    $this->addFlash('danger', "Oops! Desverre er det ikke ledig plass lenger!");
+                }
+                else {
+                    throw $e;
+                }
+            }
         }
 
         return $this->redirectToRoute(
