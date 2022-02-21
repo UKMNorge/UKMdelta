@@ -25,7 +25,7 @@
 	{% if venteliste_arrangementer|length > 0 %}
 		<div class="row venteliste">
 			<div class="col-12">
-				<h3>Du venter i venteliste:</h3>
+				<h3>Du står på venteliste:</h3>
 				{% for arrangement in venteliste_arrangementer %}
 					<a href="{{ arrangement.getLink() }}" target="_blank" class="venteliste-arrangement">
 						<span>{{ arrangement.getNavn() }}</span>

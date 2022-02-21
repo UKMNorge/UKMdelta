@@ -296,7 +296,7 @@ class InnslagController extends Controller
 
         // Hvis arrangement
         if(!$innslagService->ledigPlassPaaArrangement($arrangement)) {
-            $this->addFlash('danger', "Oops! Desverre er det ikke ledig plass lenger!");
+            $this->addFlash('danger', "Oops! Det er dessverre ingen ledige plasser for øyeblikket.");
             return $this->redirectToRoute(
                 'ukm_delta_homepage',
                 $route_data
