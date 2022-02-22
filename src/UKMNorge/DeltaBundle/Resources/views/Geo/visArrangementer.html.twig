@@ -16,15 +16,15 @@
 
                         {# BRUKEREN ER I VENTELISTE #}
                         {% if arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) %}
-                            <small class="small mt-1">Du er nummer {{ arrangement.getVenteliste().hentPersonPosisjon(pameldUserId) }} i venteliste</small>
+                            <small class="small mt-1">Du står som nr. {{ arrangement.getVenteliste().hentPersonPosisjon(pameldUserId) }} på ventelisten</small>
                         
                         {# BRUKEREN KAN SETTES I VENTELISTE #}
                         {% else %}
-                            <small class="small mt-1" style="display: {{ arrangement.getVenteliste().getAntall() < 1 ? 'none' : 'inherit' }}" >Er i venteliste: {{ arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) }}</small> <br>
+                            <small class="small mt-1" style="display: {{ arrangement.getVenteliste().getAntall() < 1 ? 'none' : 'inherit' }}" >Er på venteliste: {{ arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) }}</small> <br>
                             {% if not arrangement.erFellesmonstring()  %}
 
-                                <a class="btn btn-outline-primary btn-block white click" href="{{ path('ukm_delta_ukmid_venteliste', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}">Legg meg til i venteliste</a>
-                                <small class="small mt-1 {{ arrangement.getVenteliste().getAntall() > 0 ? '' : 'hide' }}">{{ arrangement.getVenteliste().getAntall() }} andre i venteliste</small>
+                                <a class="btn btn-outline-primary btn-block white click" href="{{ path('ukm_delta_ukmid_venteliste', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}">Sett meg på venteliste</a>
+                                <small class="small mt-1 {{ arrangement.getVenteliste().getAntall() > 0 ? '' : 'hide' }}">{{ arrangement.getVenteliste().getAntall() }} andre på venteliste</small>
                             {% endif %}
                         {% endif %}
 
@@ -35,7 +35,7 @@
                     {% if not arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) and arrangement.erFellesmonstring() %}
                         {% for velg_kommune in arrangement.getKommuner().getAll() %}
                         <a class="btn btn-outline-primary btn-block white click" href="{{ path('ukm_delta_ukmid_venteliste', { k_id: velg_kommune.getId(), pl_id: arrangement.getId() }) }}">
-                            Legg meg til i venteliste {{ velg_kommune.getNavn() }}
+                            Sett meg på venteliste {{ velg_kommune.getNavn() }}
                         </a>
                         {% endfor %}
                     {% endif %}
