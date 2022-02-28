@@ -104,6 +104,14 @@ ukm_delta_ukmid_pamelding:
     path:     /ukmid/pamelding/
     defaults: { _controller: UKMDeltaBundle:Innslag:geo }
 
+### 
+ukm_delta_ukmid_pamelding_bestemt_arrangement:
+    path:     /ukmid/pamelding/{k_id}/bestemt/
+    defaults: { _controller: UKMDeltaBundle:Innslag:geoBestemt }
+    requirements:
+        k_id:  ([0-9]{1,4})
+
+
 ### GENERISK ROUTING FOR INNSLAGSTYPER I V2 =D 
 ukm_delta_ukmid_pamelding_v2_opprett:
   path:       /ukmid/pamelding/{k_id}-{pl_id}/{type}/opprett/
@@ -119,6 +127,12 @@ ukm_delta_ukmid_venteliste:
   defaults: { _controller: UKMDeltaBundle:Innslag:venteliste }
   requirements:
     k_id:  ([0-9]{1,4})
+    pl_id: ([0-9]{1,4})
+
+ukm_delta_ukmid_venteliste_fjern:
+  path:       /ukmid/pamelding/{pl_id}/venteliste/fjern/
+  defaults: { _controller: UKMDeltaBundle:Innslag:removeFromVentelistes }
+  requirements:
     pl_id: ([0-9]{1,4})
 
 ukm_delta_ukmid_pamelding_fylke:

@@ -24,7 +24,6 @@
                             {% if not arrangement.erFellesmonstring()  %}
 
                                 <a class="btn btn-outline-primary btn-block white click" href="{{ path('ukm_delta_ukmid_venteliste', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}">Sett meg på venteliste</a>
-                                <small class="small mt-1 {{ arrangement.getVenteliste().getAntall() > 0 ? '' : 'hide' }}">{{ arrangement.getVenteliste().getAntall() }} andre på venteliste</small>
                             {% endif %}
                         {% endif %}
 

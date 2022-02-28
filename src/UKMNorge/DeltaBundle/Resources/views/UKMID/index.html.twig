@@ -31,6 +31,7 @@
 						<span>{{ arrangement.getNavn() }}</span>
 						<small> (Du er på plass nr. {{ arrangement.getVenteliste().hentPersonPosisjon(user.getPameldUser())  }})</small>
 					</a>
+					<a href="{{ path('ukm_delta_ukmid_venteliste_fjern', {pl_id : arrangement.getId()}) }}" class="btn btn-xs btn-outline-primary">Melde av fra venteliste</a>
 					<br>
 				{% endfor %}
 			</div>

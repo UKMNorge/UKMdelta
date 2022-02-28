@@ -215,11 +215,6 @@ class InnslagService
         $this->sjekkFrist($innslag);
 
         WriteInnslag::meldAv($innslag);
-
-        // Hvis arrangement har venteliste og denne brukeren er meld av
-        if($arrangement->erMaksAntallAktivert()) {
-            $arrangement->getVenteliste()->updatePersoner();
-        }
         
         return true;
     }

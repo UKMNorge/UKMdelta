@@ -21,6 +21,7 @@ use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Venner;
 use UKMNorge\Innslag\Typer\Typer;
+use UKMNorge\Innslag\Venteliste\Venteliste;
 
 require_once('UKM/Autoloader.php');
 
@@ -78,10 +79,18 @@ class InnslagController extends Controller
     }
 
     /**
+     * Brukeren kan se arrangementer i en bestemt kommune og eventuelt velge en
+     * _@route: <ukmid/pamelding/{k_id}/bestemt>
+     */
+    public function geoBestemtAction(Int $k_id) {
+        return $this->geoAction($k_id);
+    }
+
+    /**
      * Lar brukeren velge arrangement
      * _@route: <ukmid/pamelding/>
      */
-    public function geoAction()
+    public function geoAction(Int $bestemtKommune = null)
     {
         $request = Request::createFromGlobals();
 
@@ -106,7 +115,17 @@ class InnslagController extends Controller
         }
 
         // Prøv å laste inn den forhåndsvalgte kommunen.
-        if ($request->cookies->has("lastlocation")) {
+        if($bestemtKommune != null) {
+            try{
+                $kommune = new Kommune($bestemtKommune);
+                $this->setKommuneLinkActionAttr($kommune, $filter);
+                $view_data['bestemt_kommune'] = $kommune;
+                $view_data['bestemt_fylke'] = $kommune->getFylke();
+            } catch (Exception $e) {
+                // Ikke nødvendigvis en feil fordi alle fylker kan vises
+            }
+        }
+        else if ($request->cookies->has("lastlocation")) {
             try {
                 $kommune = new Kommune($request->cookies->get("lastlocation"));
                 $this->setKommuneLinkActionAttr($kommune, $filter);
@@ -274,8 +293,7 @@ class InnslagController extends Controller
      * @param String $type
      */
     public function createAction(Int $k_id, Int $pl_id, String $type)
-    {
-        
+    {     
         $route_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -287,6 +305,7 @@ class InnslagController extends Controller
         $user = $this->hentCurrentUser();
         $innslagService = $this->get('ukm_api.innslag');
         $personService = $this->get('ukm_api.person');
+        $p_id = $user->getPameldUser();
 
         // Hent arrangement og sjekk at det er mulig å melde på innslag
         $arrangement = new Arrangement($pl_id);
@@ -294,12 +313,34 @@ class InnslagController extends Controller
             throw new Exception('Påmeldingsfristen er ute!');
         }
 
-        // Hvis arrangement
+        // Hvis det er ledig plass paa arrangement (arrangement bruker begrenset antall deltakere)
         if(!$innslagService->ledigPlassPaaArrangement($arrangement)) {
-            $this->addFlash('danger', "Oops! Det er dessverre ingen ledige plasser for øyeblikket.");
+
+            // Brukeren har en person_id (p_id)
+            if($p_id != null) {
+                // Personen er allerede påmeldt selv om det ikke er ledig plass akkurat nå
+                if($arrangement->getInnslag()->erPersonISamling($p_id)) {
+                    return $this->redirectToRoute(
+                        'ukm_delta_homepage',
+                        $route_data
+                    );
+                }
+
+                // Hvis brukeren er allerede på venteliste
+                if($arrangement->getVenteliste()->erPersonIdIVenteliste($p_id)) {
+                    return $this->redirectToRoute(
+                        'ukm_delta_homepage',
+                        $route_data
+                    );
+                }
+            }
+
+            // Ellers returner til et bestemt arrangement for å se at arrangementet er fult og vent i venteliste kan brukes
             return $this->redirectToRoute(
-                'ukm_delta_homepage',
-                $route_data
+                'ukm_delta_ukmid_pamelding_bestemt_arrangement',
+                [
+                    'k_id' => $k_id,
+                ]
             );
         }
 
@@ -392,7 +433,6 @@ class InnslagController extends Controller
      * Legg til bruker i venteliste
      * _@route: </ukmid/pamelding/{k_id}-{pl_id}/venteliste/>
      * 
-     * Videresender til rediger innslag etter oppretting
      * @param Int $k_id
      * @param Int $pl_id
      */
@@ -461,6 +501,33 @@ class InnslagController extends Controller
             $route_data
         );
 
+    }
+
+    /**
+     * Fjern bruker fra venteliste
+     * _@route: </ukmid/pamelding/{k_id}-{pl_id}/venteliste/fjern/>
+     * 
+     * @param Int $k_id
+     * @param Int $pl_id
+     */
+    public function removeFromVentelistesAction(Int $pl_id) {
+        $route_data = [
+            'pl_id' => $pl_id,
+        ];
+        $user = $this->hentCurrentUser();
+
+        $vePerson = Venteliste::staarIVenteliste($user->getPameldUser(), $pl_id);
+
+        if($vePerson) {
+            $arrangement = new Arrangement($pl_id);
+            $venteliste = $arrangement->getVenteliste();
+            $venteliste->removePerson($vePerson);
+        }        
+
+        return $this->redirectToRoute(
+            'ukm_delta_homepage',
+            $route_data
+        );
     }
 
     public function create_tittellosAction($k_id, $pl_id, $type)
