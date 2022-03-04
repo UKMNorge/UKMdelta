@@ -6,7 +6,7 @@
     <ol class="list-group">
         {% for arrangement in kommune.getAttr('arrangementer').getAllSynlige() %}
             
-          {% if arrangement.erMaksAntallAktivert() and (arrangement.getMaksAntallDeltagere() - arrangement.getAntallPersoner()) < 1 %}
+          {% if arrangement.erPameldingApen() and arrangement.erMaksAntallAktivert() and (arrangement.getMaksAntallDeltagere() - arrangement.getAntallPersoner()) < 1 %}
             {% if arrangement.getInnslag().erPersonISamling(pameldUserId) == false %}
                 <li class="list-group-item click px-2 mx-0 white" style="background-color: transparent; border-color:#fff;">
                     <p class="mb-0 white">
@@ -17,17 +17,16 @@
                         {# BRUKEREN ER I VENTELISTE #}
                         {% if arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) %}
                             <small class="small mt-1">Du står som nr. {{ arrangement.getVenteliste().hentPersonPosisjon(pameldUserId) }} på ventelisten</small>
-                        
+                            <br>
                         {# BRUKEREN KAN SETTES I VENTELISTE #}
                         {% else %}
-                            <small class="small mt-1" style="display: {{ arrangement.getVenteliste().getAntall() < 1 ? 'none' : 'inherit' }}" >Er på venteliste: {{ arrangement.getVenteliste().erPersonIdIVenteliste(pameldUserId) }}</small> <br>
                             {% if not arrangement.erFellesmonstring()  %}
-
                                 <a class="btn btn-outline-primary btn-block white click" href="{{ path('ukm_delta_ukmid_venteliste', { k_id: kommune.getId(), pl_id: arrangement.getId() }) }}">Sett meg på venteliste</a>
+                            {% else %}
+                                <br />
                             {% endif %}
                         {% endif %}
 
-                        <br />
                         <small>{{ arrangement.getStart()|dato('D j. M Y')|capitalize}}</small>
                     </p>
 
@@ -51,11 +50,11 @@
                     <b>{{ arrangement.getNavn() }}</b>
                     <br />
                     <small>{{ arrangement.getStart()|dato('D j. M Y')|capitalize}}</small>
-                    {% if arrangement.erMaksAntallAktivert() %}
+                    {# {% if arrangement.erMaksAntallAktivert() %}
                         {% set ledigePlasser = arrangement.getMaksAntallDeltagere() - arrangement.getAntallPersoner() %}
                         <br>
                         <small>{{ ledigePlasser }} ledig{{ ledigePlasser > 1 ? 'e' : '' }} plass{{ ledigePlasser > 1 ? 'er' : '' }}</small>
-                    {% endif %}
+                    {% endif %} #}
                     
                     {% if not arrangement.erFellesmonstring() %}
                         </a>
