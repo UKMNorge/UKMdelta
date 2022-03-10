@@ -15,6 +15,7 @@ use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Samling;
 use UKMNorge\Innslag\Titler\Tittel;
 use UKMNorge\Innslag\Typer\Type;
+use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;
@@ -69,16 +70,44 @@ class InnslagService
     }
 
     /**
+     * Sjekk om et arrangement som har begrenset deltakere har ledig plass
+     *
+     * @param Arrangement $arrangement
+     * @return bool
+     */
+    public function ledigPlassPaaArrangement($arrangement) {
+        if($arrangement->erMaksAntallAktivert()) {
+            if($arrangement->getMaksAntallDeltagere() <= $arrangement->getAntallPersoner()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Lagre endringer i et innslag-objekt
      *
      * @param Innslag $innslag
      * @return void
+     * @throws Exception
      */
     public function lagre(Innslag $innslag)
     {
         $this->_setupLogger($innslag->getHomeId());
         $this->sjekkTilgang($innslag);
-        return WriteInnslag::save($innslag);
+        
+        // Lagre bare hvis arrangement ikke har antall begrensning eller det er ledig plass
+        $arrangement = $this->hentArrangement($innslag->context->monstring->id);
+        if($arrangement->erMaksAntallAktivert()) {
+            if(!$this->ledigPlassPaaArrangement($arrangement)) {
+                throw new Exception(
+                    'Det er ikke ledig plass på: ' . $arrangement->getNavn(),
+                    584000
+                );
+            }
+        }
+    
+        return WriteInnslag::save($innslag);;
     }
 
     /**
@@ -180,11 +209,13 @@ class InnslagService
     {
         $this->_setupLogger($arrangementID);
         $innslag = $this->hent($innslagID);
+        $arrangement = $this->hentArrangement($innslag->context->monstring->id);
 
         // Sjekk at mønstringen tillater av- og påmeldinger
         $this->sjekkFrist($innslag);
 
         WriteInnslag::meldAv($innslag);
+        
         return true;
     }
 
@@ -385,4 +416,5 @@ class InnslagService
     {
         Logger::setID('delta', $this->hentCurrentUser()->getId(), $arrangement_id);
     }
+
 }

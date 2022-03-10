@@ -21,10 +21,28 @@
 				</p>
 			</div>
 		</div>
+
+	{% if venteliste_arrangementer|length > 0 %}
+		<div class="row venteliste">
+			<div class="col-12">
+				<h3>Du står på venteliste:</h3>
+				{% for arrangement in venteliste_arrangementer %}
+					<a href="{{ arrangement.getLink() }}" target="_blank" class="venteliste-arrangement">
+						<span>{{ arrangement.getNavn() }}</span>
+						<small> (Du er på plass nr. {{ arrangement.getVenteliste().hentPersonPosisjon(user.getPameldUser())  }})</small>
+					</a>
+					<a href="{{ path('ukm_delta_ukmid_venteliste_fjern', {pl_id : arrangement.getId()}) }}" class="btn btn-xs btn-outline-primary">Meld meg av fra ventelisten</a>
+					<br>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+		
+		
 		
 		<div class="row">
 			<div class="col-12">
-				<div class="delta-input-header"> 
+				<div class="delta-input-header">
                     {% if alle_innslag|length == 0 %}
                         <p>{{ 'indexAction.pameldinger.ingen'|trans }}</p>
                     {% else %}
