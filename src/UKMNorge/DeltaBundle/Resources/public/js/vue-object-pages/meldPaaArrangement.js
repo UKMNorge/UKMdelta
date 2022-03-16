@@ -16,6 +16,20 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         inputDeltaFix();
     },
     methods : {
+        getDato : (dateint) => {
+            var date = new Date(dateint * 1000)
+            var day = getDayNorwegian(date.getDay());
+            var month = getMonthNorwegian(date.getMonth());
+
+            return day + ' ' + date.getDate() + '. ' + month + ', ' + date.getFullYear();
+        },
+        chooseArrangement : (arrangement) => {
+            director.openPage('pageVelgInnslagType'); 
+            director.addParam('pl_id', arrangement.id);
+            director.addParam('k_id', arrangement.kommuner_id[0]);
+            innslagType.initNew();
+
+        },
         initFilter : () => {
             var callbackFilter = (numShown) => {
                 if($('#searchInput').val().length < 3) {
@@ -67,7 +81,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                         </button>
                     </div>
 
-                    <div :id="['collapseKommuneForFylke' + fylke.id]" :f_id="['#' + fylke.id]" class="panel-body accordion-body-root fylke-body search collapse">
+                    <div :id="['collapseKommuneForFylke' + fylke.id]" :f_id="['#' + fylke.id]" class="panel-body accordion-body-root fylke-body arrangementer-visning search collapse">
                         <div class="panel panel-default">
                             <div v-for="kommune in fylke.kommuner">
                                 <div @click="getArrangement(kommune)" class="accordion-sub kommune-accordion search-kommune collapsed" :k_id="kommune.id" data-toggle="collapse" data-parent="#accordionKommune" :href="['#collapseArrangementer' + kommune.id]">
@@ -78,7 +92,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                             <p class="description info-label">Hvilket arrangement vil du melde deg på?</p>
                                         </span>
                                         <div>
-                                            <svg class="icon" style="height: 24px;width: 24px;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                                            <svg class="icon" style="height: 24px;width: 24px; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                 <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                             </svg>
                                         </div>
@@ -90,12 +104,12 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                         <div v-if="arrangement" class="panel-inner">
                                             <div class="panel-group" id="accordionKommune">
                                                 <div class="panel panel-default accordion-panel-child arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
-                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa" @click="director.openPage('pageVelgInnslagType'); director.addParam('pl_id', arrangement.id);">
+                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa" @click="chooseArrangement(arrangement)">
                                                         <span>
                                                             #{ arrangement.navn }
-                                                            <p class="info-label"></p>
+                                                            <p class="info-label">#{ getDato(arrangement.frist_1) }</p>
                                                         </span>
-                                                        <svg v-show="arrangement.kommuner_fellesmonstring == null" style="height: 24px;width: 24px;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                                                        <svg v-show="arrangement.kommuner_fellesmonstring == null" style="height: 24px;width: 24px; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                             <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                                         </svg>
                                                     </div>
@@ -111,7 +125,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                                             <p class="accordion-title-sub kommune-navn">
                                                                 #{ felles_kommune.navn }
                                                             </p>
-                                                            <svg class="icon" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#718096">
+                                                            <svg class="icon" style="height: 24px;width: auto;margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#718096">
                                                                 <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                                                             </svg>
                                                         </div>
@@ -139,7 +153,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                                         <span class="phantom-loading">Arrangement navn</span>
                                                         <p class="info-label phantom-loading">Onsdag 9. Desember, 2020</p>
                                                     </span>
-                                                    <svg class="phantom-loading" style="height: 24px;width: auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
+                                                    <svg class="phantom-loading" style="height: 24px;width: auto; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                         <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                                                     </svg>
                                                 </div>                                        

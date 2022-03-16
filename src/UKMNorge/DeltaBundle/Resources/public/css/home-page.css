@@ -363,6 +363,10 @@
 .accordion-child .panel-inner {
     cursor: pointer;
 }
+.fylke-body.arrangementer-visning,
+.accordion-item .card-body-arrangement.meldpaa {
+    background: #f7f8fb;
+}
 @media(max-width: 575px) {
     .meld-av-bilde img {
         max-height: 80px;
