@@ -143,7 +143,23 @@ class DefaultController extends Controller
 
         // Kjør opprett innslag
         try{
-            $response->setData($innslagFunctions->createInnslag($data_arr['k_id'], $data_arr['pl_id'], $data_arr['type'], $this, true));
+            $innslag = $innslagFunctions->createInnslag($data_arr['k_id'], $data_arr['pl_id'], $data_arr['type'], $this, true);
+            
+            $response->setData(
+                [
+                    'innslag' => $innslag,
+                    'path' => $this->generateUrl(
+                        'ukm_delta_ukmid_pamelding_innslag_oversikt',
+                        [
+                            'k_id' => $innslag->kommune_id,
+                            'pl_id' => $innslag->home_id,
+                            'type' => $innslag->type->key,
+                            'b_id' => $innslag->id
+
+                        ]
+                    )
+                ]
+            );
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
             $response->setData($e->getMessage());
