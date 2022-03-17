@@ -44,6 +44,7 @@ ukm_api_edit_innslag:
         navn: ([^0-9]+) 
         beskrivelse: ([^0-9]+) 
         sjanger: ([^0-9]+)
+        tekniske_behov: ([^0-9]+)
     methods: [PATCH]
 
 # Fjern innslag
@@ -62,6 +63,20 @@ ukm_api_get_innslag_types:
     requirements: 
         pl_id: ([0-9]{1,5})
     methods: [GET]
+
+# Lagre innslag
+ukm_api_save_innslag:
+    path: /api/save_innslag/
+    defaults: { _controller: UKMAPIBundle:Default:saveInnslag }
+    requirements:
+        k_id: ([0-9]{1,4})
+        pl_id: ([0-9]{1,5})
+        type: ([a-z]+)
+        b_id: ([0-9]{1,11})
+        navn: ([^0-9]+) 
+        beskrivelse: ([^0-9]+)
+        sjanger: ([^0-9]+)
+    methods:  [POST]
 
 
 ### ------------------------- Arrangement -------------------------

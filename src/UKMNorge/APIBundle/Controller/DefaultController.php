@@ -293,6 +293,63 @@ class DefaultController extends Controller
         return null;
     }
 
+    /**
+     * Lagrer alle endringer i et innslag
+     * @return void
+     */
+    public function saveInnslagAction(Request $request) {
+        $response = new JsonResponse();
+        $innslagService = $this->get('ukm_api.innslag');
+        $personService = $this->get('ukm_api.person');
+
+
+        // Hent data
+        try{
+            $data_arr = $this->getData($request, ['k_id', 'pl_id', 'type', 'b_id'], ['navn', 'beskrivelse', 'sjanger']);
+
+            $b_id = $data_arr['b_id'];
+            $navn = $data_arr['navn'];
+            $beskrivelse = $data_arr['beskrivelse'];
+            $sjanger = $data_arr['sjanger'];
+
+            // Hent inn innslaget
+            $innslag = $innslagService->hent($b_id);
+
+            if ($innslag->getType()->harBeskrivelse()) {
+                $innslag->setBeskrivelse($beskrivelse);
+            }
+
+            // Hvis innslaget ikke har titler
+            if ($innslag->getType()->erEnkeltperson()) {
+                $person = $innslag->getPersoner()->getSingle();
+
+                $innslag->setNavn($navn);
+
+                $personService->lagre($person, $innslag->getId());
+                $innslagService->lagre($innslag);
+
+                $response->setData($innslag->erPameldt());
+                return $response;
+            }
+
+            // Innslaget har titler
+            $innslag->setNavn($navn);
+            if ($innslag->getType()->harSjanger()) {
+                $innslag->setSjanger($sjanger);
+            }
+
+            $innslagService->lagre($innslag);
+            
+            $response->setData($innslag->erPameldt());
+            return $response;
+            
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+    }
+
 
     /* ---------------------------- Arrangement ---------------------------- */
 
