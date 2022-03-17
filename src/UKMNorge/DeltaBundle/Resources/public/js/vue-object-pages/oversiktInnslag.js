@@ -171,7 +171,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <div class="form-new-user">
                             
                             <!-- Fornavn -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fornavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -182,7 +182,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Etternavn -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.etternavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -193,29 +193,29 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Alder -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fodselsdato.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.fodselsdato" @blur="editPerson(person)" maxlength="2" type="text" class="input" name="alder">
+                                <input v-model:value="person.fodselsdato" @blur="editPerson(person)" maxlength="2" type="number" class="input" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : person.mobil.length != 8 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input v-model:value="person.mobil" @blur="editPerson(person)" type="text" maxlength="8" class="input" name="mobil">
+                                <input v-model:value="person.mobil" @blur="editPerson(person)" type="tel" maxlength="8" class="input" name="mobil">
                             </div>
 
                             <!-- Rolle -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.rolle.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
@@ -387,7 +387,22 @@ var oversiktInnslag = new Vue({
                 sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
                 tekniske_behov : typeof this.innslag.tekniske_behov !== 'undefined' ? this.innslag.tekniske_behov : null,
             });
-        }
+        },
+        saveAndFinish : async function() {
+            var innslag = this.innslag;
+
+            var saveFinishInnslag = await spaInteraction.runAjaxCall('save_innslag/', 'POST', {
+                k_id : this.innslag.kommune_id,
+                pl_id : this.innslag.context.monstring.id, 
+                type : this.innslag.type.key,
+                b_id : this.innslag.id,
+                navn : this.innslag.navn,
+                beskrivelse : this.innslag.beskrivelse,
+                sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
+            });
+
+            var_dump(saveFinishInnslag);
+        },
     },
     components : {
         allePersoner
