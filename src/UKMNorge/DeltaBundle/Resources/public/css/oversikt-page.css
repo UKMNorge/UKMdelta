@@ -143,6 +143,20 @@
     font: normal normal 300 9px/11px Roboto;
     margin-bottom: 2px;
 }
+p.rolle.status {
+    color: #00a886 !important;
+}
+p.rolle.status.lagring {
+    color: #ffce65c2 !important;
+}
+p.rolle.status.feilet {
+    color: #ff6584c2 !important;
+}
+
+p.rolle.status.opacity-hidden {
+    transition: 2s opacity;
+    transition-delay: 2s opacity;
+}
 .accordion-body-root .items-oversikt .item.new-person .user-info .name {
     margin: auto;
 }

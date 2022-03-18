@@ -14,6 +14,8 @@ var allePersoner = Vue.component('innslag-persons', {
         for(var p of personer) {
             p.phantom = false;
             p.isOpen = false;
+            p.saving = false;
+            p.savingStatus = 0; // 0 saved, 1 saving, -1 error
         }
         this.personer = personer;
     },
@@ -78,9 +80,10 @@ var allePersoner = Vue.component('innslag-persons', {
                 etternavn : this.newPerson.etternavn,
                 alder : this.newPerson.alder,
                 mobil : this.newPerson.mobil,
-                rolle : this.newPerson.rolle ? this.newPerson.rolle : "Ukjent rolle", // check if rolle exists
+                rolle : this.newPerson.rolle // check if rolle exists
             });
             p.id = p.p_id;
+            p.saving = false;
 
             // Remove phantom person
             this.personer.splice(this.personer.indexOf(phantomPerson), 1);
@@ -92,17 +95,28 @@ var allePersoner = Vue.component('innslag-persons', {
         editPerson : async function(person) {
             var innslag = this.$parent.innslag;
 
-            console.log(person);
+            person.saving = true;
+            person.savingStatus = 1;
+            
+            try{
+                var editPerson = await spaInteraction.runAjaxCall('edit_person/', 'PATCH', {
+                    b_id : innslag.id,
+                    p_id : person.id,
+                    fornavn : person.fornavn,
+                    etternavn : person.etternavn,
+                    alder : person.fodselsdato,
+                    mobil : person.mobil,
+                    rolle : person.rolle,
+                });
+            }catch(e) {
+                person.savingStatus = -1;
+                person.saving = false;
+            }
 
-            var newPerson = await spaInteraction.runAjaxCall('edit_person/', 'PATCH', {
-                b_id : innslag.id,
-                p_id : person.id,
-                fornavn : person.fornavn,
-                etternavn : person.etternavn,
-                alder : person.fodselsdato,
-                mobil : person.mobil,
-                rolle : person.rolle ? person.rolle : 'Ukjent Rolle',
-            });
+            if(editPerson == true) {
+                person.savingStatus = 0;
+                person.saving = false;
+            }
         },
         _nullTittel : function(id = 'new', phantom = false) {
             return {
@@ -113,6 +127,8 @@ var allePersoner = Vue.component('innslag-persons', {
                 alder : null,
                 rolle : null,
                 phantom : phantom,
+                saving : false,
+                savingStatus : 0, // 0 saved, 1 saving, -1 error
             };
         },
     },
@@ -137,6 +153,7 @@ var allePersoner = Vue.component('innslag-persons', {
                     <div class="user-info">
                         <p :class="{ 'phantom-loading' : person.phantom }" class="rolle">#{ person.rolle ? person.rolle : 'Ukjent rolle' }</p>
                         <p :class="{ 'phantom-loading' : person.phantom }" class="name">#{person.fornavn + ' ' + person.etternavn}</p>
+                        <p class="rolle status" :class="{ 'lagring': person.savingStatus == 1, 'feilet': person.savingStatus == -1, 'opacity-hidden' : person.saving == false }">#{person.savingStatus == 0 ? 'lagret!' : (person.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
                     </div>
                     <div :class="{ 'hide' : person.isOpen }" class="buttons">
                         <button :class="{ 'phantom-loading' : person.phantom }" @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
@@ -171,7 +188,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <div class="form-new-user">
                             
                             <!-- Fornavn -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fornavn.length }">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fornavn || !person.fornavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -182,7 +199,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Etternavn -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.etternavn.length }">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.etternavn || !person.etternavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -193,7 +210,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Alder -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fodselsdato.length }">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.fodselsdato || !person.fodselsdato.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
@@ -204,7 +221,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Mobilnummer -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : person.mobil.length != 8 }">
+                            <div class="input-delta open">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
@@ -215,7 +232,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Rolle -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.rolle.length }">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.rolle || !person.rolle.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
