@@ -19,6 +19,8 @@ var mainComponent = Vue.component('titler-component', {
         for(var t of titler) {
             t.phantom = false;
             t.isOpen = false;
+            t.saving = false;
+            t.savingStatus = 0; // 0 saved, 1 saving, -1 error
         }
         this.titler = titler;
     },
@@ -31,7 +33,7 @@ var mainComponent = Vue.component('titler-component', {
             this.closeAllOpenForms();
         },
         closeAllOpenForms() {
-            $('.edit-user-form, .new-user-form').collapse('hide');
+            $('.edit-tittel-form, .new-user-form').collapse('hide');
             for(var t of this.titler) {
                 t.isOpen = false;
             }
@@ -47,6 +49,7 @@ var mainComponent = Vue.component('titler-component', {
             var newT = await this.saveChanges(this.newTittel);
             newT[0].phantom = false;
 
+            newT.saving = false;
             // remove phantom Tittel and add new Tittel
             this.titler.splice(this.titler.indexOf(phantomTittel), 1);
             this.titler.push(newT[0]);
@@ -60,7 +63,9 @@ var mainComponent = Vue.component('titler-component', {
         // Save changes
         // if sid == 'new' -> new tittel
         saveChanges : async function(tittel) {
-            console.log(tittel);
+            tittel.saving = true;
+            tittel.savingStatus = 1;
+
             var data = {
                 b_id : this.innslag_id,
                 t_id : tittel.id, // 'new' for ny tittel
@@ -110,12 +115,18 @@ var mainComponent = Vue.component('titler-component', {
             }
 
             try{
-                return await spaInteraction.runAjaxCall(
+                var editTittel = await spaInteraction.runAjaxCall(
                     'create_or_edit_tittel/', 
                     'POST', 
                     data
                 );
+                if(editTittel != null) {
+                    tittel.savingStatus = 0;
+                    tittel.saving = false;
+                }
             } catch(e) {
+                tittel.savingStatus = -1;
+                tittel.saving = false;
                 console.log(e);
             }
         },
@@ -184,6 +195,7 @@ var mainComponent = Vue.component('titler-component', {
                        <!-- No varighet -->
                        <span v-else class="varighet inactive">- -</span>
                    </p>
+                   <p class="rolle status" :class="{ 'lagring': tittel.savingStatus == 1, 'feilet': tittel.savingStatus == -1, 'opacity-hidden' : tittel.saving == false }">#{tittel.savingStatus == 0 ? 'lagret!' : (tittel.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
                 </div>
                 <p class="title-name" :class="{ 'phantom-loading' : tittel.phantom }">#{ tittel.tittel }</p>
                 <div :class="{ 'hide' : tittel.isOpen }" class="buttons">
@@ -282,9 +294,6 @@ var mainComponent = Vue.component('titler-component', {
     <div id="newTittleForm" class="edit-user-form edit-tittel-form collapse">
         <div class="item new-person">
         <div class="user-empty">
-            <div class="avatar">
-                <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
-            </div>
             <div class="user-info">
                 <p class="name">Legger til ny fremføring</p>
             </div>

@@ -56,7 +56,7 @@ var allePersoner = Vue.component('innslag-persons', {
             for(var p of this.personer) {
                 p.isOpen = false;
             }
-            $('.edit-user-form, .new-user-form').collapse('hide');
+            $('.edit-user-form.user-only, .new-user-form').collapse('hide');
         },
         createNewPerson : async function() {
             // Show phantom (loading)
@@ -173,7 +173,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         </button>
                     </div>
                 </div>
-                <div :id="['editUser' + person.id ]" class="collapse edit-user-form">
+                <div :id="['editUser' + person.id ]" class="collapse edit-user-form user-only">
                     <div class="item new-person">
                         <div class="user-not-empty">
                             <div class="buttons">
