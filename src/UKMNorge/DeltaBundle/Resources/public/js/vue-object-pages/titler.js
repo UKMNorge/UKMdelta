@@ -42,17 +42,27 @@ var mainComponent = Vue.component('titler-component', {
             $('.accordion-body-root .items-oversikt .item').removeClass('remove-mode')
         },
         addNewTittel : async function() {
+            if(this.newTittel.tittel.length < 1) {
+                this.activateValidationFailed();
+                return;
+            }
+
             $('.edit-tittel-form').collapse('hide');
             var phantomTittel = this._nullTittel('phantom', true);
+            phantomTittel.savingStatus = 1;
+
             this.titler.push(phantomTittel);
 
             var newT = await this.saveChanges(this.newTittel);
             newT[0].phantom = false;
 
-            newT.saving = false;
+            
             // remove phantom Tittel and add new Tittel
             this.titler.splice(this.titler.indexOf(phantomTittel), 1);
             this.titler.push(newT[0]);
+            
+            newT[0].saving = false;
+            newT[0].savingStatus = 0;
 
             // Empty newTittel
             this.newTittel = this._nullTittel();
@@ -60,8 +70,9 @@ var mainComponent = Vue.component('titler-component', {
             // Empty varighet
             $('#newtittelMin, #newtittelSec').val('');
         },
-        // Save changes
-        // if sid == 'new' -> new tittel
+        activateValidationFailed : () => {
+            $('#alleTitler').find('.validation-failed').removeClass('validation-failed').addClass('validation-failed-active');
+        },
         saveChanges : async function(tittel) {
             tittel.saving = true;
             tittel.savingStatus = 1;
@@ -124,7 +135,9 @@ var mainComponent = Vue.component('titler-component', {
                     tittel.savingStatus = 0;
                     tittel.saving = false;
                 }
+                return editTittel;
             } catch(e) {
+                console.error('here');
                 tittel.savingStatus = -1;
                 tittel.saving = false;
                 console.log(e);
@@ -156,7 +169,7 @@ var mainComponent = Vue.component('titler-component', {
                 sekunder : 0,
                 selvlaget : true,
                 tekst_av : null,
-                tittel : null,
+                tittel : '',
                 koreografi_av : null,
                 litteratur_read : false,
                 type : null,
@@ -233,7 +246,7 @@ var mainComponent = Vue.component('titler-component', {
                    <div class="form-new-user">
 
                         <!-- Title (Title name) -->
-                        <div class="input-delta" :class="{ open: tittel.tittel }">
+                        <div class="input-delta" :class="{ open: tittel.tittel, 'validation-failed' : !tittel.tittel || !tittel.tittel.length }" >
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -244,7 +257,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- Varighet -->
-                        <div v-if="tittel.sekunder && tittel.context.innslag.type != 'litteratur'" class="input-delta open">
+                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -305,7 +318,8 @@ var mainComponent = Vue.component('titler-component', {
         </div>
         <div class="form-new-user">
                 <!-- tittel navn ny Tittel -->
-                <div class="input-delta">
+
+                <div class="input-delta" :class="{ open: newTittel.tittel, 'validation-failed' : !newTittel.tittel || newTittel.tittel.length < 1}">
                     <div class="overlay">
                         <div class="info">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -330,9 +344,9 @@ var mainComponent = Vue.component('titler-component', {
                     </div>
 
                     <div class="input-group-horizontal">
-                        <input :id="[ newTittel.id + 'tittelMin' ]" type="number" min="0" class="input" name="minutter">
+                        <input :id="[ newTittel.id + 'tittelMin' ]" value="0" type="number" min="0" class="input" name="minutter">
                         <span class="input-info">minutter</span>
-                        <input :id="[ newTittel.id + 'tittelSec' ]" type="number" max="59" min="0" class="input" name="sekunder">
+                        <input :id="[ newTittel.id + 'tittelSec' ]" value="0" type="number" max="59" min="0" class="input" name="sekunder">
                         <span class="input-info">sekunder</span>
                     </div>
                 </div>
@@ -460,7 +474,7 @@ var musikkComponent = Vue.component('musikk-component', {
     </div>
 
     <!-- TESKTEN SKREVET AV -->
-    <div v-if="tittel.instrumental == false || tittel.instrumental == 'false'" class="input-delta" :class="{ open: tittel.tekst_av }">
+    <div v-if="tittel.instrumental == false || tittel.instrumental == 'false'" class="input-delta" :class="{ open: tittel.tekst_av}">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>

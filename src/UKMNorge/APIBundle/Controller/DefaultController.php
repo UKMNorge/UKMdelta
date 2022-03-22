@@ -305,7 +305,7 @@ class DefaultController extends Controller
 
         // Hent data
         try{
-            $data_arr = $this->getData($request, ['k_id', 'pl_id', 'type', 'b_id'], ['navn', 'beskrivelse', 'sjanger']);
+            $data_arr = $this->getData($request, ['k_id', 'pl_id', 'type', 'b_id', 'navn'], ['beskrivelse', 'sjanger']);
 
             $b_id = $data_arr['b_id'];
             $navn = $data_arr['navn'];
@@ -328,7 +328,15 @@ class DefaultController extends Controller
                 $personService->lagre($person, $innslag->getId());
                 $innslagService->lagre($innslag);
 
-                $response->setData($innslag->erPameldt());
+                $response->setData(
+                    [
+                        'saved' => $innslag->erPameldt(),
+                        'path' => $this->generateUrl(
+                            'ukm_delta_ukmid_homepage'
+                        )
+                    ]
+                );
+                $response->setData();
                 return $response;
             }
 
@@ -340,7 +348,14 @@ class DefaultController extends Controller
 
             $innslagService->lagre($innslag);
             
-            $response->setData($innslag->erPameldt());
+            $response->setData(
+                [
+                    'saved' => $innslag->erPameldt(),
+                    'path' => $this->generateUrl(
+                        'ukm_delta_ukmid_homepage'
+                    )
+                ]
+            );
             return $response;
             
         }catch(Exception $e) {

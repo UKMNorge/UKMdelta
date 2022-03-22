@@ -406,20 +406,49 @@ var oversiktInnslag = new Vue({
             });
         },
         saveAndFinish : async function() {
+            if($('.input-delta.validation-failed').length > 0) {
+                var el = $($('.input-delta.validation-failed')[0]);
+                
+                
+                // Open collapse if the element is not visible
+                $(el).parents('.collapse').collapse('show');
+                
+                // Scroll to
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: el.offset().top - 100
+                }, 1000);
+                
+                $('#pageOversiktInnslag').find('.validation-failed').removeClass('validation-failed').addClass('validation-failed-active');
+
+                return;
+            }
+            
             var innslag = this.innslag;
+            try{
+                var res = await spaInteraction.runAjaxCall('save_innslag/', 'POST', {
+                    k_id : this.innslag.kommune_id,
+                    pl_id : this.innslag.context.monstring.id, 
+                    type : this.innslag.type.key,
+                    b_id : this.innslag.id,
+                    navn : this.innslag.navn,
+                    beskrivelse : this.innslag.beskrivelse,
+                    sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
+                });
+    
+                if(res.saved == true) {
+                    window.location.href = res.path;
+                }
+                else {
+    
+                }
+            }catch(e) {
+                // Explain what happened
+            }
 
-            var saveFinishInnslag = await spaInteraction.runAjaxCall('save_innslag/', 'POST', {
-                k_id : this.innslag.kommune_id,
-                pl_id : this.innslag.context.monstring.id, 
-                type : this.innslag.type.key,
-                b_id : this.innslag.id,
-                navn : this.innslag.navn,
-                beskrivelse : this.innslag.beskrivelse,
-                sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
-            });
-
-            var_dump(saveFinishInnslag);
         },
+        deleteInnslag : async function() {
+            alert('Delete innslag');
+        }
     },
     components : {
         allePersoner

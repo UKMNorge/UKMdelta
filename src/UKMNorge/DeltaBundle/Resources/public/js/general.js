@@ -54,8 +54,12 @@ var inputDeltaFix = function() {
     });
 
     $('.input-delta .input').off('blur').blur((ev) => {
+        var inputDelta = $(ev.currentTarget).parent();
         if($(ev.currentTarget).val().length < 1) {
-            $(ev.currentTarget).parent().removeClass('open');
+            inputDelta.removeClass('open');
+        }
+        if(inputDelta.hasClass('validation-failed')) {
+            inputDelta.removeClass('validation-failed').addClass('validation-failed-active');
         }
     })
 
