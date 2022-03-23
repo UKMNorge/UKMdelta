@@ -51,6 +51,10 @@ var inputDeltaFix = function() {
         var el = $(e.currentTarget).parent();
         el.addClass('open');
         el.children('.input').focus();
+
+        if(el.hasClass('validation-inactive-click')) {
+            el.removeClass('validation-failed-active validation-inactive-click');
+        }
     });
 
     $('.input-delta .input').off('blur').blur((ev) => {
@@ -62,6 +66,7 @@ var inputDeltaFix = function() {
             inputDelta.removeClass('validation-failed').addClass('validation-failed-active');
         }
     })
+    
 
     $('.input-delta .close-btn').off('click').click((e) => {
         var el = $(e.currentTarget);
@@ -70,5 +75,17 @@ var inputDeltaFix = function() {
         $('.input-delta .input').blur();
         $('#searchInput').trigger('change');
     });
+
+    // Do not allow varighet under 1 second
+    $('.varighet-limit input').blur((e) => {
+        var el = $(e.currentTarget);
+        var sec = el.parent().find('input[name="sekunder"]');
+        var min = parseInt(el.parent().find('input[name="minutter"]').val());
+        if(parseInt(sec.val()) < 1) {
+            if(min < 1) {
+                sec.val(1);
+            }
+        }
+    })
 }
 inputDeltaFix();

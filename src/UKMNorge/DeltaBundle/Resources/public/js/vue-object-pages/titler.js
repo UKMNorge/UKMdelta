@@ -41,9 +41,29 @@ var mainComponent = Vue.component('titler-component', {
         closeAllDeleteButtons() {
             $('.accordion-body-root .items-oversikt .item').removeClass('remove-mode')
         },
+        // Is attribute defined in DOM
+        _isTitleAttributeDefined(attribute) {
+            var ret = $('#newTittleForm').find('input[name="' + attribute + '"]').length > 0;
+            return ret;
+        },
+        verifyNewTittel() {
+            var newTittel = this.newTittel;
+            console.log('aaa');
+
+            if(this._isTitleAttributeDefined('melodi_av') && (!newTittel.melodi_av || newTittel.melodi_av.length < 1)
+            || this._isTitleAttributeDefined('tittel') && (!newTittel.tittel || newTittel.tittel.length < 1)
+            || this._isTitleAttributeDefined('tekst_av') && (!newTittel.tekst_av || newTittel.tekst_av.length < 1)
+            || this._isTitleAttributeDefined('koreografi_av') && (!newTittel.koreografi_av || newTittel.koreografi_av.length < 1)
+            || this._isTitleAttributeDefined('type') && (!newTittel.type || newTittel.koreografi_av.type < 1)
+            ){
+                $('#newTittleForm').find('.validation-failed').addClass('validation-failed-active').removeClass('validation-failed');
+                return false;
+            }
+
+            return true;
+        },
         addNewTittel : async function() {
-            if(this.newTittel.tittel.length < 1) {
-                this.activateValidationFailed();
+            if(this.verifyNewTittel() == false) {
                 return;
             }
 
@@ -70,10 +90,8 @@ var mainComponent = Vue.component('titler-component', {
             // Empty varighet
             $('#newtittelMin, #newtittelSec').val('');
         },
-        activateValidationFailed : () => {
-            $('#alleTitler').find('.validation-failed').removeClass('validation-failed').addClass('validation-failed-active');
-        },
         saveChanges : async function(tittel) {
+            console.log('ppppp');
             tittel.saving = true;
             tittel.savingStatus = 1;
 
@@ -166,7 +184,7 @@ var mainComponent = Vue.component('titler-component', {
                 id : id,
                 instrumental : false,
                 melodi_av : null,
-                sekunder : 0,
+                sekunder : 1,
                 selvlaget : true,
                 tekst_av : null,
                 tittel : '',
@@ -257,7 +275,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- Varighet -->
-                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open" mangler="tittel.varighet">
+                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open varighet" mangler="tittel.varighet">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -265,7 +283,7 @@ var mainComponent = Vue.component('titler-component', {
                                 </div>
                             </div>
 
-                            <div class="input-group-horizontal">
+                            <div class="input-group-horizontal varighet-limit">
                                 <input @blur="saveChanges(tittel)" :id="[ tittel.id + 'tittelMin' ]" :value="Math.floor(tittel.sekunder/60)" type="number" min="0" class="input" name="minutter">
                                 <span class="input-info">minutter</span>
                                 <input @blur="saveChanges(tittel)" :id="[ tittel.id + 'tittelSec' ]" :value="tittel.sekunder % 60" type="number" max="59" min="0" class="input" name="sekunder">
@@ -343,10 +361,10 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
                     </div>
 
-                    <div class="input-group-horizontal">
+                    <div class="input-group-horizontal varighet-limit">
                         <input :id="[ newTittel.id + 'tittelMin' ]" value="0" type="number" min="0" class="input" name="minutter">
                         <span class="input-info">minutter</span>
-                        <input :id="[ newTittel.id + 'tittelSec' ]" value="0" type="number" max="59" min="0" class="input" name="sekunder">
+                        <input :id="[ newTittel.id + 'tittelSec' ]" value="1" type="number" max="59" min="0" class="input" name="sekunder">
                         <span class="input-info">sekunder</span>
                     </div>
                 </div>
@@ -474,7 +492,7 @@ var musikkComponent = Vue.component('musikk-component', {
     </div>
 
     <!-- TESKTEN SKREVET AV -->
-    <div v-if="tittel.instrumental == false || tittel.instrumental == 'false'" class="input-delta" :class="{ open: tittel.tekst_av}">
+    <div v-if="tittel.instrumental == false || tittel.instrumental == 'false'" class="input-delta" :class="{ open: tittel.tekst_av, 'validation-failed' : !tittel.tekst_av || !tittel.tekst_av.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -486,7 +504,7 @@ var musikkComponent = Vue.component('musikk-component', {
     </div> 
 
     <!-- MELODI LAGET AV -->
-    <div class="input-delta" :class="{ open: tittel.melodi_av }">
+    <div class="input-delta" :class="{ open: tittel.melodi_av, 'validation-failed' : !tittel.melodi_av || !tittel.melodi_av.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -494,7 +512,7 @@ var musikkComponent = Vue.component('musikk-component', {
             </div>
         </div>
 
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.melodi_av" class="input" name="tekst_av">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.melodi_av" class="input" name="melodi_av">
     </div> 
 
     </div>
@@ -553,7 +571,7 @@ var dansComponent = Vue.component('dans-component', {
 	</div>
 
     <!-- Hvem har koreografert dansen? -->
-    <div  class="input-delta" :class="{ open: tittel.koreografi_av }">
+    <div  class="input-delta" :class="{ open: tittel.koreografi_av, 'validation-failed' : !tittel.koreografi_av || !tittel.koreografi_av.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -597,14 +615,14 @@ var litteraturComponent = Vue.component('litteratur-component', {
     <div>
 
     <!-- Medforfater -->
-    <div class="input-delta" :class="{ open: tittel.tekst_av }">
+    <div class="input-delta" :class="{ open: tittel.tekst_av, 'validation-failed' : !tittel.tekst_av || !tittel.tekst_av.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                 <span class="text">Medforfatter</span>
             </div>
         </div>
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.tekst_av" class="input" name="tittel">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.tekst_av" class="input" name="tekst_av">
     </div>
 
     <div class="radio-input-delta">
@@ -638,7 +656,7 @@ var litteraturComponent = Vue.component('litteratur-component', {
             </div>
         </div>
 
-        <div class="input-group-horizontal">
+        <div class="input-group-horizontal varighet-limit">
             <input @blur="saveChangesLocal(tittel)" :id="[ tittel.id + 'tittelMin' ]" :value="Math.floor(tittel.sekunder/60)" type="number" min="0" class="input" name="minutter">
             <span class="input-info">minutter</span>
             <input @blur="saveChangesLocal(tittel)" :id="[ tittel.id + 'tittelSec' ]" :value="tittel.sekunder % 60" type="number" max="59" min="0" class="input" name="sekunder">
@@ -702,14 +720,14 @@ var dansComponent = Vue.component('teater-component', {
 	</div>
 
     <!-- Hvem har skrevet manus? -->
-    <div class="input-delta" :class="{ open: tittel.tekst_av }">
+    <div class="input-delta" :class="{ open: tittel.tekst_av, 'validation-failed' : !tittel.tekst_av || !tittel.tekst_av.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                 <span class="text">Hvem har skrevet manus?</span>
             </div>
         </div>
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.tekst_av" class="input" name="manus">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.tekst_av" class="input" name="tekst_av">
     </div>
 
     </div>
@@ -746,14 +764,14 @@ var dansComponent = Vue.component('utstilling-component', {
     <div>
 
     <!-- Type og teknikk -->
-    <div class="input-delta" :class="{ open: tittel.type }">
+    <div class="input-delta" :class="{ open: tittel.type, 'validation-failed' : !tittel.type || !tittel.type.length }">
         <div class="overlay">
             <div class="info">
                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                 <span class="text">Type og teknikk</span>
             </div>
         </div>
-        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.type" class="input" name="type_og_teknikk">
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.type" class="input" name="type">
     </div> 
 
     </div>

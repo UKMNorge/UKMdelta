@@ -58,7 +58,21 @@ var allePersoner = Vue.component('innslag-persons', {
             }
             $('.edit-user-form.user-only, .new-user-form').collapse('hide');
         },
+        verifyNewPerson() {
+            if( !this.newPerson.fornavn || this.newPerson.fornavn.length < 1
+            || !this.newPerson.etternavn || this.newPerson.etternavn.length < 1 
+            || !this.newPerson.alder || this.newPerson.alder.length < 1 
+            || !this.newPerson.mobil || this.newPerson.mobil.length < 1 
+            || !this.newPerson.rolle || this.newPerson.rolle.length < 1 ) {
+                $('#newUserCollapse').find('.validation-failed').addClass('validation-failed-active').removeClass('validation-failed');
+                return false;
+            }
+        },
         createNewPerson : async function() {
+            if(this.verifyNewPerson() == false) {
+                return;
+            }
+
             // Show phantom (loading)
             var phantomPerson = this._nullTittel('phantom', true);
             this.personer.push(phantomPerson);
@@ -154,7 +168,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <p class="rolle status" :class="{ 'lagring': person.savingStatus == 1, 'feilet': person.savingStatus == -1, 'opacity-hidden' : person.saving == false }">#{person.savingStatus == 0 ? 'lagret!' : (person.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
                     </div>
                     <div :class="{ 'hide' : person.isOpen }" class="buttons">
-                        <button :class="{ 'phantom-loading' : person.phantom }" @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#edituser' + person.id ]" aria-expanded="true">
+                        <button :class="{ 'phantom-loading' : person.phantom }" @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#editperson' + person.id ]" aria-expanded="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
                         </button>
                         
@@ -171,11 +185,11 @@ var allePersoner = Vue.component('innslag-persons', {
                         </button>
                     </div>
                 </div>
-                <div :id="['edituser' + person.id ]" class="collapse edit-user-form user-only">
+                <div :id="['editperson' + person.id ]" class="collapse edit-user-form user-only">
                     <div class="item new-person">
                         <div class="user-not-empty">
                             <div class="buttons">
-                                <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#edituser' + person.id ]" aria-expanded="true">
+                                <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#editperson' + person.id ]" aria-expanded="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: #fff; transform: ;msFilter:;">
                                         <path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path>
                                     </svg>
@@ -219,7 +233,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Mobilnummer -->
-                            <div class="input-delta open">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.mobil || !person.mobil.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
@@ -267,7 +281,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <div class="form-new-user">
                             
                             <!-- Fornavn -->
-                            <div class="input-delta">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fornavn || !newPerson.fornavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -278,7 +292,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Etternavn -->
-                            <div class="input-delta">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.etternavn || !newPerson.etternavn.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -289,7 +303,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Alder -->
-                            <div class="input-delta">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.alder || !newPerson.alder.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
@@ -300,7 +314,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Mobilnummer -->
-                            <div class="input-delta">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.mobil || !newPerson.mobil.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
@@ -311,7 +325,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Rolle -->
-                            <div class="input-delta">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.rolle || !newPerson.rolle.length }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
@@ -415,6 +429,11 @@ var oversiktInnslag = new Vue({
                     
                     $(el).removeClass('validation-failed').addClass('validation-failed-active validation-inactive-click');
                     
+                    // element has not been found, show message
+                    if(el.length < 1) {
+                        spaInteraction.showMessage(mItem.beskrivelse, 'error');
+                    }
+
                     forsteMangler = forsteMangler != null ? forsteMangler : el;
                 }
             }
@@ -423,25 +442,6 @@ var oversiktInnslag = new Vue({
                 $([document.documentElement, document.body]).animate({
                     scrollTop: forsteMangler.offset().top - 100
                 }, 1000);
-            }
-
-
-            return;
-            if($('.input-delta.validation-failed').length > 0) {
-                var el = $($('.input-delta.validation-failed')[0]);
-                
-                
-                // Open collapse if the element is not visible
-                $(el).parents('.collapse').collapse('show');
-                
-                // Scroll to
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: el.offset().top - 100
-                }, 1000);
-                
-                $('#pageOversiktInnslag').find('.validation-failed').removeClass('validation-failed').addClass('validation-failed-active');
-    
-                return;
             }
         },
         saveAndFinish : async function() {
