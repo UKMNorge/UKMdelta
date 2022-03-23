@@ -5,7 +5,7 @@
 {% endjavascripts %}
 
 <div id="pageOversiktInnslag" innslag_id="{{ innslag.id }}" arrangement_id="{{ innslag.context.monstring.id }}">
-    <div class="container main-container">
+    <div :id="['editinnslag' + innslag.id ]" class="container main-container">
         <div class="col-12 nop">
 
             <div class="hr-info">
@@ -15,7 +15,7 @@
             </div>
 
             <div class="input-area">
-                <div :class="{ open : innslag.navn, 'validation-failed' : !innslag.navn || !innslag.navn.length}" class="input-delta">
+                <div :class="{ open : innslag.navn, 'validation-failed' : !innslag.navn || !innslag.navn.length}" class="input-delta" mangler="innslag.navn">
                     <div class="overlay">
                         <div class="info">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
@@ -42,7 +42,7 @@
         {# BESKRIVELSE #}
         {% if type.harBeskrivelse() %}
             <div class="input-area">
-                <div :class="{ open : innslag.beskrivelse}" class="input-delta">
+                <div :class="{ open : innslag.beskrivelse}" class="input-delta" mangler="innslag.beskrivelse">
                     <div class="overlay">
                         <div class="info">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0 ;transform: ;msFilter:;"><path d="M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
@@ -70,7 +70,7 @@
         {# SJANGER #}
         {% if type.harSjanger() %}
             <div class="input-area">
-                <div :class="{open : innslag.sjanger}" class="input-delta">
+                <div :class="{open : innslag.sjanger}" class="input-delta" mangler="innslag.sjanger">
                     <div class="overlay">
                         <div class="info">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M9.5 12c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm1.5 1H8c-3.309 0-6 2.691-6 6v1h15v-1c0-3.309-2.691-6-6-6z"></path><path d="M16.604 11.048a5.67 5.67 0 0 0 .751-3.44c-.179-1.784-1.175-3.361-2.803-4.44l-1.105 1.666c1.119.742 1.8 1.799 1.918 2.974a3.693 3.693 0 0 1-1.072 2.986l-1.192 1.192 1.618.475C18.951 13.701 19 17.957 19 18h2c0-1.789-.956-5.285-4.396-6.952z"></path></svg>
@@ -125,10 +125,11 @@
             v-if="
                 innslag.type.key == 'musikk' ||
                 innslag.type.key == 'teater' ||
+                innslag.type.key == 'dans' ||
                 innslag.type.key == 'litteratur' ||
                 innslag.type.key == 'scene'"
             class="input-area">
-                <div :class="{ open : innslag.tekniske_behov }" class="input-delta">
+                <div :class="{ open : innslag.tekniske_behov }" class="input-delta" mangler="innslag.tekniske">
                     <div class="overlay">
                         <div class="info">
                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0 ;transform: ;msFilter:;">

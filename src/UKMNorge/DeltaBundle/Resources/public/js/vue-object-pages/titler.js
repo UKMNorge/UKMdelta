@@ -212,7 +212,7 @@ var mainComponent = Vue.component('titler-component', {
                 </div>
                 <p class="title-name" :class="{ 'phantom-loading' : tittel.phantom }">#{ tittel.tittel }</p>
                 <div :class="{ 'hide' : tittel.isOpen }" class="buttons">
-                   <button @click="closeAllOpenForms(); tittel.isOpen = true;" :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
+                   <button @click="closeAllOpenForms(); tittel.isOpen = true;" :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#edittittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: rgb(255, 255, 255);">
                          <path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path>
                          <path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path>
@@ -234,11 +234,11 @@ var mainComponent = Vue.component('titler-component', {
                 </div>
              </div>
 
-             <div :id="[ 'editTittel' + tittel.id ]" class="collapse edit-user-form edit-tittel-form">
+             <div :id="[ 'edittittel' + tittel.id ]" class="collapse edit-user-form edit-tittel-form">
                 <div class="item new-person">
                    <div class="user-not-empty">
                       <div class="buttons">
-                         <button @click="tittel.isOpen = false;" data-toggle="collapse" :href="[ '#editTittel' + tittel.id ]" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
+                         <button @click="tittel.isOpen = false;" data-toggle="collapse" :href="[ '#edittittel' + tittel.id ]" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: rgb(255, 255, 255);"><path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path></svg>
                          </button>
                       </div>
@@ -257,7 +257,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- Varighet -->
-                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open">
+                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open" mangler="tittel.varighet">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>

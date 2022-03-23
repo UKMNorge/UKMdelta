@@ -69,8 +69,6 @@ var allePersoner = Vue.component('innslag-persons', {
             // Innslag from parent
             var innslag = this.$parent.innslag;
 
-            console.log(this.newPerson);
-
             var p = await spaInteraction.runAjaxCall('new_person/', 'POST', {
                 k_id : innslag.kommune_id,
                 pl_id : innslag.context.monstring.id, 
@@ -156,7 +154,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <p class="rolle status" :class="{ 'lagring': person.savingStatus == 1, 'feilet': person.savingStatus == -1, 'opacity-hidden' : person.saving == false }">#{person.savingStatus == 0 ? 'lagret!' : (person.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
                     </div>
                     <div :class="{ 'hide' : person.isOpen }" class="buttons">
-                        <button :class="{ 'phantom-loading' : person.phantom }" @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
+                        <button :class="{ 'phantom-loading' : person.phantom }" @click="closeAllOpenForms(); person.isOpen = true;" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-toggle="collapse" :href="['#edituser' + person.id ]" aria-expanded="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2 -1 30 30" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
                         </button>
                         
@@ -173,11 +171,11 @@ var allePersoner = Vue.component('innslag-persons', {
                         </button>
                     </div>
                 </div>
-                <div :id="['editUser' + person.id ]" class="collapse edit-user-form user-only">
+                <div :id="['edituser' + person.id ]" class="collapse edit-user-form user-only">
                     <div class="item new-person">
                         <div class="user-not-empty">
                             <div class="buttons">
-                                <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#editUser' + person.id ]" aria-expanded="true">
+                                <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#edituser' + person.id ]" aria-expanded="true">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: #fff; transform: ;msFilter:;">
                                         <path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path>
                                     </svg>
@@ -232,7 +230,7 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Rolle -->
-                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.rolle || !person.rolle.length }">
+                            <div class="input-delta open" v-bind:class="{ 'validation-failed' : !person.rolle || !person.rolle.length }" mangler="person.rolle">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
@@ -405,7 +403,30 @@ var oversiktInnslag = new Vue({
                 tekniske_behov : typeof this.innslag.tekniske_behov !== 'undefined' ? this.innslag.tekniske_behov : null,
             });
         },
-        saveAndFinish : async function() {
+        showMangler : function(mangler) {
+            mangler = mangler.kategoriSortert;
+            
+            var forsteMangler = null;
+            for (var m in mangler) {
+                for(var mItem of mangler[m]) {
+                    
+                    var el = $('#edit' + mItem.objekt + mItem.objekt_id).find(".input-delta[mangler='" + mItem.id + "']");
+                    $(el).parents('.collapse').collapse('show');
+                    
+                    $(el).removeClass('validation-failed').addClass('validation-failed-active validation-inactive-click');
+                    
+                    forsteMangler = forsteMangler != null ? forsteMangler : el;
+                }
+            }
+            console.log('aa');
+            if(forsteMangler) {
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: forsteMangler.offset().top - 100
+                }, 1000);
+            }
+
+
+            return;
             if($('.input-delta.validation-failed').length > 0) {
                 var el = $($('.input-delta.validation-failed')[0]);
                 
@@ -419,11 +440,11 @@ var oversiktInnslag = new Vue({
                 }, 1000);
                 
                 $('#pageOversiktInnslag').find('.validation-failed').removeClass('validation-failed').addClass('validation-failed-active');
-
+    
                 return;
             }
-            
-            var innslag = this.innslag;
+        },
+        saveAndFinish : async function() {
             try{
                 var res = await spaInteraction.runAjaxCall('save_innslag/', 'POST', {
                     k_id : this.innslag.kommune_id,
@@ -439,7 +460,7 @@ var oversiktInnslag = new Vue({
                     window.location.href = res.path;
                 }
                 else {
-    
+                    this.showMangler(res.mangler);
                 }
             }catch(e) {
                 // Explain what happened

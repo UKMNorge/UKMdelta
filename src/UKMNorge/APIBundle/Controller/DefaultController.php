@@ -331,6 +331,7 @@ class DefaultController extends Controller
                 $response->setData(
                     [
                         'saved' => $innslag->erPameldt(),
+                        'mangler' => $innslag->getMangler(),
                         'path' => $this->generateUrl(
                             'ukm_delta_ukmid_homepage'
                         )
@@ -351,6 +352,7 @@ class DefaultController extends Controller
             $response->setData(
                 [
                     'saved' => $innslag->erPameldt(),
+                    'mangler' => $innslag->getMangler(),
                     'path' => $this->generateUrl(
                         'ukm_delta_ukmid_homepage'
                     )
