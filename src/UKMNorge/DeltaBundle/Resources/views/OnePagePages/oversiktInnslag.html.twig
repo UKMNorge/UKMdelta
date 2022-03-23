@@ -106,15 +106,20 @@
             </div>
         </div>
 
-        <div class="hr-info with-space">
-            <div class="line"></div>
-            <p class="text">OM BIDRAGET</p>
-            <div class="line"></div>
-        </div>
+        <div v-if="innslag.type 
+        && innslag.type.key != 'cosplay'
+        && innslag.type.key != 'dataspillgruppe'
+        ">
+            <div class="hr-info with-space">
+                <div class="line"></div>
+                <p class="text">OM BIDRAGET</p>
+                <div class="line"></div>
+            </div>
 
-        <!-- titler -->
-        <div id="alleTitler">
-            <titler-component></titler-component>
+            <!-- titler -->
+            <div  id="alleTitler">
+                <titler-component></titler-component>
+            </div>
         </div>
 
         <!-- tekniske behov -->

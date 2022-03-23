@@ -248,6 +248,7 @@ p.rolle.status.opacity-hidden {
 .fullfor-button-div {
     background: #edf2f7;
     padding: 20px 0;
+    margin-top: 40px;
 }
 .fullfor-button-div .button-div {
     display: flex;
