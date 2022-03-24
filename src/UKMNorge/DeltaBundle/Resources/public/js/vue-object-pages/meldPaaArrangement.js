@@ -173,7 +173,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
 
 
 // The app
-var allInnslag = new Vue({
+var meldtPaa = new Vue({
     delimiters: ['#{', '}'], // For å bruke det på Twig
     el: '#pageMeldPaaArrangement',
     data: {

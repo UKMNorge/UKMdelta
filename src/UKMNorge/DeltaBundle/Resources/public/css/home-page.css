@@ -28,6 +28,17 @@
     position: relative;
     overflow: hidden;
 }
+.paamelding-box.hide-up-gently {
+    height: 0px;
+    min-height: 0px;
+    max-height: 0px;
+    padding: 0 15px;
+    margin: 0px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s;
+    transition-delay: 2s;
+}
 .paamelding-box .header-top {
     display: flex;
 }
