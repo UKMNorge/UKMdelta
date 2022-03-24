@@ -84,7 +84,9 @@ class DefaultController extends Controller
 
         // Hent data
         try{
-            $alle_innsag = $innslagService->hentInnslagFraKontaktperson()->innslag;
+            $alle_innsag = array_reverse($innslagService->hentInnslagFraKontaktperson()->innslag);
+
+            
             
             $fullforte_innslag = [];
             $ikke_fullforte_innslag = [];
