@@ -67,6 +67,22 @@ var innslagComponent = Vue.component('innslag-component', {
                 // Error
                 console.error(err);
             }
+        },
+        openInnslag : function(innslag) {
+            var link = '/ukmid/pamelding/' + innslag.kommune_id + '-' + innslag.home.id + '/' + innslag.type.key + '/' + innslag.id + '/';
+            window.location.href = link;
+            
+            // Refresh after revisitong (back button)
+            window.addEventListener( "pageshow", function ( event ) {
+                var historyTraversal = event.persisted || 
+                                       ( typeof window.performance != "undefined" && 
+                                            window.performance.navigation.type === 2 );
+                if ( historyTraversal ) {
+                  // Handle page restore.
+                  window.location.reload();
+                }
+            });
+            
         }
     },
     template : /*html*/`
@@ -96,11 +112,9 @@ var innslagComponent = Vue.component('innslag-component', {
                     </div>
                     <div class="buttons">
                         <!-- /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/ -->
-                        <a :href="['/ukmid/pamelding/' + innslag.innslag.kommune_id + '-' + innslag.innslag.home.id + '/' + innslag.innslag.type.key + '/' + innslag.innslag.id + '/']">
-                            <button class="small-button-style hover-button-delta mini">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
-                            </button>
-                        </a>
+                        <button @click="openInnslag(innslag.innslag)" class="small-button-style hover-button-delta mini">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="fill: #fff; transform: ;msFilter:;"><path d="m18.988 2.012 3 3L19.701 7.3l-3-3zM8 16h3l7.287-7.287-3-3L8 13z"></path><path d="M19 19H8.158c-.026 0-.053.01-.079.01-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .896-2 2v14c0 1.104.897 2 2 2h14a2 2 0 0 0 2-2v-8.668l-2 2V19z"></path></svg>
+                        </button>
                         <button @click="showDelete(innslag.innslag)" class="small-button-style hover-button-delta mini go-to-meld-av">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="2.5 0 25 25" style="fill: #fff; transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
                         </button>
