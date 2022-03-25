@@ -35,9 +35,10 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             var button = fylkeEl.parent().children('.card-header-fylke').children('button');
             if(button.hasClass('halv')) {
                 fylkeEl.collapse('hide', 100);
+                button.addClass('open-hard');
                 fylkeEl.off('hidden.bs.collapse').on('hidden.bs.collapse', function () {
                     fylkeEl.collapse('show');
-                    button.removeClass('halv');
+                    button.removeClass('halv open-hard');
                     fylkeEl.find('.kommuner-i-fylke .card-body-kommune.search').css('display', 'flex');
                     fylkeEl.off('hidden.bs.collapse');
                 })

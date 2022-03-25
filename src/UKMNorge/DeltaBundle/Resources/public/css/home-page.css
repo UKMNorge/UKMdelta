@@ -333,6 +333,9 @@
 .btn-accordion-root.collapsed .caret-flip {
     transform: rotate(0);
 }
+.btn-accordion-root.open-hard .caret-flip {
+    transform: rotate(90deg) !important;
+}
 #alleFylkerOgKommuner {
     margin-top: 60px;
 }
