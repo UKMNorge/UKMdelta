@@ -30,8 +30,22 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             innslagType.initNew();
 
         },
+        fylkeClicked : (fylke) => {
+            var fylkeEl = $('#collapseKommuneForFylke' + fylke.id);
+            var button = fylkeEl.parent().children('.card-header-fylke').children('button');
+            if(button.hasClass('halv')) {
+                fylkeEl.collapse('hide', 100);
+                fylkeEl.off('hidden.bs.collapse').on('hidden.bs.collapse', function () {
+                    fylkeEl.collapse('show');
+                    button.removeClass('halv');
+                    fylkeEl.find('.kommuner-i-fylke .card-body-kommune.search').css('display', 'flex');
+                    fylkeEl.off('hidden.bs.collapse');
+                })
+            }
+        },
         initFilter : () => {
             var callbackFilter = (numShown) => {
+                console.log(numShown);
                 if($('#searchInput').val().length < 3) {
                     $('.panel-body.fylke-body.search').removeClass('show');
                     $('.accordion-by .card-header-fylke .btn-link').removeClass('halv');
@@ -61,6 +75,8 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             $('#searchInput').fastLiveFilter('#alleFylkerOgKommuner, .search-kommune', {
                 callback: callbackFilter}
             );
+
+            // Disable clicks
         },
         async getArrangement(kommune) {
             kommune.arrangementer = await spaInteraction.runAjaxCall('get_arrangementer_i_kommune/' + kommune.id, 'GET', {});
@@ -72,7 +88,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         <div id="alleFylkerOgKommuner" class="alle-fylker">
             <div v-for="fylke in fylker" class="accordion panel-group accordion-item accordion-by" id="accordionBy">
                 <div class="card panel panel-default">
-                    <div class="panel-heading card-header accordion-header-root card-header-fylke">
+                    <div @click="fylkeClicked(fylke)" class="panel-heading card-header accordion-header-root card-header-fylke">
                         <button class="btn btn-link btn-block fylke-btn btn-accordion-root text-left collapsed hover-button-delta" data-toggle="collapse" data-parent="#accordionBy" v-bind:href="['#collapseKommuneForFylke' + fylke.id]">
                             <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: rgb(160, 174, 192);">
                                 <path d="M9 19L17 12 9 5z"></path>
@@ -82,7 +98,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                     </div>
 
                     <div :id="['collapseKommuneForFylke' + fylke.id]" :f_id="['#' + fylke.id]" class="panel-body accordion-body-root fylke-body arrangementer-visning search collapse">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default kommuner-i-fylke">
                             <div v-for="kommune in fylke.kommuner">
                                 <div @click="getArrangement(kommune)" class="accordion-sub kommune-accordion search-kommune collapsed" :k_id="kommune.id" data-toggle="collapse" data-parent="#accordionKommune" :href="['#collapseArrangementer' + kommune.id]">
                                     <div class="panel-heading accordion-header-sub card-body card-body-kommune search">
