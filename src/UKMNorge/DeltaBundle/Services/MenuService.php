@@ -57,26 +57,14 @@ class MenuService {
 					'url' => $router->generate('fos_user_change_password'),
 					'title' => 'Bytt passord'
 				];
-
-				$menu['pages'][] = [
-					'id' => 'loggut',
-					'url' => $router->generate('fos_user_security_logout'),
-					'title' => 'Logg ut'
-				];
 				
-				$menu['pages'][] = [
-					'id' => 'kontakt',
-					'url' => $router->generate('ukm_delta_ukmid_support'),
-					'title' => 'Support',
-				];
-
+				
 				$menu['pages'][] = [
 					'id' => 'endrefotoreservasjon',
 					'url' => $router->generate('ukm_delta_endre_fotoreservasjon'),
 					'title' => 'Endre fotoreservasjon',
 				];
 
-				
 				if( empty( $user->getFacebookId() ) ) {
 					$menu['pages'][] = [
 						'id' => 'facebook',
@@ -84,6 +72,19 @@ class MenuService {
 						'title' => 'Koble til facebook'
 					];
 				}
+
+				$menu['pages'][] = [
+					'id' => 'kontakt',
+					'url' => $router->generate('ukm_delta_ukmid_support'),
+					'title' => 'Support',
+				];
+
+
+				$menu['pages'][] = [
+					'id' => 'loggut',
+					'url' => $router->generate('fos_user_security_logout'),
+					'title' => 'Logg ut'
+				];
 			}
 			
 			return $menu;
