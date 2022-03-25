@@ -108,16 +108,7 @@ var allInnslag = new Vue({
             return getCurrentDomain();
         },
         redirectToInnslagOverview : function(innslag) {
-            window.addEventListener( "pageshow", function ( event ) {
-                var historyTraversal = event.persisted || 
-                                       ( typeof window.performance != "undefined" && 
-                                            window.performance.navigation.type === 2 );
-                if ( historyTraversal ) {
-                  // Handle page restore.
-                  window.location.reload();
-                }
-            });
-
+            refreshOnBack();
             var link = '/ukmid/pamelding/' + innslag.kommune_id + '-' + innslag.home.id + '/' + innslag.type.key + '/' + innslag.id + '/';
             window.location.href = link;
         }

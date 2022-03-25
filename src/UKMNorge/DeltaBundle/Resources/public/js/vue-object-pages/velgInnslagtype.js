@@ -40,8 +40,9 @@ var innslagsTypeComponent = Vue.component('type-innslag-component', {
         createInnslag : async function(type) {
             try{
                 var res = await spaInteraction.runAjaxCall('new_innslag/', 'POST', {k_id : this.k_id, pl_id : this.pl_id, type : type.key})
+                // Refresh if the user retruns back (with back button)
+                refreshOnBack();
                 window.location.href = res.path;
-
             }catch(err) {
                 // Error
                 console.error(err);

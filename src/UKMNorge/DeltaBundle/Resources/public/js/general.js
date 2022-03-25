@@ -31,6 +31,18 @@ var getDayNorwegian = (dayInt) => {
     return day[dayInt];
 }
 
+var refreshOnBack = () => {
+    window.addEventListener( "pageshow", function ( event ) {
+        var historyTraversal = event.persisted || 
+                               ( typeof window.performance != "undefined" && 
+                                    window.performance.navigation.type === 2 );
+        if ( historyTraversal ) {
+          // Handle page restore.
+          window.location.reload();
+        }
+    });
+}
+
 var getCurrentDomain = () => {
     var hostname = window.location.hostname;
     return hostname.split('.')[1] + '.' + hostname.split('.')[2];

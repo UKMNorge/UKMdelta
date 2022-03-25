@@ -7,17 +7,25 @@
     header-under-text="Kult å se deg tilbake her igjen! Fortsett der du slapp med å trykke på knappen under!">
 	
     <div class="buttons-paamelding">
-		<div v-if="alle_innslag && alle_innslag.length > 0 && alle_innslag[1][1].length > 0">
+		<div class="display-flex" v-if="alle_innslag && alle_innslag.length > 0 && alle_innslag[1][1].length > 0">
 			<button @click="continueLastInnslag" class="round-style-button paamelding">
 				<span class="text">Fortsett der du slapp</span>
 				<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">
 					<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
 				</svg>
 			</button>
+			<button onclick='director.openPage("pageMeldPaaArrangement");' class="round-style-button mini">
+				<span class="">+</span>
+			</button>
 		</div>
-		<button onclick='director.openPage("pageMeldPaaArrangement");' class="round-style-button mini">
-			<span class="">+</span>
-		</button>
+		<div v-else>
+			<button onclick='director.openPage("pageMeldPaaArrangement");' class="round-style-button paamelding">
+				<span class="text">Start en ny påmelding</span>
+				<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">
+					<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+				</svg>
+			</button>
+		</div>
 	</div>
 
 	{% set fullforte_paameldinger = alle_innslag|filter(innslag => innslag.erPameldt() and not innslag.getHome().erFerdig()) %}

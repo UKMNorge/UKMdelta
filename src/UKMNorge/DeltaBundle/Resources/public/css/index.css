@@ -10,6 +10,9 @@
 .opacity-hidden {
     opacity: 0 !important;
 }
+.display-flex {
+    display: flex;
+}
 body {
     background-color: #f7fafc;
 }
