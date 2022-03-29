@@ -133,11 +133,11 @@ var allePersoner = Vue.component('innslag-persons', {
         _nullTittel : function(id = 'new', phantom = false) {
             return {
                 id : id,
-                fornavn : null,
-                etternavn : null,
-                mobil : null,
-                alder : null,
-                rolle : null,
+                fornavn : '',
+                etternavn : '',
+                mobil : '',
+                alder : '',
+                rolle : '',
                 phantom : phantom,
                 saving : false,
                 savingStatus : 0, // 0 saved, 1 saving, -1 error
@@ -281,58 +281,58 @@ var allePersoner = Vue.component('innslag-persons', {
                         <div class="form-new-user">
                             
                             <!-- Fornavn -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fornavn || !newPerson.fornavn.length }">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fornavn || !newPerson.fornavn.length, 'open' : newPerson.fornavn.length > 0 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input v-model="newPerson.fornavn" id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
+                                <input v-model:value="newPerson.fornavn" id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
                             </div>
 
                             <!-- Etternavn -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.etternavn || !newPerson.etternavn.length }">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.etternavn || !newPerson.etternavn.length, 'open' : newPerson.etternavn.length > 0 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
                                         <span class="text">Etternavn</span>
                                     </div>
                                 </div>
-                                <input v-model="newPerson.etternavn" id="etternavnNewPerson" type="text" class="input input-new-person" name="etternavn">
+                                <input v-model:value="newPerson.etternavn" id="etternavnNewPerson" type="text" class="input input-new-person" name="etternavn">
                             </div>
 
                             <!-- Alder -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.alder || !newPerson.alder.length }">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.alder || !newPerson.alder.length, 'open' : newPerson.alder.length > 0 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
                                         <span class="text">Alder</span>
                                     </div>
                                 </div>
-                                <input v-model="newPerson.alder" id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
+                                <input v-model:value="newPerson.alder" id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
                             </div>
 
                             <!-- Mobilnummer -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.mobil || !newPerson.mobil.length }">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.mobil || !newPerson.mobil.length, 'open' : newPerson.mobil.length > 0 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
                                         <span class="text">Mobilnummer</span>
                                     </div>
                                 </div>
-                                <input v-model="newPerson.mobil" id="mobilNewPerson" type="text" maxlength="8" class="input input-new-person" name="mobil">
+                                <input v-model:value="newPerson.mobil" id="mobilNewPerson" type="text" maxlength="8" class="input input-new-person" name="mobil">
                             </div>
 
                             <!-- Rolle -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.rolle || !newPerson.rolle.length }">
+                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.rolle || !newPerson.rolle.length, 'open' : newPerson.rolle.length > 0 }">
                                 <div class="overlay">
                                     <div class="info">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="M20 6h-3V4c0-1.103-.897-2-2-2H9c-1.103 0-2 .897-2 2v2H4c-1.103 0-2 .897-2 2v4h5v-2h2v2h6v-2h2v2h5V8c0-1.103-.897-2-2-2zM9 4h6v2H9V4zm8 11h-2v-2H9v2H7v-2H2v6c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2v-6h-5v2z"></path></svg>
                                         <span class="text">Rolle i gruppa</span>
                                     </div>
                                 </div>
-                                <input v-model="newPerson.rolle" id="rolleNewPerson" type="text" class="input input-new-person" name="rolle">
+                                <input v-model:value="newPerson.rolle" id="rolleNewPerson" type="text" class="input input-new-person" name="rolle">
                             </div>
 
                         </div>
