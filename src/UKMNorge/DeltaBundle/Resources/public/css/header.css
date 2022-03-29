@@ -74,6 +74,23 @@
     max-height: 230px;
     margin: auto 0 auto auto;
 }
+.modal-content {
+    border: none;
+}
+.modal-header {
+    color: #A0AEC0;
+    background-color: #00000008;
+    border: none;
+}
+.modal-title {
+    color: #A0AEC0;
+    font-weight: 400;
+}
+.modal-body {
+    color: #1A202C;
+    font: normal normal 300 13px/15px Roboto;
+    font-size: 16px;
+}
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;

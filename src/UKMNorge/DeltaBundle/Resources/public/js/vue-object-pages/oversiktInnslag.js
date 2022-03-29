@@ -444,7 +444,7 @@ var oversiktInnslag = new Vue({
                 }, 1000);
             }
         },
-        saveAndFinish : async function() {
+        saveAndFinish : async function(event) {
             try{
                 var res = await spaInteraction.runAjaxCall('save_innslag/', 'POST', {
                     k_id : this.innslag.kommune_id,
@@ -454,7 +454,7 @@ var oversiktInnslag = new Vue({
                     navn : this.innslag.navn,
                     beskrivelse : this.innslag.beskrivelse,
                     sjanger : this.innslag.sjanger ? this.innslag.sjanger : null,
-                });
+                }, event);
     
                 if(res.saved == true) {
                     window.location.href = res.path;
@@ -467,8 +467,29 @@ var oversiktInnslag = new Vue({
             }
 
         },
-        deleteInnslag : async function() {
-            alert('Delete innslag');
+        deleteInnslag : function(innslag) {
+            var buttons = [{
+                name : 'Slett',
+                class : "aaa",
+                callback : async ()=> {
+                    try{
+                        var res = await spaInteraction.runAjaxCall('remove_innslag/', 'POST', {pl_id : innslag.context.monstring.id, b_id : innslag.id})
+                        if(res) {
+                            // Dont allow the user to go back
+                            refreshOnBack(() => {
+                                window.location.href = '/';
+                            });
+                            // Redirect user to home page
+                            window.location.href = '/';
+                        }
+                    }catch(err) {
+                        // Error
+                        console.error(err);
+                    }
+                }}
+            ];
+        
+            spaInteraction.showDialog('Vil du melde av?', 'Vil du virkelig slette dette innslaget?', buttons);
         }
     },
     components : {
