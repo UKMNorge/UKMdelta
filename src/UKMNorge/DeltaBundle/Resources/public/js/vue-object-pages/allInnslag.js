@@ -108,7 +108,9 @@ var allInnslag = new Vue({
             return getCurrentDomain();
         },
         redirectToInnslagOverview : function(innslag) {
-            refreshOnBack();
+            refreshOnBack(() => {
+                allInnslag.updateData();
+            });
             var link = '/ukmid/pamelding/' + innslag.kommune_id + '-' + innslag.home.id + '/' + innslag.type.key + '/' + innslag.id + '/';
             window.location.href = link;
         }
