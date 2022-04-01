@@ -32,6 +32,9 @@ var allInnslag = new Vue({
     async mounted() {
         this.updateData();
     },
+    updated() {
+        $('button.tooltip-btn').tooltip();
+    },
     methods : {
         update : function() {
             // allInnslag.$children[0].updateData();
@@ -59,8 +62,6 @@ var allInnslag = new Vue({
                     innslag.innslag.deleted = false;
                     innslag.innslag.showDelete = false;
                 }
-
-                console.log(this.alle_innslag);
             }
         },
         _alleInnslags : function() {
@@ -101,6 +102,7 @@ var allInnslag = new Vue({
             if(!this.isEmpty()) {
                 if(this.alle_innslag[1][1].length > 0) {
                     this.redirectToInnslagOverview(this.alle_innslag[1][1][0].innslag);
+                    // Check if arrangement frist is available
                 }
             }
         },
