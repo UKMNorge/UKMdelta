@@ -40,7 +40,7 @@
 			<!-- ingen innslag -->
 			<div v-if="isEmpty(1)">
 				<div class="no-innslag-div">
-					<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.png']" class="{{ isPaameldingNull ? '' : 'hide' }}" />
+					<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.gif']" class="{{ isPaameldingNull ? '' : 'hide' }}" />
 				</div>
 			</div>
 			<div v-else v-for="innslagCategory in alle_innslag">
