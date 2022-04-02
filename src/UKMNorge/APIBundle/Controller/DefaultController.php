@@ -164,7 +164,7 @@ class DefaultController extends Controller
             );
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-            $response->setData($e->getMessage());
+            $response->setData(['errorMessage' => $e->getMessage()]);
         }
 
         return $response;

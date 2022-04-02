@@ -431,7 +431,7 @@ var oversiktInnslag = new Vue({
                     
                     // element has not been found, show message
                     if(el.length < 1) {
-                        spaInteraction.showMessage(mItem.beskrivelse, 'error');
+                        spaInteraction.showMessage(mItem.navn, mItem.beskrivelse, 1);
                     }
 
                     forsteMangler = forsteMangler != null ? forsteMangler : el;
