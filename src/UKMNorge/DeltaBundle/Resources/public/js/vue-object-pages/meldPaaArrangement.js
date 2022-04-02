@@ -162,14 +162,14 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                         <p>Beklager, vi har ingen arrangement for #{ kommune.navn } enda.</p>
                                         <a class="small-button-style kontakt-oss-btn hover-button-delta" :href="kommune.link">Kontakt oss</a>
                                     </div>
-                                    <div v-show="!kommune.arrangementer_loaded" class="panel-inner phantom-arrangement">
+                                    <div v-for='randomNumber in (Math.floor(Math.random() * 3) + 1)' v-if="!kommune.arrangementer_loaded" class="panel-inner phantom-arrangement">
                                         <div class="panel-group" id="accordionKommune">
-                                            <div class="panel panel-default arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
+                                            <div class="panel panel-default arrangement-default accordion-panel-child" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
                                                 
-                                                <div class="panel-heading card-body accordion-header-child card-body-arrangement">
+                                                <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa">
                                                     <span>
                                                         <span class="phantom-loading">Arrangement navn</span>
-                                                        <p class="info-label phantom-loading">Onsdag 9. Desember, 2020</p>
+                                                        <p class="info-label phantom-loading">dddd 0. mmmmmm, åååå</p>
                                                     </span>
                                                     <svg class="phantom-loading" style="height: 24px;width: auto; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                         <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
