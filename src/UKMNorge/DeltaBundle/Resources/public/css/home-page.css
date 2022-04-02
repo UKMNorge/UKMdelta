@@ -381,6 +381,32 @@
 .accordion-item .card-body-arrangement.meldpaa {
     background: #f7f8fb;
 }
+#mainMessageDiv {
+    height: auto;
+}
+#mainMessageDiv .modal-dialog .modal-content {
+    border: solid 1px transparent;
+}
+#mainMessageDiv .modal-dialog.error .modal-content {
+    border: solid 1px #ff6584c2;
+}
+#mainMessageDiv .modal-dialog.error .modal-content .modal-header {
+    background: #ff6584c2;
+}
+#mainMessageDiv .modal-dialog.error .modal-content .modal-header .modal-title {
+    color: #fff !important;
+}
+
+#mainMessageDiv .modal-dialog.warning .modal-content {
+    border: solid 1px #ffeeba;
+}
+#mainMessageDiv .modal-dialog.warning .modal-content .modal-header {
+    background: #fff3cd;
+}
+#mainMessageDiv .modal-dialog.warning .modal-content .modal-header .modal-title {
+    color: #856404 !important;
+}
+
 @media(max-width: 575px) {
     .meld-av-bilde img {
         max-height: 80px;
