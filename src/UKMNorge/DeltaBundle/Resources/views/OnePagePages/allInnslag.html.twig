@@ -38,9 +38,9 @@
 		{% endif %}
 		<div>
 			<!-- ingen innslag -->
-			<div v-if="isEmpty(1)">
+			<div v-if="alle_innslag.length < 1 || (alle_innslag[0][1].length < 1 && alle_innslag[1][1].length < 1)">
 				<div class="no-innslag-div">
-					<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.gif']" class="{{ isPaameldingNull ? '' : 'hide' }}" />
+					<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.gif']" :class="{ 'hide' : !loaded }" />
 				</div>
 			</div>
 			<div v-else v-for="innslagCategory in alle_innslag">

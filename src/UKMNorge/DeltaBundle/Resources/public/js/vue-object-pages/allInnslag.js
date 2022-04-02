@@ -27,7 +27,8 @@ var allInnslag = new Vue({
     delimiters: ['#{', '}'], // For å bruke det på Twig
     el: '#pageAllInnslag',
     data: {
-        alle_innslag : []
+        alle_innslag : [],
+        loaded : false
     },
     async mounted() {
         this.updateData();
@@ -58,17 +59,17 @@ var allInnslag = new Vue({
                 ]
 
                 for(var innslag of this._alleInnslags()) {
-                    console.log(innslag);
                     innslag.innslag.deleted = false;
                     innslag.innslag.showDelete = false;
                 }
+                this.loaded = true;
             }
         },
         _alleInnslags : function() {
             return this.alle_innslag[0][1].concat(this.alle_innslag[1][1]);
         },
         // Is innslag(s) empty
-        isEmpty : function(arg) {
+        isEmpty : function() {
             if(!this.alle_innslag || this.alle_innslag.length < 1) return false;
             return this.alle_innslag[0][1].length < 1 && this.alle_innslag[1][1].length < 1;
         },
