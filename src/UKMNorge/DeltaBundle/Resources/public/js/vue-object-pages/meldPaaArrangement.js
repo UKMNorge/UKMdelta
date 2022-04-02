@@ -46,10 +46,9 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         },
         initFilter : () => {
             var callbackFilter = (numShown) => {
-                console.log(numShown);
                 if($('#searchInput').val().length < 3) {
                     $('.panel-body.fylke-body.search').removeClass('show');
-                    $('.accordion-by .card-header-fylke .btn-link').removeClass('halv');
+                    $('.accordion-by .card-header-fylke .btn-link').removeClass('halv').addClass('collapsed');
                 }
                     for(let el of $('#alleFylkerOgKommuner .accordion .card .fylke-body.search')) {
                         if($(el).parent().parent().css('display') != 'none') {
@@ -64,7 +63,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                             }
                             else if(count > 0 && count < 15) {
                                 $(el).collapse('show');
-                                $(el).parent().find('.fylke-btn').addClass('halv');
+                                $(el).parent().find('.fylke-btn').removeClass('collapsed').addClass('halv');
                             }
                         }
                     }
