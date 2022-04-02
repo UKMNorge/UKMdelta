@@ -10,9 +10,11 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
     async mounted() {
         var fylker = await spaInteraction.runAjaxCall('get_all_fylker_og_kommuner/', 'GET', {});
         this.fylker = fylker;
+        $(document).ready( ()=> {
+            this.initFilter();
+        });
     },
     updated() {
-        this.initFilter();
         inputDeltaFix();
     },
     methods : {
