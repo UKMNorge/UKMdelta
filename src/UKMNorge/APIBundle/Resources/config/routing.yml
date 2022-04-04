@@ -84,7 +84,7 @@ ukm_api_save_innslag:
 # Get arrangement
 ukm_api_get_arrangement:
     path: /api/get_arrangement/{arrangementId}
-    defaults: { _controller: UKMAPIBundle:Default:getArrangement }
+    defaults: { _controller: UKMAPIBundle:Arrangement:getArrangement }
     requirements: 
         arrangementId: ([0-9]{1,10})
     methods: [GET]
@@ -92,7 +92,7 @@ ukm_api_get_arrangement:
 # Get arrangementer i kommune
 ukm_api_get_arrangementer_i_kommune:
     path: /api/get_arrangementer_i_kommune/{k_id}
-    defaults: { _controller: UKMAPIBundle:Default:getArrangementIKommune }
+    defaults: { _controller: UKMAPIBundle:Arrangement:getArrangementIKommune }
     requirements: 
         k_id: ([0-9]{1,4})
     methods: [GET]
