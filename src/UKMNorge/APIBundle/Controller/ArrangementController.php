@@ -25,7 +25,7 @@ class ArrangementController extends SuperController {
             $arrangement = $innslagService->hentArrangement($arrangementId);
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-            $response->setData($e->getMessage());
+            $response->setData(['errorMessage' => $e->getMessage()]);
             return $response;
         }
 
@@ -69,7 +69,7 @@ class ArrangementController extends SuperController {
             $response->setData($arrangementer_arr);
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
-            $response->setData($e->getMessage());
+            $response->setData(['errorMessage' => $e->getMessage()]);
             return $response;
         }
 
