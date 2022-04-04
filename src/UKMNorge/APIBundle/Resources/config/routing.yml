@@ -16,19 +16,19 @@ ukm_api_poststed:
 # Get single innslag
 ukm_api_get_innslag:
     path: /api/get_innslag/{innslag_id}
-    defaults: { _controller: UKMAPIBundle:Default:getSingleInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:getSingleInnslag }
     methods: [GET]
 
 # Get innslag typer
 ukm_api_get_all_innslag:
     path: /api/get_all_innslag/
-    defaults: { _controller: UKMAPIBundle:Default:getAllInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:getAllInnslag }
     methods: [GET]
 
 # Opprett innslag
 ukm_api_new_innslag:
     path: /api/new_innslag/
-    defaults: { _controller: UKMAPIBundle:Default:newInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:newInnslag }
     requirements:
         k_id: ([0-9]{1,4})
         pl_id: ([0-9]{1,5})
@@ -38,7 +38,7 @@ ukm_api_new_innslag:
 # Edit innslag
 ukm_api_edit_innslag:
     path: /api/edit_innslag/
-    defaults: { _controller: UKMAPIBundle:Default:editInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:editInnslag }
     requirements: 
         b_id: ([0-9]{1,11})
         navn: ([^0-9]+) 
@@ -50,7 +50,7 @@ ukm_api_edit_innslag:
 # Fjern innslag
 ukm_api_remove_innslag:
     path: /api/remove_innslag/
-    defaults: { _controller: UKMAPIBundle:Default:removeInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:removeInnslag }
     requirements: 
         pl_id: ([0-9]{1,5})
         b_id: ([0-9]{1,11})
@@ -59,7 +59,7 @@ ukm_api_remove_innslag:
 # Get innslag typer
 ukm_api_get_innslag_types:
     path: /api/get_innslag_types/{pl_id}
-    defaults: { _controller: UKMAPIBundle:Default:getInnslagTypes }
+    defaults: { _controller: UKMAPIBundle:Innslag:getInnslagTypes }
     requirements: 
         pl_id: ([0-9]{1,5})
     methods: [GET]
@@ -67,7 +67,7 @@ ukm_api_get_innslag_types:
 # Lagre innslag
 ukm_api_save_innslag:
     path: /api/save_innslag/
-    defaults: { _controller: UKMAPIBundle:Default:saveInnslag }
+    defaults: { _controller: UKMAPIBundle:Innslag:saveInnslag }
     requirements:
         k_id: ([0-9]{1,4})
         pl_id: ([0-9]{1,5})
