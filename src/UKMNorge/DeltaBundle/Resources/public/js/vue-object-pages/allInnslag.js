@@ -116,6 +116,18 @@ var allInnslag = new Vue({
             });
             var link = '/ukmid/pamelding/' + innslag.kommune_id + '-' + innslag.home.id + '/' + innslag.type.key + '/' + innslag.id + '/';
             window.location.href = link;
+        },
+        startNyPaamelding : async function() {
+            // redirecting first because it is unlikely that the check will return false
+            // user provides data about age and other just one time, therefor waiting for the call everytime is bad idea
+            director.openPage("pageMeldPaaArrangement");
+
+            // If the user check will return false, the user will be redirected to the page to provide the missing data.
+            var checkInfo = await spaInteraction.runAjaxCall('check_info', 'GET', {});
+            if(checkInfo.validation == false) {
+                window.location.href = checkInfo.path;
+                director.openPage("pageMeldPaaArrangement");
+            }
         }
     }
 })
