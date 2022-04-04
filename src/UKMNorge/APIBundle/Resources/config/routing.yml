@@ -101,7 +101,7 @@ ukm_api_get_arrangementer_i_kommune:
 ### ------------------------- Fylker og Kommune -------------------------
 ukm_api_get_alle_fylker_og_kommuner:
     path: /api/get_all_fylker_og_kommuner/
-    defaults: { _controller: UKMAPIBundle:Default:getAlleFylkerOgKommuner }
+    defaults: { _controller: UKMAPIBundle:FylkeKommune:getAlleFylkerOgKommuner }
     methods: [GET]    
 
 
@@ -110,13 +110,13 @@ ukm_api_get_alle_fylker_og_kommuner:
 # Get alle fylker
 ukm_api_get_alle_fylker:
     path: /api/get_all_fylker/
-    defaults: { _controller: UKMAPIBundle:Default:getAlleFylker }
+    defaults: { _controller: UKMAPIBundle:FylkeKommune:getAlleFylker }
     methods: [GET]
 
 # Get fylke med id
 ukm_api_get_fylke:
     path: /api/get_fylke/{fylke_id}
-    defaults: { _controller: UKMAPIBundle:Default:getFylke }
+    defaults: { _controller: UKMAPIBundle:FylkeKommune:getFylke }
     requirements: 
         fylke_id: ([0-9]{1,5})
     methods: [GET]
@@ -127,7 +127,7 @@ ukm_api_get_fylke:
 # Get alle fylker
 ukm_api_get_kommuner_i_fylke:
     path: /api/get_kommuner_i_fylke/{fylke_id}
-    defaults: { _controller: UKMAPIBundle:Default:getAlleKommunerIFylke }
+    defaults: { _controller: UKMAPIBundle:FylkeKommune:getAlleKommunerIFylke }
     requirements: 
         fylke_id: ([0-9]{1,4})
     methods: [GET]
