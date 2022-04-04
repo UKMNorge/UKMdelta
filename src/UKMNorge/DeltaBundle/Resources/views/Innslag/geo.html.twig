@@ -80,6 +80,14 @@
 {% endblock %}
 
 {% block delta_content %}
+    <script>
+        // OBS: Denne siden er ikke i bruk lenger derfor redirektes til den nye siden. Den nye siden bruker VueJS
+        if(director) {
+            var redirectPath = String("{{ url('ukm_delta_ukmid_homepage') }}") + "?page=pageMeldPaaArrangement";
+            window.location.href = redirectPath;
+        }
+    </script>
+
     <div class="container">
         <div class="row">
             <div class="col-12">
