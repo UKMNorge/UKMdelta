@@ -138,7 +138,7 @@ ukm_api_get_kommuner_i_fylke:
 # Get alle personer i ett innslag
 ukm_api_get_all_persons:
     path: /api/get_all_persons/{b_id}
-    defaults: { _controller: UKMAPIBundle:Default:getAllPersons }
+    defaults: { _controller: UKMAPIBundle:Person:getAllPersons }
     requirements: 
         b_id: ([0-9]{1,11})
     methods: [GET]
@@ -146,7 +146,7 @@ ukm_api_get_all_persons:
 # New person
 ukm_api_new_person:
     path: /api/new_person/
-    defaults: { _controller: UKMAPIBundle:Default:createNewPerson }
+    defaults: { _controller: UKMAPIBundle:Person:createNewPerson }
     requirements: 
         k_id: ([0-9]{1,4})
         pl_id: ([0-9]{1,5})
@@ -164,7 +164,7 @@ ukm_api_new_person:
 # Edit person
 ukm_api_edit_person:
     path: /api/edit_person/
-    defaults: { _controller: UKMAPIBundle:Default:editPerson }
+    defaults: { _controller: UKMAPIBundle:Person:editPerson }
     requirements: 
         b_id: ([0-9]{1,11})
         p_id: ([0-9]{1,5})
@@ -179,7 +179,7 @@ ukm_api_edit_person:
 # Remove person from innslag
 ukm_api_remove_person:
     path: /api/remove_person/
-    defaults: { _controller: UKMAPIBundle:Default:removePerson }
+    defaults: { _controller: UKMAPIBundle:Person:removePerson }
     requirements: 
         k_id: ([0-9]{1,4})
         pl_id: ([0-9]{1,5})
