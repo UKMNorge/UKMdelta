@@ -218,3 +218,10 @@ ukm_api_delete_tittel:
         t_id: ([0-9]{1,4})
     methods: [DELETE]
     
+### ------------------------- General -------------------------
+# Get alle titler i ett innslag
+ukm_api_check_info:
+    path: /api/check_info/
+    defaults: { _controller: UKMAPIBundle:General:checkInfo }
+    requirements: 
+    methods: [GET]

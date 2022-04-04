@@ -2842,12 +2842,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "4c4fb8951297a3a13d5ed6340739db979f23e847"
+                "reference": "1dd5c10e73598fcdd4ba5b1b93872f7d23e894d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4c4fb8951297a3a13d5ed6340739db979f23e847",
-                "reference": "4c4fb8951297a3a13d5ed6340739db979f23e847",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/1dd5c10e73598fcdd4ba5b1b93872f7d23e894d4",
+                "reference": "1dd5c10e73598fcdd4ba5b1b93872f7d23e894d4",
                 "shasum": ""
             },
             "require": {
@@ -2914,7 +2914,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-15T08:46:17+00:00"
+            "time": "2022-03-26T11:00:29+00:00"
         },
         {
             "name": "ukmnorge/design",
@@ -2922,12 +2922,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/UKMDesign.git",
-                "reference": "cb546bec61c95f04607597fbf86d9dc92e5f3360"
+                "reference": "0056338e38b4e2d37d61205dc2f36cbd8c153c8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKMNorge/UKMDesign/zipball/cb546bec61c95f04607597fbf86d9dc92e5f3360",
-                "reference": "cb546bec61c95f04607597fbf86d9dc92e5f3360",
+                "url": "https://api.github.com/repos/UKMNorge/UKMDesign/zipball/0056338e38b4e2d37d61205dc2f36cbd8c153c8d",
+                "reference": "0056338e38b4e2d37d61205dc2f36cbd8c153c8d",
                 "shasum": ""
             },
             "require": {
@@ -2960,7 +2960,7 @@
                 "issues": "https://github.com/UKMNorge/UKMDesign/issues",
                 "source": "https://github.com/UKMNorge/UKMDesign/tree/master"
             },
-            "time": "2022-02-23T10:55:18+00:00"
+            "time": "2022-04-01T12:00:10+00:00"
         },
         {
             "name": "ukmnorge/designsymfony2",
@@ -3014,12 +3014,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKMNorge/ukm-onepage-js.git",
-                "reference": "650342c3e7d03d35103036155442a034dc627c39"
+                "reference": "560add171e7f60c8714db77f5f2eba588f1b0939"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKMNorge/ukm-onepage-js/zipball/650342c3e7d03d35103036155442a034dc627c39",
-                "reference": "650342c3e7d03d35103036155442a034dc627c39",
+                "url": "https://api.github.com/repos/UKMNorge/ukm-onepage-js/zipball/560add171e7f60c8714db77f5f2eba588f1b0939",
+                "reference": "560add171e7f60c8714db77f5f2eba588f1b0939",
                 "shasum": ""
             },
             "default-branch": true,
@@ -3043,7 +3043,7 @@
                 "issues": "https://github.com/UKMNorge/ukm-onepage-js/issues",
                 "source": "https://github.com/UKMNorge/ukm-onepage-js/tree/main"
             },
-            "time": "2022-01-17T11:09:43+00:00"
+            "time": "2022-03-25T10:26:48+00:00"
         }
     ],
     "packages-dev": [

@@ -23,8 +23,7 @@ use UKMNorge\Geografi\Fylke;
 
 require_once('UKM/Autoloader.php');
 
-class DefaultController extends Controller
-{
+class DefaultController extends SuperController {
 
     public function indexAction($name)
     {
@@ -867,41 +866,6 @@ class DefaultController extends Controller
         }
 
         return $response;
-    }
-
-
-
-    /* ---------------------------- Other Methods ---------------------------- */
-
-    public function hentCurrentUser()
-    {
-        return $this->get('ukm_user')->getCurrentUser();
-    }
-    
-    /**
-     * Hent arrangement
-     *
-     * @param JsonResponse $request
-     * @param array $arr_key
-     * @return array
-     */
-    private function getData($request, $arr_key, $arr_key_optional = []) {
-        $arr_data = [];
-        foreach ($arr_key as $key) {
-            $data = $request->request->get($key);
-            if(empty($data)) {
-                throw new Exception($key . ' is not provided');
-            }
-            $arr_data[$key] = $data;
-        }
-
-        foreach ($arr_key_optional as $optional_key) {
-            $data = $request->request->get($optional_key);
-            $arr_data[$optional_key] = empty($data) ? null : $data;
-        }
-        
-
-        return $arr_data;
     }
     
 }
