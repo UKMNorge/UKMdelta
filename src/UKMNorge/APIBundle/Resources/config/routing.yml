@@ -194,7 +194,7 @@ ukm_api_remove_person:
 # Get alle titler i ett innslag
 ukm_api_get_all_titler:
     path: /api/get_all_titler/{b_id}
-    defaults: { _controller: UKMAPIBundle:Default:getAllTitler }
+    defaults: { _controller: UKMAPIBundle:Title:getAllTitler }
     requirements: 
         b_id: ([0-9]{1,11})
     methods: [GET]
@@ -202,7 +202,7 @@ ukm_api_get_all_titler:
 # Create or edit tittel
 ukm_api_create_or_edit_tittel:
     path: /api/create_or_edit_tittel/
-    defaults: { _controller: UKMAPIBundle:Default:createOrEditTittel }
+    defaults: { _controller: UKMAPIBundle:Title:createOrEditTittel }
     requirements: 
         b_id: ([0-9]{1,11})
         t_id: ([0-9]{1,4})
@@ -212,7 +212,7 @@ ukm_api_create_or_edit_tittel:
 # delete tittel
 ukm_api_delete_tittel:
     path: /api/delete_tittel/
-    defaults: { _controller: UKMAPIBundle:Default:deleteTitle }
+    defaults: { _controller: UKMAPIBundle:Title:deleteTitle }
     requirements: 
         b_id: ([0-9]{1,11})
         t_id: ([0-9]{1,4})
