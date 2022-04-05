@@ -286,6 +286,10 @@
     margin: 0;
     margin-top: 2px;
 }
+.accordion-item span .info-label.venteliste {
+    color: #ff6584c2;
+    margin-top: 0;
+}
 .accordion-sub .accordion-header-sub {
     background: #EDF2F7;
     transition: .2s background;

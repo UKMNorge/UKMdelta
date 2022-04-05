@@ -26,10 +26,35 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             return day + ' ' + date.getDate() + '. ' + month + ', ' + date.getFullYear();
         },
         chooseArrangement : (arrangement) => {
-            director.openPage('pageVelgInnslagType'); 
-            director.addParam('pl_id', arrangement.id);
-            director.addParam('k_id', arrangement.kommuner_id[0]);
-            innslagType.initNew();
+            // Check for free place
+            if(arrangement.maksAntDeltagere != null && !arrangement.ventelisteLedigPlass) {
+                // It is waiting list
+                var buttons = [{
+                    name : 'Sett meg i venteliste',
+                    class : "aaa",
+                    callback : async ()=> {
+                        try{
+                            // var res = await spaInteraction.runAjaxCall('remove_innslag/', 'POST', {pl_id : innslag.context.monstring.id, b_id : innslag.id})
+                            
+                            // Add user to the waiting list
+                            // Get it from prod
+                            if(res) {
+                                
+                            }
+                        } catch(err) {
+                            console.error(err);
+                        }
+                    }}
+                ];
+        
+            spaInteraction.showDialog('Det er ikke ledig plass!', 'Vil du sette deg på venteliste?', buttons);
+            }
+            else {
+                director.openPage('pageVelgInnslagType'); 
+                director.addParam('pl_id', arrangement.id);
+                director.addParam('k_id', arrangement.kommuner_id[0]);
+                innslagType.initNew();
+            }
 
         },
         fylkeClicked : (fylke) => {
@@ -126,6 +151,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                                         <span>
                                                             #{ arrangement.navn }
                                                             <p class="info-label">#{ getDato(arrangement.frist_1) }</p>
+                                                            <p v-if="arrangement.maksAntDeltagere != null && !arrangement.ventelisteLedigPlass" class="info-label venteliste">Venteliste</p>
                                                         </span>
                                                         <svg v-show="arrangement.kommuner_fellesmonstring == null" style="height: 24px;width: 24px; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                             <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
