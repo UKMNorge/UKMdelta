@@ -62,6 +62,15 @@ class ArrangementController extends SuperController {
                 $arrangement->kommuner_fellesmonstring = null;
             }
 
+            if(!$innslagService->ledigPlassPaaArrangement($arrangement)) {
+                $arrangement = (array) $arrangement;
+                $arrangement['ventelisteLedigPlass'] = false;
+            }
+            else {
+                $arrangement = (array) $arrangement;
+                $arrangement['ventelisteLedigPlass'] = null;
+            }
+
             $arrangementer_arr[] = $arrangement;
         }
 

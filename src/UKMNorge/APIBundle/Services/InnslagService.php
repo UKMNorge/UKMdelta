@@ -82,6 +82,21 @@ class InnslagService
     }
 
     /**
+     * Sjekk om et arrangement som har begrenset deltakere har ledig plass
+     *
+     * @param Arrangement $arrangement
+     * @return bool
+     */
+    public function ledigPlassPaaArrangement($arrangement) {
+        if($arrangement->erMaksAntallAktivert()) {
+            if($arrangement->getMaksAntallDeltagere() <= $arrangement->getAntallPersoner()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Opprett en blank tittel for innslaget
      *
      * @param Innslag $innslag
