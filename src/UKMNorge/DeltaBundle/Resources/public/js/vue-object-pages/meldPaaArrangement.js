@@ -26,15 +26,16 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             return day + ' ' + date.getDate() + '. ' + month + ', ' + date.getFullYear();
         },
         chooseArrangement : (arrangement) => {
+            var k_id = arrangement.kommuner_id[0];
             // Check for free place
             if(arrangement.maksAntDeltagere != null && !arrangement.ventelisteLedigPlass) {
                 // It is waiting list
                 var buttons = [{
                     name : 'Sett meg i venteliste',
-                    class : "aaa",
+                    class : "",
                     callback : async ()=> {
                         try{
-                            // var res = await spaInteraction.runAjaxCall('remove_innslag/', 'POST', {pl_id : innslag.context.monstring.id, b_id : innslag.id})
+                            var res = await spaInteraction.runAjaxCall('venteliste_add/', 'POST', {k_id : k_id, pl_id : arrangement.id})
                             
                             // Add user to the waiting list
                             // Get it from prod

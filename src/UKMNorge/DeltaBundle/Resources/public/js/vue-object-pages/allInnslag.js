@@ -28,6 +28,7 @@ var allInnslag = new Vue({
     el: '#pageAllInnslag',
     data: {
         alle_innslag : [],
+        venteliste_innslag : [],
         loaded : false
     },
     async mounted() {
@@ -51,6 +52,7 @@ var allInnslag = new Vue({
         },
         updateData : async function() {
             var innslags = await spaInteraction.runAjaxCall('get_all_innslag', 'GET', {});
+            var ventelisteArrangementer = await spaInteraction.runAjaxCall('venteliste_arrangementer/', 'GET', {});
     
             if(innslags) {
                 this.alle_innslag = [
@@ -58,12 +60,24 @@ var allInnslag = new Vue({
                     ['Ufullstendige påmeldinger', innslags.ikke_fullforte]
                 ]
 
+                if(ventelisteArrangementer.length > 0) {
+                    for(var v_arrangement of ventelisteArrangementer) {
+                        var innslagObj = {innslag: v_arrangement}
+                        innslagObj.innslag.isVenteliste = true;
+                        innslagObj.personer = [];
+
+                        this.alle_innslag[1][1].push(innslagObj);
+                    }
+                }
+
                 for(var innslag of this._alleInnslags()) {
+                    innslag.innslag.isVenteliste = innslag.innslag.isVenteliste == true ? true : false;
                     innslag.innslag.deleted = false;
                     innslag.innslag.showDelete = false;
                 }
                 this.loaded = true;
             }
+
         },
         _alleInnslags : function() {
             return this.alle_innslag[0][1].concat(this.alle_innslag[1][1]);

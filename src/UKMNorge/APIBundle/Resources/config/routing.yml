@@ -96,6 +96,28 @@ ukm_api_get_arrangementer_i_kommune:
     requirements: 
         k_id: ([0-9]{1,4})
     methods: [GET]
+    
+ukm_api_venteliste:
+    path: /api/venteliste_add/
+    defaults: { _controller: UKMAPIBundle:Arrangement:venteliste }
+    requirements:
+        k_id:  ([0-9]{1,4})
+        pl_id: ([0-9]{1,4})
+    methods: [POST]
+ 
+ukm_api_venteliste_fjern:
+    path: /api/venteliste_remove/
+    defaults: { _controller: UKMAPIBundle:Arrangement:removeFromVentelistes }
+    requirements:
+        pl_id: ([0-9]{1,4})
+    methods: [POST]
+
+ukm_api_venteliste_arrangementer:
+    path: /api/venteliste_arrangementer/
+    defaults: { _controller: UKMAPIBundle:Arrangement:getArrangementerVenteliste }
+    requirements:
+    methods: [GET]
+
 
 
 ### ------------------------- Fylker og Kommune -------------------------
