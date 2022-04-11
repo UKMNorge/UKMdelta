@@ -214,9 +214,17 @@ class ArrangementController extends SuperController {
         $response = new JsonResponse();
         $user = $this->hentCurrentUser();
         
+        $arrangementerArray = [];
         try{
+            $user = $this->hentCurrentUser();
             $arrangementer = Venteliste::getArrangementerByPersonId($user->getPameldUser());
-            $response->setData($arrangementer);
+            foreach($arrangementer as $arrang) {
+                $arrangArray = (array) $arrang;
+                $venteliste = new Venteliste($arrang->getId());
+                $arrangArray['ventelistePosisjon'] = $venteliste->hentPersonPosisjon($user->getPameldUser());
+                $arrangementerArray[] = $arrangArray;
+            }
+            $response->setData($arrangementerArray);
             return $response;
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);

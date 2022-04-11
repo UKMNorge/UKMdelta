@@ -117,9 +117,14 @@
 											<div class="img-avatar">
 												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
 											</div>
-											<p class="pos">2</p>
+											<p class="pos">#{innslag.innslag.ventelistePosisjon}</p>
 										</div>
-										<div class="virtual-person">
+										<div :class="{ 'visibility-hidden' : innslag.innslag.ventelistePosisjon < 2 }" class="virtual-person">
+											<div class="img-avatar">
+												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
+											</div>
+										</div>
+										<div :class="{ 'visibility-hidden' : innslag.innslag.ventelistePosisjon < 3 }" class="virtual-person">
 											<div class="img-avatar">
 												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
 											</div>
@@ -128,7 +133,7 @@
 									<div class="fade-effect-venteliste right"></div>
 								</div>
 
-								<span class="total">Du står på venteliste plass nr. 2</span>
+								<span class="total">Du står på venteliste plass nr. #{innslag.innslag.ventelistePosisjon}</span>
 							</div>
 							<div class="slett-paamelding-div" :class="innslag.innslag.showDelete ? 'show-gently' : 'hide-gently'">
 								<button @click="deleteInnslag(innslag.innslag)" v-bind:innslag-id="innslag.innslag.id" class="round-style-button slett-paamelding">

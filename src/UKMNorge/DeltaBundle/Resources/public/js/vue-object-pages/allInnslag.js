@@ -95,10 +95,13 @@ var allInnslag = new Vue({
             var mainDiv = $('.slett-beskjed[innslag-id="' + innslag.id + '"]');
             $(mainDiv).removeClass('hide');
 
-            // var innslagId = $(e.currentTarget).attr('innslag-id');
-
             try{
-                var res = await spaInteraction.runAjaxCall('remove_innslag/', 'POST', {pl_id : innslag.context.monstring.id, b_id : innslag.id})
+                if(innslag.isVenteliste == true) {
+                    var res = await spaInteraction.runAjaxCall('venteliste_remove/', 'POST', {pl_id : innslag.id})
+                }
+                else {
+                    var res = await spaInteraction.runAjaxCall('remove_innslag/', 'POST', {pl_id : innslag.context.monstring.id, b_id : innslag.id})
+                }
                 
                 if(res) {
                     innslag.deleted = true;
