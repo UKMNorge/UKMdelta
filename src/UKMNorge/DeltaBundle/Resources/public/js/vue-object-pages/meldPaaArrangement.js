@@ -8,16 +8,20 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         }
     },
     async mounted() {
-        var fylker = await spaInteraction.runAjaxCall('get_all_fylker_og_kommuner/', 'GET', {});
-        this.fylker = fylker;
-        $(document).ready( ()=> {
-            this.initFilter();
-        });
+        this.getData();
     },
     updated() {
         inputDeltaFix();
     },
     methods : {
+        getData : async function() {
+            this.fylker = [];
+            var fylker = await spaInteraction.runAjaxCall('get_all_fylker_og_kommuner/', 'GET', {});
+            this.fylker = fylker;
+            $(document).ready( ()=> {
+                this.initFilter();
+            });
+        },
         getDato : (dateint) => {
             var date = new Date(dateint * 1000)
             var day = getDayNorwegian(date.getDay());
@@ -40,6 +44,9 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                             // Add user to the waiting list
                             // Get it from prod
                             if(res) {
+                                if(meldtPaa) {
+                                    meldtPaa.refreshFylker();
+                                }
                                 allInnslag.updateData();
                                 director.openPage('pageAllInnslag');
                             }
@@ -242,8 +249,8 @@ var meldtPaa = new Vue({
         ]
     },
     methods : {
-        addNew : function() {
-            this.items.push({text : 'four'})
+        refreshFylker : function() {
+            this.$children[0].getData();
         }
     },
     components : {

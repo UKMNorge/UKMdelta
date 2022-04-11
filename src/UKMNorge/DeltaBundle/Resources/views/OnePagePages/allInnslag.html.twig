@@ -5,9 +5,9 @@
     alone="true" 
     header-main-text="Hei, {{ user.getFirstName }}" 
     header-under-text="Kult å se deg tilbake her igjen! Fortsett der du slapp med å trykke på knappen under!">
-	
+
     <div class="buttons-paamelding">
-		<div class="display-flex" v-if="alle_innslag && alle_innslag.length > 0 && alle_innslag[1][1].length > 0">
+		<div class="display-flex" v-if="hasLastInnslag()">
 			<button @click="continueLastInnslag" class="round-style-button paamelding">
 				<span class="text">Fortsett der du slapp</span>
 				<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">

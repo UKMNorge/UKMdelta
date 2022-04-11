@@ -53,7 +53,9 @@ var allInnslag = new Vue({
         updateData : async function() {
             var innslags = await spaInteraction.runAjaxCall('get_all_innslag', 'GET', {});
             var ventelisteArrangementer = await spaInteraction.runAjaxCall('venteliste_arrangementer/', 'GET', {});
-    
+
+            this.venteliste_innslag = ventelisteArrangementer;
+
             if(innslags) {
                 this.alle_innslag = [
                     ['Fullførte påmeldinger', innslags.fullforte], 
@@ -87,6 +89,15 @@ var allInnslag = new Vue({
             if(!this.alle_innslag || this.alle_innslag.length < 1) return false;
             return this.alle_innslag[0][1].length < 1 && this.alle_innslag[1][1].length < 1;
         },
+        // Has last innslag to continue with
+        hasLastInnslag : function() {
+            // There are no innslags
+            if(!this.loaded || this.isEmpty()) return false;
+            // Alle the unfinished innslags are waiting list innslags
+            if(this.venteliste_innslag.length == this.alle_innslag[1][1].length) return false;
+
+            return true;
+        },
         showDelete : function(innslag) {
             innslag.showDelete = !innslag.showDelete ? true : false;
             innslag.__ob__.dep.notify();
@@ -117,11 +128,9 @@ var allInnslag = new Vue({
             }
         },
         continueLastInnslag : function() {
-            if(!this.isEmpty()) {
-                if(this.alle_innslag[1][1].length > 0) {
-                    this.redirectToInnslagOverview(this.alle_innslag[1][1][0].innslag);
-                    // Check if arrangement frist is available
-                }
+            if(!this.hasLastInnslag()) {
+                this.redirectToInnslagOverview(this.alle_innslag[1][1][0].innslag);
+                // Check if arrangement frist is available
             }
         },
         erMeldtPaaArrangement : function(pl_id) {
