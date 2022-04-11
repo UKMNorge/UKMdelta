@@ -133,7 +133,7 @@
 									<div class="fade-effect-venteliste right"></div>
 								</div>
 
-								<span class="total">Du står på venteliste plass nr. #{innslag.innslag.ventelistePosisjon}</span>
+								<span class="total venteliste">Du står på venteliste plass nr. #{innslag.innslag.ventelistePosisjon}</span>
 							</div>
 							<div class="slett-paamelding-div" :class="innslag.innslag.showDelete ? 'show-gently' : 'hide-gently'">
 								<button @click="deleteInnslag(innslag.innslag)" v-bind:innslag-id="innslag.innslag.id" class="round-style-button slett-paamelding">

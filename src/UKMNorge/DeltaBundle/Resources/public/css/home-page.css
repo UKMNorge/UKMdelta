@@ -130,6 +130,9 @@
     display: flex;
     margin-bottom: -8px;
 }
+.members .total.venteliste {
+    color: #ff6584c2;
+}
 .virtual-person .img-avatar {
     display: flex;
 }

@@ -40,7 +40,8 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                             // Add user to the waiting list
                             // Get it from prod
                             if(res) {
-                                
+                                allInnslag.updateData();
+                                director.openPage('pageAllInnslag');
                             }
                         } catch(err) {
                             console.error(err);
@@ -50,6 +51,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         
             spaInteraction.showDialog('Det er ikke ledig plass!', 'Vil du sette deg på venteliste?', buttons);
             }
+            // Det er ikke venteliste derfor bruken kan meldes på
             else {
                 director.openPage('pageVelgInnslagType'); 
                 director.addParam('pl_id', arrangement.id);
