@@ -43,7 +43,7 @@ class InnslagFunctions {
 
         // Hent arrangement og sjekk at det er mulig å melde på innslag
         $arrangement = new Arrangement($pl_id);
-        if (!$arrangement->erPameldingApen($type->getFrist())) {
+        if (!$arrangement->erPameldingApen($type->getFrist(1)) || !$arrangement->erPameldingApen($type->getFrist(2))) {
             throw new Exception('Påmeldingsfristen er ute!');
         }
 

@@ -109,7 +109,17 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             // Disable clicks
         },
         async getArrangement(kommune) {
-            kommune.arrangementer = await spaInteraction.runAjaxCall('get_arrangementer_i_kommune/' + kommune.id, 'GET', {});
+            var arrangementer = await spaInteraction.runAjaxCall('get_arrangementer_i_kommune/' + kommune.id, 'GET', {});
+            var arrangementerArr = [];
+            for(var arrangement of arrangementer) {
+                if(allInnslag) {
+                    if(!allInnslag.erMeldtPaaArrangement(arrangement.id)) {
+                        arrangementerArr.push(arrangement);
+                    }
+                }
+            }
+            
+            kommune.arrangementer = arrangementerArr;
             kommune.arrangementer_loaded = true;            
         }
     },

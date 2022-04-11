@@ -124,6 +124,15 @@ var allInnslag = new Vue({
                 }
             }
         },
+        erMeldtPaaArrangement : function(pl_id) {
+            for(var innslag of this._alleInnslags()) {
+                if(innslag.innslag.id == pl_id) return true;
+            }
+            for(var arrang of this.venteliste_innslag) {
+                if(arrang.id == pl_id) return true;
+            }
+            return false;
+        },
         getCurrentDomain : function() {
             return getCurrentDomain();
         },
