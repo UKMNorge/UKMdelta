@@ -59,6 +59,9 @@
 							<div class="mini-label-style label">
 								<span>#{innslag.innslag.isVenteliste ? "Workshop" : innslag.innslag.type.name}</span>
 							</div>
+							<div v-if="innslag.innslag.isVenteliste" class="mini-label-style label">
+								<span>Venteliste</span>
+							</div>
 						</div>
 						<div class="buttons">
 							<!-- /ukmid/pamelding/{k_id}-{pl_id}/{type}/{b_id}/ -->
@@ -92,8 +95,40 @@
 								<div class="avatars">
 									<img v-for="innslag in innslag.personer" class="avatar" :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/avatar-female.png']" />
 								</div>
-								
 								<span class="total">#{ innslag.personer.length } medlem#{ innslag.personer.length > 1 ? 'er' : '' }</span>
+							</div>
+							<div v-else :class="innslag.innslag.showDelete ? 'hide-gently' : 'show-gently'">
+
+								<div v-if="innslag.innslag.isVenteliste" class="venteliste-row" style="">
+									<div class="fade-effect-venteliste"></div>
+									<div style="display: flex">
+										<div class="virtual-person">
+											<div class="img-avatar">
+												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
+											</div>
+										</div>
+										<div class="virtual-person">
+											<div class="img-avatar">
+												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
+											</div>
+										</div>
+										
+										<div class="virtual-person venteliste-pos">
+											<div class="img-avatar">
+												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
+											</div>
+											<p class="pos">2</p>
+										</div>
+										<div class="virtual-person">
+											<div class="img-avatar">
+												<img src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png" class="avatar">
+											</div>
+										</div>
+									</div>
+									<div class="fade-effect-venteliste right"></div>
+								</div>
+
+								<span class="total">Du står på venteliste plass nr. 2</span>
 							</div>
 							<div class="slett-paamelding-div" :class="innslag.innslag.showDelete ? 'show-gently' : 'hide-gently'">
 								<button @click="deleteInnslag(innslag.innslag)" v-bind:innslag-id="innslag.innslag.id" class="round-style-button slett-paamelding">
