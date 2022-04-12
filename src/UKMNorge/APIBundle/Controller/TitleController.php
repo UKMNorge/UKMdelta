@@ -29,9 +29,20 @@ class TitleController extends SuperController {
                 $response->setData(null);
                 return $response;
             }
-          
+            
+            $arrangement = $innslag->getHome();
+            $titler = [];
+            foreach($innslag->getTitler()->getAll() as $tittel) {
+                $tittelArr = (array)$tittel;
 
-            $response->setData($innslag->getTitler()->getAll());
+                if($arrangement->erKunstgalleri()) {
+                    $bilde = $tittel->getPlayback();
+                    $tittelArr['playback'] = $bilde;
+                }
+                $titler[] = $tittelArr;
+            }
+
+            $response->setData($titler);
 
         } catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_INTERNAL_SERVER_ERROR);

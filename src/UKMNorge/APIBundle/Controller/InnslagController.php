@@ -22,7 +22,12 @@ class InnslagController extends SuperController {
 
         // Hent data
         try{
-            $response->setData($innslagService->hent($innslag_id));
+            $innslag = $innslagService->hent($innslag_id);
+            $arrangement = $innslag->getHome();
+
+            $innslagArr = (array)$innslag;
+            $innslagArr['erKunstgalleri'] = $arrangement->erKunstgalleri();
+            $response->setData($innslagArr);
         }catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
             $response->setData($e->getMessage());

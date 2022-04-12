@@ -271,3 +271,12 @@ p.rolle.status.opacity-hidden {
 .fullfor-button-div .slett-bidrag:hover {
     color: #718096 !important;
 }
+img.kunstverk {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    max-height: 150px;
+}
+.button-kunstverk {
+    padding-top: 50px;
+    padding-bottom: 30px;
+}

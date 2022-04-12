@@ -275,7 +275,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- Varighet -->
-                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur'" class="input-delta open varighet" mangler="tittel.varighet">
+                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur' && (innslag.erKunstgalleri == false)" class="input-delta open varighet" mangler="tittel.varighet">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
@@ -305,7 +305,11 @@ var mainComponent = Vue.component('titler-component', {
                         <teater-component v-if="tittel.context.innslag.type == 'teater'" :tittel="tittel"></teater-component>
                         
                         <!-- utstilling type -->
-                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling'" :tittel="tittel" ></utstilling-component>
+                        <utstilling-component v-if="tittel.context.innslag.type == 'utstilling' && innslag.erKunstgalleri == false" :tittel="tittel" ></utstilling-component>
+
+                        <!-- utstilling type - virtueltkunstgalleri -->
+                        <virtueltkunstgalleri-component v-if="tittel.context.innslag.type == 'utstilling' && innslag.erKunstgalleri == true" :tittel="tittel" ></virtueltkunstgalleri-component>
+                        
                         
                    </div>
                 </div>
@@ -382,9 +386,12 @@ var mainComponent = Vue.component('titler-component', {
                 
                 <!-- teater type -->
                 <teater-component v-if="innslag.type.key == 'teater'" :tittel="newTittel"></teater-component>
-                
+
                 <!-- utstilling type -->
-                <utstilling-component v-if="innslag.type.key == 'utstilling'" :tittel="newTittel"></utstilling-component>
+                <utstilling-component v-if="innslag.type.key == 'utstilling' && innslag.erKunstgalleri == false" :tittel="newTittel" ></utstilling-component>
+
+                <!-- utstilling type - virtueltkunstgalleri -->
+                <virtueltkunstgalleri-component v-if="innslag.type.key == 'utstilling' && innslag.erKunstgalleri == true" :tittel="newTittel" ></virtueltkunstgalleri-component>
 
         </div>
     </div>
@@ -778,6 +785,68 @@ var dansComponent = Vue.component('utstilling-component', {
     `
 });
 
+// Component
+var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-component', { 
+    mixins : [mainComponent], // Parent
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    props: {
+        tittel : {}
+    },
+    data : function() {
+        return {
+            tittelObj: this.tittel
+        }
+    },
+    async mounted() {
+    
+    },
+    updated() {
+        inputDeltaFix();
+    },
+    methods : {
+        saveChangesLocal : async function(tittel) {
+            if(tittel.id != 'new' ) {
+                var nyTittel = await this.saveChanges(tittel);
+            }
+        }
+    },
+    template : /*html*/`
+    <div>
+
+    <!-- Type og teknikk -->
+    <div class="input-delta" :class="{ open: tittel.type, 'validation-failed' : !tittel.type || !tittel.type.length }">
+        <div class="overlay">
+            <div class="info">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                <span class="text">Teknikk</span>
+            </div>
+        </div>
+        <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.type" class="input" name="teknikk">
+    </div>
+    
+    <div class="kunstverk-last-opp">
+        <div class="input-delta validation-failed open">
+            <div class="overlay">
+                <div class="info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon" style="fill: rgb(160, 174, 192);">
+                    <path d="M19.999 4h-16c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm-13.5 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5.5 10h-7l4-5 1.5 2 3-4 5.5 7h-7z"></path>
+                    </svg>
+                    <span class="text">Kunstverk</span>
+                </div>
+            </div> 
+            <a v-if="tittel.playback" :href="['/ukmid/filer/' + tittel.context.innslag.id]">
+                <img class="kunstverk" :src="[tittel.playback.base_url + tittel.playback.file_path + tittel.playback.fil]"/>
+            </div>
+            <div v-else class="button-kunstverk">
+                <a :href="['/ukmid/filer/' + tittel.context.innslag.id]" class="round-style-button hover-button-delta">Last opp kunstverk</a>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    `
+});
+
 
 // APP
 var titler = new Vue({
@@ -800,6 +869,7 @@ var titler = new Vue({
     components : {
         musikkComponent,
         dansComponent,
-        litteraturComponent
+        litteraturComponent,
+        virtueltkunstgalleriComponent
     }
 })
