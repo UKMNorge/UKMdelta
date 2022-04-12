@@ -39,13 +39,13 @@ class MenuService {
             $menu = [];
 			// Kun vis disse knappene dersom brukeren er logget inn.
 			if( is_object( $user ) && $user !== null ) {
-				if( date('m') < 8 && date('m') > 3 ) {
-                    $menu['pages'][] = [
-						'id' => 'sjekk',
-						'url' => $router->generate('ukm_sjekk_create'),
-						'title' => 'Sjekk info'
-					];
-				}
+				// if( date('m') < 8 && date('m') > 3 ) {
+                //     $menu['pages'][] = [
+				// 		'id' => 'sjekk',
+				// 		'url' => $router->generate('ukm_sjekk_create'),
+				// 		'title' => 'Sjekk info'
+				// 	];
+				// }
 					$menu['pages'][] = [
 					'id' => 'profil',
 					'url' => $router->generate('ukm_delta_ukmid_contact'),
