@@ -64,7 +64,7 @@ var allePersoner = Vue.component('innslag-persons', {
         verifyNewPerson() {
             if( !this.newPerson.fornavn || this.newPerson.fornavn.length < 1
             || !this.newPerson.etternavn || this.newPerson.etternavn.length < 1 
-            || !this.newPerson.alder || this.newPerson.alder.length < 1 
+            || !this.newPerson.fodselsdato || this.newPerson.fodselsdato.length < 1 
             || !this.newPerson.mobil || this.newPerson.mobil.length < 1 
             || !this.newPerson.rolle || this.newPerson.rolle.length < 1 ) {
                 $('#newUserCollapse').find('.validation-failed').addClass('validation-failed-active').removeClass('validation-failed');
@@ -93,12 +93,14 @@ var allePersoner = Vue.component('innslag-persons', {
                 b_id : innslag.id,
                 fornavn : this.newPerson.fornavn,
                 etternavn : this.newPerson.etternavn,
-                alder : this.newPerson.alder < 22 ? this.newPerson.alder : 0,
+                alder : this.newPerson.realAlder,
                 mobil : this.newPerson.mobil,
                 rolle : this.newPerson.rolle // check if rolle exists
             });
             p.id = p.p_id;
             p.saving = false;
+            p.fodselsdato = p.alder;
+            p.realAlder = p.fodselsdato;
 
             // Remove phantom person
             this.personer.splice(this.personer.indexOf(phantomPerson), 1);
@@ -144,7 +146,9 @@ var allePersoner = Vue.component('innslag-persons', {
             if(person.realAlder > 9) {
                 person.fodselsdato = this._alderRepresentation(person);
                 person.alderOpen = false;
-                this.editPerson(person);
+                if(person.id != 'new') {
+                    this.editPerson(person);
+                }
             }
         },
         alderFocus : function(person) {
@@ -163,13 +167,13 @@ var allePersoner = Vue.component('innslag-persons', {
                 fornavn : '',
                 etternavn : '',
                 mobil : '',
-                alder : '',
                 rolle : '',
                 phantom : phantom,
                 saving : false,
                 savingStatus : 0, // 0 saved, 1 saving, -1 error
                 alderOpen : false,
                 realAlder : '',
+                fodselsdato : '',
             };
         },
     },
@@ -263,7 +267,7 @@ var allePersoner = Vue.component('innslag-persons', {
                                 </div>
                                 <div :class="{'show-gently' : person.alderOpen, 'hide' : !person.alderOpen}" class="choices input-delta open">
                                     <div v-if="person.fodselsdato && !isNaN(parseInt(person.fodselsdato))">
-                                        <button @click="chooseAlder(person)" v-if="parseInt(person.fodselsdato) > 9 && parseInt(person.fodselsdato) < 26">#{person.fodselsdato} år (født i #{new Date().getFullYear() - person.fodselsdato})</button>
+                                        <button @click="chooseAlder(person)" v-if="parseInt(person.fodselsdato) > 9 && parseInt(person.fodselsdato) < 26">#{_alderRepresentation(person)}</button>
                                         <button @click="chooseAlder(person)" v-else-if="parseInt(person.fodselsdato) > 25">Over 25 år</button>
                                         <button v-else>Personen må være minst 10 år gammel</button>
                                     </div>
@@ -341,14 +345,26 @@ var allePersoner = Vue.component('innslag-persons', {
                             </div>
 
                             <!-- Alder -->
-                            <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.alder || !newPerson.alder.length, 'open' : newPerson.alder.length > 0 }">
-                                <div class="overlay">
-                                    <div class="info">
-                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
-                                        <span class="text">Alder</span>
+                            <div class="alder-input-div">
+
+                                <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fodselsdato || !newPerson.fodselsdato.length, 'open' : newPerson.fodselsdato.length > 0 }">
+                                    <div class="overlay">
+                                        <div class="info">
+                                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
+                                            <span class="text">Alder</span>
+                                        </div>
+                                    </div>
+                                    <input v-model:value="newPerson.fodselsdato" id="alderNewPerson" @keyup="alderChange(newPerson)" @blur="alderBlur(newPerson)" @focus="alderFocus(newPerson)" type="text" maxlength="2" class="input input-new-person" name="alder">
+                                </div>
+
+                                <div :class="{'show-gently' : newPerson.alderOpen, 'hide' : !newPerson.alderOpen}" class="choices input-delta open">
+                                    <div v-if="newPerson.fodselsdato && !isNaN(parseInt(newPerson.fodselsdato))">
+                                        <button @click="chooseAlder(newPerson)" v-if="parseInt(newPerson.fodselsdato) > 9 && parseInt(newPerson.fodselsdato) < 26">#{_alderRepresentation(newPerson)}</button>
+                                        <button @click="chooseAlder(newPerson)" v-else-if="parseInt(newPerson.fodselsdato) > 25">Over 25 år</button>
+                                        <button v-else>Personen må være minst 10 år gammel</button>
                                     </div>
                                 </div>
-                                <input v-model:value="newPerson.alder" id="alderNewPerson" type="text" maxlength="2" class="input input-new-person" name="alder">
+
                             </div>
 
                             <!-- Mobilnummer -->
