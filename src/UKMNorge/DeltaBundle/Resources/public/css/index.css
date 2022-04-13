@@ -28,6 +28,9 @@ body {
     visibility: hidden;
     margin-top: -38px !important;
 }
+.clickable {
+    cursor: pointer;
+}
 .round-style-button {
     padding: 14px 16px;
     border: none;
@@ -37,6 +40,15 @@ body {
     font: normal normal 500 14px/21px Poppins;
     box-shadow: 2px 4px 6px #00000027;
     border-radius: 25px;
+}
+a.round-style-button {
+    color: #EDF2F7 !important;
+    text-decoration: none;
+}
+.round-style-button.medium {
+    padding: 7px 14px;
+    font-size: 12px;
+    min-height: 35px;
 }
 .round-style-button.mini-size {
     font-size: 12px;

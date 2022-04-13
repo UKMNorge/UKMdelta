@@ -93,6 +93,9 @@
 .accordion-body-root .items-oversikt .item.titel .user-info .name .varighet {
     color: #718096;
 }
+.accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.kunstgalleri {
+    font-size: 11px;
+}
 .accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.inactive {
     color: #71809657;
 }
@@ -277,6 +280,6 @@ img.kunstverk {
     max-height: 150px;
 }
 .button-kunstverk {
-    padding-top: 50px;
-    padding-bottom: 30px;
+    padding-top: 35px;
+    margin-bottom: 16px;
 }

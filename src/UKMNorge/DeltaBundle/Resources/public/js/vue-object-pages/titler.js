@@ -9,25 +9,28 @@ var mainComponent = Vue.component('titler-component', {
         }
     },
     async mounted() {
-        this.innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-
-        var innslag = await spaInteraction.runAjaxCall('get_innslag/'+this.innslag_id, 'GET', {});
-        var titler = await spaInteraction.runAjaxCall('get_all_titler/'+this.innslag_id, 'GET', {});
-        
-        this.innslag = innslag;
-        
-        for(var t of titler) {
-            t.phantom = false;
-            t.isOpen = false;
-            t.saving = false;
-            t.savingStatus = 0; // 0 saved, 1 saving, -1 error
-        }
-        this.titler = titler;
+        this.getData();
     },
     updated() {
         inputDeltaFix();
     },
     methods : {
+        getData : async function() {
+            this.innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+
+            var innslag = await spaInteraction.runAjaxCall('get_innslag/'+this.innslag_id, 'GET', {});
+            var titler = await spaInteraction.runAjaxCall('get_all_titler/'+this.innslag_id, 'GET', {});
+            
+            this.innslag = innslag;
+            
+            for(var t of titler) {
+                t.phantom = false;
+                t.isOpen = false;
+                t.saving = false;
+                t.savingStatus = 0; // 0 saved, 1 saving, -1 error
+            }
+            this.titler = titler;
+        },
         showRemoveButton : function(e) {
             deltaStyleShowRemoveButton(e);
             this.closeAllOpenForms();
@@ -218,16 +221,33 @@ var mainComponent = Vue.component('titler-component', {
        <div class="accordion-header-sub card-body items-oversikt">
           <div>
              <div :class="{ 'open-item' : tittel.isOpen }" class="item titel">
+                
                 <div class="user-info varighet">
-                   <p class="rolle">Varighet</p>
-                   <p class="name">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 30 30" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M12.25 2c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10zM18 13h-6.75V6h2v5H18v2z"></path></svg>
-                       <span v-if="tittel.sekunder" :class="{ 'phantom-loading' : tittel.phantom }" class="varighet">#{ Math.floor(tittel.sekunder/60) > 0 ? Math.floor(tittel.sekunder/60) + 'm ' : ''} #{ tittel.sekunder % 60 > 0 ? tittel.sekunder % 60 + 's' : ''}</span>
-                       <!-- No varighet -->
-                       <span v-else class="varighet inactive">- -</span>
-                   </p>
-                   <p class="rolle status" :class="{ 'lagring': tittel.savingStatus == 1, 'feilet': tittel.savingStatus == -1, 'opacity-hidden' : tittel.saving == false }">#{tittel.savingStatus == 0 ? 'lagret!' : (tittel.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
+                    <div v-if="!innslag.erKunstgalleri">
+                        <p class="rolle">Varighet</p>
+                        <p class="name">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 30 30" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M12.25 2c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10zM18 13h-6.75V6h2v5H18v2z"></path></svg>
+                            <span v-if="tittel.sekunder" :class="{ 'phantom-loading' : tittel.phantom }" class="varighet">#{ Math.floor(tittel.sekunder/60) > 0 ? Math.floor(tittel.sekunder/60) + 'm ' : ''} #{ tittel.sekunder % 60 > 0 ? tittel.sekunder % 60 + 's' : ''}</span>
+                            <!-- No varighet -->
+                            <span v-else class="varighet inactive">- -</span>
+                        </p>
+                        <p class="rolle status" :class="{ 'lagring': tittel.savingStatus == 1, 'feilet': tittel.savingStatus == -1, 'opacity-hidden' : tittel.saving == false }">#{tittel.savingStatus == 0 ? 'lagret!' : (tittel.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
+                    </div>
+                    <!-- Kunstgalleri -->
+                    <div v-else>
+                        <p class="rolle">Kunstverk</p>
+
+                        <p class="name">
+                            <svg v-if="tittel.bilde != null" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 23 23" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-7.933 13.481-3.774-3.774 1.414-1.414 2.226 2.226 4.299-5.159 1.537 1.28-5.702 6.841z"></path></svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 23 23"  style="fill: #CBD5E0; transform: ;msFilter:;"><path d="m10.933 13.519-2.226-2.226-1.414 1.414 3.774 3.774 5.702-6.84-1.538-1.282z"></path><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM5 19V5h14l.002 14H5z"></path></svg>
+                            
+                            <span class="varighet kunstgalleri">#{tittel.bilde ? 'godkjent' : (tittel.playback ? 'registrert' : 'ingen')}</span>
+                            <!-- No varighet -->
+                        </p>
+                        <p class="rolle status" :class="{ 'lagring': tittel.savingStatus == 1, 'feilet': tittel.savingStatus == -1, 'opacity-hidden' : tittel.saving == false }">#{tittel.savingStatus == 0 ? 'lagret!' : (tittel.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
+                    </div>
                 </div>
+                
                 <p class="title-name" :class="{ 'phantom-loading' : tittel.phantom }">#{ tittel.tittel }</p>
                 <div :class="{ 'hide' : tittel.isOpen }" class="buttons">
                    <button @click="closeAllOpenForms(); tittel.isOpen = true;" :class="{ 'phantom-loading' : tittel.phantom }" data-toggle="collapse" :href="[ '#edittittel' + tittel.id ]" onclick="$('.edit-tittel-form').collapse('hide');" aria-expanded="true" class="small-button-style hover-button-delta mini edit-user-info collapsed" data-form-type="other">
@@ -808,6 +828,12 @@ var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-componen
             if(tittel.id != 'new' ) {
                 var nyTittel = await this.saveChanges(tittel);
             }
+        },
+        openKunstOpplasting : function(tittel) {
+            refreshOnBack(() => {
+                location.reload();
+            });
+            window.location.href = '/ukmid/filer/' + tittel.context.innslag.id;
         }
     },
     template : /*html*/`
@@ -824,7 +850,7 @@ var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-componen
         <input @blur="saveChangesLocal(tittel)" type="text" v-model="tittel.type" class="input" name="teknikk">
     </div>
     
-    <div class="kunstverk-last-opp">
+    <div v-if="tittel.id != 'new'" class="kunstverk-last-opp">
         <div class="input-delta validation-failed open">
             <div class="overlay">
                 <div class="info">
@@ -834,11 +860,12 @@ var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-componen
                     <span class="text">Kunstverk</span>
                 </div>
             </div> 
-            <a v-if="tittel.playback" :href="['/ukmid/filer/' + tittel.context.innslag.id]">
-                <img class="kunstverk" :src="[tittel.playback.base_url + tittel.playback.file_path + tittel.playback.fil]"/>
+           
+            <div v-if="tittel.playback != null">
+                <img @click="openKunstOpplasting(tittel)" class="kunstverk clickable" :src="[tittel.playback.base_url + tittel.playback.file_path + tittel.playback.fil]"/>
             </div>
-            <div v-else class="button-kunstverk">
-                <a :href="['/ukmid/filer/' + tittel.context.innslag.id]" class="round-style-button hover-button-delta">Last opp kunstverk</a>
+            <div v-if="tittel.playback == null" class="button-kunstverk">
+                <button @click="openKunstOpplasting(tittel)" class="round-style-button medium hover-button-delta">Last opp kunstverk</button>
             </div>
         </div>
     </div>
