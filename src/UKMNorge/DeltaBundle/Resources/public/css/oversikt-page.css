@@ -283,3 +283,16 @@ img.kunstverk {
     padding-top: 35px;
     margin-bottom: 16px;
 }
+.alder-input-div .choices {
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 0;
+}
+.alder-input-div .choices button {
+    padding: 15px;
+    width: 100%;
+    border: none;
+    font: normal normal 300 12px/14px Roboto;
+    text-align: left;
+    background: #F7FAFC;
+}
