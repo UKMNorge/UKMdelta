@@ -128,7 +128,7 @@ var allInnslag = new Vue({
             }
         },
         continueLastInnslag : function() {
-            if(!this.hasLastInnslag()) {
+            if(this.hasLastInnslag()) {
                 this.redirectToInnslagOverview(this.alle_innslag[1][1][0].innslag);
                 // Check if arrangement frist is available
             }
