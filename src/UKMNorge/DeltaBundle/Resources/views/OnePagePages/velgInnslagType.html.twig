@@ -8,24 +8,10 @@
 	id="pageVelgInnslagType" 
 	alone="true" 
 	class="container main-container page hide">
-	<div class="search-alt col-12 nop">
-        <div class="accordion panel-group accordion-item with-shadow with-radius" id="velgInnslagType">
-            <div class="card accordion-body-root panel panel-default">
-                <div id="innslagAllTypes"  class="panel-heading card-header accordion-header-root">
-					<button class="btn btn-link btn-block btn-accordion-root text-left hover-button-delta" data-toggle="collapse" aria-expanded="true" data-parent="#velgInnslagType" href="#velgType">
-						<svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" style="fill:#A0AEC0;">
-							<path d="M9 19L17 12 9 5z"></path>
-						</svg>
-						<span class="accordion-title-root">{{ 'kategori.vise_frem'|trans({},'base') }}</span>
-					</button>
-                </div>
-				<div id="velgType" class="collapse show">
-					<type-innslag-component ref="innslagsType"></type-innslag-component>
-				</div>
-				
-			</div>
-		</div>
-	</div>
+	
+	<type-innslag-component ref="innslagsType"></type-innslag-component>
+	<type-innslag-component ref="jobbeMedType"></type-innslag-component>
+
 	
 </div>
 

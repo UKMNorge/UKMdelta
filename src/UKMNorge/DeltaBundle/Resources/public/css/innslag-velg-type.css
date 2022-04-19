@@ -31,3 +31,10 @@ opacity: 1;
 .vise-noe-frem .item-type .panel .accordion-sub .accordion-header-sub:hover {
     background: #e6eaee !important;
 }
+#innslagTypeviseFrem {
+    margin-bottom: 50px;
+}
+.caret-flip {
+    width: 36px;
+    height: 36px;
+}

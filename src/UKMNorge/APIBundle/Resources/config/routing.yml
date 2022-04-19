@@ -64,6 +64,14 @@ ukm_api_get_innslag_types:
         pl_id: ([0-9]{1,5})
     methods: [GET]
 
+# Get innslag typer
+ukm_api_get_innslag_types_jobbe_med:
+    path: /api/get_innslag_types_jobbe_med/{pl_id}
+    defaults: { _controller: UKMAPIBundle:Innslag:getInnslagTypesJobbeMed }
+    requirements: 
+        pl_id: ([0-9]{1,5})
+    methods: [GET]
+
 # Lagre innslag
 ukm_api_save_innslag:
     path: /api/save_innslag/
