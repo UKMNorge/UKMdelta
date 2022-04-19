@@ -156,7 +156,7 @@ var allePersoner = Vue.component('innslag-persons', {
         },
         _alderRepresentation : function(person) {
             var year = new Date().getFullYear();
-            if(person.realAlder.length) {
+            if(person.realAlder) {
                 return person.realAlder < 26 ? person.realAlder + ' år (født i ' + (year - person.realAlder) + ')' : 'Over ' + 25;
             }
             return '';
