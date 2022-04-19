@@ -187,7 +187,9 @@ var allePersoner = Vue.component('innslag-persons', {
             this.newPerson.etternavn = friend.etternavn;
             this.newPerson.mobil = friend.mobil;
             this.newPerson.rolle = friend.rolle;
+            this.newPerson.realAlder = friend.fodselsdato;
             
+            this.alderFocus(this.newPerson);
             // Close all friends GUI
             for(var venn of this.venner) {
                 venn.activeSearch = false;
