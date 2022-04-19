@@ -8,21 +8,24 @@ var allePersoner = Vue.component('innslag-persons', {
         }
     },
     async mounted() {
-        var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
-
-        var personer = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
-        for(var p of personer) {
-            p.phantom = false;
-            p.isOpen = false;
-            p.saving = false;
-            p.savingStatus = 0; // 0 saved, 1 saving, -1 error
-            p.alderOpen = false;
-            p.realAlder = p.fodselsdato;
-            p.fodselsdato = this._alderRepresentation(p);
-        }
-        this.personer = personer;
+        this.getData();
     },
     methods : {
+        getData : async function() {
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+
+            var personer = await spaInteraction.runAjaxCall('get_all_persons/' + innslag_id, 'GET', {});
+            for(var p of personer) {
+                p.phantom = false;
+                p.isOpen = false;
+                p.saving = false;
+                p.savingStatus = 0; // 0 saved, 1 saving, -1 error
+                p.alderOpen = false;
+                p.realAlder = p.fodselsdato;
+                p.fodselsdato = this._alderRepresentation(p);
+            }
+            this.personer = personer;
+        },
         showRemoveButton : function(e) {
             this.closeAllOpenForms();
             deltaStyleShowRemoveButton(e);
@@ -101,6 +104,7 @@ var allePersoner = Vue.component('innslag-persons', {
             p.saving = false;
             p.fodselsdato = p.alder;
             p.realAlder = p.fodselsdato;
+            p.isOpen = false;
 
             // Remove phantom person
             this.personer.splice(this.personer.indexOf(phantomPerson), 1);
