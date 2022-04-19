@@ -5,7 +5,8 @@ namespace UKMNorge\APIBundle\Controller;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Venner;
 
 require_once('UKM/Autoloader.php');
 
@@ -14,7 +15,6 @@ class PersonController extends SuperController {
     /**
      * Hent alle personer i ett innslag
      * 
-     * @param Request $request
      * @return JsonResponse
      */
     public function getAllPersonsAction($b_id) {
@@ -136,6 +136,45 @@ class PersonController extends SuperController {
                 $response->setData($e->getMessage());
                 return $response;
             }
+
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        return $response;
+    }
+
+    /**
+     * Hent alle venner som ikke er med i innslaget.
+     * Støttefunksjon for å legge til person i innslaget (ikke rediger person)
+     *
+     * @param string $b_id
+     * @return JsonResponse
+     */
+    public function getVennerAction($b_id) {
+        $innslagService = $this->get('ukm_api.innslag');
+        $response = new JsonResponse();
+        // Hent innslag og verifiser om innslag id er med
+        try{
+            $innslag = $innslagService->hent($b_id);
+        }catch(Exception $e) {
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
+            $response->setData($e->getMessage());
+            return $response;
+        }
+
+        // Hent venner
+        try{
+            $venner = Venner::exclude(
+                $innslag->getPersoner()->getAllIds(),
+                Venner::getAll(
+                    $this->hentCurrentUser()->getPameldUser(),
+                    $innslag->getId()
+                )
+            );
+            $response->setData($venner);
 
         }catch(Exception $e) {
             $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);

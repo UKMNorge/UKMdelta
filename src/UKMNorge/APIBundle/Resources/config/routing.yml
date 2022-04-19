@@ -210,6 +210,14 @@ ukm_api_remove_person:
         p_id: ([0-9]{1,11})
     methods: [POST]
 
+# Get friends
+ukm_api_get_all_friends:
+    path: /api/get_all_friends/{b_id}
+    defaults: { _controller: UKMAPIBundle:Person:getVenner }
+    requirements: 
+        b_id: ([0-9]{1,11})
+    methods: [GET]
+
 
 ### ------------------------- Titler -------------------------
 

@@ -238,6 +238,16 @@ p.rolle.status.opacity-hidden {
 .form-new-user .input-delta .overlay {
     background: #F7FAFC !important;
 }
+.form-new-user .friends {
+    display: flex;
+}
+.form-new-user .friends .friend {
+    margin-top: 10px;
+    margin-right: 5px;
+}
+.form-new-user .friends .friend:hover {
+    color: #fff !important;
+}
 .input-delta .input-group-horizontal .input-info {
     z-index: 1;
     margin: auto 0;

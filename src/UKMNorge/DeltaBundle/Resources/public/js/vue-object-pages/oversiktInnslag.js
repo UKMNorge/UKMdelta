@@ -4,11 +4,13 @@ var allePersoner = Vue.component('innslag-persons', {
     data : function() {
         return {
             personer : [],
+            venner : [],
             newPerson : this._nullTittel(),
         }
     },
     async mounted() {
         this.getData();
+        this.getVenner();
     },
     methods : {
         getData : async function() {
@@ -25,6 +27,16 @@ var allePersoner = Vue.component('innslag-persons', {
                 p.fodselsdato = this._alderRepresentation(p);
             }
             this.personer = personer;
+        },
+        getVenner : async function() {
+            var innslag_id = $('#pageOversiktInnslag').attr('innslag_id');
+
+            var venner = await spaInteraction.runAjaxCall('get_all_friends/' + innslag_id, 'GET', {});
+            for(var venn of venner) {
+                venn.activeSearch = false;
+            }
+
+            this.venner = venner;
         },
         showRemoveButton : function(e) {
             this.closeAllOpenForms();
@@ -124,12 +136,13 @@ var allePersoner = Vue.component('innslag-persons', {
             person.savingStatus = 1;
             
             try{
+                var year = new Date().getFullYear();
                 var editPerson = await spaInteraction.runAjaxCall('edit_person/', 'PATCH', {
                     b_id : innslag.id,
                     p_id : person.id,
                     fornavn : person.fornavn,
                     etternavn : person.etternavn,
-                    alder : person.realAlder,
+                    alder : Math.floor(new Date((year - person.realAlder) + '.01.01').getTime() / 1000),
                     mobil : person.mobil,
                     rolle : person.rolle,
                 });
@@ -158,8 +171,36 @@ var allePersoner = Vue.component('innslag-persons', {
         alderFocus : function(person) {
             person.fodselsdato = person.realAlder;
         },
+        searchFriends : function() {
+            searchText = this.newPerson.fornavn.toLowerCase();
+            for(var venn of this.venner) {
+                if(searchText.length > 1 && venn.fornavn.toLowerCase().includes(searchText)) {
+                    venn.activeSearch = true;
+                }
+                else {
+                    venn.activeSearch = false;
+                }
+            }
+        },
+        friendClick : function(friend) {
+            this.newPerson.fornavn = friend.fornavn;
+            this.newPerson.etternavn = friend.etternavn;
+            this.newPerson.mobil = friend.mobil;
+            this.newPerson.rolle = friend.rolle;
+            
+            // Close all friends GUI
+            for(var venn of this.venner) {
+                venn.activeSearch = false;
+            }
+
+        },
         _alderRepresentation : function(person) {
             var year = new Date().getFullYear();
+            
+            // Convert unix timestamp to year if year is larger than 2 chars (age has 2 max length 2)
+            if(person.realAlder && person.realAlder.length > 2) {
+                person.realAlder = year - new Date(person.realAlder * 1000).getFullYear();
+            }
             if(person.realAlder) {
                 return person.realAlder < 26 ? person.realAlder + ' år (født i ' + (year - person.realAlder) + ')' : 'Over ' + 25;
             }
@@ -334,7 +375,13 @@ var allePersoner = Vue.component('innslag-persons', {
                                         <span class="text">Fornavn</span>
                                     </div>
                                 </div>
-                                <input v-model:value="newPerson.fornavn" id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
+                                <input @keyup="searchFriends" v-model:value="newPerson.fornavn" id="fornavnNewPerson" type="text" class="input input-new-person" name="fornavn">
+                            </div>
+
+                            <div class="friends">
+                                <div @click="friendClick(venn)" v-for="venn in venner" v-bind:class="{'show-gently' : venn.activeSearch, 'hide-gently' : !venn.activeSearch}" class="friend mini-label-style label clickable hover-button-delta">
+                                    <span>#{venn.fornavn} #{venn.etternavn}</span>
+                                </div>
                             </div>
 
                             <!-- Etternavn -->
