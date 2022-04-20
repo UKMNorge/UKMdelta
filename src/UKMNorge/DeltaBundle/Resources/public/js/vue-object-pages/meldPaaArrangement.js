@@ -83,6 +83,9 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         },
         initFilter : () => {
             var callbackFilter = (numShown) => {
+                // Close all open arrangementer
+                $('.panel-body-arrangement.collapse.show').collapse('hide');
+                
                 if($('#searchInput').val().length < 3) {
                     $('.panel-body.fylke-body.search').removeClass('show');
                     $('.accordion-by .card-header-fylke .btn-link').removeClass('halv').addClass('collapsed');
