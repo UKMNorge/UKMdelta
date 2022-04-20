@@ -183,13 +183,13 @@ var allePersoner = Vue.component('innslag-persons', {
             }
         },
         friendClick : function(friend) {
-            this.newPerson.fornavn = friend.fornavn;
-            this.newPerson.etternavn = friend.etternavn;
-            this.newPerson.mobil = friend.mobil;
-            this.newPerson.rolle = friend.rolle;
-            this.newPerson.realAlder = friend.fodselsdato;
+            this.newPerson.fornavn = friend.fornavn ? friend.fornavn : '';
+            this.newPerson.etternavn = friend.etternavn ? friend.etternavn : '';
+            this.newPerson.mobil = friend.mobil ? friend.mobil : '';
+            this.newPerson.rolle = friend.rolle ? friend.rolle : '';
+            this.newPerson.realAlder = friend.fodselsdato ? friend.fodselsdato : '';
+            this.newPerson.fodselsdato = this._alderRepresentation(this.newPerson);
             
-            this.alderFocus(this.newPerson);
             // Close all friends GUI
             for(var venn of this.venner) {
                 venn.activeSearch = false;
@@ -399,8 +399,7 @@ var allePersoner = Vue.component('innslag-persons', {
 
                             <!-- Alder -->
                             <div class="alder-input-div">
-
-                                <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fodselsdato || !newPerson.fodselsdato.length, 'open' : newPerson.fodselsdato.length > 0 }">
+                                <div class="input-delta" v-bind:class="{ 'validation-failed' : !newPerson.fodselsdato || !newPerson.fodselsdato.length, 'open' : newPerson.fodselsdato }">
                                     <div class="overlay">
                                         <div class="info">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
