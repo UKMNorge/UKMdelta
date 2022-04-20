@@ -69,7 +69,7 @@ var jobbeMedInnslagComponent = Vue.component('type-innslag-component', {
     },
     template: /*html*/`
     <div>
-    <div class="search-alt col-12 nop">
+    <div v-if="innslagsTyper.length > 0" class="search-alt col-12 nop">
         <div class="accordion panel-group accordion-item with-shadow with-radius" v-bind:id="['innslagType' + id]">
             <div class="card accordion-body-root panel panel-default">
                 <div class="card-header accordion-header-root">
@@ -125,7 +125,9 @@ var innslagType = new Vue({
 
     },
     async mounted() {
-        // this.initNew();
+        if(director && director.getParam('page') == 'pageVelgInnslagType') {
+            this.initNew();
+        }
     },
     methods : {
         initNew : function() {
