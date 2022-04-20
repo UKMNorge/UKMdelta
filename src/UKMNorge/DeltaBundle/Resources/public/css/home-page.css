@@ -430,13 +430,9 @@ padding: 5px;
     transition: .1s;
 }
 .accordion-item .card-body-arrangement.meldpaa:hover {
-    background: #A0AEC0;
-    color: #fff;
+    background: #e6eaef;
     border-radius: 2px;
     transition: .1s;
-}
-.accordion-item .card-body-arrangement.meldpaa:hover .info-label {
-    color: #fff;
 }
 #mainMessageDiv {
     height: auto;
