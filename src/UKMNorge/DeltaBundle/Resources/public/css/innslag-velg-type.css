@@ -38,3 +38,6 @@ opacity: 1;
     width: 36px;
     height: 36px;
 }
+.panel-heading.accordion-header-sub.card-body.card-body-kommune.search:hover {
+    background: #e6eaef;
+}
