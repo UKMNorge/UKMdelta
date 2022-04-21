@@ -95,4 +95,10 @@
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;
     }
+    .main-header .header-content-paamelding {
+        margin-left: 100px;
+        width: auto;
+        margin-right: 100px;
+    }
+    
 }
