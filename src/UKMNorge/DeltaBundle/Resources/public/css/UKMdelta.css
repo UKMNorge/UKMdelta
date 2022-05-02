@@ -174,3 +174,90 @@ label {
     color: #EDF2F7;
     font: normal normal 500 14px/21px Poppins;
 }
+
+.paamelding-box {
+    width: 100%;
+    padding: 15px;
+    background: #F7FAFC 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 7px #00000066;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    min-height: 212px;
+    position: relative;
+    overflow: hidden;
+}
+.paamelding-box.hide-up-gently {
+    height: 0px;
+    min-height: 0px;
+    max-height: 0px;
+    padding: 0 15px;
+    margin: 0px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s;
+    transition-delay: 2s;
+}
+.paamelding-box .header-top {
+    display: flex;
+}
+.paamelding-box .header-top .category-tittel {
+    margin: auto;
+    margin-left: 0;
+    display: flex;
+    margin-top: 0;
+}
+.paamelding-box .header-top .category-tittel .label {
+    margin: auto;
+    margin-right: 8px;
+}
+.paamelding-box .header-top .buttons {
+    margin: auto;
+    margin-right: 0;
+    display: flex;
+}
+.paamelding-box .header-top .buttons a {
+    display: block;
+    margin-left: 10px;
+}
+.paamelding-box .header-top .buttons a .mini {
+    margin-left: 0;
+}
+.paamelding-box .header-top .buttons .mini {
+    margin: auto;
+    margin-left: 10px;
+}
+.paamelding-box .inner {
+    transition: .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.paamelding-box .inner .members {
+    display: flex;
+    margin-top: 8px;
+}
+.avatars-div {
+    display: flex;
+    margin-top: 26px;
+}
+.paamelding-box .inner .members .avatars {
+    margin-right: 10px;
+}
+.paamelding-box .inner .members .avatars .avatar {
+    width: 20px;
+    height: 20px;
+    margin-right: -10px;
+    border: solid 2px #fff;
+    border-radius: 50%;
+}
+.paamelding-box .inner .members .avatars .avatar:last-child {
+    margin-right: 0;
+}
+
+.paamelding-box .inner .description {
+    margin: 0;
+    color: #A0AEC0;
+    font: normal normal 300 10px/10px Roboto;
+    text-transform:uppercase;
+}
+.paamelding-box .inner .name {
+    margin: 0;
+    font: normal normal 600 15px/20px Poppins;
+}

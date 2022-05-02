@@ -65,10 +65,10 @@ class InnslagFunctions {
 
             // Oppdater verdier i UserBundle
             $user->setPameldUser($person->getId());
-            $_this->container->get('fos_user.user_manager')->updateUser($user);
+            $this->container->get('fos_user.user_manager')->updateUser($user);
 
             // Se om brukeren har fått tildelt en Wordpress-innloggingsbruker (via UKMusers etc), og prøv å koble den.
-            $personService = $_this->container->get('ukm_api.person');
+            $personService = $this->container->get('ukm_api.person');
             $personService->addDeltaIDToWordpressLoginUser($person->getId(), $user->getId());
 
             $lagrePerson = true;
