@@ -424,3 +424,14 @@ a.round-style-button {
 .fullfor-button-div .slett-bidrag:hover {
     color: #718096 !important;
 }
+
+@media (max-width: 768px) {
+    .paamelding-box.big-box {
+        padding: 20px;
+    }
+}
+@media (max-width: 576px) {
+    .paamelding-box.big-box {
+        padding: 15px;
+    }
+  }
