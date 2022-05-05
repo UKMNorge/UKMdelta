@@ -12,65 +12,90 @@
 {% block delta_content %}
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                <h1>{{ 'contactAction.overskrift'|trans }}</h1>
+            <div class="col-12 paamelding-box big-box">
+                <h1 class="mt-0">{{ 'contactAction.overskrift'|trans }}</h1>
 
                 <p class="lead">
                     {{ 'contactAction.topptekst'|trans|nl2br }}
                 </p>
 
-                <form action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
-                    <h2>
-                        {{ 'contactAction.personinfo'|trans }}
-                    </h2>
+                <form style="margin-top: 40px;" action="{{ path('ukm_delta_ukmid_contact_save') }}" method="POST">
 
-
-                    <div class="form-group">
-                        <label>{{ 'contactAction.fornavn'|trans }}</label>
-                        <input name="fornavn" required type="text" class="form-control" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}"/>
+                    <div class="input-delta static open">
+                        <div class="overlay">
+                            <div class="info">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                                <span class="text">{{ 'contactAction.fornavn'|trans }}</span>
+                            </div>
+                        </div>
+                        <input name="fornavn" required type="text" class="input" value="{{ user.getFirstName() is defined ? user.getFirstName() : '' }}"/>
                     </div>
 
-                    <div class="form-group">
-                        <label>{{ 'contactAction.etternavn'|trans }}</label>
-                        <input name="etternavn" required type="text" class="form-control" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}"/>
+                    <div class="input-delta static open">
+                        <div class="overlay">
+                            <div class="info">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
+                                <span class="text">{{ 'contactAction.etternavn'|trans }}</span>
+                            </div>
+                        </div>
+                        <input name="etternavn" required type="text" class="input" value="{{ user.getLastName() is defined ? user.getLastName() : '' }}"/>
                     </div>
 
-                    {# ALDER #}
+
+                    <!-- Alder -->
                     {% if person is defined %}
-                        <div class="form-group">
-                            <label>{{ 'contactAction.alder'|trans }}</label>
-                            <select name="alder" required id="alder" class="form-control delta-select">
-                                <option value="" {{ person.getAlder('') < 25 and person.getAlder('') > 9 and person.getAlder('') != '25+' ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option>
-                                {% for i in 10..25 %}
-                                    <option value="{{ i }}" id="{{ i }}" {{ person.getAlder('') == i ? 'selected' : '' }}>{{ i }}
-                                        {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option>
-                                {% endfor %}
-                                <option value="0" {{ (person.getAlder('') == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
-                            </select>
+                        <div class="alder-input-div">
+                            <div class="input-delta static open">
+                                <div class="overlay">
+                                    <div class="info">
+                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m21 2-5 5-4-5-4 5-5-5v13h18zM5 21h14a2 2 0 0 0 2-2v-2H3v2a2 2 0 0 0 2 2z"></path></svg>
+                                        <span class="text">Alder</span>
+                                    </div>
+                                </div>
+                                <select name="alder" required id="alder" class="delta-select input">
+                                    <option value="" {{ person.getAlder('') < 25 and person.getAlder('') > 9 and person.getAlder('') != '25+' ? '' : 'selected' }} disabled>{{ 'person.alder.listDefault'|trans({}, 'base') }}</option>
+                                    {% for i in 10..25 %}
+                                        <option value="{{ i }}" id="{{ i }}" {{ person.getAlder('') == i ? 'selected' : '' }}>{{ i }}
+                                            {{ 'person.alder.ar'|trans({ "year": "now"|date("Y") - i }, 'base') }}</option>
+                                    {% endfor %}
+                                    <option value="0" {{ (person.getAlder('') == '25+') ? 'selected' : '' }}>{{ 'person.alder.over25'|trans({}, 'base') }}</option>
+                                </select>
+                            </div>
                         </div>
                     {% endif %}
+                    
 
-                    <h2 class="mt-5">{{ 'contactAction.kontaktinfo'|trans }}</h2>
-
-                    {# MOBIL #}
-                    <div class="form-group">
-                        <label>{{ 'contactAction.mobil'|trans }}</label>
-                        <input name="mobil" maxlength="8" required type="tel" class="form-control" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}"/>
+                    <!-- Mobilnummer -->
+                    <div class="input-delta static open">
+                        <div class="overlay">
+                            <div class="info">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
+                                <span class="text">Mobilnummer</span>
+                            </div>
+                        </div>
+                        <input name="mobil" maxlength="8" required type="tel" class="input" value="{{ user.getPhone() is defined ? user.getPhone() : '' }}"/>
                     </div>
 
-                    <div class="form-group">
-                        <label>{{ 'contactAction.epost'|trans }}</label>
-                        <input name="epost" required type="text" class="form-control" value="{{ user.getEmail() }}"/>
+                    <div class="input-delta static open">
+                        <div class="overlay">
+                            <div class="info">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0; transform: ;msFilter:;"><path d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z"></path></svg>	
+                                <span class="text">Mobilnummer</span>
+                            </div>
+                        </div>
+                        <input name="epost" required type="text" class="input" value="{{ user.getEmail() }}"/>
                     </div>
 
-                    <div class="form-group my-5">
-                        <button class="btn btn-block btn-outline-primary btn-success" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
-                            {{ 'contactAction.lagre'|trans }}
-                        </button>
-                    </div>
+                    <div class="fullfor-button-div">	
+                        <div class="button-div">
+                            <button class="round-style-button hover-button-delta fullfor" type="submit" value="{{ 'contactAction.lagre'|trans }}" style="">
+                                {{ 'contactAction.lagre'|trans }}
+                            </button>
+                        </div>
 
-                    <div class="center my-4">
-                        <a href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
+                        <div class="button-div">
+                            <a class="slett-bidrag" href="{{ path('ukm_delta_ukmid_homepage') }}">{{ 'contactAction.avbryt'|trans }}</a>
+                        </div>
                     </div>
                 </form>
             </div>
