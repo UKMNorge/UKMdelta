@@ -169,11 +169,14 @@ var interactionVue = new Vue({
             this.$refs.messageModal.openMessage(title, msg, type);
         },
         showLoading : function() {
-            this.$refs.mainLoading.showLoading();
-
+            if(this.$refs.mainLoading) {
+                this.$refs.mainLoading.showLoading();
+            }
         },
         hideLoading : function() {
-            this.$refs.mainLoading.hideLoading();
+            if(this.$refs.mainLoading) {
+                this.$refs.mainLoading.hideLoading();
+            }
         }
     },
     components : { 
