@@ -57,7 +57,7 @@ var mainComponent = Vue.component('titler-component', {
             || this._isTitleAttributeDefined('tittel') && (!newTittel.tittel || newTittel.tittel.length < 1)
             || this._isTitleAttributeDefined('tekst_av') && (!newTittel.tekst_av || newTittel.tekst_av.length < 1)
             || this._isTitleAttributeDefined('koreografi_av') && (!newTittel.koreografi_av || newTittel.koreografi_av.length < 1)
-            || this._isTitleAttributeDefined('type') && (!newTittel.type || newTittel.koreografi_av.type < 1)
+            || this._isTitleAttributeDefined('type') && (!newTittel.type || (newTittel.koreografi_av && newTittel.koreografi_av.type < 1))
             ){
                 $('#newTittleForm').find('.validation-failed').addClass('validation-failed-active').removeClass('validation-failed');
                 return false;
