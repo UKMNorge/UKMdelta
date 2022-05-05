@@ -434,4 +434,7 @@ a.round-style-button {
     .paamelding-box.big-box {
         padding: 15px;
     }
-  }
+    body .lead {
+        font-size: 14px;
+    }
+}
