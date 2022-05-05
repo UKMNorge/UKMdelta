@@ -260,31 +260,10 @@ p.rolle.status.opacity-hidden {
 }
 .fullfor-button-div {
     background: #edf2f7;
-    padding: 20px 0;
     margin-top: 40px;
     padding-top: 42px;
 }
-.fullfor-button-div .button-div {
-    display: flex;
-}
-.fullfor-button-div .fullfor,
-.fullfor-button-div .slett-bidrag {
-    min-width: 300px;
-    margin: auto;
-    background: #A0AEC0;
-}
-.fullfor-button-div .slett-bidrag {
-    margin: 15px auto 25px auto;
-    min-width: auto;
-    background: transparent;
-    border: none;
-    color: #CBD5E0;
-    font-size: 12px;
-    font: normal normal 300 10px/16px Poppins;
-}
-.fullfor-button-div .slett-bidrag:hover {
-    color: #718096 !important;
-}
+
 img.kunstverk {
     margin-top: 40px;
     margin-bottom: 20px;

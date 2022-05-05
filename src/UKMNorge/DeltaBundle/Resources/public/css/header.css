@@ -91,6 +91,20 @@
     font: normal normal 300 13px/15px Roboto;
     font-size: 16px;
 }
+#headerMainLoader {
+    background: #a0aec057;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    border: solid 1px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 99999;
+}
+#headerMainLoader .spinner-border {
+    margin: auto;
+}
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;

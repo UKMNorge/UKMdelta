@@ -392,3 +392,29 @@ a.round-style-button {
 .paamelding-box.big-box {
     padding: 40px;
 }
+.fullfor-button-div {
+    padding: 20px 0;
+    padding-bottom: 0;
+}
+.fullfor-button-div .button-div {
+    display: flex;
+}
+.fullfor-button-div .fullfor,
+.fullfor-button-div .slett-bidrag {
+    min-width: 300px;
+    margin: auto;
+    background: #A0AEC0;
+}
+.fullfor-button-div .slett-bidrag {
+    margin: 15px auto 25px auto;
+    min-width: auto;
+    background: transparent;
+    border: none;
+    color: #CBD5E0;
+    font-size: 12px;
+    font: normal normal 300 10px/16px Poppins;
+    text-decoration: none;
+}
+.fullfor-button-div .slett-bidrag:hover {
+    color: #718096 !important;
+}

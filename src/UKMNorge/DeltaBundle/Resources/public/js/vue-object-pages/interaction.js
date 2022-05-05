@@ -122,6 +122,35 @@ var messageComponent = Vue.component('messagemodal-component', {
 })
 
 
+// Loading Components
+var loadingComponent = Vue.component('loading-component', { 
+    delimiters: ['#{', '}'], // For å bruke det på Twig
+    data : function() {
+        return {
+            show : false
+        }
+    },
+    async mounted() {
+        this.hideLoading();
+    },
+    methods : {
+        showLoading : function() {
+            this.show = true;
+        },
+        hideLoading : function() {
+            this.show = false;
+        }
+    },
+    template : /*html*/`
+    <div id="headerMainLoader" :class="{ 'hide' :  !show }">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    `
+})
+
+
 // The app
 var interactionVue = new Vue({
     delimiters: ['#{', '}'], // For å bruke det på Twig
@@ -138,7 +167,18 @@ var interactionVue = new Vue({
         },
         showMessage : function(title, msg, type = 0) {
             this.$refs.messageModal.openMessage(title, msg, type);
+        },
+        showLoading : function() {
+            this.$refs.mainLoading.showLoading();
+
+        },
+        hideLoading : function() {
+            this.$refs.mainLoading.hideLoading();
         }
     },
-    components : { 'dialog' : dialogComponent, 'message' : messageComponent }
+    components : { 
+        'dialog' : dialogComponent,
+        'message' : messageComponent,
+        'loading' : loadingComponent
+    }
 })
