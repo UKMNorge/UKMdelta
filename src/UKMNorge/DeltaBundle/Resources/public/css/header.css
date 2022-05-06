@@ -67,6 +67,7 @@
 }
 .right-side-img-header {
     padding: 0 !important;
+    opacity: .4;
 }
 .right-side-img-header .bolge-img {
     display: flex;
