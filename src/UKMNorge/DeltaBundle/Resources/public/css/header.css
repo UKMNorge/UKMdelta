@@ -51,7 +51,7 @@
 .main-header .header-content-paamelding .info .lead {
     font: normal normal normal 14px/18px Roboto;
     font-weight: 300;
-    text-shadow: 0 0 1px #00000040;
+    color: #ffffff78;
 }
 .round-bottom-bolge {
     width: calc(100% + 200px);

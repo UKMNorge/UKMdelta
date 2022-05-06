@@ -18,6 +18,7 @@
 }
 body {
     background-color: #f7fafc;
+    padding-bottom: 100px;
 }
 body.modal-open,
 .modal-open .modal {
