@@ -49,8 +49,9 @@
     font: normal normal 500 28px/42px Poppins;
 }
 .main-header .header-content-paamelding .info .lead {
-    font: normal normal normal 12px/18px Roboto;
+    font: normal normal normal 14px/18px Roboto;
     font-weight: 300;
+    text-shadow: 0 0 1px #00000040;
 }
 .round-bottom-bolge {
     width: calc(100% + 200px);
@@ -83,7 +84,7 @@
     border: none;
 }
 .modal-title {
-    color: #A0AEC0;
+    color: #677382;
     font-weight: 400;
 }
 .modal-body {

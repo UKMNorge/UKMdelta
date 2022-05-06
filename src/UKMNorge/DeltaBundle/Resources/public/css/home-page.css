@@ -21,8 +21,8 @@
     margin: auto;
     margin-left: 0;
     margin-bottom: -3px;
-    color: #718096;
-    font-weight: 100;
+    color: #686868;
+    font-weight: 200;
 }
 .hide-gently {
     -ms-transform: scaleY(0); /* IE 9 */
@@ -44,7 +44,7 @@
     margin-bottom: -8px;
 }
 .members .total.venteliste {
-    color: #ff6584c2;
+    color: #d73131 !important;
 }
 .virtual-person .img-avatar {
     display: flex;
@@ -65,7 +65,7 @@ padding: 5px;
 .venteliste-row .fade-effect-venteliste {
     height: auto;
     width: 43px;
-    background-image: linear-gradient(to left, #f7fafce6, #f7fafc 100%);
+    background-image: linear-gradient(to left, #ffffffc7, #fff 100%);
     margin-right: -34px;
     z-index: 1;
 }
@@ -79,7 +79,7 @@ padding: 5px;
 }
 .venteliste-row .fade-effect-venteliste.right {
     width: 40px;
-    background-image: linear-gradient(to right, #f7fafce6, #f7fafc 100%);
+    background-image: linear-gradient(to right, #ffffffc7, #fff 100%);
     margin-left: -34px;
 }
 .show-gently {
@@ -178,7 +178,7 @@ padding: 5px;
     fill: #fff !important;
 }
 .accordion-item .accordion-header-root .btn-link {
-    color: #A0AEC0;
+    color: #5e6f8a;
     font-weight: 300;
     padding: 13px 10px;
 }
@@ -238,13 +238,13 @@ padding: 5px;
 }
 .fellesmonstring-kommuner .info-inactive-button .info-label,
 .accordion-item span .info-label {
-    color: #A0AEC0;
+    color: #687381;
     font-size: 11px;
     margin: 0;
     margin-top: 2px;
 }
 .accordion-item span .info-label.venteliste {
-    color: #ff6584c2 !important;
+    color: #d73131 !important;
     margin-top: 0;
 }
 .accordion-sub .accordion-header-sub {

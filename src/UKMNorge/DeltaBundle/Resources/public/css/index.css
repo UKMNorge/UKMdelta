@@ -80,7 +80,7 @@ a.round-style-button {
     border: none;
     width: 30px;
     height: 30px;
-    background: #CBD5E0;
+    background: #718096;
     color: #fff;
     transition: .1s;
 }
@@ -96,15 +96,15 @@ a.round-style-button {
 }
 .hover-button-delta:hover,
 .hover-button-delta:active {
-    background: #718096 !important;
+    background: #8393ac !important;
 }
 
 .mini-label-style {
     border-radius: 7px;
     padding: 0px 9px;
     font-size: 12px;
-    background: #E2E8F0;
-    color: #A0AEC0;
+    background: #e9f0f8;
+    color: #71809696;
 }
 .input-delta {
     position: relative;
@@ -194,7 +194,7 @@ a.round-style-button {
     margin-left: 0;
 }
 .input-delta .overlay .info .text {
-    color: #A0AEC0;
+    color: #656f7c;
     margin-left: 10px;
     transition: .2s font-size;
 }
@@ -214,7 +214,7 @@ a.round-style-button {
 .input-delta .button-right {
     position: absolute;
     border: none;
-    background: #CBD5E0;
+    background: #718096;
     border-radius: 50%;
     right: 15px;
     width: 25px;
@@ -313,7 +313,7 @@ a.round-style-button {
     width: 100%;
     padding: 15px;
     background: #fff;
-    box-shadow: 0px 2px 7px #00000066;
+    box-shadow: 0px 2px 7px #00000014;
     border-radius: 15px;
     margin-bottom: 30px;
     min-height: 212px;
@@ -387,7 +387,7 @@ a.round-style-button {
 
 .paamelding-box .inner .description {
     margin: 0;
-    color: #A0AEC0;
+    color: #69788d;
     font: normal normal 300 10px/10px Roboto;
     text-transform:uppercase;
 }
@@ -409,16 +409,16 @@ a.round-style-button {
 .fullfor-button-div .slett-bidrag {
     min-width: 300px;
     margin: auto;
-    background: #A0AEC0;
+    background: #718096;
 }
 .fullfor-button-div .slett-bidrag {
     margin: 15px auto 25px auto;
     min-width: auto;
     background: transparent;
     border: none;
-    color: #CBD5E0;
+    color: #5f7083;
     font-size: 12px;
-    font: normal normal 300 10px/16px Poppins;
+    font: normal normal 300 12px/24px Poppins;
     text-decoration: none;
 }
 .fullfor-button-div .slett-bidrag:hover {
