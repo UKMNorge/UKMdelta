@@ -107,6 +107,9 @@
 #headerMainLoader .spinner-border {
     margin: auto;
 }
+.ukm-navbar.other-page {
+    margin-bottom: 0;
+}
 @media(max-width: 575px) {
     .main-header-paamelding .header-content-paamelding {
         margin-left: 100px !important;
