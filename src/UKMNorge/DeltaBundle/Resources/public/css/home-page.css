@@ -150,11 +150,12 @@ padding: 5px;
     max-height: 300px;
 }
 .accordion-item.with-shadow {
-    box-shadow: 0px 3px 6px #0000004a;
+    box-shadow: 0px 2px 7px #00000014;
 }
 .accordion-item.with-radius {
     border-radius: 5px;
     overflow: hidden;
+    border: solid 1px #00000012;
 }
 .accordion-item .card {
     border-radius: 5px 5px 0px 0px;

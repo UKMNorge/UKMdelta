@@ -41,7 +41,7 @@ var dialogComponent = Vue.component('modaldialog-component', {
                         #{melding}
                     </div>
                     <div class="modal-footer">
-                        <button v-for="btn in buttons" @click="buttonClick(btn)" type="button" class="round-style-button hover-button-delta" :class="btn.class" data-dismiss="modal">#{btn.name}</button>
+                        <button v-for="btn in buttons" @click="buttonClick(btn)" type="button" class="round-style-button" :class="btn.class" data-dismiss="modal">#{btn.name}</button>
                     </div>
                 </div>
             </div>

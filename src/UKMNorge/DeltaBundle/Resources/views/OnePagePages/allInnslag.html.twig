@@ -8,18 +8,18 @@
 
     <div class="buttons-paamelding">
 		<div class="display-flex" v-if="hasLastInnslag()">
-			<button @click="continueLastInnslag" class="round-style-button hover-button-delta paamelding">
+			<button @click="continueLastInnslag" class="round-style-button paamelding">
 				<span class="text">Fortsett der du slapp</span>
 				<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">
 					<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
 				</svg>
 			</button>
-			<button @click="startNyPaamelding" class="round-style-button hover-button-delta mini">
+			<button @click="startNyPaamelding" class="round-style-button mini">
 				<span class="">+</span>
 			</button>
 		</div>
 		<div v-else>
-			<button @click="startNyPaamelding" class="round-style-button hover-button-delta paamelding">
+			<button @click="startNyPaamelding" class="round-style-button paamelding">
 				<span class="text">Start en ny påmelding</span>
 				<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="hsl(216, 33%, 97%)">
 					<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>

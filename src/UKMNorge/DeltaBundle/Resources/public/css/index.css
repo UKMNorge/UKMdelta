@@ -42,8 +42,8 @@ body.modal-open,
     padding: 14px 16px;
     border: none;
     min-height: 49px;
-    background: #718096;
-    color: #EDF2F7;
+    color: hsl(var(--color-primary-blue-50,var(--color-primary-orange-50)))!important;
+    background: linear-gradient(45deg,hsl(var(--color-primary-blue-800,var(--color-primary-orange-900))),hsl(var(--color-primary-blue-600,var(--color-primary-orange-900))));
     font: normal normal 500 14px/21px Poppins;
     box-shadow: 2px 4px 6px #00000027;
     border-radius: 25px;
@@ -56,19 +56,23 @@ a.round-style-button {
     padding: 7px 14px;
     font-size: 12px;
     min-height: 35px;
+    background: #718096;
 }
 .round-style-button.mini-size {
     font-size: 12px;
     padding: 7px 16px;
     min-height: 30px;
+    background: #718096;
 }
 .round-style-button.mini {
-    background-color: #cbd5e0;
+    color: hsl(var(--color-primary-blue-50,var(--color-primary-orange-50)))!important;
+    background: #FF118A;
     padding: 12px 13px;
     height: 49px;
     width: 49px;
     display: flex;
     margin-left: 13px;
+    transition: .1s;
 }
 .round-style-button.mini span {
     font-size: 30px;
@@ -95,8 +99,20 @@ a.round-style-button {
     transition: .1s;
 }
 .hover-button-delta:hover,
-.hover-button-delta:active {
+.hover-button-delta:active,
+.round-style-button.mini-size:hover,
+.round-style-button.mini-size:active {
     background: #8393ac !important;
+    transition: .1s;
+}
+.round-style-button:not(.mini-size):hover,
+.round-style-button:not(.mini-size):active {
+    background: hsl(var(--color-primary-blue-800)) !important; 
+}
+.round-style-button.mini:hover,
+.round-style-button.mini:active {
+    background: #ff00c5 !important;
+    transition: .1s;
 }
 
 .mini-label-style {
