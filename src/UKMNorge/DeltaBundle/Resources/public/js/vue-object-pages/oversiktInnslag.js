@@ -231,7 +231,7 @@ var allePersoner = Vue.component('innslag-persons', {
             <svg class="caret-flip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill:#A0AEC0;">
                 <path d="M9 19L17 12 9 5z"></path>
             </svg>
-            <span class="accordion-title-root">#{ personer.length } #{ personer.length == 1 ? 'medlem' : 'meldemer' }</span>
+            <span class="accordion-title-root">#{ personer.length } #{ personer.length == 1 ? 'medlem' : 'meldemmer' }</span>
         </button>
     </div>
     <div id="collapseUsers" class="panel-body accordion-body-root collapse show">
