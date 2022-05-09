@@ -295,7 +295,7 @@ var mainComponent = Vue.component('titler-component', {
                         </div>
 
                         <!-- Varighet -->
-                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur' && (innslag.erKunstgalleri == false)" class="input-delta open varighet" mangler="tittel.varighet">
+                        <div v-if="(tittel.sekunder || tittel.sekunder == 0) && tittel.context.innslag.type != 'litteratur' && tittel.context.innslag.type != 'utstilling' && (innslag.erKunstgalleri == false)" class="input-delta open varighet" mangler="tittel.varighet">
                             <div class="overlay">
                                 <div class="info">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" style="fill: #A0AEC0;transform: ;msFilter:;"><path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z"></path></svg>
