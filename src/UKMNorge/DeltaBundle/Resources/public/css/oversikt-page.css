@@ -118,8 +118,9 @@
     margin-right: -25px;
 }
 .accordion-body-root .items-oversikt .item .buttons button {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
 }
 .accordion-body-root .items-oversikt .item.remove-mode .buttons .edit-user-info.collapsed {
     position: absolute;

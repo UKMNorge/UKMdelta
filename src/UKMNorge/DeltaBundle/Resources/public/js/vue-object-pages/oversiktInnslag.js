@@ -270,7 +270,7 @@ var allePersoner = Vue.component('innslag-persons', {
                         <div class="user-not-empty">
                             <div class="buttons">
                                 <button @click="closeAllOpenForms(); person.isOpen = false;" class="small-button-style hover-button-delta mini go-to-meld-av" data-toggle="collapse" :href="['#editperson' + person.id ]" aria-expanded="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="3 2 25 25" style="fill: #fff; transform: ;msFilter:;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 2 25 25" style="fill: #fff; transform: ;msFilter:;">
                                         <path d="m12 6.879-7.061 7.06 2.122 2.122L12 11.121l4.939 4.94 2.122-2.122z"></path>
                                     </svg>
                                 </button>
