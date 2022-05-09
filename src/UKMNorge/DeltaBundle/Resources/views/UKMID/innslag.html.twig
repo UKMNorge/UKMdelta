@@ -46,7 +46,6 @@
                     {% for person in innslag.getPersoner().getAll() %}
                         <img class="avatar" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/avatar-female.png" />
                     {% endfor %}
-                    {# <img class="avatar" src="https://assets.{{ UKM_HOSTNAME }}/img/delta-nytt/avatar-female.png" />  #}
                 </div>
                 {% set medlemer = innslag.getPersoner().getAntall() %}
                 <span class="total"> {{ medlemer }}  {{ medlemer > 1 ? 'indexAction.medlemer'|trans : 'indexAction.medlem'|trans }}</span>

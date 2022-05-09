@@ -223,6 +223,9 @@ var allePersoner = Vue.component('innslag-persons', {
                 fodselsdato : '',
             };
         },
+        getCurrentDomain : function() {
+            return getCurrentDomain();
+        }
     },
     template : /*html*/`
     <div>
@@ -237,10 +240,10 @@ var allePersoner = Vue.component('innslag-persons', {
     <div id="collapseUsers" class="panel-body accordion-body-root collapse show">
         <div id="allPersons" class="accordion-header-sub card-body items-oversikt">
             <div v-for="person in personer">
-                
+
                 <div :class="{ 'open-item' : person.isOpen }"class="item">
                     <div class="avatar">
-                        <img :class="{ 'phantom-loading' : person.phantom }" class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+                        <img :class="{ 'phantom-loading' : person.phantom }" class="avatar" :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/avatar-female.png' ]">
                     </div>
                     <div class="user-info">
                         <p :class="{ 'phantom-loading' : person.phantom }" class="rolle">#{ person.rolle ? person.rolle : 'Ukjent rolle' }</p>
@@ -355,7 +358,7 @@ var allePersoner = Vue.component('innslag-persons', {
                     <div class="item new-person">
                         <div class="user-empty">
                         <div class="avatar">
-                            <img class="avatar" src="https://assets.ukm.dev/img/delta-nytt/avatar-female.png">
+                            <img class="avatar" :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/avatar-female.png' ]">
                         </div>
                         <div class="user-info">
                             <p class="name">Legger til nytt medlem</p>
