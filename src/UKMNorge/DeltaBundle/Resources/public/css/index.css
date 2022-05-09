@@ -396,6 +396,7 @@ a.round-style-button {
 }
 .paamelding-box .inner .members .avatars {
     margin-right: 10px;
+    display: flex;
 }
 .paamelding-box .inner .members .avatars .avatar {
     width: 20px;
