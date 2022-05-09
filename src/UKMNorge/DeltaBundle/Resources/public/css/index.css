@@ -127,11 +127,14 @@ a.round-style-button {
     background: #e9f0f8;
     color: #71809696;
 }
+.input-delta,
+.input-delta-checkbox {
+    background: #EDF2F7;
+}
 .input-delta {
     position: relative;
     border-radius: 5px;
     overflow: hidden;
-    background: #EDF2F7;
     padding: 0 15px;
     cursor: text;
     border: solid 1px transparent;
