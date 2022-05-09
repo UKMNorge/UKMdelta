@@ -91,6 +91,7 @@ a.round-style-button {
     background: #718096;
     color: #fff;
     transition: .1s;
+    padding: 0;
 }
 .small-button-style.disabled {
     opacity: .5 !important;
