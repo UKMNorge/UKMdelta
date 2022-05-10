@@ -167,19 +167,23 @@ var mainComponent = Vue.component('titler-component', {
         deleteTittel : async function(tittel) {
             this.closeAllDeleteButtons();
             tittel.phantom = true;
-
-            var res = await spaInteraction.runAjaxCall(
-                'delete_tittel/', 
-                'DELETE', 
-                {
-                    b_id : this.innslag.id,
-                    t_id : tittel.id,
+            
+            // Bruker timeout fordi da blir vanskelig på brukergrensesnitt å forstå hvilke brukere ble slettet
+            setTimeout(async () => {
+                var res = await spaInteraction.runAjaxCall(
+                    'delete_tittel/', 
+                    'DELETE', 
+                    {
+                        b_id : this.innslag.id,
+                        t_id : tittel.id,
+                    }
+                );
+                
+                if(res == true) {
+                    this.titler.splice(this.titler.indexOf(tittel), 1);
                 }
-            );
+            }, 1000);
 
-            if(res == true) {
-                this.titler.splice(this.titler.indexOf(tittel), 1);
-            }
 
         },
         _nullTittel : function(id = 'new', phantom = false) {
@@ -241,7 +245,7 @@ var mainComponent = Vue.component('titler-component', {
                             <svg v-if="tittel.bilde != null" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 23 23" style="fill: #CBD5E0; transform: ;msFilter:;"><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zm-7.933 13.481-3.774-3.774 1.414-1.414 2.226 2.226 4.299-5.159 1.537 1.28-5.702 6.841z"></path></svg>
                             <svg v-else xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 23 23"  style="fill: #CBD5E0; transform: ;msFilter:;"><path d="m10.933 13.519-2.226-2.226-1.414 1.414 3.774 3.774 5.702-6.84-1.538-1.282z"></path><path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM5 19V5h14l.002 14H5z"></path></svg>
                             
-                            <span class="varighet kunstgalleri">#{tittel.bilde ? 'godkjent' : (tittel.playback ? 'registrert' : 'ingen')}</span>
+                            <span :class="[ tittel.bilde ? 'godkjent' : (tittel.playback ? 'registrert' : 'ingen') ]" class="varighet kunstgalleri">#{tittel.bilde ? 'godkjent' : (tittel.playback ? 'registrert' : 'ingen')}</span>
                             <!-- No varighet -->
                         </p>
                         <p class="rolle status" :class="{ 'lagring': tittel.savingStatus == 1, 'feilet': tittel.savingStatus == -1, 'opacity-hidden' : tittel.saving == false }">#{tittel.savingStatus == 0 ? 'lagret!' : (tittel.savingStatus == 1 ? 'lagring...' : 'lagring feilet!')}</p>
@@ -350,7 +354,7 @@ var mainComponent = Vue.component('titler-component', {
         <div class="item new-person">
         <div class="user-empty">
             <div class="user-info">
-                <p class="name">Legger til ny fremføring</p>
+                <p class="name">Legger til #{ innslag.type.key == 'utstilling' && innslag.erKunstgalleri == true ? 'nytt kunstgalleri' : 'ny fremføring' }</p>
             </div>
             <div class="buttons">
                 <button data-toggle="collapse" href="#newTittleForm" aria-expanded="true" class="small-button-style hover-button-delta mini go-to-meld-av">
@@ -868,6 +872,19 @@ var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-componen
                 <button @click="openKunstOpplasting(tittel)" class="round-style-button medium hover-button-delta">Last opp kunstverk</button>
             </div>
         </div>
+        <div id="innslagNavnInfo" class="beskrivelse-under-input-delta collapse show" style="">
+            <div class="space">
+                <div class="info-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #718096;">
+                        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path>
+                    </svg>
+                </div> 
+                <span>
+                   #{ tittel.bilde ? 'Kunstverk er godkjent!' : 'Kunstverk ble sendt og venter godkjenning' }
+                </span>
+            </div>
+        </div>
+        
     </div>
 
     </div>

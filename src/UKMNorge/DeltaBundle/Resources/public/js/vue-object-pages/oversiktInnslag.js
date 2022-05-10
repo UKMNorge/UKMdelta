@@ -47,17 +47,20 @@ var allePersoner = Vue.component('innslag-persons', {
             person.phantom = true;
             var innslag = this.$parent.innslag;
 
-            var removedPerson = await spaInteraction.runAjaxCall('remove_person/', 'POST', {
-                k_id : innslag.kommune_id,
-                pl_id : innslag.context.monstring.id, 
-                type : innslag.type.key,
-                b_id : innslag.id,
-                p_id : person.id
-            });
-            
-            if(removedPerson.p_id == person.id) {
-                this.personer.splice(this.personer.indexOf(person), 1);
-            }
+            // Bruker timeout fordi da blir vanskelig på brukergrensesnitt å forstå hvilke brukere ble slettet
+            setTimeout(async () => {
+                var removedPerson = await spaInteraction.runAjaxCall('remove_person/', 'POST', {
+                    k_id : innslag.kommune_id,
+                    pl_id : innslag.context.monstring.id, 
+                    type : innslag.type.key,
+                    b_id : innslag.id,
+                    p_id : person.id
+                });
+                
+                if(removedPerson.p_id == person.id) {
+                    this.personer.splice(this.personer.indexOf(person), 1);
+                }
+            }, 1000);
         },
         toggleShadows : (e) => {
 			if($(e.currentTarget).hasClass('collapsed')) {
