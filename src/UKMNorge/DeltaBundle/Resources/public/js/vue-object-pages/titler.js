@@ -880,7 +880,7 @@ var virtueltkunstgalleriComponent = Vue.component('virtueltkunstgalleri-componen
                     </svg>
                 </div> 
                 <span>
-                   #{ tittel.bilde ? 'Kunstverk er godkjent!' : 'Kunstverk ble sendt og venter godkjenning' }
+                    #{tittel.bilde ? 'Kunstverk er godkjent!' : (tittel.playback ? 'Kunstverk ble sendt og venter godkjenning' : 'Du må laste opp et kunstverk')}
                 </span>
             </div>
         </div>
