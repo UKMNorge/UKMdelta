@@ -87,8 +87,10 @@
 	{% endif %}
 </ul>
 
-<p class="my-4">
-	<a class="btn btn-block btn-outline-primary btn-success" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
-		{{ 'statusAction.tilbakeknapp'|trans({},'base') }}
-	</a>
-</p>
+<div class="fullfor-button-div">	
+	<div class="button-div">
+		<a class="round-style-button fullfor" href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}">
+			{{ 'statusAction.tilbakeknapp'|trans({},'base') }}
+		</a>
+	</div>
+</div>
