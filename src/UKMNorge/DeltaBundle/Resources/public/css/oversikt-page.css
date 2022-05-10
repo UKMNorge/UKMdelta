@@ -99,6 +99,12 @@
 .accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.inactive {
     color: #71809657;
 }
+.accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.kunstgalleri.ingen {
+    color: #d73131;
+}
+.accordion-body-root .items-oversikt .item.titel .user-info .name .varighet.kunstgalleri.godkjent {
+    color: #00a886;
+}
 .accordion-body-root .items-oversikt .item .avatar img.avatar {
     width: 24px;
 }
