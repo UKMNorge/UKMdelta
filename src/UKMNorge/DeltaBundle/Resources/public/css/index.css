@@ -437,6 +437,7 @@ a.round-style-button {
     min-width: 300px;
     margin: auto;
     background: #718096;
+    text-align: center;
 }
 .fullfor-button-div .slett-bidrag {
     margin: 15px auto 25px auto;
