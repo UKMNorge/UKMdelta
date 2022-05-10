@@ -32,7 +32,8 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
         chooseArrangement : (arrangement) => {
             var k_id = arrangement.kommuner_id[0];
             // Check for free place
-            if(arrangement.maksAntDeltagere != null && !arrangement.ventelisteLedigPlass) {
+            if(arrangement.maksAntDeltagere != null && arrangement.ventelisteLedigPlass != null) {
+                console.log('here');
                 // It is waiting list
                 var buttons = [{
                     name : 'Sett meg i venteliste',
@@ -174,7 +175,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                                         <span>
                                                             #{ arrangement.navn }
                                                             <p class="info-label">#{ getDato(arrangement.frist_1) }</p>
-                                                            <p v-if="arrangement.maksAntDeltagere != null && !arrangement.ventelisteLedigPlass" class="info-label venteliste">Venteliste</p>
+                                                            <p v-if="arrangement.maksAntDeltagere != null && arrangement.ventelisteLedigPlass == false" class="info-label venteliste">Venteliste</p>
                                                         </span>
                                                         <svg class="arrow-svg" v-show="arrangement.kommuner_fellesmonstring == null" style="height: 24px;width: 24px; margin: auto 0 auto auto;" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="#718096">
                                                             <path fill-rule="evenod d" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
