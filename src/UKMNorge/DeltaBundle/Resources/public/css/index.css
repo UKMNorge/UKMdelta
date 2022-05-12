@@ -56,6 +56,12 @@ a.round-style-button {
     color: #EDF2F7 !important;
     text-decoration: none;
 }
+.row .col-12 .alert {
+    margin-top: 15px;
+}
+.alert.alert-danger {
+    background: #fff;
+}
 .round-style-button.medium {
     padding: 7px 14px;
     font-size: 12px;
@@ -89,9 +95,10 @@ a.round-style-button {
     width: 30px;
     height: 30px;
     background: #718096;
-    color: #fff;
+    color: #fff !important;
     transition: .1s;
     padding: 0;
+    text-decoration: none !important;
 }
 .small-button-style.disabled {
     opacity: .5 !important;
@@ -385,6 +392,12 @@ a.round-style-button {
     margin: auto;
     margin-left: 10px;
     padding: 0;
+}
+.paamelding-box .header-top .buttons .mini.small-button-style-text {
+    width: 100%;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 3px 10px;
 }
 .paamelding-box .inner {
     transition: .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
