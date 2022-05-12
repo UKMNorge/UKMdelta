@@ -15,6 +15,8 @@ var jobbeMedInnslagComponent = Vue.component('type-innslag-component', {
     },
     methods: {
         initTypes : async function(id, title, url) {
+            this.innslagsTyper = [];
+
             this.id = id;
             this.title = title;
 
@@ -36,6 +38,8 @@ var jobbeMedInnslagComponent = Vue.component('type-innslag-component', {
                 console.warn(res);
 
                 this.innslagsTyper = res;
+
+                return this.innslagsTyper.length;
                 
             }catch(err) {
                 // Error
@@ -131,9 +135,21 @@ var innslagType = new Vue({
         }
     },
     methods : {
-        initNew : function() {
-            this.$refs.innslagsType.initTypes('viseFrem', 'Vise frem noe på UKM', 'get_innslag_types/');
-            this.$refs.jobbeMedType.initTypes('jobbeMed', 'Jobbe på UKM', 'get_innslag_types_jobbe_med/');
+        initNew : async function() {
+            var innslagTypes = this.$refs.innslagsType;
+            var jobbeMedTypes = this.$refs.jobbeMedType;
+
+            var innslagTypesLength = await innslagTypes.initTypes('viseFrem', 'Vise frem noe på UKM', 'get_innslag_types/');
+            var jobbeMedTypesLength = await jobbeMedTypes.initTypes('jobbeMed', 'Jobbe på UKM', 'get_innslag_types_jobbe_med/');
+
+            // Det er bare en type, opprett det uten at bruker klikker det
+            if((innslagTypesLength + jobbeMedTypesLength) == 1 && !director.getParam('noRefresh')) {
+                // noRefresh - ikke opprett en ny innslag type hvis brukeren navigerer tilbake
+                director.addParam('noRefresh', true);
+                innslagTypes.createInnslag(innslagTypesLength ? innslagTypes.innslagsTyper[0] : jobbeMedTypes.innslagsTyper[0]);
+            }
+            
+            
         }
     },
     components : {
