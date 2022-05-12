@@ -452,6 +452,16 @@ a.round-style-button {
 .fullfor-button-div .slett-bidrag:hover {
     color: #718096 !important;
 }
+.mangler-delta-innslag {
+    margin-top: 20px;
+}
+.mangler-delta-innslag li a {
+    color: #d73131 !important;
+    text-decoration: none !important;
+}
+.mangler-delta-innslag li:hover {
+    background: #d7313117 !important;
+}
 
 @media (max-width: 768px) {
     .paamelding-box.big-box {

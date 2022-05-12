@@ -1,10 +1,11 @@
 <span class="text-muted">{{ 'statusAction.helper'|trans({},'base')  }}</span>
 <ul
-	class="list-group">
+	class="list-group mangler-delta-innslag">
 	{# ALT OM INNSLAGET #}
 	{% if innslag.getMangler().harKategori('innslag') %}
 		{% for mangel in innslag.getMangler().getAllSortert('innslag') %}
 			<li class="list-group-item clickLinkWithin click">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 				<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_' ~ (mangel.getId() == 'innslag.tekniske' ? 'teknisk' : 'oversikt'), { k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="linkWithin">
 					{{ ( 'mangler.' ~ mangel.getId() )|trans({}, 'base' ) }}
 				</a>
@@ -16,6 +17,7 @@
 	{% if innslag.getMangler().harKategori('kontakt') %}
 		{% for mangel in innslag.getMangler().getAllSortert('kontakt') %}
 			<li class="list-group-item clickLinkWithin click">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 				<a href="{{ path('ukm_delta_ukmid_contact') }}" class="linkWithin">
 					{{ ( 'mangler.' ~ mangel.getId() )|trans({}, 'base' ) }}
 				</a>
@@ -29,12 +31,14 @@
 		{% for mangel in innslag.getMangler().getAllSortert('person')|filter(mangel => mangel.getObjektId() not in printed) %}
 			{% if mangel.getId() == 'person.ingen' %}
 				<li class="list-group-item clickLinkWithin click">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 					<a href="{{ path('ukm_delta_ukmid_pamelding_ny_person', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id }) }}" class="linkWithin">
 						{{ 'mangler.innslag.ingendeltakere'|trans({},'base') }}
 					</a>
 				</li>
 			{% elseif mangel.getId() == 'person.rolle' and innslag.getType().erEnkeltPerson() %}
 				<li class="list-group-item clickLinkWithin click">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_oversikt', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id } ) }}" class="linkWithin">
 						{{ 'mangler.overskrift.person'|trans({'%person': innslag.getPersoner().get( mangel.getObjektId() ).getNavn() }, 'base') }}
 					</a>
@@ -46,6 +50,7 @@
 			{% else %}
 				{% set printed = printed|merge([mangel.getObjektId()]) %}
 				<li class="list-group-item clickLinkWithin click">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 					<a href="{{ path('ukm_delta_ukmid_pamelding_personinfo', {k_id: k_id, pl_id: pl_id, type: type, b_id: b_id, p_id: mangel.getObjektId() } ) }}" class="linkWithin">
 						{{ 'mangler.overskrift.person'|trans({'%person': innslag.getPersoner().get( mangel.getObjektId() ).getNavn() }, 'base') }}
 					</a>
@@ -65,6 +70,7 @@
 		{% for mangel in innslag.getMangler().getAllSortert('tittel')|filter( mangel => mangel.getObjektId() not in printed ) %}
 			{% if mangel.getId() == 'tittel.ingen' %}
 				<li class="list-group-item clickLinkWithin click">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_ny_tittel', { 'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id }) }}" class="linkWithin">
 						{{ 'mangler.tittel.mangler'|trans({}, 'base') }}
 					</a>
@@ -72,6 +78,7 @@
 			{% else %}
 				{% set printed = printed|merge([mangel.getObjektId()]) %}
 				<li class="list-group-item clickLinkWithin click">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: #d73131; margin-right: 5px; vertical-align: bottom; transform: ;msFilter:;"><path d="M11.953 2C6.465 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.493 2 11.953 2zM13 17h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
 					<a href="{{ path('ukm_delta_ukmid_pamelding_innslag_rediger_tittel', { 'k_id': k_id, 'pl_id': pl_id, 'type': type, 'b_id': b_id, 't_id': mangel.getObjektId() }) }}" class="linkWithin">
 						{{ 'mangler.overskrift.tittel'|trans({'%tittel': innslag.getTitler().get( mangel.getObjektId() ).getTittel()}, 'base') }}
 					</a>

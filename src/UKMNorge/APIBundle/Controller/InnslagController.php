@@ -284,6 +284,13 @@ class InnslagController extends SuperController {
             $navn = $data_arr['navn'];
             $beskrivelse = $data_arr['beskrivelse'];
             $sjanger = $data_arr['sjanger'];
+            
+            $route_data = [
+                'k_id' => $data_arr['k_id'],
+                'pl_id' => $data_arr['pl_id'],
+                'type' => $data_arr['type'],
+                'b_id' => $b_id
+            ];
 
             // Hent inn innslaget
             $innslag = $innslagService->hent($b_id);
@@ -300,14 +307,12 @@ class InnslagController extends SuperController {
 
                 $personService->lagre($person, $innslag->getId());
                 $innslagService->lagre($innslag);
-
+                
                 $response->setData(
                     [
                         'saved' => $innslag->erPameldt(),
                         'mangler' => $innslag->getMangler(),
-                        'path' => $this->generateUrl(
-                            'ukm_delta_ukmid_homepage'
-                        )
+                        'path' => $this->generateUrl('ukm_delta_ukmid_pamelding_pameldt', $route_data)
                     ]
                 );
                 $response->setData();
@@ -326,9 +331,7 @@ class InnslagController extends SuperController {
                 [
                     'saved' => $innslag->erPameldt(),
                     'mangler' => $innslag->getMangler(),
-                    'path' => $this->generateUrl(
-                        'ukm_delta_ukmid_homepage'
-                    )
+                    'path' => $this->generateUrl('ukm_delta_ukmid_pamelding_pameldt', $route_data)
                 ]
             );
             return $response;
