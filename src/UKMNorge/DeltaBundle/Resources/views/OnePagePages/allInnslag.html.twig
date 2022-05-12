@@ -40,13 +40,13 @@
 			<!-- ingen innslag -->
 			<div v-if="alle_innslag.length < 1 || (alle_innslag[0][1].length < 1 && alle_innslag[1][1].length < 1)">
 				{# START Phantom - loading #}
-				<h3 class="tittle phantom-loading" style="width: 160px;">Fullførte påmeldinger</h3>
+				<h3 class="tittle phantom-loading" :class="{ 'hide' : loaded }" style="width: 160px;">Fullførte påmeldinger</h3>
 
-				<div v-for='randomNumber in (Math.floor(Math.random() * 3) + 1)' class="paamelding-box">
+				<div v-for='randomNumber in (Math.floor(Math.random() * 3) + 1)' class="paamelding-box" :class="{ 'hide' : loaded }">
 					<div class="header-top">
 						<div class="category-tittel">
-							<div class="mini-label-style label">
-								<span class="phantom-loading">loading</span>
+							<div class="mini-label-style label phantom-loading">
+								<span>loading</span>
 							</div>
 						</div>
 						<div class="buttons">
