@@ -62,8 +62,19 @@
 				{# END Phantom - loading #}
 
 
-				<div class="no-innslag-div">
-					<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.gif']" :class="{ 'hide' : !loaded }" />
+				<div class="no-innslag-div" :class="{ 'hide' : !loaded }">
+					<div class="no-innslag-inner">
+						<img :src="['https://assets.' + getCurrentDomain() + '/img/delta-nytt/not_found_events.gif']" />
+						<p class="text">Du har ingen påmeldte arrangementer</p>
+
+						<button @click="startNyPaamelding" class="small-button-style new-member add-new hover-button-delta no-collapse">
+							Meld deg på her
+							<svg xmlns="http://www.w3.org/2000/svg" wwidth="18" height="18" viewBox="0 0 24 24" style="fill: rgb(113, 128, 150); transform: ;msFilter:;">
+								<path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+							</svg>
+						</button>
+
+					</div>
 				</div>
 			</div>
 			<div v-else v-for="innslagCategory in alle_innslag">

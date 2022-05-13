@@ -198,40 +198,6 @@ p.rolle.status.opacity-hidden {
     font-size: inherit;
     transition: .4s;
 }
-.new-member-div {
-    display: flex;
-    background: #edf2f7;
-}
-.new-member {
-    background: #c9cdd1 !important;
-    border-radius: 25px;
-    padding: 5px 10px;
-    text-decoration: none !important;
-    margin: 10px auto;
-    width: auto;
-    height: auto;
-    box-shadow: 0px 0px 6px 1px #00000027;
-    color: #718096;
-    font: normal normal 600 10px/16px Poppins;
-
-}
-.new-member.add-new{
-    display: none;
-}
-.new-member.collapsed {
-    display: block;
-}
-.new-member svg {
-    margin-left: 5px;
-}
-.new-member:hover,
-.new-member:focus {
-    color: #fff;
-}
-.new-member:hover svg,
-.new-member:focus svg {
-    fill: #fff !important;
-}
 #alleTitler {
     margin-bottom: 40px;
 }
@@ -292,10 +258,4 @@ img.kunstverk {
     font: normal normal 300 12px/14px Roboto;
     text-align: left;
     background: #F7FAFC;
-}
-@media(max-width: 575px) {
-    .new-member {
-        padding: 8px 17px;
-        font-size: 12px;
-    }
 }

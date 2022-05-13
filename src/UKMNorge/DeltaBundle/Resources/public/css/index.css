@@ -95,7 +95,7 @@ a.round-style-button {
     width: 30px;
     height: 30px;
     background: #718096;
-    color: #fff !important;
+    color: #fff;
     transition: .1s;
     padding: 0;
     text-decoration: none !important;
@@ -475,6 +475,43 @@ a.round-style-button {
 .mangler-delta-innslag li:hover {
     background: #d7313117 !important;
 }
+.new-member-div {
+    display: flex;
+    background: #edf2f7;
+}
+.new-member {
+    background: #c9cdd1 !important;
+    border-radius: 25px;
+    padding: 5px 10px;
+    text-decoration: none !important;
+    margin: 10px auto;
+    width: auto;
+    height: auto;
+    box-shadow: 0px 0px 6px 1px #00000027;
+    color: #718096;
+    font: normal normal 600 10px/16px Poppins;
+
+}
+.new-member.add-new.no-collapse {
+    display: block !important;
+}
+.new-member.add-new {
+    display: none;
+}
+.new-member.collapsed {
+    display: block;
+}
+.new-member svg {
+    margin-left: 5px;
+}
+.new-member:hover,
+.new-member:focus {
+    color: #fff;
+}
+.new-member:hover svg,
+.new-member:focus svg {
+    fill: #fff !important;
+}
 
 @media (max-width: 768px) {
     .paamelding-box.big-box {
@@ -487,5 +524,9 @@ a.round-style-button {
     }
     body .lead {
         font-size: 14px;
+    }
+    .new-member {
+        padding: 8px 17px;
+        font-size: 12px;
     }
 }
