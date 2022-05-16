@@ -75,6 +75,15 @@ var jobbeMedInnslagComponent = Vue.component('type-innslag-component', {
                 btn.addClass('collapsed');
             }
         },
+        showInfoType : function(event) {
+            var el = $(event.currentTarget);
+            if(el.parent().parent().hasClass('focus')) {
+                el.parent().parent().removeClass('focus');
+            }
+            else {
+                el.parent().parent().addClass('focus');
+            }
+        }
     },
     template: /*html*/`
     <div>
@@ -104,7 +113,7 @@ var jobbeMedInnslagComponent = Vue.component('type-innslag-component', {
                                             </span>
                                         </div>
                                         <div class="type-info-right">
-                                            <button class="no-click-from-parent small-button-style hover-button-delta mini" style="margin-right: 8px;" data-toggle="collapse" :href="['#beskrivelseType' + type.key ]" type="button" aria-expanded="false" :aria-controls="['beskrivelseType' + type.key ]">
+                                            <button @click="showInfoType($event)" class="no-click-from-parent small-button-style hover-button-delta mini" style="margin-right: 8px;" data-toggle="collapse" :href="['#beskrivelseType' + type.key ]" type="button" aria-expanded="false" :aria-controls="['beskrivelseType' + type.key ]">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="no-click-from-parent" width="22" height="22" viewBox="-2 -2 28 28" style="fill: #fff ;transform: ;msFilter:;">
                                                     <path class="no-click-from-parent" d="M12 4C9.243 4 7 6.243 7 9h2c0-1.654 1.346-3 3-3s3 1.346 3 3c0 1.069-.454 1.465-1.481 2.255-.382.294-.813.626-1.226 1.038C10.981 13.604 10.995 14.897 11 15v2h2v-2.009c0-.024.023-.601.707-1.284.32-.32.682-.598 1.031-.867C15.798 12.024 17 11.1 17 9c0-2.757-2.243-5-5-5zm-1 14h2v2h-2z"></path>
                                                 </svg>
