@@ -29,8 +29,19 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
 
             return day + ' ' + date.getDate() + '. ' + month + ', ' + date.getFullYear();
         },
-        chooseArrangement : (arrangement) => {
-            var k_id = arrangement.kommuner_id[0];
+        chooseArrangement : (arrangement, kommune) => {
+            // hvis det er felles mønstring må kommune være med i metoden
+            // hvis kommune er ikke med så metoden returneres og fortsetter ikke videre
+            if(arrangement.kommuner_fellesmonstring != null && kommune == null) {
+                return;
+            }
+
+            if(kommune) {
+                var k_id = kommune.id;
+            }
+            else {
+                var k_id = arrangement.kommuner_id[0];
+            }
             // Check for free place
             if(arrangement.maksAntDeltagere != null && arrangement.ventelisteLedigPlass != null) {
                 console.log('here');
@@ -63,7 +74,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
             else {
                 director.openPage('pageVelgInnslagType'); 
                 director.addParam('pl_id', arrangement.id);
-                director.addParam('k_id', arrangement.kommuner_id[0]);
+                director.addParam('k_id', k_id);
                 innslagType.initNew();
             }
 
@@ -176,7 +187,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                         <div v-if="arrangement" class="panel-inner">
                                             <div class="panel-group" id="accordionKommune">
                                                 <div class="panel panel-default accordion-panel-child arrangement-default" data-toggle="collapse" data-parent="#accordionArrangement" href="#collapseForm">
-                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa" @click="chooseArrangement(arrangement)">
+                                                    <div class="panel-heading accordion-header-child card-body card-body-arrangement meldpaa" @click="chooseArrangement(arrangement, null)">
                                                         <span>
                                                             #{ arrangement.navn }
                                                             <p class="info-label">#{ getDato(arrangement.frist_1) }</p>
@@ -194,7 +205,7 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                                                             <span class="info-label">HVILKEN BY ER DU FRA?</span>
                                                         </div>
                                                         <div :id="['kommuner' + arrangement.id]" class="collapse show">
-                                                            <div v-for="felles_kommune in arrangement.kommuner_fellesmonstring" class="panel-heading accordion-header-sub card-body card-body-kommune hover-button-delta fellesmonstring">
+                                                            <div v-for="felles_kommune in arrangement.kommuner_fellesmonstring" @click="chooseArrangement(arrangement, felles_kommune)" class="panel-heading accordion-header-sub card-body card-body-kommune hover-button-delta fellesmonstring">
                                                             <p class="accordion-title-sub kommune-navn">
                                                                 #{ felles_kommune.navn }
                                                             </p>
