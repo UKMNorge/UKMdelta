@@ -119,7 +119,8 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
 
             // Disable clicks
         },
-        async getArrangement(kommune) {
+        async getArrangement(kommune, event) {
+            var divEl =  $(event.currentTarget).parent();
             var arrangementer = await spaInteraction.runAjaxCall('get_arrangementer_i_kommune/' + kommune.id, 'GET', {});
             var arrangementerArr = [];
             for(var arrangement of arrangementer) {
@@ -128,6 +129,10 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
                         arrangementerArr.push(arrangement);
                     }
                 }
+            }
+
+            if(arrangementerArr.length < 1) {
+                divEl.toggleClass('active-div');
             }
             
             kommune.arrangementer = arrangementerArr;
@@ -150,8 +155,8 @@ var fylkerKommunerComponent = Vue.component('fylker-kommuner-component', {
 
                     <div :id="['collapseKommuneForFylke' + fylke.id]" :f_id="['#' + fylke.id]" class="panel-body accordion-body-root fylke-body arrangementer-visning search collapse">
                         <div class="panel panel-default kommuner-i-fylke">
-                            <div v-for="kommune in fylke.kommuner">
-                                <div @click="getArrangement(kommune)" class="accordion-sub kommune-accordion search-kommune collapsed" :k_id="kommune.id" data-toggle="collapse" data-parent="#accordionKommune" :href="['#collapseArrangementer' + kommune.id]">
+                            <div v-for="kommune in fylke.kommuner" class="kommune-top-div">
+                                <div @click="getArrangement(kommune, $event)" class="accordion-sub kommune-accordion search-kommune collapsed" :k_id="kommune.id" data-toggle="collapse" data-parent="#accordionKommune" :href="['#collapseArrangementer' + kommune.id]">
                                     <div class="panel-heading accordion-header-sub card-body card-body-kommune search">
                                         <span class="accordion-title-sub kommune-navn">
                                             #{ kommune.navn }

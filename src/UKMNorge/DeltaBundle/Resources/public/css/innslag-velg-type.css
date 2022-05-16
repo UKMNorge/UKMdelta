@@ -41,3 +41,7 @@ opacity: 1;
 .panel-heading.accordion-header-sub.card-body.card-body-kommune.search:hover {
     background: #e6eaef;
 }
+.kommune-top-div.active-div,
+.kommune-top-div.active-div .kommune-accordion.search-kommune .card-body-kommune {
+    background: #e6eaef !important;
+}
