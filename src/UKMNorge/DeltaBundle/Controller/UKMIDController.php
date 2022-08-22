@@ -37,8 +37,10 @@ class UKMIDController extends Controller
             return $this->redirectToRoute('fos_user_security_logout');
         }
 
+        $request = Request::createFromGlobals();
+
         // Ved retur fra WP-innlogging kan du ha fått med deg en feilmelding. Vi printer den her:
-        if( $this->get('request')->query->get('feilkode') == 1)  {
+        if( $request->query->get('feilkode') == 1)  {
             # Vi sier ikke automatisk fra til support, velger i stedet å håndtere feil med å vise den til brukeren.
             $this->container->get("logger")->error("UKMIDController:index - Innlogging feilet i Wordpress. Det kan være at brukeren ikke har fått lov til å logge inn, eller at noe er feil i Wordpress-oppsettet.");
             $this->addFlash('danger', "Innlogging feilet i arrangørsystemet. Har du fått lov til å logge inn av arrangøren?");

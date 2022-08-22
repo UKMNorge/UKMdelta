@@ -62,7 +62,7 @@ class UKMSecurityController extends BaseController {
             
             // Get the LoginSuccessHandler, which will redirect as proper
             $handler = $this->get('ukm_user.security.authentication.handler.login_success_handler');
-            $request == $this->get('request');
+            $request = Request::createFromGlobals();
             $usertoken = $this->get('security.token_storage')->getToken();
 
             $response = $handler->onAuthenticationSuccess($request, $usertoken);
@@ -146,7 +146,7 @@ class UKMSecurityController extends BaseController {
         }
         
         require_once('UKM/curl.class.php');
-        $req = Request::createFromGlobals(); 
+        $req = Request::createFromGlobals();
         $redirectURL = $this->deltaFBLoginURL;
         
         // If mottatt error fra facebook
@@ -222,7 +222,7 @@ class UKMSecurityController extends BaseController {
             $logger->info('UKMSecurityController: Found user already registered.');
 
             // Vi har en bruker med denne IDen, logg han/hun inn.
-            $request = $this->get('request');
+            $request = Request::createFromGlobals();
             $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
             $this->get('security.token_storage')->setToken($usertoken);
             $event = new InteractiveLoginEvent($request, $usertoken);
@@ -255,7 +255,7 @@ class UKMSecurityController extends BaseController {
                 // Logg inn brukeren
                 $usertoken = new UsernamePasswordToken($ukm_user, $ukm_user->getPassword(), "ukm_delta_wall", $ukm_user->getRoles());
                 $this->get('security.token_storage')->setToken($usertoken);
-                $request = $this->get('request');
+                $request = Request::createFromGlobals();
                 $event = new InteractiveLoginEvent($request, $usertoken);
                 $this->get("event_dispatcher")->dispatch('security.interactive_login', $event);
             

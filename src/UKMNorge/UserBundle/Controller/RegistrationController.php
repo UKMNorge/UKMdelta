@@ -102,7 +102,8 @@ class RegistrationController extends BaseController
 				    		$userManager->updateUser($user);
 
 				    		// Logg inn brukeren
-				    		$request = $this->get('request');
+							
+				    		$request =  Request::createFromGlobals();
 				    		$usertoken = new UsernamePasswordToken($user, $user->getPassword(), "ukm_delta_wall", $user->getRoles());
 				            $this->get('security.token_storage')->setToken($usertoken);
 				            $event = new InteractiveLoginEvent($request, $usertoken);
@@ -350,12 +351,13 @@ class RegistrationController extends BaseController
 			
         	$userManager->updateUser($user);
 
+        	$request = Request::createFromGlobals();
+
         	// Let the user know his new password.
-        	$event = new GetResponseUserEvent($user, $this->get('request'));
+        	$event = new GetResponseUserEvent($user, $request);
         	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
 
         	// Log in user
-        	$request = Request::createFromGlobals();
         	$response = new Response();
 
         	$dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRMED, new FilterUserResponseEvent($user, $request, $response));
