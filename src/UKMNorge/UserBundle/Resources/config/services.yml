@@ -8,13 +8,13 @@ services:
     ukm_user.registration_listener:
         class: UKMNorge\UserBundle\EventListener\RegistrationListener
         arguments:
-            - @service_container
+            - '@service_container'
         tags:
             - { name: kernel.event_subscriber }
     ukm_user:
         class: UKMNorge\UserBundle\Services\UserService
         arguments:
-            - @service_container
+            - '@service_container'
 
     ukm_user.mailer:
         class: UKMNorge\UserBundle\Mailer\Mailer
@@ -42,14 +42,14 @@ services:
 
     ukm_user.security.authentication.handler.login_success_handler:
         class: 'UKMNorge\UserBundle\Security\Authentication\Handler\LoginSuccessHandler'
-        arguments:  ["@router", "@security.context", "@doctrine", "@ukm_user", "@service_container"]
+        arguments:  ["@router", "@security.token_storage", "@security.authorization_checker", "@doctrine", "@ukm_user", "@service_container"]
     UKM.urlsigner:
         class: 'UKMNorge\UserBundle\Services\URLSignerService'
         arguments: ["@doctrine"]
     ukm_user.redirect:
         class: 'UKMNorge\UserBundle\Services\RedirectService'
         arguments: 
-            - @service_container
+            - '@service_container'
 #    ukm_user.example:
 #        class: UKMNorge\UserBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]

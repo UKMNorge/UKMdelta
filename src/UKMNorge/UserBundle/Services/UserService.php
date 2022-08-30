@@ -14,7 +14,7 @@ class UserService {
 						
 	public function __construct( $container ) {
 		$this->container = $container;
-		$this->security = $this->container->get('security.context');
+		$this->security = $this->container->get('security.token_storage');
 	}
 	
 	public function getCurrentUser() {

@@ -108,7 +108,7 @@ class ExceptionListener {
         }
         
         # Dersom vi ikke har noe brukerobjekt (usertoken), sett en anon-token og logg ut brukeren. Ikke logg ut vanlige brukere som bare har hatt en feil som ikke er håndtert.
-        if (NULL == $this->container->get('security.context')->getToken()) {
+        if (NULL == $this->container->get('security.token_storage')->getToken()) {
             $this->container->get('logger')->error("ExceptionListener: Mangler bruker-objekt! Logger ut brukeren via anon-token.");
             $view_data['code'] = $code;
             $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
@@ -231,7 +231,11 @@ class ExceptionListener {
 
     public function notifySupport(Exception $e, $header = null) {
         $request = Request::createFromGlobals();
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        echo "TODO5O"; // Hvis brukeren er ikke logged inn så feiler linje under return
+        var_dump($e->getCode());
+        var_dump($e->getMessage());
+        return;
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $message = "En ukjent feil har oppstått i Delta ".date("Y-m-d H:i:s").".\n\nDebug-informasjon:\n";
         if($header != null) {

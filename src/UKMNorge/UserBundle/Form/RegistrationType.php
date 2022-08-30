@@ -5,6 +5,7 @@ namespace UKMNorge\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use UKMNorge\UserBundle\Form\Type\TelType;
 
@@ -45,5 +46,12 @@ class RegistrationType extends AbstractType
     public function getName()
     {
         return 'UKM_user_registration';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => RegistrationController::class,
+        ]);
     }
 }

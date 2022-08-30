@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/autoload.php';
+
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 

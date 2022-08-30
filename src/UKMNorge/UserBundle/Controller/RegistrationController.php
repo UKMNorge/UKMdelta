@@ -381,7 +381,7 @@ class RegistrationController extends BaseController
     /**
      * Tell the user his account is now confirmed
      */
-    public function confirmedAction(Request $request)
+    public function confirmedAction()
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {

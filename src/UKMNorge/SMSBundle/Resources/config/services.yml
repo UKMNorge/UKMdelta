@@ -1,4 +1,4 @@
 services:
     ukmsms:
         class: UKMNorge\SMSBundle\Services\SenderService
-        arguments: [@service_container, "%ukmsms.system_id%", "%ukmsms.price%", "%ukmsms.sender%"]
+        arguments: ['@service_container', "%ukmsms.system_id%", "%ukmsms.price%", "%ukmsms.sender%"]

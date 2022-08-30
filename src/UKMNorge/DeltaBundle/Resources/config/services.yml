@@ -1,7 +1,7 @@
 services:
   ukm_delta.season:
-    class: "UKMNorge\DeltaBundle\Services\SeasonService"
-    arguments: ["@service_container"]
+    class: 'UKMNorge\DeltaBundle\Services\SeasonService'
+    arguments: ['@service_container']
   delta_menu:
-    class: "UKMNorge\DeltaBundle\Services\MenuService"
-    arguments: ["@service_container"]
+    class: 'UKMNorge\DeltaBundle\Services\MenuService'
+    arguments: ['@service_container']

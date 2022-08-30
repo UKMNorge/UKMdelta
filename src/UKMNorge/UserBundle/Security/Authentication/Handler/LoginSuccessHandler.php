@@ -18,10 +18,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     protected $router;
     protected $security;
     
-    public function __construct(Router $router, SecurityContext $security, $doctrine, $ukm_user, $container)
+    public function __construct(Router $router, $security, $authorization_checker, $doctrine, $ukm_user, $container)
     {
         $this->router = $router;
         $this->security = $security;
+        $this->authorization_checker = $authorization_checker;
         $this->doctrine = $doctrine;
         $this->ukm_user = $ukm_user;
         $this->container = $container;
@@ -36,7 +37,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->logger->info('DIPBundle: Authenticated successfully.');
                 
         // If logged in properly.
-        if ($this->security->isGranted('ROLE_USER'))
+        if ($this->authorization_checker->isGranted('ROLE_USER'))
         {       
             $user = $this->ukm_user->getCurrentUser();
             if( $session->get('rdirurl') ) {

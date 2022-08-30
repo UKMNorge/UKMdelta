@@ -1403,8 +1403,10 @@ class InnslagController extends Controller
         try {
             $innslag = $innslagService->hent($b_id);
 
+            $request = Request::createFromGlobals();
+
             // Hvis POST-request, utfør
-            if ($this->getRequest()->isMethod('POST')) {
+            if ($request->isMethod('POST')) {
                 $innslagService->meldAv($innslag->getId(), $pl_id);
                 $this->addFlash('success', $this->get('translator')->trans('removeAction.fjernet', ["%name" => $innslag->getNavn()], 'base'));
                 return $this->redirectToRoute('ukm_delta_ukmid_homepage');
