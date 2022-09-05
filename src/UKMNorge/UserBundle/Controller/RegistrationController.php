@@ -1,6 +1,8 @@
 <?php
 
 namespace UKMNorge\UserBundle\Controller;
+
+
 /* FROM PARENT */
 	use FOS\UserBundle\FOSUserEvents;
 	use FOS\UserBundle\Event\FormEvent;
@@ -381,7 +383,7 @@ class RegistrationController extends BaseController
     /**
      * Tell the user his account is now confirmed
      */
-    public function confirmedAction()
+    public function confirmedAction(Request $request)
     {
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {

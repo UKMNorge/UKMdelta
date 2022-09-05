@@ -7,3 +7,11 @@ services:
 
     fos_user.doctrine_registry:
         alias: doctrine
+
+    twig.extension.debug:
+        class: Twig_Extension_Debug
+        tags: [{ name: 'twig.extension' }]
+
+    logger:
+        alias: 'monolog.logger'
+        public: true

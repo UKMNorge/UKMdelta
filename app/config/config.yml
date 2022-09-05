@@ -30,7 +30,7 @@ framework:
 # Twig Configuration
 twig:
     form_themes:
-        ['UKMDeltaBundle:Form:fields.html.twig', 'bootstrap_5_horizontal_layout.html.twig']
+        ['UKMDeltaBundle:Form:fields.html.twig', 'bootstrap_3_horizontal_layout.html.twig']
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     paths:
@@ -99,7 +99,6 @@ fos_user:
     user_class: UKMNorge\UserBundle\Entity\User
     registration:
         form:
-            type: UKM_user_registration
-            validation_groups: [UKM_user_registration]
+            type: 'UKMNorge\UserBundle\Form\RegistrationType'
         confirmation:
             enabled: true

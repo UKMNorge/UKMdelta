@@ -6,8 +6,14 @@ namespace UKMNorge\UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use FOS\UserBundle\Form\Type\RegistrationFormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 
-use UKMNorge\UserBundle\Form\Type\TelType;
+
+
+// use UKMNorge\UserBundle\Form\Type\TelType;
 
 class RegistrationType extends AbstractType
 {
@@ -24,23 +30,28 @@ class RegistrationType extends AbstractType
         		->remove('plainPassword');
 
 
-        $builder->add('email', 'text', array(
-                    'label' => 'ukm_user.email',
-                    'data' => $this->session->get('email')))
-                ->add('facebook_id', 'hidden', array(
-                    'data' => $this->session->get('facebook_id')))
-                ->add('first_name', 'text', array(
+
+        $builder->add('facebook_id', HiddenType::class, array(
+                    'data' => $this->session->get('facebook_id')));
+                    
+        $builder->add('first_name', TextType::class, array(
                     'label' => 'ukm_user.first_name', 
-                    'data' => $this->session->get('first_name')))
-        		->add('last_name', 'text', array(
+                    'data' => $this->session->get('first_name')));
+                    
+        $builder->add('last_name', TextType::class, array(
                     'label' => 'ukm_user.last_name',
                     'data' => $this->session->get('last_name')))
-        		->add('phone', new TelType(), array('label' => 'ukm_user.phone'));
+        		->add('phone', TelType::class, array('label' => 'ukm_user.phone'));
     }
 
     public function getParent()
     {
-        return 'fos_user_registration';
+        return "FOS\UserBundle\Form\Type\RegistrationFormType";
+    }
+
+    public function setDefaultOptions(OptionsResolver $r) {
+        /** @var OptionResolver $resolver */
+        $this->configureOptions($r);
     }
 
     public function getName()
@@ -48,10 +59,5 @@ class RegistrationType extends AbstractType
         return 'UKM_user_registration';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => RegistrationController::class,
-        ]);
-    }
+    
 }
