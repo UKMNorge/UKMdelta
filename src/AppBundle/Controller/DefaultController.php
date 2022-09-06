@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use UKMNorge\UserBundle\Services\UserService;
 use Exception;
 
 class DefaultController extends Controller
@@ -30,8 +31,10 @@ class DefaultController extends Controller
     public function loggedOutTestAction() {
         $usertoken = new UsernamePasswordToken("anon", "anon", "ukm_delta_wall", array("ROLE_USER"));
         $this->container->get('security.token_storage')->setToken($usertoken);
-
-        $user = $this->get('ukm_user')->getCurrentUser();
+        
+        $userObj = new UserService($this->container);
+        
+        $user = $userObj->getCurrentUser();
         $user->getPameldUser();
         return $this->redirectToRoute('ukm_delta_ukmid_homepage');
     }

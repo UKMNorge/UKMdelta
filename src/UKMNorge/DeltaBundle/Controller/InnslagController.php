@@ -22,6 +22,7 @@ use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Venner;
 use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Innslag\Venteliste\Venteliste;
+use UKMNorge\UserBundle\Services\UserService;
 
 require_once('UKM/Autoloader.php');
 
@@ -94,6 +95,8 @@ class InnslagController extends Controller
     {
         $request = Request::createFromGlobals();
 
+		$userObj = new UserService($this->container);
+
         $filter = new Filter();
         $filter->harPamelding();
 
@@ -103,7 +106,7 @@ class InnslagController extends Controller
         if (date('Y') == '2020') {
             $view_data['fylker'][] = Fylker::getById(33);
         }
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+        $view_data['user'] = $userObj->getCurrentUser();
         $view_data['pameldUserId'] = $this->hentCurrentUser()->getPameldUser();
 
 
@@ -150,6 +153,8 @@ class InnslagController extends Controller
      */
     public function typeAction(Int $k_id, Int $pl_id)
     {   
+		$userObj = new UserService($this->container);
+
         // Hvis kommunen ikke er aktiv, redirect til kommunesiden
         $kommune = $this->hentKommune($k_id);
         if(!$kommune->erAktiv()) {
@@ -164,8 +169,8 @@ class InnslagController extends Controller
         }
 
         // Verify user data here as well - in case people are coming from direct links
-        if( $this->get('ukm_user')->getCurrentUser()->getBirthdate() == null ||
-            $this->get('ukm_user')->getCurrentuser()->getSamtykke() === null
+        if( $userObj->getCurrentUser()->getBirthdate() == null ||
+            $userObj->getCurrentuser()->getSamtykke() === null
         ) {
             $this->get('session')->set('checkInfoRedirect', 'ukm_delta_ukmid_pamelding_hva');
             $this->get('session')->set('checkInfo_kid', $k_id);
@@ -207,6 +212,8 @@ class InnslagController extends Controller
      */
     public function fylkePreTypeAction(Int $pl_id)
     {
+		$userObj = new UserService($this->container);
+
         $filter = new Filter();
         $filter->harPamelding();
 
@@ -225,7 +232,7 @@ class InnslagController extends Controller
             }
         }
 
-        $view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+        $view_data['user'] = $userObj->getCurrentUser();
 
         // Foreslå kommune basert på siste påmelding deltakeren hadde
         $mine_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
@@ -1504,6 +1511,7 @@ class InnslagController extends Controller
      */
     public function hentCurrentUser()
     {
-        return $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+        return $userObj->getCurrentUser();
     }
 }

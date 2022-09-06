@@ -20,6 +20,8 @@ use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
+use UKMNorge\UserBundle\Services\UserService;
+
 
 require_once('UKM/Autoloader.php');
 
@@ -183,7 +185,8 @@ class InnslagService
      */
     public function hentCurrentUser()
     {
-        return $this->container->get('ukm_user')->getCurrentUser();
+        $userObj = new UserService($this->container);
+        return $userObj->getCurrentUser();
     }
 
     /**

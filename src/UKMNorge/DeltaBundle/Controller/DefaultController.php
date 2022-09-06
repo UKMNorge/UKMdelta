@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
+use UKMNorge\UserBundle\Services\UserService;
+
 
 require_once('UKM/Autoloader.php');
 
@@ -16,7 +18,9 @@ class DefaultController extends Controller
 
     public function indexAction()
     {
-        $user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+        
+        $user = $userObj->getCurrentUser();
         if( is_object($user)) {
             return $this->redirectToRoute('ukm_delta_ukmid_homepage');
         }

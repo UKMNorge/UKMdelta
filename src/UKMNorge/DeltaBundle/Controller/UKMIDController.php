@@ -14,6 +14,7 @@ use UKMNorge\Innslag\Personer\Write as WritePerson;
 use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Personer\Kontaktperson;
 use UKMNorge\Innslag\Venteliste\Venteliste;
+use UKMNorge\UserBundle\Services\UserService;
 
 use UKMNorge\Samtykke\Person as PersonSamtykke;
 
@@ -31,8 +32,10 @@ class UKMIDController extends Controller
      */
     public function indexAction()
     {
+        $userObj = new UserService($this->container);
+        
         try {
-            $user = $this->get('ukm_user')->getCurrentUserAsObject();
+            $user = $userObj->getCurrentUserAsObject();
         } catch( Exception $e ) {
             return $this->redirectToRoute('fos_user_security_logout');
         }
@@ -80,7 +83,10 @@ class UKMIDController extends Controller
     public function checkPersonvernAction( Request $request )
     {
         $userManager = $this->container->get('fos_user.user_manager');
-        $user = $this->get('ukm_user')->getCurrentUser();
+
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
 
         // Lagre svaret
         $user->setSamtykke( $request->request->get('personvern') == 'ja' );
@@ -100,7 +106,10 @@ class UKMIDController extends Controller
         ];
         
         $userManager = $this->container->get('fos_user.user_manager');
-        $user = $this->get('ukm_user')->getCurrentUser();
+
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
 
         // Beregn alder fra fødselsår
         if( $user->getBirthdate() !== null ) {
@@ -119,7 +128,10 @@ class UKMIDController extends Controller
     public function saveAgeAction() {
         $dato = new DateTime('now');
         $userManager = $this->container->get('fos_user.user_manager');
-        $user = $this->get('ukm_user')->getCurrentUser();
+
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
 
         // Ta imot post-variabler
         $request = Request::createFromGlobals();
@@ -159,7 +171,9 @@ class UKMIDController extends Controller
      */
     public function checkInfoAction()
     {
-        $user = $this->get('ukm_user')->getCurrentUser();
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
         
         if( $user->getBirthdate() == null ) {
             // Gå til spørsmål om alder
@@ -195,7 +209,10 @@ class UKMIDController extends Controller
      */
     public function editContactAction() {
         $personService = $this->get('ukm_api.person');
-        $user = $this->get('ukm_user')->getCurrentUser();
+
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
 
         $view_data = [
             'translationDomain' => 'ukmid',
@@ -241,7 +258,9 @@ class UKMIDController extends Controller
         
         $personService = $this->get('ukm_api.person');
 
-        $user = $this->get('ukm_user')->getCurrentUser();
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
         $pameld_user = $user->getPameldUser();
 
         if( null != $pameld_user ) {
@@ -276,7 +295,9 @@ class UKMIDController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $innslagService = $this->container->get('ukm_api.innslag');
 
-        $user = $this->get('ukm_user')->getCurrentUser();
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
         
         // POST-verdier
         // Disse vet vi alltid
@@ -367,7 +388,10 @@ class UKMIDController extends Controller
         $log = $this->get('logger');
         $log->info("fbconnectAction");
         // Sjekk om brukeren er koblet til med facebook allerede, i så fall redirect til ukmid
-        $user = $this->get('ukm_user')->getCurrentUser();
+
+        $userObj = new UserService($this->container);
+
+        $user = $userObj->getCurrentUser();
         if ($user->getFacebookId()) {
             $log->info("User already connected - setting flashbag and skipping to homepage.");
             $this->addFlash("success", "Koblet til Facebook - neste gang kan du logge inn ved å trykke på Logg inn med Facebook-knappen!");

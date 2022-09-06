@@ -4,6 +4,8 @@ namespace UKMNorge\DeltaBundle\Services;
 use UKMNorge\DesignBundle\UKMDesign;
 use UKMNorge\DesignBundle\UKMDesign\Sitemap;
 use UKMNorge\Design\Sitemap\Section;
+use UKMNorge\UserBundle\Services\UserService;
+
 use stdClass;
 
 class MenuService {
@@ -32,7 +34,7 @@ class MenuService {
         }
 
 		private function _loadPages() {
-			$userManager = $this->container->get('ukm_user');
+			$userManager = new UserService($this->container);
 			$user = $userManager->getCurrentUser();
 			$router = $this->container->get('router');
             

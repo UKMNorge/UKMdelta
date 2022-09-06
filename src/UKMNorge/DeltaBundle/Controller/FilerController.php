@@ -6,6 +6,7 @@ use UKMNorge\Innslag\Titler\Write as WriteTitler;
 use UKMNorge\Innslag\Titler\Utstilling;
 use UKMNorge\Log\Logger;
 use UKMNorge\Http\Curl;
+use UKMNorge\UserBundle\Services\UserService;
 
 use Exception;
 
@@ -59,7 +60,8 @@ class FilerController extends Controller
             }
         } else {
             try {
-                $userId = $this->get('ukm_user')->getCurrentUser()->getId();
+        		$userObj = new UserService($this->container);
+                $userId = $userObj->getCurrentUser()->getId();
                 $this->_setupLogger($userId, $arrangement->getId());
 
                 $playback = Write::opprett( $arrangement, $innslag->getId(), $_POST['filename'], $_POST['name'], $_POST['description']);
@@ -101,7 +103,8 @@ class FilerController extends Controller
                 foreach($innslag->getTitler()->getAll() as $utstilling ){
                     if($utstilling->getPlaybackId() == $delete_id) {
                         // Setup logger
-                        $userId = $this->get('ukm_user')->getCurrentUser()->getId();
+                		$userObj = new UserService($this->container);
+                        $userId = $userObj->getCurrentUser()->getId();
                         $this->_setupLogger($userId, $arrangement->getId());
                         
                         // Fjern kobling på bilde og playback for Utstilling (Tittel)

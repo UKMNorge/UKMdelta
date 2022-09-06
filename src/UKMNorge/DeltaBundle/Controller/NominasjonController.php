@@ -3,7 +3,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
+use UKMNorge\UserBundle\Services\UserService;
 use Exception;
 
 use UKMNorge\Innslag\Nominasjon\Write as NominasjonWrite;
@@ -196,7 +196,9 @@ class NominasjonController extends Controller
 	}
 	
 	public function arrangorVeivalgSaveAction( Request $request, $id ) {
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+		
+		$user = $userObj->getCurrentUser();
 
 		$lydtekniker = $request->request->get('lydtekniker') == 'true';
 		$lystekniker = $request->request->get('lystekniker') == 'true';
@@ -275,7 +277,9 @@ class NominasjonController extends Controller
 	}
 	
 	public function arrangorDetaljerSaveAction( Request $request, $id, $type ) {
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+		
+		$user = $userObj->getCurrentUser();
 		$nominasjon = $this->getNominasjon($id);
 
 		switch( $type ) {
@@ -323,7 +327,9 @@ class NominasjonController extends Controller
 
 	public function mediaSaveAction( Request $request, $id ) {
 		$nominasjon = $this->getNominasjon($id);
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+		
+		$user = $userObj->getCurrentUser();
 
 		$nominasjon->setPri1( $request->request->get('pri-1') );
 		$nominasjon->setPri2( $request->request->get('pri-2') );
@@ -341,7 +347,8 @@ class NominasjonController extends Controller
 	
 	private function _sendMissingUserEmail() {
 		require_once('UKM/mail.class.php');
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+		$user = $userObj->getCurrentUser();
 
 		$epost = new UKMmail();
 		$epost->text(

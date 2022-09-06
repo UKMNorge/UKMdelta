@@ -12,6 +12,7 @@ use UKMNorge\Database\SQL\Insert;
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\UserBundle\Services\UserService;
 
 require_once('UKM/Autoloader.php');
 
@@ -89,7 +90,9 @@ class SjekkController extends Controller {
 
 	public function createSjekkAction () {
 		// Hent mobilnummer fra current bruker
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+
+		$user = $userObj->getCurrentUser();
 		$NUMBER = $user->getPhone();
 
 		# HVIS NUMMER ALLEREDE FINNES I DATABASEN

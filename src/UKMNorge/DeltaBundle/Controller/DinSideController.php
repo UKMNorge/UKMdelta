@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UKMNorge\DeltaBundle\Entity\HideCampaign;
+use UKMNorge\UserBundle\Services\UserService;
 use DateTime;
 use UKMmail;
 
@@ -42,7 +43,9 @@ class DinSideController extends Controller
 	 * Show the form
 	**/
 	public function losBandoAction() {
-		$user = $this->get('ukm_user')->getCurrentUser();
+        $userObj = new UserService($this->container);
+		
+		$user = $userObj->getCurrentUser();
 		$contact_id = $user->getPameldUser();
 
 		$view_data = [];
@@ -90,7 +93,8 @@ class DinSideController extends Controller
 	
 		if( !$this->_hideCampaign('losbando') ) {
 			$em = $this->getDoctrine()->getManager();
-			$user = $this->get('ukm_user')->getCurrentUser();
+			$userObj = new UserService($this->container);
+			$user = $userObj->getCurrentUser();
 			$hide = new HideCampaign();
 			$hide->setUserId( $user->getId() );
 			$hide->setCampaign( 'losbando' );
@@ -106,7 +110,9 @@ class DinSideController extends Controller
 	 * Render info for the DinSide homepage
 	**/
 	private function _losBandoAction() {
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+
+		$user = $userObj->getCurrentUser();
 		$contact_id = $user->getPameldUser();
 		
 		$innslagService = $this->get('ukm_api.innslag');
@@ -131,7 +137,9 @@ class DinSideController extends Controller
 	}
 	
 	private function _hideCampaign( $key ) {
-		$user = $this->get('ukm_user')->getCurrentUser();
+		$userObj = new UserService($this->container);
+
+		$user = $userObj->getCurrentUser();
 		$em = $this->getDoctrine()->getManager()->getRepository('UKMDeltaBundle:HideCampaign');
 		$hide = $em->findOneBy(array('campaign'=>$key, 'userId'=>$user->getId()));
 		

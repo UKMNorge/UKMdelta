@@ -5,6 +5,7 @@ namespace UKMNorge\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use UKMNorge\UserBundle\Services\UserService;
 
 use UKMNorge\Geografi\Fylker;
 use Exception;
@@ -101,8 +102,9 @@ class InfoController extends Controller {
 	 */
 	private function kommuneSkjema($view_data) {
 		$liste = array();
+		$userObj = new UserService($this->container);
 
-		$view_data['user'] = $this->get('ukm_user')->getCurrentUser();
+		$view_data['user'] = $userObj->getCurrentUser();
         $view_data['fylker'] = Fylker::getAll();;
 
         return $this->render('UKMUserBundle:Info:kommune.html.twig', $view_data);
@@ -188,7 +190,9 @@ class InfoController extends Controller {
             }
 
             // Fyll inn fb-data i brukertabellen
-            $user = $this->get('ukm_user')->getCurrentUser();
+			$userObj = new UserService($this->container);
+			
+            $user = $userObj->getCurrentUser();
             $user->setFacebookId($fbUser->id);
 
             $userManager = $this->container->get('fos_user.user_manager');
