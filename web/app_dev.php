@@ -18,6 +18,8 @@ use Symfony\Component\Debug\Debug;
 }*/
 
 $loader = require_once __DIR__.'/../var/bootstrap.php.cache';
+require __DIR__.'/../vendor/autoload.php';
+
 Debug::enable();
 
 require_once __DIR__.'/../app/AppKernel.php';
