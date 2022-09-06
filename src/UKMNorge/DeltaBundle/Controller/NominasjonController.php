@@ -4,6 +4,7 @@ namespace UKMNorge\DeltaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\InnslagService;
 use Exception;
 
 use UKMNorge\Innslag\Nominasjon\Write as NominasjonWrite;
@@ -18,7 +19,9 @@ class NominasjonController extends Controller
 	 * Brukeren velger nominert innslag.
 	**/
 	public function velgAction() {
-		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+        $innslagService = new InnslagService($this->container);
+
+		$alle_innslag = $innslagService->hentInnslagFraKontaktperson()->getAll();
 		$nominerte_innslag = array();
 		foreach($alle_innslag as $innslag) {
 			if ( $innslag->getNominasjoner()->getAntall() > 0 ) {
@@ -53,8 +56,9 @@ class NominasjonController extends Controller
 	 *
 	 */
 	private function getNominasjon( $nominasjons_id ) {
+        $innslagService = new InnslagService($this->container);
 		// Verifiser at nominasjonen tilhører denne brukeren.
-		$alle_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson()->getAll();
+		$alle_innslag = $innslagService->hentInnslagFraKontaktperson()->getAll();
 
 		$nominert_innslag = null;
 		$nominasjon = null;

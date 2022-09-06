@@ -23,6 +23,7 @@ use UKMNorge\Innslag\Personer\Venner;
 use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Innslag\Venteliste\Venteliste;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\InnslagService;
 
 require_once('UKM/Autoloader.php');
 
@@ -235,7 +236,8 @@ class InnslagController extends Controller
         $view_data['user'] = $userObj->getCurrentUser();
 
         // Foreslå kommune basert på siste påmelding deltakeren hadde
-        $mine_innslag = $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson();
+		$innslagService = new InnslagService($this->container);
+        $mine_innslag = $innslagService->hentInnslagFraKontaktperson();
 
         if ($mine_innslag->getAntall() > 0) {
             $innslagene = [];
@@ -310,7 +312,7 @@ class InnslagController extends Controller
         // Setup input data
         $type = Typer::getByKey($type);
         $user = $this->hentCurrentUser();
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
         $personService = $this->get('ukm_api.person');
         $p_id = $user->getPameldUser();
 
@@ -554,7 +556,7 @@ class InnslagController extends Controller
      */
     public function overviewAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
 
         $user = $this->hentCurrentUser();
         $type = Typer::getByKey($type);
@@ -626,7 +628,7 @@ class InnslagController extends Controller
      */
     public function extraSaveAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
         /** @var Innslag $innslag */
         $innslag = $innslagService->hent($b_id);
         /** @var Person $kontaktperson */
@@ -669,7 +671,7 @@ class InnslagController extends Controller
      */
     public function extraAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
         /** @var Innslag $innslag */
         $innslag = $innslagService->hent($b_id);
         /** @var Person $kontaktperson */
@@ -749,7 +751,7 @@ class InnslagController extends Controller
         ];
 
         $request = Request::createFromGlobals();
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
         $personService = $this->get('ukm_api.person');
 
         try {
@@ -819,7 +821,7 @@ class InnslagController extends Controller
             'b_id' => $b_id
         ];
 
-        $innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
         $innslag = $innslagService->hent($b_id);
 
         if ($innslag->erPameldt()) {
@@ -847,6 +849,7 @@ class InnslagController extends Controller
      */
     public function newPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $innslagService = new InnslagService($this->container);
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -860,7 +863,7 @@ class InnslagController extends Controller
                     'type_key' => $type,
                     'translationDomain' => $type,
                     'friends' => $this->_getVenner(
-                        $this->get('ukm_api.innslag')->hent($b_id)
+                        $innslagService->hent($b_id)
                     )
                 ])
             );
@@ -910,7 +913,7 @@ class InnslagController extends Controller
     public function saveNewPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
         $request = Request::createFromGlobals();
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
         $personService = $this->get('ukm_api.person');
 
         $view_data['k_id'] = $k_id;
@@ -982,6 +985,8 @@ class InnslagController extends Controller
      */
     public function editPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
     {
+        $innslagService = new InnslagService($this->container);
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -994,7 +999,7 @@ class InnslagController extends Controller
         try {
             $view_data['user'] = $this->hentCurrentUser();
             $view_data['person'] = $this->get('ukm_api.person')->hent($p_id, $b_id);
-            $view_data['innslag'] = $this->get('ukm_api.innslag')->hent($b_id);
+            $view_data['innslag'] = $innslagService->hent($b_id);
             return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
         } catch (Exception $e) {
 
@@ -1027,7 +1032,7 @@ class InnslagController extends Controller
 
         // Setup service og request
         $request = Request::createFromGlobals();
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
 
         // Peis alle feil og advarsler (unntatt feil med request etc) i en flashbag + logging
         try {
@@ -1079,8 +1084,10 @@ class InnslagController extends Controller
             'p_id' => $p_id
         ];
 
+        $innslagService = new InnslagService($this->container);
+
         try {
-            $this->get('ukm_api.innslag')->fjernPerson($b_id, $p_id);
+            $innslagService->fjernPerson($b_id, $p_id);
             $this->addFlash("success", "Lagret endringer");
         } catch (Exception $e) {
             $this->addFlash("danger", "Klarte ikke å lagre endringer");
@@ -1101,13 +1108,15 @@ class InnslagController extends Controller
      */
     public function technicalAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $innslagService = new InnslagService($this->container);
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
             'type' => $type,
             'b_id' => $b_id,
             'translationDomain' => $type,
-            'innslag' => $this->get('ukm_api.innslag')->hent($b_id)
+            'innslag' => $innslagService->hent($b_id)
         ];
         return $this->render('UKMDeltaBundle:Innslag:teknisk.html.twig', $view_data);
     }
@@ -1132,7 +1141,7 @@ class InnslagController extends Controller
         ];
 
         $request = Request::createFromGlobals();
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
 
         try {
             $innslag = $innslagService->hent($b_id);
@@ -1159,7 +1168,7 @@ class InnslagController extends Controller
      */
     public function newTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
 
         $view_data = [
             'k_id' => $k_id,
@@ -1193,7 +1202,9 @@ class InnslagController extends Controller
      */
     public function editTitleAction($k_id, $pl_id, $type, $b_id, $t_id)
     {
-        $innslag = $this->get('ukm_api.innslag')->hent($b_id);
+        $innslagService = new InnslagService($this->container);
+
+        $innslag = $innslagService->hent($b_id);
 
         $view_data = [
             'k_id' => $k_id,
@@ -1266,7 +1277,7 @@ class InnslagController extends Controller
         try {
             $request = Request::createFromGlobals();
             $seasonService = $this->get('ukm_delta.season');
-            $innslagService = $this->get('ukm_api.innslag');
+            $innslagService = new InnslagService($this->container);
 
             $innslag = $innslagService->hent($b_id);
 
@@ -1345,7 +1356,7 @@ class InnslagController extends Controller
      */
     public function deleteTitleAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $t_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
 
         $view_data = [
             'k_id' => $k_id,
@@ -1398,7 +1409,7 @@ class InnslagController extends Controller
      */
     public function removeAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $innslagService = $this->get('ukm_api.innslag');
+        $innslagService = new InnslagService($this->container);
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -1443,6 +1454,7 @@ class InnslagController extends Controller
     public function attendingAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
         $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+        $innslagService = new InnslagService($this->container);
 
         $view_data = [
             'k_id' => $k_id,
@@ -1452,7 +1464,7 @@ class InnslagController extends Controller
             'translationDomain' => 'innslag',
             'fb_share_caption' => $this->get('translator')->trans('fb_share', ['%monstring' => $arrangement->getNavn()], 'base'),
             'arrangement' => $arrangement,
-            'innslag' => $this->get('ukm_api.innslag')->hent($b_id)
+            'innslag' => $innslagService->hent($b_id)
         ];
 
         return $this->render('UKMDeltaBundle:Innslag:pameldt.html.twig', $view_data);
@@ -1470,13 +1482,15 @@ class InnslagController extends Controller
      */
     public function fristAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $innslagService = new InnslagService($this->container);
+
         $view_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
             'type' => $type,
             'b_id' => $b_id,
             'translationDomain' => 'base',
-            'innslag' => $this->get('ukm_api.innslag')->hent($b_id)
+            'innslag' => $innslagService->hent($b_id)
         ];
 
         return $this->render('UKMDeltaBundle:Innslag:frist.html.twig', $view_data);

@@ -15,6 +15,7 @@ use UKMNorge\Log\Logger;
 use UKMNorge\Innslag\Personer\Kontaktperson;
 use UKMNorge\Innslag\Venteliste\Venteliste;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\InnslagService;
 
 use UKMNorge\Samtykke\Person as PersonSamtykke;
 
@@ -49,12 +50,13 @@ class UKMIDController extends Controller
             $this->addFlash('danger', "Innlogging feilet i arrangørsystemet. Har du fått lov til å logge inn av arrangøren?");
         }
 
-
+        $innslagService = new InnslagService($this->container);
+        
         $view_data = [
             'translationDomain' => 'ukmid',
             'user' => $user,
             'dinside' => true,
-            'alle_innslag' => $this->get('ukm_api.innslag')->hentInnslagFraKontaktperson(),
+            'alle_innslag' => $innslagService->hentInnslagFraKontaktperson(),
             'venteliste_arrangementer' => Venteliste::getArrangementerByPersonId($user->getPameldUser() ? $user->getPameldUser() : -1)
         ];
 

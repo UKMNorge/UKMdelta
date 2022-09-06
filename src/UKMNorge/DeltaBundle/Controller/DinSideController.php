@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UKMNorge\DeltaBundle\Entity\HideCampaign;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\InnslagService;
+
 use DateTime;
 use UKMmail;
 
@@ -115,7 +117,7 @@ class DinSideController extends Controller
 		$user = $userObj->getCurrentUser();
 		$contact_id = $user->getPameldUser();
 		
-		$innslagService = $this->get('ukm_api.innslag');
+		$innslagService = new InnslagService($this->container);
 		$innslagsliste = $innslagService->hentInnslagFraKontaktperson($contact_id, $user->getId());
 		
 		$view_data = [];
