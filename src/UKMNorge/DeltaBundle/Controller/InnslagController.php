@@ -24,6 +24,7 @@ use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Innslag\Venteliste\Venteliste;
 use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
+use UKMNorge\APIBundle\Services\PersonService;
 
 require_once('UKM/Autoloader.php');
 
@@ -313,7 +314,7 @@ class InnslagController extends Controller
         $type = Typer::getByKey($type);
         $user = $this->hentCurrentUser();
 		$innslagService = new InnslagService($this->container);
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
         $p_id = $user->getPameldUser();
 
         // Hent arrangement og sjekk at det er mulig å melde på innslag
@@ -447,7 +448,7 @@ class InnslagController extends Controller
      */
     public function ventelisteAction(Int $k_id, Int $pl_id)
     {
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
 
         $route_data = [
             'k_id' => $k_id,
@@ -752,7 +753,7 @@ class InnslagController extends Controller
 
         $request = Request::createFromGlobals();
 		$innslagService = new InnslagService($this->container);
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
 
         try {
             // Hent inn innslaget
@@ -914,7 +915,7 @@ class InnslagController extends Controller
     {
         $request = Request::createFromGlobals();
         $innslagService = new InnslagService($this->container);
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
 
         $view_data['k_id'] = $k_id;
         $view_data['pl_id'] = $pl_id;
@@ -986,6 +987,7 @@ class InnslagController extends Controller
     public function editPersonAction(Int $k_id, Int $pl_id, String $type, Int $b_id, Int $p_id)
     {
         $innslagService = new InnslagService($this->container);
+        $personService = new PersonService($this->container);
 
         $view_data = [
             'k_id' => $k_id,
@@ -996,9 +998,10 @@ class InnslagController extends Controller
             'translationDomain' => $type
         ];
 
+
         try {
             $view_data['user'] = $this->hentCurrentUser();
-            $view_data['person'] = $this->get('ukm_api.person')->hent($p_id, $b_id);
+            $view_data['person'] = $personService->hent($p_id, $b_id);
             $view_data['innslag'] = $innslagService->hent($b_id);
             return $this->render('UKMDeltaBundle:Innslag:person.html.twig', $view_data);
         } catch (Exception $e) {
@@ -1052,7 +1055,10 @@ class InnslagController extends Controller
             );
             $person->setRolle($request->request->get('instrument'));
 
-            $this->get('ukm_api.person')->lagre($person, $innslag->getId());
+            $personService = new PersonService($this->container);
+
+
+            $personService->lagre($person, $innslag->getId());
             $this->addFlash("success", "Lagret endringer");
         } catch (Exception $e) {
             $this->get('logger')->error("UKMDeltaBundle:Innslag:savePerson - Klarte ikke å lagre endringer på " . $request->request->get('fornavn') . ". Systemet sa: " . $e->getCode() . ", " . $e->getMessage());

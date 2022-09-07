@@ -210,7 +210,7 @@ class UKMIDController extends Controller
      * @return void
      */
     public function editContactAction() {
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
 
         $userObj = new UserService($this->container);
 
@@ -258,7 +258,7 @@ class UKMIDController extends Controller
         $samtykkeFraBruker = $request->request->get('personvern');
         $samtykkeFraBruker = $samtykkeFraBruker === 'ja' ? true : false;
         
-        $personService = $this->get('ukm_api.person');
+        $personService = new PersonService($this->container);
 
         $userObj = new UserService($this->container);
 
