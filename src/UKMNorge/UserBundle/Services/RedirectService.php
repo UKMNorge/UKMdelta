@@ -8,6 +8,8 @@ use Exception;
 use DateTime;
 use UKMCURL;
 use UKMNorge\UserBundle\Entity\APIKeys;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class RedirectService {
 	public function __construct ( $container ) {
@@ -16,8 +18,8 @@ class RedirectService {
 	}
 
 	public function doRedirect( ) {
-		$session = $this->container->get('session');
-		$keyRepo = $this->container->get('doctrine')->getRepository("UKMUserBundle:APIKeys");
+        $session = $this->getSession();
+        $keyRepo = $this->container->get('doctrine')->getRepository("UKMUserBundle:APIKeys");
 
 		if( $session->get('rdirurl') ) {
             $rdirurl = $session->get('rdirurl');
@@ -111,5 +113,10 @@ class RedirectService {
             $errorMsg = 'Tjenesten du prøvde å logge inn på klarte ikke å ta i mot brukerinformasjonen din. Dette er en systemfeil, ta kontakt med UKM Support hvis feilen fortsetter.';
             throw new Exception($errorMsg);
         }
+    }
+
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace UKMNorge\UserBundle\Controller;
 
-
 /* FROM PARENT */
 	use FOS\UserBundle\FOSUserEvents;
 	use FOS\UserBundle\Event\FormEvent;
@@ -23,6 +22,9 @@ use UKMNorge\UserBundle\Entity\Repository\SMSValidationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use Exception;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -54,17 +56,19 @@ class RegistrationController extends BaseController
             return $event->getResponse();
         }
 
+        $session = $this->getSession();
+
         $form = $formFactory->createForm();
         $form->setData($user);
         // Sett data fra facebook i form, om vi har mottatt de.
-        if ($this->get('session')->get('email'))
-        	$form->get('email')->setData($this->get('session')->get('email'));
-        if ($this->get('session')->get('first_name'))
-        	$form->get('first_name')->setData($this->get('session')->get('first_name'));
-        if ($this->get('session')->get('last_name'))
-        	$form->get('last_name')->setData($this->get('session')->get('last_name'));
-        if ($this->get('session')->get('facebook_id'))
-        	$form->add('facebook_id', 'hidden', array('data' => $this->get('session')->get('facebook_id')));
+        if ($session->get('email'))
+        	$form->get('email')->setData($session->get('email'));
+        if ($session->get('first_name'))
+        	$form->get('first_name')->setData($session->get('first_name'));
+        if ($session->get('last_name'))
+        	$form->get('last_name')->setData($session->get('last_name'));
+        if ($session->get('facebook_id'))
+        	$form->add('facebook_id', 'hidden', array('data' => $session->get('facebook_id')));
         $form->handleRequest($request);
         
 		// CASE 1: Form submitted, valid and user creation is possible
@@ -95,11 +99,11 @@ class RegistrationController extends BaseController
 				    if( $phone_error == 'ukm_user.phone.already_used') {
 				    	$phone = $form->get('phone')->getData();
 				    	// Sjekk om dette er en som kommer via facebook:
-				    	if($this->get('session')->get('facebook_id')) {
+				    	if($session->get('facebook_id')) {
 				    		// Finn brukeren:
 				    		$userRepo = $this->getDoctrine()->getRepository('UKMUserBundle:User');
 				    		$user = $userRepo->findOneBy(array('phone' => $phone));
-				    		$user->setFacebookId($this->get('session')->get('facebook_id'));
+				    		$user->setFacebookId($session->get('facebook_id'));
 				    		$userManager = $this->get('fos_user.user_manager');
 				    		$userManager->updateUser($user);
 
@@ -131,7 +135,7 @@ class RegistrationController extends BaseController
 		    			$email = $form->get('email')->getData();
 		    			
 		    			// Sjekk om dette er en som kommer via facebook:
-		    			if($this->get('session')->get('facebook_id')) {
+		    			if($session->get('facebook_id')) {
 				    		$errors['email'][$email_key] = 'fos_user.email.already_used_fb';
 				    		// Redirect til et nytt view!
 				    		return $this->redirectToRoute('ukm_user_registration_existing_email', array('email' => $email));
@@ -187,12 +191,13 @@ class RegistrationController extends BaseController
 	
 	
 	public function checkSMSAction(Request $request) {
-        $email = $this->get('session')->get('fos_user_send_confirmation_email/email');
+        $session = $this->getSession();
+        $email = $session->get('fos_user_send_confirmation_email/email');
         $sent_before = $request->query->get('sent_before');
         $userManager = $this->get('fos_user.user_manager');
 		
 		if( empty( $email ) ) {
-			$this->get('session')->getFlashBag()->set('error', 'Beklager, klarte ikke å finne igjen brukeren');
+			$session->getFlashBag()->set('error', 'Beklager, klarte ikke å finne igjen brukeren');
 			return $this->redirectToRoute('ukm_delta_ukmid_homepage');
 		}
 		
@@ -207,7 +212,9 @@ class RegistrationController extends BaseController
 	}
 	
 	public function validateSMSAction(Request $request) {
-		$email = $this->get('session')->get('fos_user_send_confirmation_email/email');
+		$session = $this->getSession();
+
+		$email = $session->get('fos_user_send_confirmation_email/email');
 		$sms = $request->request->get('smscode');
 		
 		$userManager = $this->get('fos_user.user_manager');
@@ -215,12 +222,12 @@ class RegistrationController extends BaseController
 
 		// User exists ?		
 		if( null === $user ) {
-			$this->get('session')->getFlashBag()->set('error', 'Beklager, finner ikke brukeren din (feil e-postadresse?)');
+			$session->getFlashBag()->set('error', 'Beklager, finner ikke brukeren din (feil e-postadresse?)');
 			return $this->redirect( $this->get('router')->generate('ukm_user_registration_check_sms') );
 		}
 		
 		if( (int)$user->getSmsValidationCode() !== (int)$sms ) {
-			$this->get('session')->getFlashBag()->set('error', 'Feil kode!');
+			$session->getFlashBag()->set('error', 'Feil kode!');
 			return $this->redirect( $this->get('router')->generate('ukm_user_registration_check_sms') );
 		}
 		
@@ -431,5 +438,10 @@ class RegistrationController extends BaseController
 
         return $response;
 
+    }
+	
+	private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

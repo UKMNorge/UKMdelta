@@ -27,6 +27,8 @@ use UKMNorge\APIBundle\Services\InnslagService;
 use UKMNorge\APIBundle\Services\PersonService;
 use UKMNorge\APIBundle\Services\ArrangementService;
 use UKMNorge\APIBundle\Services\GeografiService;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 require_once('UKM/Autoloader.php');
 
@@ -157,7 +159,8 @@ class InnslagController extends Controller
      */
     public function typeAction(Int $k_id, Int $pl_id)
     {   
-		$userObj = new UserService($this->container);
+        $userObj = new UserService($this->container);
+        $session = $this->getSession();
 
         // Hvis kommunen ikke er aktiv, redirect til kommunesiden
         $kommune = $this->hentKommune($k_id);
@@ -176,14 +179,14 @@ class InnslagController extends Controller
         if( $userObj->getCurrentUser()->getBirthdate() == null ||
             $userObj->getCurrentuser()->getSamtykke() === null
         ) {
-            $this->get('session')->set('checkInfoRedirect', 'ukm_delta_ukmid_pamelding_hva');
-            $this->get('session')->set('checkInfo_kid', $k_id);
-            $this->get('session')->set('checkInfo_plid', $pl_id);
+            $session->set('checkInfoRedirect', 'ukm_delta_ukmid_pamelding_hva');
+            $session->set('checkInfo_kid', $k_id);
+            $session->set('checkInfo_plid', $pl_id);
             return $this->redirectToRoute( 'ukm_delta_ukmid_checkinfo');
         }
-        $this->get('session')->remove('checkInfoRedirect');
-        $this->get('session')->remove('checkInfo_kid');
-        $this->get('session')->remove('checkInfo_plid');
+        $session->remove('checkInfoRedirect');
+        $session->remove('checkInfo_kid');
+        $session->remove('checkInfo_plid');
 
         if ($arrangement->getInnslagTyper()->getAntall() == 1) {
 
@@ -1546,5 +1549,10 @@ class InnslagController extends Controller
     {
 		$userObj = new UserService($this->container);
         return $userObj->getCurrentUser();
+    }
+
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

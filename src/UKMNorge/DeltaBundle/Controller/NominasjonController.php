@@ -5,6 +5,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Exception;
 
 use UKMNorge\Innslag\Nominasjon\Write as NominasjonWrite;
@@ -84,6 +86,8 @@ class NominasjonController extends Controller
 	public function finnSkjemaAction(Request $request, int $id) {
 		$nominasjon = $this->getNominasjon($id);
 
+		$session = $this->getSession();
+
 		$view_data = [
 			'translationDomain' => 'nominasjon',
 			'nominasjon' => $nominasjon
@@ -100,9 +104,9 @@ class NominasjonController extends Controller
 		// Arrangører og media på andre enn landsfestivalen behandles likt.
 		if($nominasjon->getType() == 'arrangor') 
 		{
-			if( is_array( $this->get('session')->get('form-data') ) ) {
-				$view_data = array_merge( $view_data, $this->get('session')->get('form-data') );
-				$this->get('session')->remove('form-data');
+			if( is_array( $session->get('form-data') ) ) {
+				$view_data = array_merge( $view_data, $session->get('form-data') );
+				$session->remove('form-data');
 			}
 
 			return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
@@ -186,14 +190,16 @@ class NominasjonController extends Controller
 	 *
 	**/
 	public function arrangorVeivalgAction(Request $request, $id){
+		$session = $this->getSession();
+
 		$view_data = [
 			'translationDomain' => 'nominasjon',
 			'nominasjon' => $this->getNominasjon($id)
 		];
 		
-		if( is_array( $this->get('session')->get('form-data') ) ) {
-			$view_data = array_merge( $view_data, $this->get('session')->get('form-data') );
-			$this->get('session')->remove('form-data');
+		if( is_array( $session->get('form-data') ) ) {
+			$view_data = array_merge( $view_data, $session->get('form-data') );
+			$session->remove('form-data');
 		}
 
 		return $this->render('UKMDeltaBundle:Nominasjon:arrangor_veivalg.html.twig', $view_data);
@@ -201,6 +207,8 @@ class NominasjonController extends Controller
 	
 	public function arrangorVeivalgSaveAction( Request $request, $id ) {
 		$userObj = new UserService($this->container);
+		$session = $this->getSession();
+
 		
 		$user = $userObj->getCurrentUser();
 
@@ -228,12 +236,12 @@ class NominasjonController extends Controller
 				'form_suksess'		=> $request->request->get('suksesskriterie'),
 				'form_annet'		=> $request->request->get('annet'),
 			];
-			$this->get('session')->set('form-data', $data);
-			$this->get('session')->getFlashBag()->set('danger', 'Du må minst velge én av de fire kategoriene.');
+			$session->set('form-data', $data);
+			$session->getFlashBag()->set('danger', 'Du må minst velge én av de fire kategoriene.');
 			return $this->redirectToRoute('ukm_nominasjon_arrangor_veivalg');
 		}
 		
-		$this->get('session')->set('nominasjon_arrangor_step', $step);
+		$session->set('nominasjon_arrangor_step', $step);
 		
 		$nominasjon = $this->getNominasjon($id);
 
@@ -254,6 +262,8 @@ class NominasjonController extends Controller
 	}
 	
 	public function arrangorDetaljerAction( $type, $id ) {
+		$session = $this->getSession();
+
 		$view_data = [
 			'translationDomain' => 'nominasjon',
 			'nominasjon' => $this->getNominasjon($id)
@@ -265,15 +275,15 @@ class NominasjonController extends Controller
 				return $this->render('UKMDeltaBundle:Nominasjon:arrangor_'. $type .'.html.twig', $view_data);
 
 			default:
-				$steps = $this->get('session')->get('nominasjon_arrangor_step');
+				$steps = $session->get('nominasjon_arrangor_step');
 				
 				if( is_array( $steps ) && sizeof( $steps ) > 0 ) {
 					$next = array_shift( $steps );
-					$this->get('session')->set('nominasjon_arrangor_step', $steps);
+					$session->set('nominasjon_arrangor_step', $steps);
 					
 					return $this->redirectToRoute('ukm_nominasjon_arrangor_detaljer', ['id' => $id, 'type' => $next] );
 				} else {
-					$this->get('session')->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
+					$session->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
 					
 					return $this->redirectToRoute('ukm_delta_ukmid_homepage');
 				}
@@ -330,6 +340,8 @@ class NominasjonController extends Controller
 	}
 
 	public function mediaSaveAction( Request $request, $id ) {
+		$session = $this->getSession();
+
 		$nominasjon = $this->getNominasjon($id);
 		$userObj = new UserService($this->container);
 		
@@ -344,7 +356,7 @@ class NominasjonController extends Controller
 		Logger::setID('delta', $user->getId(), $nominasjon->getTilArrangement()->getId());
 		NominasjonWrite::saveMedia( $nominasjon );
 		
-		$this->get('session')->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
+		$session->getFlashBag()->set('success', 'Takk! Vi har nå tatt i mot ditt nominasjonsskjema.');
 		
 		return $this->redirectToRoute('ukm_delta_ukmid_homepage');
 	}
@@ -368,5 +380,10 @@ class NominasjonController extends Controller
 
 		return $this->render('UKMDeltaBundle:Nominasjon:ingenbruker.html.twig', [] );
 	}
+
+	private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
+    }
 }
 ?>

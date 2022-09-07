@@ -10,6 +10,10 @@ use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
+
+
 
 
 
@@ -18,8 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 class RegistrationType extends AbstractType
 {
     public function __construct($container) {
+        
         $this->container = $container;
-        $this->session = $container->get('session');
+        $this->session = $this->getSession();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -59,5 +64,9 @@ class RegistrationType extends AbstractType
         return 'UKM_user_registration';
     }
 
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
+    }
     
 }

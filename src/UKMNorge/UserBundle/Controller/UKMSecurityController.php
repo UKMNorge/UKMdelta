@@ -14,6 +14,9 @@ namespace UKMNorge\UserBundle\Controller;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 use UKMNorge\UserBundle\UKMUserEvents;
@@ -272,19 +275,23 @@ class UKMSecurityController extends BaseController {
 
         $logger->notice('UKMSecurityController: No user data found - send user to registration with data from Facebook.');
 
+        $session = $this->getSession();
+
         // Redirect til ferdigutfylt skjema, som så gjør selve registreringen.
         if(isset($user->email))
-            $this->get('session')->set('email', $user->email);
+            $session->set('email', $user->email);
         if(isset($user->first_name))
-            $this->get('session')->set('first_name', $user->first_name);
+            $session->set('first_name', $user->first_name);
         if(isset($user->last_name))
-            $this->get('session')->set('last_name', $user->last_name);
+            $session->set('last_name', $user->last_name);
         if(isset($user->id))
-            $this->get('session')->set('facebook_id', $user->id);
+            $session->set('facebook_id', $user->id);
 
         return $this->redirectToRoute('fos_user_registration_register');
     }
 
-  
-
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
+    }
 }

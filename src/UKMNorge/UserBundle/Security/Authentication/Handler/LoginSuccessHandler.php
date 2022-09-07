@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use UKMCurl;
 use Exception;
@@ -32,7 +34,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $response = null;
-        $session = $this->container->get('session');
+        $session = $this->getSession();
 
         $this->logger->info('DIPBundle: Authenticated successfully.');
                 
@@ -96,6 +98,11 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->logger->critical("UKMUserBundle: En bruker har kommet til LoginSuccessHandler uten å ha minimum rollen ROLE_USER - dette er en bug som ikke skal gå an. Stacktrace: ".var_export(debug_backtrace(), true) );
         mail('support@ukm.no','UKMUserBundle: En bruker har kommet til LoginSuccessHandler uten å ha rollen ROLE_USER', 'Dette skal ikke skje, og er en systemfeil. Stacktrace: '. var_export(debug_backtrace(), true) );
         throw new Exception("En systemfeil har oppstått - du er logget inn, men ikke autorisert. Kontakt UKM Support.");
+    }
+    
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 
 }

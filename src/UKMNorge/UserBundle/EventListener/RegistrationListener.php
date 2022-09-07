@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\FOSUserEvents;
 use UKMNorge\UserBundle\UKMUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 use Exception;
 
@@ -39,6 +42,7 @@ class RegistrationListener implements EventSubscriberInterface
 	 **/
 	public function onRegistrationConfirm(GetResponseUserEvent $event) {
 		require_once('UKM/inc/password.inc.php');
+		$session = $this->getSession();
 		
 		$tokenGenerator = $this->container->get('fos_user.util.token_generator');
 		$password = UKM_ordpass(true); // true gives numbers before words
@@ -50,7 +54,7 @@ class RegistrationListener implements EventSubscriberInterface
         try {
 	        $UKMSMS->sendSMS( $event->getUser()->getPhone(), str_replace('#code', $password, $text) );
 	    } catch( Exception $e ) {
-		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
+		    $session->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
 	    }
 
 	}
@@ -90,5 +94,10 @@ class RegistrationListener implements EventSubscriberInterface
     public function onResetComplete(FormEvent $event) {
 		$url = $this->container->get('router')->generate('ukm_delta_ukmid_homepage');
 		$event->setResponse( new RedirectResponse( $url ) );
+    }
+
+	private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

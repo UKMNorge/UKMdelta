@@ -15,6 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Mailer\MailerInterface;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 
 use Exception;
 
@@ -49,7 +52,8 @@ class Mailer implements MailerInterface
         try {
 	        $UKMSMS->sendSMS( $user->getPhone(), 'flashsms:'. str_replace('#code', $user->getSmsValidationCode(), $text) );
 	    } catch( Exception $e ) {
-		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
+            $session = $this->getSession();
+            $session->getFlashBag()->add('error', 'Kunne ikke sende engangskode på SMS ('.$e->getMessage().')');
 	    }
 /*
         $template = $this->parameters['confirmation.template'];
@@ -74,7 +78,8 @@ class Mailer implements MailerInterface
         try {
 	        $UKMSMS->sendSMS( $user->getPhone(), str_replace('#link', $url, $text) );
 	    } catch( Exception $e ) {
-		    $this->container->get('session')->getFlashBag()->add('error', 'Kunne ikke sende sms for passord-nullstilling ('.$e->getMessage().')');
+            $session = $this->getSession();
+            $session->getFlashBag()->add('error', 'Kunne ikke sende sms for passord-nullstilling ('.$e->getMessage().')');
 	    }
 
 /*        $template = $this->parameters['resetting.template'];
@@ -106,5 +111,10 @@ class Mailer implements MailerInterface
             ->setBody($body);
 
         $this->mailer->send($message);
+    }
+
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

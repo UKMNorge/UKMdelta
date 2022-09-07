@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use UKMNorge\Geografi\Fylker;
 use Exception;
@@ -24,7 +26,8 @@ class InfoController extends Controller {
 	 */
 	public function informationQueueAction(Request $request) {
 		$view_data = array();
-		$session = $this->container->get('session');
+		$session = $this->getSession();
+		
 		// Last inn kø-informasjon
 		$completed = $session->get('completed');
 		if( null == $completed ) {
@@ -123,6 +126,8 @@ class InfoController extends Controller {
 	 *
 	 */
 	private function facebookSkjema($view_data) {
+		$session = $this->getSession();
+
 		$app_id = $this->getParameter('facebook_client_id');
 		if( 'ukm.dev' ==  $this->getParameter('UKM_HOSTNAME') ) {
 			$redirectURL = 'https://delta.ukm.dev/app_dev.php/info';
@@ -134,11 +139,11 @@ class InfoController extends Controller {
 		$view_data['fbredirect'] = 'https://www.facebook.com/dialog/oauth?client_id='.$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email';
         
         // Forteller templaten hvilken forklaring som skal inn.
-		if ( null != $this->get('session')->get('rdirurl') ) {
-		    $view_data['system'] = $this->get('session')->get('rdirurl');
+		if ( null != $session->get('rdirurl') ) {
+		    $view_data['system'] = $session->get('rdirurl');
 		}
 
-        $this->get('session')->set('facebook_return', true);
+        $session->set('facebook_return', true);
 
 		return $this->render('UKMUserBundle:Info:facebook.html.twig', $view_data);
 	}
@@ -150,7 +155,9 @@ class InfoController extends Controller {
 	 * @return true ved suksess, false ved feil
 	 */
 	private function facebookConnect() {
-		$this->get('session')->remove('facebook_return');
+		$session = $this->getSession();
+
+		$session->remove('facebook_return');
 
         require_once('UKM/curl.class.php');
         $req = Request::createFromGlobals(); 
@@ -201,5 +208,10 @@ class InfoController extends Controller {
             return true;
         }
         return false;
+    }
+
+	private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 }

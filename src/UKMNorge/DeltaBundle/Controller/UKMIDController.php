@@ -16,6 +16,8 @@ use UKMNorge\Innslag\Personer\Kontaktperson;
 use UKMNorge\Innslag\Venteliste\Venteliste;
 use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
+use UKMNorge\APIBundle\Services\SessionService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use UKMNorge\Samtykke\Person as PersonSamtykke;
 
@@ -195,10 +197,12 @@ class UKMIDController extends Controller
             return $this->redirectToRoute('ukm_delta_ukmid_personvern');
         }
 
-        if( $this->get('session')->has('checkInfoRedirect') ) {
-            $view_data['k_id'] = $this->get('session')->get('checkInfo_kid');
-            $view_data['pl_id'] = $this->get('session')->get('checkInfo_plid');
-            return $this->redirectToRoute($this->get('session')->get('checkInfoRedirect'), $view_data);
+        $session = $this->getSession();
+
+        if( $session->has('checkInfoRedirect') ) {
+            $view_data['k_id'] = $session->get('checkInfo_kid');
+            $view_data['pl_id'] = $session->get('checkInfo_plid');
+            return $this->redirectToRoute($session->get('checkInfoRedirect'), $view_data);
         }
         
         return $this->redirectToRoute('ukm_delta_ukmid_pamelding');
@@ -457,6 +461,11 @@ class UKMIDController extends Controller
         // Dersom folk har trykt på knappen i menyen trenger vi ikke vise et ekstra GUI for å vise de en ekstra knapp...
         $app_id = $this->getParameter('facebook_client_id');
         return new RedirectResponse("https://www.facebook.com/dialog/oauth?client_id=".$app_id.'&redirect_uri='.$redirectURL.'&scope=public_profile,email');
+    }
+
+    private function getSession() : Session {
+        $session = SessionService::getSession();
+        return $session;
     }
 
 }
