@@ -25,6 +25,7 @@ use UKMNorge\Innslag\Venteliste\Venteliste;
 use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
 use UKMNorge\APIBundle\Services\PersonService;
+use UKMNorge\APIBundle\Services\ArrangementService;
 
 require_once('UKM/Autoloader.php');
 
@@ -558,6 +559,7 @@ class InnslagController extends Controller
     public function overviewAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
 		$innslagService = new InnslagService($this->container);
+        $arrangementService = new ArrangementService($this->container);
 
         $user = $this->hentCurrentUser();
         $type = Typer::getByKey($type);
@@ -568,7 +570,7 @@ class InnslagController extends Controller
         #$innslagService->sjekkBandtype($innslag, $type); // Vil printe RedirectResponse og kaste Exception
 
         /** @var Arrangement $arrangement */
-        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+        $arrangement = $arrangementService->hent($pl_id);
 
         $view_data = [
             'k_id' => $k_id,
@@ -629,13 +631,14 @@ class InnslagController extends Controller
      */
     public function extraSaveAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $arrangementService = new ArrangementService($this->container);
 		$innslagService = new InnslagService($this->container);
         /** @var Innslag $innslag */
         $innslag = $innslagService->hent($b_id);
         /** @var Person $kontaktperson */
         $kontaktperson = $innslag->getKontaktperson();
         /** @var Arrangement $arrangement */
-        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+        $arrangement = $arrangementService->hent($pl_id);
 
         // Skjema som skal fylles ut
         $skjema = $arrangement->getDeltakerSkjema();
@@ -673,12 +676,14 @@ class InnslagController extends Controller
     public function extraAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
 		$innslagService = new InnslagService($this->container);
+        $arrangementService = new ArrangementService($this->container);
+        
         /** @var Innslag $innslag */
         $innslag = $innslagService->hent($b_id);
         /** @var Person $kontaktperson */
         $kontaktperson = $innslag->getKontaktperson();
         /** @var Arrangement $arrangement */
-        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+        $arrangement = $arrangementService->hent($pl_id);
 
         // Skulle ikke vært her, da arrangementet ikke bruker
         // skjema. Videresend til statussiden.
@@ -815,6 +820,8 @@ class InnslagController extends Controller
      */
     public function statusAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
+        $arrangementService = new ArrangementService($this->container);
+
         $route_data = [
             'k_id' => $k_id,
             'pl_id' => $pl_id,
@@ -831,7 +838,7 @@ class InnslagController extends Controller
 
         $view_data = [
             'translationDomain' => $type,
-            'arrangement' => $this->get('ukm_api.arrangement')->hent($pl_id),
+            'arrangement' => $arrangementService->hent($pl_id),
             'innslag' => $innslag
         ];
 
@@ -1240,7 +1247,9 @@ class InnslagController extends Controller
      */
     private function _renderTitleAction(array $view_data)
     {
-        $view_data['arrangement'] = $this->get('ukm_api.arrangement')->hent($view_data['pl_id']);
+        $arrangementService = new ArrangementService($this->container);
+
+        $view_data['arrangement'] = $arrangementService->hent($view_data['pl_id']);
         
         switch ($view_data['type_key']) {
             case 'musikk':
@@ -1459,7 +1468,9 @@ class InnslagController extends Controller
      */
     public function attendingAction(Int $k_id, Int $pl_id, String $type, Int $b_id)
     {
-        $arrangement = $this->get('ukm_api.arrangement')->hent($pl_id);
+        $arrangementService = new ArrangementService($this->container);
+
+        $arrangement = $arrangementService->hent($pl_id);
         $innslagService = new InnslagService($this->container);
 
         $view_data = [
