@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use UKMNorge\DeltaBundle\Entity\HideCampaign;
 use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
+use UKMNorge\DeltaBundle\Services\SeasonService;
 
 use DateTime;
 use UKMmail;
@@ -17,7 +18,8 @@ require_once('UKMconfig.inc.php');
 class DinSideController extends Controller
 {
 	private function _season() {
-		return $this->get('ukm_delta.season')->getActive();
+		$season = new SeasonService($this->container);
+		return $season->getActive();
 	}
 
 	/**

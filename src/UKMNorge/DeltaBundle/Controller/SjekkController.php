@@ -13,6 +13,7 @@ use UKMNorge\Database\SQL\Query;
 use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\DeltaBundle\Services\SeasonService;
 
 require_once('UKM/Autoloader.php');
 
@@ -38,7 +39,9 @@ class SjekkController extends Controller {
 			return $this->render('UKMDeltaBundle:Sjekk:notallowed.html.twig', $view_data);
 		}
 
-		$season = $this->container->get('ukm_delta.season')->getActive();
+		$seasonService = new SeasonService($this->container);
+
+		$season = $seasonService->getActive();
 		$monstring_handle = new landsmonstring($season);
 		$landsmonstring = $monstring_handle->monstring_get();
 
