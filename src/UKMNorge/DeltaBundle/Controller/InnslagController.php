@@ -26,6 +26,7 @@ use UKMNorge\UserBundle\Services\UserService;
 use UKMNorge\APIBundle\Services\InnslagService;
 use UKMNorge\APIBundle\Services\PersonService;
 use UKMNorge\APIBundle\Services\ArrangementService;
+use UKMNorge\APIBundle\Services\GeografiService;
 
 require_once('UKM/Autoloader.php');
 
@@ -560,6 +561,7 @@ class InnslagController extends Controller
     {
 		$innslagService = new InnslagService($this->container);
         $arrangementService = new ArrangementService($this->container);
+        $geografiService = new GeografiService($this->container);
 
         $user = $this->hentCurrentUser();
         $type = Typer::getByKey($type);
@@ -581,7 +583,7 @@ class InnslagController extends Controller
             'translationDomain' => $type->getKey() == 'video' ? 'film' : $type->getKey(),
             'user' => $user,
             'innslag' => $innslag,
-            'kommune' => $this->get('ukm_api.geografi')->hentKommune($k_id),
+            'kommune' => $geografiService->hentKommune($k_id),
             'arrangement' => $arrangement
         ];
 
