@@ -1296,7 +1296,7 @@ class InnslagController extends Controller
 
         try {
             $request = Request::createFromGlobals();
-            $seasonService = $this->get('ukm_delta.season');
+            // $seasonService = $this->get('ukm_delta.season');
             $innslagService = new InnslagService($this->container);
 
             $innslag = $innslagService->hent($b_id);
