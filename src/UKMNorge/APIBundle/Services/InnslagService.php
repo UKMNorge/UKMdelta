@@ -21,6 +21,7 @@ use UKMNorge\Innslag\Write as WriteInnslag;
 use UKMNorge\Innslag\Titler\Write as WriteTittel;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
 use UKMNorge\UserBundle\Services\UserService;
+use UKMNorge\APIBundle\Services\PersonService;
 
 
 require_once('UKM/Autoloader.php');
@@ -254,7 +255,8 @@ class InnslagService
         $user = $this->hentCurrentUser();
 
         if ($user->getPameldUser() != null) {
-            $person = $this->container->get('ukm_api.person')->hent($user->getPameldUser());
+            $personService = new PersonService($this->container);
+            $person = $personService->hent($user->getPameldUser());
             $p_id = $person->getId();
         } else {
             $p_id = 0;

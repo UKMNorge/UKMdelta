@@ -24,7 +24,7 @@ class WordpressController extends Controller {
     public function connectAction() {
         $log = $this->container->get('logger');
         $log->info("WordpressController: Connect-action startet.");
-        $personService = $this->container->get('ukm_api.person');
+        $personService = new PersonService($this->container);
         $user = $personService->hentCurrentUser();
     
         # Lag token:
