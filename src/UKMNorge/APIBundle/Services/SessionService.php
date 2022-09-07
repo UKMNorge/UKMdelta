@@ -15,10 +15,6 @@ require_once('UKM/Autoloader.php');
     https://symfony.com/doc/current/components/http_foundation/session_php_bridge.html
 */
 
-ini_set('session.save_handler', 'files');
-ini_set('session.save_path', '/tmp');
-session_start();
-
 class SessionService {
     public function __construct() {
     }
