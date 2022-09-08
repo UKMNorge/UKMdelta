@@ -9,7 +9,7 @@ services:
         alias: doctrine
 
     twig.extension.debug:
-        class: Twig_Extension_Debug
+        class: Twig\Extension\DebugExtension
         tags: [{ name: 'twig.extension' }]
 
     logger:
