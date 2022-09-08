@@ -36,7 +36,7 @@ twig:
     paths:
         "%kernel.root_dir%/../vendor/ukmnorge/design/Resources/views": ~
     globals:
-        UKMDesign: "@UKMDesign" # Definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
+        UKMDesign: "@ukmdesign" # Definert i UKMNorge\DesignSymfony2\Resources\config\services.yml
         UKM_HOSTNAME: "%UKM_HOSTNAME%"
         sitemap_extras: '@delta_menu'
 
