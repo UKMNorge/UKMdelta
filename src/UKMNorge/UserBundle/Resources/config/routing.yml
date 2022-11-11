@@ -56,3 +56,14 @@ ukm_dip_entry:
 ukm_info_queue:
     path:     /info/
     defaults: { _controller: UKMUserBundle:Info:informationQueue }
+
+
+# APP auth
+ukm_dip_app_request_token:
+    path:    /app/requestToken/
+    defaults: { _controller: UKMUserBundle:AppAuth:createRequestToken }
+    methods: [POST]
+
+ukm_dip_app_authenticate:
+    path:     /ukmid/app/accessToken/{requestToken}/
+    defaults: { _controller: UKMUserBundle:AppAuth:createAccessToken }
