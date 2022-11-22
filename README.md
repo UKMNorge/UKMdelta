@@ -1,3 +1,7 @@
+### OBS: Denne pakken er forlatt og vedlikeholdes ikke lenger. Erstates av https://github.com/UKMNorge/DeltaV5
+
+
+
 Symfony-app for påmeldingssystemet
 ========================
 
